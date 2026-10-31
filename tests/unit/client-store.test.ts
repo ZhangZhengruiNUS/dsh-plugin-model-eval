@@ -1,0 +1,5 @@
+import test from 'node:test';import assert from 'node:assert/strict';import {latestCompleted,formatScore} from '../../src/client/store.ts';import type {RunSummary} from '../../src/contracts.ts';
+test('latest complete track remains visible beside a newer unfinished run',()=>{
+  const run=(id:string,status:'completed'|'pending',date:string,score?:number):RunSummary=>({runId:id,batchId:'b',target:{scopeId:'s',providerId:'p',modelId:'m',routeTarget:{state:'unknown'},controls:{}},protocols:{generalId:'g',writingId:'w',resourceVersion:'v1'},revision:1,details:'available',resumeAllowed:true,judges:[],metrics:{tracks:{},activeIntervals:[],incompleteTiming:false},tracks:{general:{status,required:905,graded:status==='completed'?905:10,measures:{},completedAt:date,...(score===undefined?{}:{score})}}});
+  const rows=[run('old','completed','2026-01-01',80),run('new','completed','2026-01-02',0),run('pending','pending','2026-01-03')];assert.equal(latestCompleted(rows,'general')[0]!.runId,'new');assert.equal(formatScore(0),'0.0');assert.equal(formatScore(undefined),'—');
+});

@@ -32,7 +32,7 @@ function assign(config:DshCallConfig,field:Field,value:JsonValue):void {
   else {if (!Array.isArray(value)||!value.every(x=>typeof x==='string'&&x.length>0))fault('INVALID_PARAMETER');config.stop=value as string[];}
 }
 function safeFailure(failure:Failure|undefined,phase:'answer'|'judge'):TechnicalError {
-  const configCodes=['UNSUPPORTED_OPTION','UNSUPPORTED_REASONING_EFFORT','INVALID_CONFIG','INVALID_PREPARED_CALL','MISSING_CREDENTIAL','NO_ADAPTER','UNKNOWN_MODEL','REGISTRATION_DISPOSED','INVALID_MODEL_MAX_TOKENS'];
+  const configCodes=['UNSUPPORTED_OPTION','UNSUPPORTED_REASONING_EFFORT','INVALID_CONFIG','INVALID_PREPARED_CALL','MISSING_CREDENTIAL','NO_ADAPTER','UNKNOWN_MODEL','REGISTRATION_DISPOSED','INVALID_MODEL_MAX_TOKENS','AUTHENTICATION_ERROR','AUTHENTICATION_FAILED','PERMISSION_DENIED','INVALID_REQUEST','MODEL_NOT_FOUND'];
   const allowed=new Set([...configCodes,'NETWORK_ERROR','TIMEOUT','LLM_STREAM_IDLE_TIMEOUT','RATE_LIMIT','RATE_LIMITED','OVERLOADED','SERVICE_UNAVAILABLE','AUTHENTICATION_ERROR','AUTHENTICATION_FAILED','PERMISSION_DENIED','INVALID_REQUEST','MODEL_NOT_FOUND','ABORTED','INCOMPLETE_STREAM']);
   const code=allowed.has(failure?.code??'')?failure!.code!:'UPSTREAM_ERROR';
   const status=failure?.status, retryAfterMs=failure?.providerRetryAfterMs;

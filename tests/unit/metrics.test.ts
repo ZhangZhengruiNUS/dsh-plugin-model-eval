@@ -12,3 +12,7 @@ test('unknown_usage_and_active_time_are_not_fabricated',()=>{
   assert.equal(activeMilliseconds(metrics),3000);assert.equal(metrics.incompleteTiming,true);
   assert.equal(summarizeMetrics([attempt('a',false)],[]).tracks.general!.answer.inputTokens,undefined);
 });
+test('an interrupted dispatch retains its attempt count and unknown usage',()=>{
+  const interrupted:AttemptRecord={attemptId:'started-before-crash',phase:'answer',status:'interrupted',startedAt:'2026-01-01',itemId:'q',track:'general'};
+  const metrics=summarizeMetrics([interrupted],[]);assert.equal(metrics.tracks.general!.answer.calls,1);assert.equal(metrics.tracks.general!.answer.failures,1);assert.equal(metrics.tracks.general!.answer.usageCoverage,0);assert.equal(metrics.tracks.general!.answer.inputTokens,undefined);assert.equal(metrics.tracks.general!.answer.latencyMedianMs,undefined);
+});

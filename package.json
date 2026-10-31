@@ -5,15 +5,21 @@
   "type": "module",
   "license": "MIT",
   "scripts": {
-    "test:unit": "tsx --test --test-concurrency=1",
-    "test:integration": "tsx --test --test-concurrency=1",
+    "test": "node scripts/test.mjs all",
+    "test:unit": "node scripts/test.mjs unit",
+    "test:integration": "node scripts/test.mjs integration",
+    "test:ui": "playwright test",
     "typecheck": "tsc --noEmit",
     "build": "node scripts/build.mjs"
   },
   "devDependencies": {
+    "@playwright/test": "1.56.1",
     "@types/node": "24.19.2",
     "@types/react": "18.3.31",
+    "@types/react-dom": "18.3.7",
     "esbuild": "0.28.2",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
     "tsx": "4.23.15",
     "typescript": "7.0.2"
   },
@@ -27,6 +33,7 @@
     "lib/*.js",
     "cordis.patch.yml",
     "locale/*.json",
+    "resources/**",
     "LICENSE",
     "README.md"
   ],

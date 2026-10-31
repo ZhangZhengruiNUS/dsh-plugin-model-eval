@@ -45,7 +45,7 @@ export async function gradeGeneral(question:Question,answer:GeneratedAnswer,env:
     const want=String(raw.output??raw.answer??raw.target);const expected=want.includes('####')?want.split('####').at(-1)!.trim():want.trim();
     return scored(numericEquivalent(answer.text,expected),{metric:'numeric-exact'});
   }
-  if(question.datasetId==='ifeval')return env.rules.gradeRules({...raw,itemId:question.id,answer:answer.text} as RuleGradeInput);
+  if(question.datasetId==='ifeval')return env.rules.gradeRules({...raw,itemId:question.id,answer:answer.text} as RuleGradeInput,env.signal);
   if(question.datasetId==='humaneval-plus'){
     const code=extractCode(answer.text);if(code===undefined)return scored(false,{reason:'no-single-candidate'});
     const outcome=await env.code.runCode(raw as unknown as CodeTest,code,{wallMs:30000,memoryBytes:536870912,computeBudget:200000000000},env.signal);

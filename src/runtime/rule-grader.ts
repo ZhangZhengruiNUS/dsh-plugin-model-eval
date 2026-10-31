@@ -9,17 +9,18 @@ export interface RuleGradeInput {
   itemId: string; key: number; prompt: string; instruction_id_list: string[];
   kwargs: Record<string, JsonValue>[]; answer: string;
 }
-export interface RuleGrader { gradeRules(request: RuleGradeInput): Promise<GradeResult> }
+export interface RuleGrader { gradeRules(request: RuleGradeInput,signal?:AbortSignal): Promise<GradeResult> }
 
 /** This separate trusted process treats every response as JSON text, never code. */
 export function createRuleGrader(runtimeRoot: string): RuleGrader {
   const root = resolve(runtimeRoot);
-  return { async gradeRules(request) {
+  return { async gradeRules(request,signal) {
     const missing = (code: string): GradeResult => ({
       kind: 'technical-missing', track: 'general', itemId: request.itemId,
       error: { code, retryable: false, phase: 'grader', message: '本地规则评分环境无法完成检查。' }, evidence: null,
     });
     try {
+      if(signal?.aborted)return missing('CANCELLED');
       if (process.platform !== 'win32' || process.arch !== 'x64') return missing('UNSUPPORTED_RUNTIME');
       await verifyRuntime(root, 'trusted-ifeval', RUNTIME_PINS['trusted-ifeval']);
       const result = await new Promise<{ code: number | null; text: string; timedOut: boolean; spawnFailed: boolean }>(done => {
@@ -29,6 +30,7 @@ export function createRuleGrader(runtimeRoot: string): RuleGrader {
         });
         let text = '', bytes = 0, timedOut = false, spawnFailed = false;
         const timer = setTimeout(() => { timedOut = true; child.kill('SIGKILL'); }, 30_000);
+        const cancel=()=>{child.kill('SIGKILL');};signal?.addEventListener('abort',cancel,{once:true});if(signal?.aborted)cancel();
         child.on('error', () => { spawnFailed = true; });
         child.stdout.on('data', (chunk: Buffer) => {
           bytes += chunk.length;
@@ -36,9 +38,10 @@ export function createRuleGrader(runtimeRoot: string): RuleGrader {
         });
         child.stderr.on('data', () => {});
         child.stdin.on('error', () => {});
-        child.on('close', code => { clearTimeout(timer); done({ code, text, timedOut, spawnFailed }); });
+        child.on('close', code => { clearTimeout(timer);signal?.removeEventListener('abort',cancel);done({ code, text, timedOut, spawnFailed }); });
         child.stdin.end(JSON.stringify(request));
       });
+      if(signal?.aborted)return missing('CANCELLED');
       if (result.spawnFailed || result.timedOut || result.code !== 0) return missing('RULE_PROCESS_FAILED');
       const data = JSON.parse(result.text);
       if (typeof data.passed !== 'boolean' || !Array.isArray(data.instructions)

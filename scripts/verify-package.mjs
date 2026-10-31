@@ -1,0 +1,27 @@
+import {readFileSync} from 'node:fs';import {gunzipSync} from 'node:zlib';import {createHash} from 'node:crypto';import {fileURLToPath} from 'node:url';import {resolve} from 'node:path';
+const hash=bytes=>createHash('sha256').update(bytes).digest('hex');
+function text(buffer,start,size){return buffer.subarray(start,start+size).toString('utf8').replace(/\0.*$/s,'');}
+export function unpackTar(bytes){
+  const raw=gunzipSync(bytes),entries=new Map();let offset=0,pax={};
+  while(offset+512<=raw.length){const head=raw.subarray(offset,offset+512);if(head.every(x=>x===0))break;
+    const checksum=parseInt(text(head,148,8).trim(),8),actual=[...head].reduce((sum,value,index)=>sum+(index>=148&&index<156?32:value),0);if(checksum!==actual)throw new Error('INVALID_TAR_CHECKSUM');
+    const size=parseInt(text(head,124,12).trim()||'0',8);if(!Number.isSafeInteger(size)||size<0)throw new Error('INVALID_TAR');
+    const data=raw.subarray(offset+512,offset+512+size);if(data.length!==size)throw new Error('TRUNCATED_TAR');const type=text(head,156,1);
+    if(type==='x'){pax={};let cursor=0;const value=data.toString('utf8');while(cursor<value.length){const space=value.indexOf(' ',cursor),length=Number(value.slice(cursor,space));if(!Number.isInteger(length)||length<=0)throw new Error('INVALID_PAX');const item=value.slice(space+1,cursor+length-1),eq=item.indexOf('=');pax[item.slice(0,eq)]=item.slice(eq+1);cursor+=length;}}
+    else{const prefix=text(head,345,155),name=pax.path??(prefix?prefix+'/':'')+text(head,0,100);pax={};if(!name.startsWith('package/')||name.includes('\\')||name.split('/').some(x=>x==='..'||x==='.')||name.includes(':'))throw new Error('UNSAFE_TAR_PATH');
+      if(type==='0'||type===''){if(entries.has(name))throw new Error('DUPLICATE_TAR_PATH');entries.set(name,data);}else if(type!=='5')throw new Error('UNSUPPORTED_TAR_ENTRY');}
+    offset+=512+Math.ceil(size/512)*512;
+  }return entries;
+}
+export function verifyPackage(path){
+  const bytes=readFileSync(path),entries=unpackTar(bytes),get=name=>{const value=entries.get('package/'+name);if(!value)throw new Error('PACKAGE_FILE_MISSING: '+name);return value;};
+  const pkg=JSON.parse(get('package.json'));if(pkg.name!=='@aico/dsh-plugin-model-eval'||pkg.type!=='module'||Object.keys(pkg.dependencies??{}).length||['preinstall','install','postinstall','prepare'].some(x=>pkg.scripts?.[x]))throw new Error('PACKAGE_CONTRACT');
+  const patch=get('cordis.patch.yml').toString(),client=get('lib/client.js').toString(),host=get('lib/index.js').toString(),locale=JSON.parse(get('locale/zh-CN.json'));
+  if(!patch.includes(`name: '${pkg.name}'`)||!client.includes(`id:${JSON.stringify(pkg.name)}`)||!locale.meta.title||!locale.meta.description)throw new Error('PACKAGE_IDENTITY');
+  if(!client.includes('require("react")')||client.includes('react-dom/client')||client.includes('createRoot('))throw new Error('HOST_REACT_CONTRACT');
+  const manifestBytes=get('resources/manifest.json'),manifest=JSON.parse(manifestBytes);if(manifest.gates.runtime!=='passed'||!host.includes(hash(manifestBytes)))throw new Error('MANIFEST_PIN');
+  for(const file of manifest.files){const packed=get('resources/'+file.path);if(packed.length!==file.size||hash(packed)!==file.sha256)throw new Error('RESOURCE_PACKAGE_MISMATCH: '+file.path);}
+  for(const path of entries.keys())if(/(?:^|\/)(?:\.npmrc|\.env(?:\.[^/]*)?|\.git|node_modules|\.local|\.superpowers|AGENTS\.md|MEMORY\.md|WORKPOOL\.md)(?:\/|$)/i.test(path)||path.startsWith('package/tests/')||path.startsWith('package/docs/policies/'))throw new Error('FORBIDDEN_PACKAGE_FILE');
+  return {entries,report:{schemaVersion:1,status:'passed',name:pkg.name,version:pkg.version,sha256:hash(bytes),compressedBytes:bytes.length,unpackedBytes:[...entries.values()].reduce((n,x)=>n+x.length,0),resourceBytes:manifest.files.reduce((n,x)=>n+x.size,0),files:entries.size,resourceManifestSha256:hash(manifestBytes),runtimeDependencies:0}};
+}
+if(process.argv[1]&&resolve(process.argv[1])===fileURLToPath(import.meta.url)){try{process.stdout.write(JSON.stringify(verifyPackage(process.argv[2]).report,null,2)+'\n');}catch(error){process.stderr.write(error.message+'\n');process.exitCode=1;}}

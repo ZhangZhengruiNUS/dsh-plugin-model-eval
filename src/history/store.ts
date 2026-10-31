@@ -2,7 +2,7 @@ import { randomUUID, createHash } from 'node:crypto';
 import { mkdir, lstat, realpath, readdir, rename } from 'node:fs/promises';
 import { join } from 'node:path';
 import { isDeepStrictEqual } from 'node:util';
-import type { GeneratedAnswer, GradeResult, JudgeSnapshot, ProtocolRefs, RunSummary, TargetSnapshot, Track, TechnicalError } from '../contracts.ts';
+import type { GeneratedAnswer, GradeResult, JudgeSnapshot, ProtocolRefs, RunSummary, TargetSnapshot, Track, TechnicalError,Question } from '../contracts.ts';
 import { fingerprintTarget } from '../model/identity.ts';
 import { inspectRoot } from '../resources/prepare.ts';
 import { readRecord, writeRecord } from './atomic.ts';
@@ -11,9 +11,9 @@ import { acquireWriter } from './lock.ts';
 export interface RequiredItem {id:string;track:Track;datasetId:string}
 export interface RunManifestInput {batchId:string;target:TargetSnapshot;protocols:ProtocolRefs;requiredItems:RequiredItem[];judge?:JudgeSnapshot;execution?:{concurrency:1|2|3|4;callTimeoutMs:number}}
 export interface RunManifest extends RunManifestInput {schemaVersion:1;runId:string;createdAt:string}
-export interface AttemptRecord {attemptId:string;phase:'answer'|'judge';status:'started'|'completed'|'failed'|'interrupted';startedAt:string;endedAt?:string;
+export interface AttemptRecord {attemptId:string;phase:'answer'|'judge';status:'started'|'completed'|'failed'|'interrupted';startedAt:string;endedAt?:string;judge?:JudgeSnapshot;itemId?:string;track?:Track;
   observations?:GeneratedAnswer['observations'];error?:TechnicalError;rawText?:string;validationError?:TechnicalError;interruptedDetectedAt?:string}
-export interface ItemInput {itemId:string;attempts:AttemptRecord[];answer?:GeneratedAnswer;grade?:GradeResult}
+export interface ItemInput {itemId:string;attempts:AttemptRecord[];answer?:GeneratedAnswer;grade?:GradeResult;question?:Omit<Question,'grading'>}
 export interface ItemRecord extends ItemInput {schemaVersion:1;revision:number;sequence:number;updatedAt:string;answerCommittedAt?:string;gradeCommittedAt?:string}
 export interface RecoveryDiagnostic {runId:string;itemId?:string;code:string}
 export interface RecoveryReport {recoveredRunIds:string[];diagnostics:RecoveryDiagnostic[];temporaryFiles:number}
@@ -130,8 +130,9 @@ export async function openHistory(root:string):Promise<HistoryStore> {
       const old=await readItem(run,input.itemId);if((old?.revision??0)!==expected)return fail('REVISION_CONFLICT');
       if(old?.answer?.complete&&!isDeepStrictEqual(old.answer,input.answer))return fail('IMMUTABLE_ANSWER');
       if(old?.grade?.kind==='scored'&&!isDeepStrictEqual(old.grade,input.grade))return fail('IMMUTABLE_GRADE');
+      if(old?.question&&!isDeepStrictEqual(old.question,input.question))return fail('IMMUTABLE_QUESTION');
       if(new Set(input.attempts.map(x=>x.attemptId)).size!==input.attempts.length)return fail('DUPLICATE_ATTEMPT');
-      for(const previous of old?.attempts??[]){const next=input.attempts.find(x=>x.attemptId===previous.attemptId);if(!next||next.phase!==previous.phase||next.startedAt!==previous.startedAt||previous.observations&&!isDeepStrictEqual(previous.observations,next.observations)||previous.status!=='started'&&next.status!==previous.status)return fail('IMMUTABLE_ATTEMPT');}
+      for(const previous of old?.attempts??[]){const next=input.attempts.find(x=>x.attemptId===previous.attemptId);if(!next||next.phase!==previous.phase||next.startedAt!==previous.startedAt||!isDeepStrictEqual(previous.judge,next.judge)||previous.observations&&!isDeepStrictEqual(previous.observations,next.observations)||previous.status!=='started'&&next.status!==previous.status)return fail('IMMUTABLE_ATTEMPT');}
       const now=new Date().toISOString(),record:ItemRecord={...clone(input),schemaVersion:1,revision:expected+1,sequence:run.summary.revision+1,updatedAt:now,
         ...(old?.answerCommittedAt?{answerCommittedAt:old.answerCommittedAt}:input.answer?.complete?{answerCommittedAt:now}:{}),
         ...(old?.gradeCommittedAt?{gradeCommittedAt:old.gradeCommittedAt}:input.grade?.kind==='scored'?{gradeCommittedAt:now}:{})};
@@ -152,7 +153,7 @@ export async function openHistory(root:string):Promise<HistoryStore> {
           let run:Cache;try {run=await load(name);}catch{report.diagnostics.push({runId:name,code:'RUN_CORRUPT'});continue;}
           if(run.summary.details!=='available')continue;
           if(Object.values(run.summary.tracks).every(x=>x.status==='completed'))continue;
-          const journal=new Map<string,AttemptRecord[]>();
+          const journal=new Map<string,AttemptRecord[]>(),durableTimes:string[]=[];
           for(const file of await readdir(join(runPath(name),'details','attempts')))if(file.endsWith('.json')) {
             try {const saved=await readRecord<{itemId:string;attempt:AttemptRecord}>(join(runPath(name),'details','attempts',file));requireItem(run,saved.itemId);const list=journal.get(saved.itemId)??[];list.push(saved.attempt);journal.set(saved.itemId,list);}
             catch{report.diagnostics.push({runId:name,code:'ATTEMPT_CORRUPT'});}
@@ -163,14 +164,15 @@ export async function openHistory(root:string):Promise<HistoryStore> {
               report.diagnostics.push({runId:name,itemId:required.id,code:'ITEM_CORRUPT'});
               await rename(join(runPath(name),'details','items',hash(required.id)+'.json'),join(runPath(name),'diagnostics',`${hash(required.id)}-${randomUUID()}.corrupt.json`));
             }
+            if(item)durableTimes.push(item.updatedAt);
             const attempts=journal.get(required.id)??item?.attempts??[];
             for(const attempt of attempts)if(attempt.status==='started'){attempt.status='interrupted';attempt.interruptedDetectedAt=new Date().toISOString();await writeRecord(join(runPath(name),'details','attempts',hash(attempt.attemptId)+'.json'),{itemId:required.id,attempt});}
-            if(item||attempts.length){const record:ItemRecord={...(item??{itemId:required.id}),attempts,schemaVersion:1,revision:(item?.revision??0)+1,sequence:Math.max(run.summary.revision,item?.sequence??0)+1,updatedAt:new Date().toISOString()};await writeRecord(join(runPath(name),'details','items',hash(required.id)+'.json'),record);run.items.set(required.id,record);}
+            if((item||attempts.length)&&(!item||!isDeepStrictEqual(item.attempts,attempts))){const record:ItemRecord={...(item??{itemId:required.id}),attempts,schemaVersion:1,revision:(item?.revision??0)+1,sequence:Math.max(run.summary.revision,item?.sequence??0)+1,updatedAt:new Date().toISOString()};await writeRecord(join(runPath(name),'details','items',hash(required.id)+'.json'),record);run.items.set(required.id,record);}
           }
           report.temporaryFiles+=(await readdir(join(runPath(name),'details','items'))).filter(x=>x.endsWith('.tmp')).length;
           run.loaded=true;const next=clone(run.summary);next.revision=Math.max(next.revision,...[...run.items.values()].map(x=>x.sequence))+1;
           for(const track of ['general','writing'] as const){const value=next.tracks[track];if(!value||value.status==='completed')continue;const allowed=new Set(run.manifest.requiredItems.filter(x=>x.track===track).map(x=>x.id));value.status='paused';value.answered=[...run.items.values()].filter(x=>allowed.has(x.itemId)&&x.answer?.complete).length;value.graded=[...run.items.values()].filter(x=>allowed.has(x.itemId)&&x.grade?.kind==='scored').length;}
-          for(const interval of next.metrics.activeIntervals)if(!interval.endedAt){next.metrics.incompleteTiming=true;const last=[...run.items.values()].map(x=>x.updatedAt).filter(x=>x>=interval.startedAt).sort().at(-1);interval.endedAt=last??interval.startedAt;}
+          for(const interval of next.metrics.activeIntervals)if(!interval.endedAt){next.metrics.incompleteTiming=true;const last=durableTimes.filter(x=>x>=interval.startedAt).sort().at(-1);interval.endedAt=last??interval.startedAt;}
           await persistSummary(run,next);report.recoveredRunIds.push(name);
         }
         return report;

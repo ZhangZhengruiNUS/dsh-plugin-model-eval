@@ -12,7 +12,7 @@ test('host probe owns one exact route and returns an unload disposer', async () 
     } } },
     effect(install) { cleanups.push(install()); },
   };
-  assert.deepEqual(inject, ['connection']);
+  assert.deepEqual(inject, ['connection','llm','settings']);
   apply(ctx);
   assert.equal(routes.length, 1);
   assert.equal(routes[0]!.path, '/api/aico/model-eval/v1/status');

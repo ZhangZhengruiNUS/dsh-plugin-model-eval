@@ -24,5 +24,7 @@ test('switching judge fills only seven missing grades, preserving answers and ge
   const after=(await store.getRun(batch.runIds[0]!)).summary;assert.equal(newCalls,7);assert.equal(answers,16);
   assert.equal(after.tracks.writing!.score,75);assert.equal(after.tracks.general!.completedAt,before.tracks.general!.completedAt);
   assert.deepEqual(after.judges.map(x=>[x.snapshot.target.modelId,x.itemIds.length]),[['old',5],['new',7]]);
+  assert.equal(after.judges[0]!.failedCalls,1);assert.equal(after.judges[0]!.calls,6);assert.equal(after.tracks.writing!.measures.logic!.score,3);
+  assert.equal(after.metrics.incompleteTiming,false);
   await queue.dispose();await store.close();
 }));

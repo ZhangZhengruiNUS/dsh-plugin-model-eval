@@ -7,7 +7,7 @@ export async function runAttempt<T>(invoke:(index:number)=>Promise<AttemptOutcom
   let result:AttemptOutcome<T>={ok:false,error:{code:'ABORTED',phase:'answer',retryable:false,message:'本轮已暂停。'}};
   for(let i=0;i<3&&!signal.aborted;i++){
     result=await invoke(i);if(result.ok||!result.error.retryable||['config','storage','resource'].includes(result.error.phase)||i===2||signal.aborted)break;
-    try{await clock.wait(i===0?2000:5000,signal);}catch{break;}
+    try{await clock.wait(Math.max(i===0?2000:5000,Math.min(result.error.retryAfterMs??0,60000)),signal);}catch{break;}
   }
   return result;
 }

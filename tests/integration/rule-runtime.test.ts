@@ -3,6 +3,12 @@ import assert from 'node:assert/strict';
 import { resolve } from 'node:path';
 import { createRuleGrader } from '../../src/runtime/rule-grader.ts';
 
+test('rule grading cancellation stops a trusted child without assigning a score',async()=>{
+  const cancel=new AbortController();cancel.abort();
+  const result=await createRuleGrader('resources/runtime/rules').gradeRules({itemId:'cancel',key:1,prompt:'alpha',instruction_id_list:['keywords:existence'],kwargs:[{keywords:['alpha']}],answer:'alpha'},cancel.signal);
+  assert.equal(result.kind,'technical-missing');if(result.kind==='technical-missing')assert.equal(result.error.code,'CANCELLED');
+});
+
 test('offline strict rules execute constraints and treat answer text only as data', async () => {
   const grader = createRuleGrader(resolve('resources/runtime/rules'));
   const base = { itemId: 'fixture', key: 1, prompt: 'Include alpha and do not use commas.',

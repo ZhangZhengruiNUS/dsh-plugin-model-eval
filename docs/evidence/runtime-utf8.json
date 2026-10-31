@@ -3,7 +3,7 @@
   "platform": "win32",
   "arch": "x64",
   "node": "v24.21.0",
-  "status": "failed",
+  "status": "superseded",
   "limits": {
     "wallMs": 30000,
     "memoryBytes": 536870912,
@@ -4817,5 +4817,7 @@
     ],
     "check": "nonempty input exercises every fixed prompt constraint; scores are conformance fixtures, not model results"
   },
-  "actualHost": "unverified"
+  "actualHost": "unverified",
+  "originalStatus": "failed",
+  "reason": "Runtime resources changed during this exploratory run after approval of the code-only tokenizer; not current conformance evidence. Use runtime.json and runtime-rules-v3.json."
 }

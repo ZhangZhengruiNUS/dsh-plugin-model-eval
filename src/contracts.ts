@@ -35,7 +35,7 @@ export interface TrackSummary {
 }
 export interface ProtocolRefs { generalId: string; writingId: string; resourceVersion: string }
 export interface JudgeSnapshot { target: TargetSnapshot; rubricId: string; promptId: string }
-export interface JudgeUsage { snapshot: JudgeSnapshot; itemIds: string[] }
+export interface JudgeUsage { snapshot: JudgeSnapshot; itemIds: string[]; attemptedItemIds?:string[];calls?:number;failedCalls?:number }
 export interface RunSummary {
   runId: string; batchId: string; target: TargetSnapshot; revision: number;
   tracks: Partial<Record<Track, TrackSummary>>; details: DetailsState; resumeAllowed: boolean;
