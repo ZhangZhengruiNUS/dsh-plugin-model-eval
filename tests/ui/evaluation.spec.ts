@@ -1,9 +1,10 @@
+import {chooseModel} from './helpers.ts';
 import {test,expect} from '@playwright/test';
 test('evaluation_and_cleanup_user_journey',async({page})=>{
   await page.goto('/?empty=1');await expect(page.getByRole('button',{name:'准备环境',exact:true})).toBeVisible();await page.getByRole('button',{name:'准备环境',exact:true}).click();
   await page.getByRole('button',{name:'准备环境',exact:true}).click();await expect(page.getByText('环境已就绪').first()).toBeVisible();
   await page.getByRole('button',{name:'新建评测',exact:true}).click();const dialog=page.getByRole('dialog',{name:'新建评测'});
-  await dialog.getByLabel('选择宿主模型',{exact:true}).selectOption({index:1});await dialog.getByText('本轮生成参数',{exact:true}).click();await dialog.getByLabel('最大输出 Token',{exact:true}).fill('8192');
+  await chooseModel(dialog);await dialog.getByText('本轮生成参数',{exact:true}).click();await dialog.getByLabel('最大输出 Token',{exact:true}).fill('8192');
   await dialog.getByRole('button',{name:'复制配置',exact:true}).click();await dialog.getByText('本轮生成参数',{exact:true}).last().click();await dialog.getByLabel('温度',{exact:true}).last().fill('0.9');
   await dialog.getByRole('button',{name:'开始评测',exact:true}).click();await expect(dialog).not.toBeVisible();await expect(page.getByRole('button',{name:'暂停',exact:true})).toBeVisible();
   const elapsed=page.getByTestId('batch-elapsed').first(),tokens=page.getByTestId('batch-tokens').first();
