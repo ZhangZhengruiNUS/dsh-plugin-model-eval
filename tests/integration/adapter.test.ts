@@ -66,3 +66,10 @@ test('unsupported route parameters are explicit configuration failures without r
   assert.equal(result.error?.retryable,false);assert.equal(f.calls.length,1);
   assert.ok(!JSON.stringify(result).includes('raw-private'));
 });
+
+test('performance observes generated reasoning but not block-start as output',async()=>{
+  const f=fixture([{type:'block-start',index:0},{type:'reasoning-delta',index:0},{type:'text-delta',index:1,text:'answer'},{type:'finish',reason:{kind:'stop'}}]);
+  const a=createHostAdapter(f.ctx),target=await a.snapshot((await a.catalog())[0]!,{}),r=await a.generateOnce({target,messages:[{role:'user',content:'q'}],signal:new AbortController().signal,context});
+  assert.ok(r.observations.timing);assert.equal(r.observations.timing.sawReasoning,true);assert.ok(r.observations.timing.firstOutputMs!<=r.observations.timing.firstTextMs!);assert.ok(r.observations.timing.totalMs>=r.observations.timing.streamMs);
+  const b=fixture([{type:'block-start',index:0},{type:'finish',reason:{kind:'stop'}}]),adapter=createHostAdapter(b.ctx),t=await adapter.snapshot((await adapter.catalog())[0]!,{}),empty=await adapter.generateOnce({target:t,messages:[{role:'user',content:'q'}],signal:new AbortController().signal,context});assert.equal(empty.observations.timing?.firstOutputMs,undefined);
+});

@@ -101,6 +101,7 @@ export function createHostAdapter(ctx:AdapterContext):HostAdapter {
   }
   return {catalog,async snapshot(choice,overrides){return (await prepare(choice,overrides)).target;},
     async generateOnce(input:GenerationInput):Promise<GeneratedAnswer> {
+      const invocationStarted=performance.now();
       const choice:ModelChoice={scopeId:input.target.scopeId,providerId:input.target.providerId,modelId:input.target.modelId,displayName:input.target.modelId,capabilities:{}};
       const before=route(choice.providerId),origin=input.target.origin;
       if (origin?.adapterInstance===instance&&(origin.adapterEpoch!==epoch||origin.settingsRevision!==before.revision))fault('TARGET_CHANGED');
@@ -111,9 +112,11 @@ export function createHostAdapter(ctx:AdapterContext):HostAdapter {
       if (input.messages.some(x=>x.role==='assistant'))fault('UNSUPPORTED_PROMPT_ROLE');
       const messages=input.messages.filter(x=>x.role==='user').map(x=>({role:'user' as const,content:[{type:'text' as const,text:x.content}]}));
       const observations:GeneratedAnswer['observations']={...input.context,startedAt:new Date().toISOString(),endedAt:'',usage:{available:false}};
+      const streamStarted=performance.now();const timing:NonNullable<GeneratedAnswer['observations']['timing']>={prepareMs:streamStarted-invocationStarted,streamMs:0,totalMs:0,sawReasoning:false,outputTokenScope:'unknown'};observations.timing=timing;
       const blocks=new Map<number,string>();let complete=false,truncated=false,error:TechnicalError|undefined;
       try {
         for await (const chunk of current.prepared.stream({...current.prepared.config,messages,...(system?{system}:{}),signal:input.signal,purpose:'model-evaluation'})) {
+          if((chunk.type==='text-delta'&&chunk.text)||chunk.type==='reasoning-delta'){const elapsed=performance.now()-streamStarted;timing.firstOutputMs??=elapsed;timing.lastOutputMs=elapsed;if(chunk.type==='reasoning-delta')timing.sawReasoning=true;else timing.firstTextMs??=elapsed;}
           if (chunk.type==='text-delta') {if (chunk.text&&!observations.firstContentAt)observations.firstContentAt=new Date().toISOString();blocks.set(chunk.index,(blocks.get(chunk.index)??'')+chunk.text);}
           else if (chunk.type==='block-end'&&chunk.block.type==='text'&&typeof chunk.block.text==='string')blocks.set(chunk.index,chunk.block.text);
           else if (chunk.type==='usage') {
@@ -130,6 +133,7 @@ export function createHostAdapter(ctx:AdapterContext):HostAdapter {
           }
         }
       }catch (thrown) {error=safeFailure(thrown as Failure,input.context.phase);}
+      timing.streamMs=performance.now()-streamStarted;timing.totalMs=performance.now()-invocationStarted;
       observations.endedAt=new Date().toISOString();
       if (input.signal.aborted) {complete=false;error=safeFailure({code:'ABORTED'},input.context.phase);}
       if (current.capturedEpoch!==epoch||current.revision!==route(choice.providerId).revision) {

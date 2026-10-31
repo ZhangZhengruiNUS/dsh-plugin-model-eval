@@ -1,3 +1,5 @@
+import {performanceConditionKey,normalizeObservation} from '../estimation/observations.ts';
+import type {PerformanceSample} from '../estimation/contracts.ts';
 import {randomUUID} from 'node:crypto';
 import {readdir} from 'node:fs/promises';
 import {join} from 'node:path';
@@ -39,19 +41,20 @@ export function createQueue(store:HistoryStore,adapter:HostAdapter,protocols:Pro
   async function call(runId:string,q:Question,phase:'answer'|'judge',messages:readonly PromptMessage[],signal:AbortSignal,batch:BatchView):Promise<GeneratedAnswer|undefined> {
     const {manifest}=await store.getRun(runId),target=phase==='answer'?manifest.target:batch.judge?.target;if(!target)return undefined;
     const outcome=await runAttempt<GeneratedAnswer>(async()=>{
-      let item=await store.getItem(runId,q.id);const attempt:AttemptRecord={attemptId:randomUUID(),phase,itemId:q.id,track:q.track,status:'started',startedAt:new Date().toISOString(),...(phase==='judge'&&batch.judge?{judge:structuredClone(batch.judge)}:{})};
+      let item=await store.getItem(runId,q.id);const attempt:AttemptRecord={attemptId:randomUUID(),phase,itemId:q.id,track:q.track,performanceKey:{conditionKey:performanceConditionKey(manifest.target,manifest.protocols,batch.execution,phase==='judge'?batch.judge:undefined),datasetId:q.datasetId,phase},status:'started',startedAt:new Date().toISOString(),...(phase==='judge'&&batch.judge?{judge:structuredClone(batch.judge)}:{})};
       const {grading:excluded,...question}=q;
       const state:ItemInput={itemId:q.id,question:item?.question??question,attempts:[...(item?.attempts??[]),attempt],...(item?.answer?{answer:item.answer}:{}),...(item?.grade?{grade:item.grade}:{})};
       await store.saveItem(runId,item?.revision??0,state);
       const child=new AbortController(),abort=()=>child.abort();signal.addEventListener('abort',abort,{once:true});if(signal.aborted)abort();
       let timedOut=false;const timer=setTimeout(()=>{timedOut=true;child.abort();},batch.execution.callTimeoutMs);
-      let answer:GeneratedAnswer;
+      const generatedStart=performance.now();let answer:GeneratedAnswer;
       try{answer=await adapter.generateOnce({target,messages,signal:child.signal,context:{attemptId:attempt.attemptId,itemId:q.id,track:q.track,phase}});}
       catch(thrown){const code=typeof (thrown as {code?:unknown})?.code==='string'?(thrown as {code:string}).code:'CALL_FAILED';const configuration=/AUTH|CONFIG|TARGET|UNSUPPORTED|REASONING|PARAMETER/.test(code);
         answer={text:'',complete:false,truncated:false,observations:{attemptId:attempt.attemptId,itemId:q.id,track:q.track,phase,startedAt:attempt.startedAt,endedAt:new Date().toISOString(),usage:{available:false}},error:failure(configuration?code:'CALL_FAILED',configuration?'config':phase,!configuration)};
       }finally{clearTimeout(timer);signal.removeEventListener('abort',abort);}
       if(child.signal.aborted){answer.complete=false;answer.error=failure(timedOut?'CALL_TIMEOUT':'ABORTED',phase,timedOut&&!signal.aborted);}
       attempt.status=answer.complete?'completed':signal.aborted?'interrupted':'failed';attempt.endedAt=answer.observations.endedAt;attempt.observations=answer.observations;if(answer.error)attempt.error=answer.error;
+      attempt.performance=normalizeObservation({...attempt.performanceKey!,sampleId:attempt.attemptId,itemId:q.id,startedAt:answer.observations.startedAt,endedAt:answer.observations.endedAt,durationMs:answer.observations.timing?.totalMs??(performance.now()-generatedStart),outcome:answer.complete?'completed':timedOut?'timeout':signal.aborted?'cancelled':'failed',truncated:answer.truncated,...(answer.observations.timing?{timing:answer.observations.timing}:{}),usage:answer.observations.usage});
       if(phase==='judge')attempt.rawText=answer.text;
       item=await store.getItem(runId,q.id);state.attempts=[...(item?.attempts??[]).filter(x=>x.attemptId!==attempt.attemptId),attempt];
       if(phase==='answer')state.answer=answer;
@@ -65,16 +68,16 @@ export function createQueue(store:HistoryStore,adapter:HostAdapter,protocols:Pro
   async function processItem(runId:string,q:Question,batch:BatchView,signal:AbortSignal):Promise<void> {
     let item=await store.getItem(runId,q.id);if(item?.grade?.kind==='scored')return;
     const answer=item?.answer?.complete?item.answer:await call(runId,q,'answer',buildPrompt(q),signal,batch);if(!answer||signal.aborted)return;
-    let grade:GradeResult|undefined;
+    let grade:GradeResult|undefined,gradingObservation:PerformanceSample|undefined;
     if(q.track==='writing'){
       if(!graders.writing){batch.lastError=failure('WRITING_GRADER_UNAVAILABLE','config');controller?.abort();return;}
       grade=graders.writing.local(q,answer);
       if(!grade){await call(runId,q,'judge',graders.writing.build(q,answer),signal,batch);if(!signal.aborted)await refresh(runId);return;}
     }else {
-      const work=gradingTail.then(async()=>{const start=performance.now();return {grade:await graders.general(q,answer,signal),elapsed:performance.now()-start};});gradingTail=work.catch(()=>{});const result=await work;grade=result.grade;
+      const queued=performance.now();const work=gradingTail.then(async()=>{const start=performance.now(),startedAt=new Date().toISOString(),grade=await graders.general(q,answer,signal);return {grade,elapsed:performance.now()-start,queueWaitMs:start-queued,startedAt,endedAt:new Date().toISOString()};});gradingTail=work.catch(()=>{});const result=await work;grade=result.grade;const {manifest}=await store.getRun(runId);gradingObservation={conditionKey:performanceConditionKey(manifest.target,manifest.protocols,batch.execution),datasetId:q.datasetId,phase:'local-grade',sampleId:randomUUID(),itemId:q.id,startedAt:result.startedAt,endedAt:result.endedAt,durationMs:result.elapsed,queueWaitMs:result.queueWaitMs,outcome:grade.kind==='scored'?'completed':signal.aborted?'cancelled':'failed'};
       await store.exclusive(async tx=>{const {summary}=await tx.getRun(runId);await tx.updateSummary(runId,summary.revision,next=>{const value=next.metrics.tracks[q.track];if(value)value.gradingMs+=result.elapsed;});});
     }
-    item=await store.getItem(runId,q.id);await store.saveItem(runId,item!.revision,{...item!,grade});
+    item=await store.getItem(runId,q.id);await store.saveItem(runId,item!.revision,{...item!,grade,...(gradingObservation?{gradingObservation}:{})});
     if(grade.kind==='technical-missing'){batch.lastError=grade.error;controller?.abort();}
     await refresh(runId);
   }

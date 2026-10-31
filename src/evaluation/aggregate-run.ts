@@ -1,3 +1,4 @@
+import {rebuildPerformance} from '../estimation/observations.ts';
 import {isDeepStrictEqual} from 'node:util';import type {GradeResult,JudgeSnapshot,Question,RunSummary} from '../contracts.ts';import type {HistoryStore,HistoryTransaction,ItemRecord,RunManifest} from '../history/store.ts';import {fingerprintTarget} from '../model/identity.ts';import {summarizeGeneral} from './aggregate.ts';import {summarizeMetrics} from '../jobs/metrics.ts';
 /** Derive only from committed records. Never calls a model or regrades an answer. */
 export function rebuildRunSummary(manifest:RunManifest,summary:RunSummary,items:readonly ItemRecord[]):RunSummary {
@@ -20,6 +21,7 @@ export function rebuildRunSummary(manifest:RunManifest,summary:RunSummary,items:
   }
   const allAttempts=items.flatMap(item=>{const required=manifest.requiredItems.find(x=>x.id===item.itemId)!;return item.attempts.map(a=>({...a,itemId:item.itemId,track:required.track}));});
   const previous=next.metrics,calculated=summarizeMetrics(allAttempts,previous.activeIntervals,Object.fromEntries(Object.entries(previous.tracks).map(([k,v])=>[k,v.gradingMs])));calculated.incompleteTiming=previous.incompleteTiming;next.metrics=calculated;
+  if(next.performance||items.some(x=>x.gradingObservation||x.attempts.some(a=>a.performance||a.performanceKey)))next.performance=rebuildPerformance(items,next.performance);
   next.judges=[];
   function group(judge:JudgeSnapshot){const key=fingerprintTarget(judge.target)+judge.rubricId+judge.promptId;let found=next.judges.find(x=>fingerprintTarget(x.snapshot.target)+x.snapshot.rubricId+x.snapshot.promptId===key);if(!found){found={snapshot:structuredClone(judge),itemIds:[]};next.judges.push(found);}return found;}
   for(const item of items){const grade=item.grade;if(grade?.kind==='scored'&&grade.track==='writing'&&grade.assessment.method==='model')group(grade.assessment.judge).itemIds.push(item.itemId);}

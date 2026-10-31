@@ -1,3 +1,4 @@
+import type {GenerationTiming,PerformanceState,RunEstimation} from './estimation/contracts.ts';
 /** Serialized, client-safe protocol. No host credentials or Node types. */
 export type JsonValue = null | boolean | number | string | JsonValue[] | { [key: string]: JsonValue };
 export type Track = 'general' | 'writing';
@@ -40,7 +41,7 @@ export interface RunSummary {
   runId: string; batchId: string; target: TargetSnapshot; revision: number;
   tracks: Partial<Record<Track, TrackSummary>>; details: DetailsState; resumeAllowed: boolean;
   protocols: ProtocolRefs; judges: JudgeUsage[]; metrics: RunMetrics; completedAt?: string;
-  createdAt?: string;
+  createdAt?: string;performance?:PerformanceState;estimation?:RunEstimation;
 }
 export interface WritingDimensions { faithfulness: number; logic: number; coverage: number; concision: number; naturalness: number }
 export interface TechnicalError {
@@ -59,6 +60,7 @@ export interface EvaluationRequest {
 export interface AttemptObservation {
   attemptId: string; itemId: string; track: Track; phase: 'answer' | 'judge';
   startedAt: string; endedAt: string; firstContentAt?: string;
+  timing?:GenerationTiming;
   usage: { available: boolean; inputTokens?: number; outputTokens?: number; reasoningTokens?: number;
     cacheReadTokens?: number; cacheWriteTokens?: number; totalTokens?: number };
 }
