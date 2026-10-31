@@ -16,3 +16,12 @@ test('an interrupted dispatch retains its attempt count and unknown usage',()=>{
   const interrupted:AttemptRecord={attemptId:'started-before-crash',phase:'answer',status:'interrupted',startedAt:'2026-01-01',itemId:'q',track:'general'};
   const metrics=summarizeMetrics([interrupted],[]);assert.equal(metrics.tracks.general!.answer.calls,1);assert.equal(metrics.tracks.general!.answer.failures,1);assert.equal(metrics.tracks.general!.answer.usageCoverage,0);assert.equal(metrics.tracks.general!.answer.inputTokens,undefined);assert.equal(metrics.tracks.general!.answer.latencyMedianMs,undefined);
 });
+test('in-flight requests count as attempts without becoming technical failures',()=>{
+  const started:AttemptRecord={attemptId:'in-flight',phase:'answer',status:'started',startedAt:'2026-01-01',itemId:'q',track:'general'};
+  const failed:AttemptRecord={...started,attemptId:'failed',status:'failed'};
+  const interrupted:AttemptRecord={...started,attemptId:'interrupted',status:'interrupted'};
+  const pending=summarizeMetrics([started],[]).tracks.general!.answer;
+  assert.equal(pending.calls,1);assert.equal(pending.failures,0);assert.equal(pending.inputTokens,undefined);assert.equal(pending.latencyMedianMs,undefined);
+  const mixed=summarizeMetrics([started,failed,interrupted],[]).tracks.general!.answer;
+  assert.equal(mixed.calls,3);assert.equal(mixed.failures,2);
+});

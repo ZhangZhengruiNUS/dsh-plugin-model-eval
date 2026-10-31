@@ -7,7 +7,7 @@ export function summarizeMetrics(attempts:readonly AttemptRecord[],activeInterva
     let tokens=0,seconds=0;
     for(const record of normal){const o=record.observations!,elapsed=Date.parse(o.endedAt)-Date.parse(o.startedAt);if(elapsed>=0&&Number.isFinite(elapsed))latency.push(elapsed);
       if(o.firstContentAt){const first=Date.parse(o.firstContentAt)-Date.parse(o.startedAt);if(first>=0&&first<=elapsed){ttft.push(first);if(o.usage.outputTokens!==undefined&&elapsed>first){tokens+=o.usage.outputTokens;seconds+=(elapsed-first)/1000;}}}}
-    const result:PhaseMetrics={calls:records.length,failures:records.filter(x=>x.status!=='completed'||x.validationError).length,usageCoverage:records.length?records.filter(x=>x.observations?.usage.available).length/records.length:0,latencySamples:latency.length,ttftSamples:ttft.length};
+    const result:PhaseMetrics={calls:records.length,failures:records.filter(x=>x.status==='failed'||x.status==='interrupted'||x.validationError).length,usageCoverage:records.length?records.filter(x=>x.observations?.usage.available).length/records.length:0,latencySamples:latency.length,ttftSamples:ttft.length};
     if(latency.length){result.latencyMedianMs=percentile(latency,.5)!;result.latencyP95Ms=percentile(latency,.95)!;}
     if(ttft.length){result.ttftMedianMs=percentile(ttft,.5)!;result.ttftP95Ms=percentile(ttft,.95)!;}
     if(seconds>0)result.outputTokensPerSecond=tokens/seconds;
