@@ -5,7 +5,7 @@ export const zh={
   general:'通用能力',writing:'中文写作',generalNote:'四类能力等权汇总 · 每轮完整运行固定题集',writingNote:'独立写作成绩 · 记录每题裁判条件，允许跨裁判比较',
   domains:{'tiny-mmlu':'知识与推理','tiny-gsm8k':'数学推理',ifeval:'指令遵循','humaneval-plus':'编程解题'},
   dimensions:{faithfulness:'忠实与准确',logic:'逻辑与结构',coverage:'任务覆盖',concision:'简洁与具体',naturalness:'自然与得体'},
-  statuses:{queued:'排队中',checking:'检查中',running:'进行中',paused:'已暂停',pending:'待补测',completed:'已完成'},
+  statuses:{stopping:'正在收尾',stopped:'已停止',interrupted:'已中断',failed:'失败',queued:'排队中',checking:'检查中',running:'进行中',paused:'已暂停',pending:'待补测',completed:'已完成'},
   models:'已测配置',completeRuns:'完整评测',pendingRuns:'待补测',latest:'最近一次完整结果',model:'模型配置',overall:'综合分',writingScore:'写作分',latency:'响应耗时',usage:'调用用量',input:'输入',output:'输出',coverage:'用量覆盖',report:'查看报告',protocol:'评测协议',latestNote:'按配置和协议展示最近一次完整成绩；新任务的进度另行保留。',
   firstTitle:'从你可用的模型开始',firstBody:'先准备内置题集与 Windows 评分环境，再选择宿主已配置的模型。',firstHint:'全程无需下载额外资源。',noScores:'还没有完整成绩',noScoresBody:'新建评测，或继续已有任务，完成后即可在这里比较。',noWriting:'还没有完整的写作成绩',noWritingBody:'新建评测时勾选中文写作，并选择裁判模型。',
   needsPrepare:'环境尚未准备',ready:'环境已就绪',readonly:'仅可查看：此数据目录正在其他实例中使用。',active:'当前任务',viewProgress:'查看进度',allProtocols:'所有协议',method:'评测方法',methodTitle:'成绩如何计算',methodBody:'通用分为知识、数学、指令遵循、编程四项0—100分的平均值，每项25%。905题全部有效判分后出分。中文写作12题独立评分，不计入通用分。',adaptation:'题集为 tinyMMLU 100、tinyGSM8k 100、IFEval 541（规则适配）、HumanEval+ 164（数值适配）。这些是本工具成绩，与 AA 总分不同尺度。',judgeLimit:'写作由所选模型按五维0—4评分，换裁判可能改变尺度。保留条件和证据供复核，未验证裁判质量；当前题集不覆盖完整操作说明书。',
