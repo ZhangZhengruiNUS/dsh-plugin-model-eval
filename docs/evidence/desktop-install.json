@@ -2,7 +2,7 @@
   "date": "2026-10-31",
   "profile": "desktop",
   "fullAcceptance": "pending-ui-and-real-model",
-  "desktopUi": "not-operated: both node_repl and cua_repl failed to write kernel assets (Windows error 3)",
+  "desktopUi": "user-confirmed: plugin appears and opens",
   "desktopVersion": "0.2.1-rc.5",
   "unauthenticatedHttpStatus": 401,
   "modelCalls": 0,
@@ -12,5 +12,17 @@
   "downloadedPackages": 0,
   "installation": "passed",
   "httpProbeLimit": "401 does not prove plugin route registration",
-  "backupFiles": 5
+  "backupFiles": 5,
+  "uiEvidenceType": "user feedback, not automated visual review",
+  "defaultDataRootObserved": true,
+  "preparation": "real Desktop resource activation observed and all 1433 resource files verified; UI selfcheck feedback pending",
+  "preparedResources": {
+    "scope": "Read-only verification of resources prepared by real Desktop",
+    "files": 1433,
+    "bytes": 157878838,
+    "manifestHash": "8b510ec7a2f04543c2fad279d44ee562186de99e92a74f4a1d8fba937f1be16b",
+    "status": "passed",
+    "uiSelfcheck": "awaiting-user-feedback",
+    "modelCatalog": "awaiting-user-feedback"
+  }
 }

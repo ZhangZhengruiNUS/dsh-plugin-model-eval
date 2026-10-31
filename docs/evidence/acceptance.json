@@ -87,10 +87,10 @@
     "actualHost": "unverified"
   },
   "hostProfile": {
-    "status": "desktop-installation-verified-ui-unverified",
+    "status": "desktop-installed-opened-user-confirmed",
     "version": "0.2.1-rc.5",
     "profile": "desktop",
-    "reason": "Desktop located and offline CLI install passed. UI control tools failed to write kernel assets; user UI feedback and real model tests pending.",
+    "reason": "User confirms plugin appears and opens. Actual data-root initialization observed. Environment preparation/model catalog pending; UI automation tools remain unavailable.",
     "desktopFileIpc": "unverified",
     "sourceContract": "ce7073d51254c26cd63b22a60835b8f948deb447",
     "evidence": "desktop-install.json"
