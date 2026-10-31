@@ -1,4 +1,5 @@
 import type {PerformanceSample,StageKey,ActiveStage,RunEstimation} from '../estimation/contracts.ts';
+import type {GeneralDefinition,ReuseOrigin,ReuseEvidence} from '../evaluation/tier-contracts.ts';
 import { randomUUID, createHash } from 'node:crypto';
 import { mkdir, lstat, realpath, readdir, rename } from 'node:fs/promises';
 import { join } from 'node:path';
@@ -10,11 +11,11 @@ import { readRecord, writeRecord } from './atomic.ts';
 import { acquireWriter } from './lock.ts';
 
 export interface RequiredItem {id:string;track:Track;datasetId:string}
-export interface RunManifestInput {batchId:string;target:TargetSnapshot;protocols:ProtocolRefs;requiredItems:RequiredItem[];judge?:JudgeSnapshot;initialEstimation?:RunEstimation;execution?:{concurrency:1|2|3|4;callTimeoutMs:number}}
+export interface RunManifestInput {batchId:string;target:TargetSnapshot;protocols:ProtocolRefs;requiredItems:RequiredItem[];judge?:JudgeSnapshot;initialEstimation?:RunEstimation;execution?:{concurrency:1|2|3|4;callTimeoutMs:number};generalDefinition?:GeneralDefinition;reuseOrigin?:ReuseOrigin}
 export interface RunManifest extends RunManifestInput {schemaVersion:1;runId:string;createdAt:string}
 export interface AttemptRecord {attemptId:string;phase:'answer'|'judge';status:'started'|'completed'|'failed'|'interrupted';startedAt:string;endedAt?:string;judge?:JudgeSnapshot;itemId?:string;track?:Track;
   observations?:GeneratedAnswer['observations'];error?:TechnicalError;rawText?:string;validationError?:TechnicalError;interruptedDetectedAt?:string;performance?:PerformanceSample;performanceKey?:StageKey;retryIndex?:number}
-export interface ItemInput {gradingActive?:ActiveStage;gradingObservation?:PerformanceSample;itemId:string;attempts:AttemptRecord[];answer?:GeneratedAnswer;grade?:GradeResult;question?:Omit<Question,'grading'>}
+export interface ItemInput {gradingActive?:ActiveStage;gradingObservation?:PerformanceSample;itemId:string;attempts:AttemptRecord[];answer?:GeneratedAnswer;grade?:GradeResult;question?:Omit<Question,'grading'>;reuse?:ReuseEvidence}
 export interface ItemRecord extends ItemInput {schemaVersion:1;revision:number;sequence:number;updatedAt:string;answerCommittedAt?:string;gradeCommittedAt?:string}
 export interface RecoveryDiagnostic {runId:string;itemId?:string;code:string}
 export interface RecoveryReport {recoveredRunIds:string[];diagnostics:RecoveryDiagnostic[];temporaryFiles:number}

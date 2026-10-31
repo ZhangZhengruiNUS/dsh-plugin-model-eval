@@ -4,6 +4,9 @@ import { homedir } from 'node:os';
 import { dirname, isAbsolute, join, resolve } from 'node:path';
 import { readResourceManifest, type ResourceManifest } from '../evaluation/protocols.ts';
 import { RESOURCE_MANIFEST_SHA256 } from './pins.ts';
+import type {ProtocolDescriptor} from '../evaluation/tier-contracts.ts';
+import {readProtocolCatalog,readCatalogFile,verifyBundle} from './catalog.ts';
+import {identityHash,canonical,protocolKey} from '../evaluation/protocol-identity.ts';
 
 const APPLICATION='@aico/dsh-plugin-model-eval';
 interface RootMarker {application:typeof APPLICATION;schemaVersion:1;rootId:string;createdAt:string}
@@ -119,5 +122,37 @@ export async function prepareResources(root:string,manifest:ResourceManifest,pac
       await verifyFiles(destination,manifest);
     }
     return {rootPath:root,resourcesPath:destination,resourceVersion:manifest.resourceVersion,manifestHash:RESOURCE_MANIFEST_SHA256,bytes,preparedAt,cached:false,preparationMs:Math.round(performance.now()-started)};
+  }finally{await rm(staging,{recursive:true,force:true});}
+}
+
+/** Both new tiers share one immutable materialized bundle. Legacy activation is untouched. */
+export async function prepareProtocolResources(root:string,descriptor:ProtocolDescriptor,packageRoot:string):Promise<PreparedEnvironment> {
+  const started=performance.now(),catalog=await readProtocolCatalog(packageRoot);
+  const entry=catalog.entries.find(e=>protocolKey(e.refs)===protocolKey(descriptor.refs));
+  if(!entry)throw Error('UNKNOWN_PROTOCOL');
+  const {bundleId,...expected}=entry;if(canonical(expected)!==canonical(descriptor))throw Error('DESCRIPTOR_MISMATCH');
+  if(entry.bundleId==='legacy')return prepareResources(root,await readResourceManifest(join(packageRoot,'resources')),join(packageRoot,'resources'));
+  const bundle=catalog.bundles.find(b=>b.id===entry.bundleId)!;
+  if(!entry.allowNewRuns||!bundle.runtimePassed)throw Error('PROTOCOL_NOT_VERIFIED');
+  const inspection=await inspectRoot(root);if(inspection.kind!=='owned')return fail('ROOT_NOT_OWNED');root=inspection.path;
+  for(const name of ['resources','history','tmp'])await folder(join(root,name));
+  const manifestHash=identityHash(bundle),destination=join(root,'resources',bundle.id+'-'+manifestHash.slice(0,12)),bytes=bundle.files.reduce((n,f)=>n+f.size,0);
+  const verify=async(path:string)=>{for(const file of bundle.files){const data=await readCatalogFile(path,file.path);if(data.length!==file.size||hash(data)!==file.sha256)throw Error('RESOURCE_HASH_MISMATCH');}};
+  try{
+    const ready=JSON.parse(await readCatalogFile(destination,'.ready.json').then(b=>b.toString('utf8')));
+    if(ready.manifestHash!==manifestHash)throw Error('PREPARED_VERSION_MISMATCH');await verify(destination);
+    return {rootPath:root,resourcesPath:destination,resourceVersion:bundle.resourceVersion,manifestHash,bytes,preparedAt:ready.preparedAt,preparationMs:Math.round(performance.now()-started),cached:true};
+  }catch(error){if(!missing(error))throw error;}
+  await verifyBundle(packageRoot,bundle);const disk=await statfs(root);
+  if(disk.bavail*disk.bsize<bytes+32*1024*1024)return fail('ROOT_INSUFFICIENT_SPACE');
+  const staging=join(root,'tmp','resources-'+randomUUID());await mkdir(staging);const preparedAt=new Date().toISOString();
+  try{
+    for(const file of bundle.files){const target=resourcePath(staging,file.path);await mkdir(dirname(target),{recursive:true});await copyFile(resourcePath(join(packageRoot,'resources'),file.path),target);}
+    await verify(staging);await durableNew(join(staging,'.ready.json'),JSON.stringify({manifestHash,preparedAt})+'\n');
+    try{await rename(staging,destination);}catch(error){
+      if(!['EEXIST','ENOTEMPTY','EPERM'].includes((error as NodeJS.ErrnoException).code??''))throw error;
+      const ready=JSON.parse((await readCatalogFile(destination,'.ready.json')).toString('utf8'));if(ready.manifestHash!==manifestHash)throw error;await verify(destination);
+    }
+    return {rootPath:root,resourcesPath:destination,resourceVersion:bundle.resourceVersion,manifestHash,bytes,preparedAt,preparationMs:Math.round(performance.now()-started),cached:false};
   }finally{await rm(staging,{recursive:true,force:true});}
 }

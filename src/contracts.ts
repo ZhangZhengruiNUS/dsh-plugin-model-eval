@@ -1,4 +1,6 @@
 import type {GenerationTiming,PerformanceState,RunEstimation} from './estimation/contracts.ts';
+import type {GeneralDefinition,ReuseSummary} from './evaluation/tier-contracts.ts';
+export type {GeneralTier,Ability,GeneralDefinition,QuestionCompatibility,ProtocolDescriptor,ResolvedProtocolSet,ProtocolRegistry,ProtocolCatalogItem,ReuseEvidence,UpgradeCheck,ReuseImportOperation,ReuseOrigin,ReuseSummary,UpgradePreview,UpgradeCommit} from './evaluation/tier-contracts.ts';
 /** Serialized, client-safe protocol. No host credentials or Node types. */
 export type JsonValue = null | boolean | number | string | JsonValue[] | { [key: string]: JsonValue };
 export type Track = 'general' | 'writing';
@@ -42,6 +44,7 @@ export interface RunSummary {
   tracks: Partial<Record<Track, TrackSummary>>; details: DetailsState; resumeAllowed: boolean;
   protocols: ProtocolRefs; judges: JudgeUsage[]; metrics: RunMetrics; completedAt?: string;
   createdAt?: string;performance?:PerformanceState;estimation?:RunEstimation;
+  generalDefinition?:GeneralDefinition;reuse?:ReuseSummary;
 }
 export interface WritingDimensions { faithfulness: number; logic: number; coverage: number; concision: number; naturalness: number }
 export interface TechnicalError {
@@ -54,6 +57,7 @@ export type GradeResult =
       assessment: { method: 'model'; judge: JudgeSnapshot } | { method: 'local-rule'; ruleId: 'empty-answer-v1' } }
   | { kind: 'technical-missing'; track: Track; itemId: string; error: TechnicalError; evidence: JsonValue };
 export interface EvaluationRequest {
+  generalId?:string;
   targets: TargetSnapshot[]; tracks: Track[]; judge?: JudgeSnapshot;initialEstimates?:Record<string,RunEstimation>;
   execution: { concurrency: 1 | 2 | 3 | 4; callTimeoutMs: number };
 }
