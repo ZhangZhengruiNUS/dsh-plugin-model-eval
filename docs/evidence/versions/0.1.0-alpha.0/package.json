@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "status": "passed",
+  "name": "@aico/dsh-plugin-model-eval",
+  "version": "0.1.0-alpha.0",
+  "sha256": "33c33e44274fcee9ba289dce974cc267d4e50f262f331d477ee2af49bcb623be",
+  "compressedBytes": 49807893,
+  "unpackedBytes": 158684016,
+  "resourceBytes": 157878838,
+  "files": 1441,
+  "resourceManifestSha256": "8b510ec7a2f04543c2fad279d44ee562186de99e92a74f4a1d8fba937f1be16b",
+  "runtimeDependencies": 0,
+  "offlineFixture": {
+    "scope": "packaged Host contract fixture; no real DSH/model",
+    "preparationMs": 24326,
+    "answered": 1,
+    "syntheticCalls": 1,
+    "deletedBytes": 5127,
+    "network": "Node fetch and net blocked; PATH empty; WASI denies guest network. No OS-wide firewall/disconnect claim.",
+    "externalPython": false,
+    "externalNpmDependencies": false,
+    "restore": "passed",
+    "cleanup": "passed",
+    "disposal": "passed"
+  },
+  "actualHost": "unverified",
+  "realModel": "not-performed"
+}

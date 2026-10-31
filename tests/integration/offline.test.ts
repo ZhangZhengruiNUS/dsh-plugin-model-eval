@@ -9,5 +9,6 @@ test('packed_offline_bundle_is_self_contained',{timeout:120000},async()=>withTem
   for(const [name,bytes] of entries as Map<string,Buffer>){const path=join(expanded,name);await mkdir(dirname(path),{recursive:true});await writeFile(path,bytes,{flag:'wx'});}
   const smoke=execFileSync(process.execPath,[resolve('tests/support/packed-host-smoke.mjs'),join(expanded,'package'),join(parent,'离线 用户')],{encoding:'utf8',cwd:expanded,windowsHide:true,timeout:100000,maxBuffer:1024*1024,env:{...process.env,PATH:''}});
   const fixture=JSON.parse(smoke.trim());assert.equal(fixture.restore,'passed');assert.equal(fixture.disposal,'passed');assert.ok(fixture.deletedBytes>0);
-  await writeFile('docs/evidence/package.json',JSON.stringify({...report,offlineFixture:fixture,actualHost:'unverified',realModel:'not-performed'},null,2)+'\n');
+  await mkdir('docs/evidence/versions/0.1.0-alpha.1',{recursive:true});
+  await writeFile('docs/evidence/versions/0.1.0-alpha.1/package.json',JSON.stringify({...report,offlineFixture:fixture,actualHost:'unverified',realModel:'not-performed'},null,2)+'\n');
 }));

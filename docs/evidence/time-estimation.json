@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-31",
+  "candidateVersion": "0.1.0-alpha.1",
+  "status": "local-validation-passed-host-unverified",
+  "implementationCommit": "b68db05",
+  "baseline": "327f3dd",
+  "verification": {
+    "typecheck": "passed",
+    "build": "passed",
+    "unitIntegration": {
+      "passed": 90,
+      "failed": 0
+    },
+    "chromium": {
+      "passed": 24,
+      "failed": 0
+    },
+    "actualPackage": "versions/0.1.0-alpha.1/package.json",
+    "resourcesUnchanged": true,
+    "manifestSha256": "8b510ec7a2f04543c2fad279d44ee562186de99e92a74f4a1d8fba937f1be16b",
+    "resourceBytes": 157878838,
+    "visual": {
+      "scope": "synthetic fixture, 1440x900 and390x844, light/dark",
+      "review": "../reviews/2026-10-31-eta-visual.md"
+    }
+  },
+  "reviews": {
+    "core": "../reviews/2026-10-31-eta-core.md",
+    "final": "../reviews/2026-10-31-eta-final.md",
+    "confirmedFindings": 4,
+    "fixedWithRedGreen": 4,
+    "deferredMinors": []
+  },
+  "package": {
+    "sha256": "cdaf62f9ce4feba8a8458f5f3443f0f9b4daaaf6618336558dcd7127294dd323",
+    "compressedBytes": 49836402,
+    "unpackedBytes": 158788082,
+    "files": 1441,
+    "runtimeDependencies": 0
+  },
+  "boundaries": {
+    "speedSamples": "independent; no formal score or raw-answer persistence",
+    "realSpeedPreview": "not-performed",
+    "predictionErrorReplay": "not-performed",
+    "candidateDesktopInstall": "not-performed",
+    "originalInstallation": "alpha.0 retained; no reload or live-history mutation",
+    "network": "Node network blocked and PATH empty in unpacked fixture; no OS-wide disconnect claim",
+    "npm": "not-published",
+    "market": "not-submitted"
+  }
+}

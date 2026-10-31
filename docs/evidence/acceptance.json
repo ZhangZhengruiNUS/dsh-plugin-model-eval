@@ -26,8 +26,9 @@
   },
   "package": {
     "status": "verified-local",
-    "evidence": "package.json",
-    "scope": "Actual npm tgz; full resource hashes, zero runtime npm dependencies, Node-network-blocked/PATH-empty Host contract fixture; not OS-wide network disconnect"
+    "evidence": "versions/0.1.0-alpha.1/package.json",
+    "scope": "Actual npm tgz; full resource hashes, zero runtime npm dependencies, Node-network-blocked/PATH-empty Host contract fixture; not OS-wide network disconnect",
+    "previousInstalledVersionEvidence": "versions/0.1.0-alpha.0/package.json"
   },
   "general": {
     "status": "verified-fixtures-only",
@@ -73,8 +74,8 @@
       "light",
       "dark"
     ],
-    "screenshots": "ui/",
-    "independentVisualReview": "passed after three corrections",
+    "screenshots": "ui/alpha.1/",
+    "independentVisualReview": "passed; scroll boundary assertions and follow-up narrow images reviewed",
     "actualHostTheme": "unverified"
   },
   "disposal": {
@@ -90,10 +91,13 @@
     "status": "desktop-installed-opened-user-confirmed",
     "version": "0.2.1-rc.5",
     "profile": "desktop",
-    "reason": "User confirms plugin appears and opens. Actual data-root initialization observed. Environment preparation/model catalog pending; UI automation tools remain unavailable.",
+    "reason": "Original alpha.0 install/opening confirmed by user; alpha.1 local candidate not installed. Keep existing installation until original batch is complete.",
     "desktopFileIpc": "unverified",
     "sourceContract": "ce7073d51254c26cd63b22a60835b8f948deb447",
-    "evidence": "desktop-install.json"
+    "evidence": "desktop-install.json",
+    "installedPluginVersion": "0.1.0-alpha.0",
+    "candidatePluginVersion": "0.1.0-alpha.1",
+    "candidateVerification": "not-installed-or-verified"
   },
   "performance": {
     "status": "real-model-unverified",
@@ -104,5 +108,11 @@
     "npm": "not-published",
     "market": "not-submitted",
     "internalOperations": "user-manual"
+  },
+  "candidateVersion": "0.1.0-alpha.1",
+  "timeEstimation": {
+    "status": "local-synthetic-validation-passed",
+    "evidence": "time-estimation.json",
+    "realPredictionError": "unverified"
   }
 }

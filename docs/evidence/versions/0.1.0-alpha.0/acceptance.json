@@ -1,0 +1,108 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-31",
+  "status": "local-validation-passed-host-unverified",
+  "source": {
+    "status": "verified-local",
+    "branch": "codex/model-eval-mvp",
+    "commit": "See docs/release-record.md and git log; package test rebuilds source"
+  },
+  "resources": {
+    "status": "verified-local",
+    "evidence": "resources.json",
+    "counts": {
+      "general": 905,
+      "writing": 12
+    },
+    "protocol": "general-chat-root-stable-rule-tokenizer-v3"
+  },
+  "runtime": {
+    "status": "verified-local",
+    "evidence": "runtime.json",
+    "platform": "Windows x64",
+    "codeTasks": 164,
+    "rulePrompts": 541,
+    "realModel": false
+  },
+  "package": {
+    "status": "verified-local",
+    "evidence": "package.json",
+    "scope": "Actual npm tgz; full resource hashes, zero runtime npm dependencies, Node-network-blocked/PATH-empty Host contract fixture; not OS-wide network disconnect"
+  },
+  "general": {
+    "status": "verified-fixtures-only",
+    "evidence": [
+      "tests/unit/general-score.test.ts",
+      "tests/integration/general-protocol.test.ts"
+    ],
+    "realFullRun": "unverified"
+  },
+  "writing": {
+    "status": "verified-fixtures-only",
+    "evidence": [
+      "tests/unit/writing-score.test.ts",
+      "tests/integration/writing.test.ts"
+    ],
+    "realJudgeQuality": "unverified"
+  },
+  "resume": {
+    "status": "verified-local",
+    "evidence": [
+      "tests/integration/history.test.ts",
+      "tests/integration/queue.test.ts",
+      "tests/integration/recovery-timing.test.ts",
+      "package.json"
+    ],
+    "powerLoss": "unverified"
+  },
+  "cleanup": {
+    "status": "verified-local",
+    "evidence": [
+      "tests/integration/cleanup.test.ts",
+      "tests/ui/evaluation.spec.ts"
+    ],
+    "scope": "Fixed batch files; CAS/token; fault-injected journal/unlink; summaries/conditions retained"
+  },
+  "theme": {
+    "status": "verified-local-fixture",
+    "viewports": [
+      "1440x900",
+      "390x844"
+    ],
+    "themes": [
+      "light",
+      "dark"
+    ],
+    "screenshots": "ui/",
+    "independentVisualReview": "passed after three corrections",
+    "actualHostTheme": "unverified"
+  },
+  "disposal": {
+    "status": "verified-local-contract-fixture",
+    "evidence": [
+      "tests/unit/host-entry.test.ts",
+      "tests/integration/api.test.ts",
+      "package.json"
+    ],
+    "actualHost": "unverified"
+  },
+  "hostProfile": {
+    "status": "desktop-installed-opened-user-confirmed",
+    "version": "0.2.1-rc.5",
+    "profile": "desktop",
+    "reason": "User confirms plugin appears and opens. Actual data-root initialization observed. Environment preparation/model catalog pending; UI automation tools remain unavailable.",
+    "desktopFileIpc": "unverified",
+    "sourceContract": "ce7073d51254c26cd63b22a60835b8f948deb447",
+    "evidence": "desktop-install.json"
+  },
+  "performance": {
+    "status": "real-model-unverified",
+    "oneHourTarget": "not-confirmed",
+    "usage": "fixture/local measurement logic only"
+  },
+  "publication": {
+    "npm": "not-published",
+    "market": "not-submitted",
+    "internalOperations": "user-manual"
+  }
+}
