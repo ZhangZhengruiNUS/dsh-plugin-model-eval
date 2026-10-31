@@ -11,7 +11,11 @@ rows = []
 for batch in parquet.ParquetFile(source).iter_batches(batch_size=16):
     for original in batch.to_pylist():
         encoded = json.dumps(original, ensure_ascii=False, sort_keys=True, separators=(',', ':')).encode('utf-8')
-        if kind == 'coding':
+        if kind == 'coding-negatives':
+            solutions = original.get('incorrect_solutions') or {}
+            references = [code for language, code in zip(solutions.get('language', []), solutions.get('solution', [])) if language == 3]
+            row = {'index': len(rows), 'name': original.get('name'), 'incorrectPython3': references[:3], 'available': len(references)}
+        elif kind == 'coding':
             keys = ['name', 'description', 'time_limit', 'memory_limit_bytes', 'source', 'difficulty', 'cf_contest_id', 'cf_index', 'cf_points', 'cf_rating', 'public_tests', 'private_tests', 'generated_tests']
             row = {key: original.get(key) for key in keys}
             solutions = original.get('solutions') or {}

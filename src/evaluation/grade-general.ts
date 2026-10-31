@@ -1,7 +1,9 @@
 import type {GeneratedAnswer,GradeResult,PromptMessage,Question} from '../contracts.ts';
 import type {CodeRunner,CodeTest} from '../runtime/runner.ts';
 import type {RuleGrader,RuleGradeInput} from '../runtime/rule-grader.ts';
-export interface PreparedEnvironment {code:CodeRunner;rules:RuleGrader;signal:AbortSignal}
+import type {ContestRunner,ContestTest} from '../runtime/contest-runner.ts';
+import {numericAnswerMatches} from './numeric-answer.ts';
+export interface PreparedEnvironment {code:CodeRunner;rules:RuleGrader;signal:AbortSignal;contest?:ContestRunner}
 export function buildPrompt(question:Question):readonly PromptMessage[] {
   const suffix:Record<string,string>={
     'tiny-mmlu':'Give your final answer as a single option letter on the last line, in the form Final answer: A.',
@@ -37,6 +39,15 @@ export async function gradeGeneral(question:Question,answer:GeneratedAnswer,env:
   const scored=(passed:boolean,evidence:GradeResult['evidence']=null):GradeResult=>({kind:'scored',track:'general',itemId:question.id,passed,evidence});
   if(!answer.complete)return missing('ANSWER_INCOMPLETE');
   const raw=question.grading as Record<string,any>;
+  if(question.datasetId==='mmlu-pro-selected')return scored(extractFinalLetter(answer.text)===raw.answer,{metric:'selected-choice-exact',extracted:extractFinalLetter(answer.text)??null});
+  if(question.datasetId==='olympiad-text-selected')return scored(numericAnswerMatches(answer.text,String(raw.answer)),{metric:'selected-numeric-exact'});
+  if(question.datasetId==='code-contests-selected'){
+    if(!env.contest)return missing('CONTEST_ENVIRONMENT_NOT_READY');
+    const code=extractCode(answer.text);if(code===undefined)return scored(false,{reason:'no-single-candidate'});
+    const outcome=await env.contest.runContest({id:question.id,cases:raw.cases,limits:raw.limits} as ContestTest,code,env.signal);
+    if(outcome.kind==='environment-error'||outcome.kind==='cancelled')return missing(outcome.kind==='cancelled'?'CANCELLED':outcome.code);
+    return scored(outcome.kind==='passed',{metric:'all-contest-tests',outcome:outcome.kind,...(outcome.kind==='failed'?{reason:outcome.reason}:{})});
+  }
   if(question.datasetId==='tiny-mmlu'){
     const want=raw.output??raw.answer??raw.target;const letter=typeof want==='number'?String.fromCharCode(65+want):String(want).trim();
     return scored(extractFinalLetter(answer.text)===letter,{metric:'accuracy',extracted:extractFinalLetter(answer.text)??null});

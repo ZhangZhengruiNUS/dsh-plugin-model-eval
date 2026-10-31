@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "status": "failed",
+  "scope": "local reference verification, no models or calibration",
+  "limits": {
+    "wallMs": 30000,
+    "memoryBytes": 536870912,
+    "computeBudget": 200000000000
+  },
+  "catalogHash": "5d938dce7a3c2579cf95975a05d4f822cc19f160da86b54ad5236809c1812806",
+  "items": [],
+  "counts": {
+    "passed": 0,
+    "failed": 0,
+    "pending": 0
+  },
+  "legacyChecks": "not-run",
+  "startedAt": "2026-10-31T18:41:18.760Z",
+  "releaseAllowed": false,
+  "qualityGate": {
+    "code": "UPSTREAM_INCORRECT_PROGRAM_ACCEPTED",
+    "report": "docs/evidence/tiers/coding-quality-gate.json",
+    "evidenceHash": "d734187cb51fdfe8d775be0982d8930626b3c5ab01fbf733965cc6a7f41377c9"
+  },
+  "remainingGates": [
+    "Protocol amendment required. Existing fixed tests accept a proven incorrect program. No release or benchmark modification."
+  ],
+  "endedAt": "2026-10-31T18:41:18.769Z"
+}

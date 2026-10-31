@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "status": "failed",
+  "releaseAllowed": false,
+  "scope": "Resource quality gate; not model capability or a proof that fewer than 100 usable questions exist",
+  "source": {
+    "dataset": "deepmind/code_contests",
+    "revision": "802411c3010cb00d1b05bad57ca77365a3c699d6",
+    "index": 19,
+    "name": "1579_G. Minimal Coverage",
+    "recordHash": "ae4cae398ce86b8a775f2f6ff402121ac2f8ff57403756045388b687f89b61ed"
+  },
+  "runtime": {
+    "contestManifestSha256": "604d4b3bf74ec5706fb6baf15972c0d2c242f1c25e14cde9663499d6a07a062a",
+    "limits": {
+      "wallMs": 30000,
+      "memoryBytes": 536870912,
+      "computeBudget": 200000000000
+    },
+    "memoryScope": "512 MiB per-instance WASI linear memory, not whole-host RSS",
+    "timingScope": "end-to-end scoring deadline including integrity and setup; forced cleanup may complete later"
+  },
+  "negative": {
+    "publisherClassification": "incorrect_solutions/PYTHON3",
+    "index": 1,
+    "codeHash": "792018e458635e6e8c98c73eedbbf0b2426e303da960341e1fcb06a39c455896",
+    "fixedTestCount": 201,
+    "fixedOutcome": {
+      "kind": "passed",
+      "elapsedMs": 11116
+    },
+    "counterexampleOutcome": {
+      "kind": "failed",
+      "reason": "assertion",
+      "elapsedMs": 1251
+    }
+  },
+  "counterexample": {
+    "stdin": "1\n7\n919 262 337 976 347 18 805\n",
+    "expected": "1152\n",
+    "oracle": "exhaustive 2^7 orientation enumeration; no model or external judge",
+    "arrangements": 128,
+    "minimum": 1152,
+    "minimizingEndpoints": [
+      0,
+      -919,
+      -657,
+      -994,
+      -18,
+      -365,
+      -347,
+      -1152
+    ],
+    "correctReferenceHash": "59d78f925b987ef6f37b5c404ad27f42603eee5d3cbcfd2c27823c6c455f9e0b",
+    "correctReferenceOutcome": {
+      "kind": "passed",
+      "elapsedMs": 1252
+    }
+  },
+  "illegalInput": {
+    "sourceIndex": 0,
+    "sourceName": "1575_A. Another Sorting Problem",
+    "caseIndex": 166,
+    "sourceRecordHash": "13469a4829f0824b86febb722718e2c3c17f30ce1f6456996a936222caa9421a",
+    "stdin": "2 1\nAB\nCA\nCA\nBA\nZ@\n",
+    "expected": "1 2\n",
+    "reason": "n=2,m=1 but declared first two titles AB and CA both have length 2. The problem guarantees length m."
+  },
+  "action": "Stop runtime release. Do not change original tests, source records, denominator or installed plugin without an explicit protocol amendment."
+}
