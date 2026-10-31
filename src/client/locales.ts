@@ -1,4 +1,5 @@
 export const zh={
+  speed:{title:'耗时预估',optional:'可跳过 · 测速用量单列',budget:'每配置测速预算',start:'测速并预估',again:'重新测速',stop:'停止测速',stopping:'正在停止…',creating:'正在创建测速…',settling:'正在收尾',running:'正在测速',total:'预计总耗时',missing:'暂无法估计全程',stale:'配置已变更，请重新测速或跳过。',initial:'初步预估',details:'测速详情',old:'测速较早，可重新测速。',extra:'会产生少量额外模型调用；结束后由你决定是否开始评测。',range:'经验范围，实际耗时会随吞吐调整。',history:'测速记录',formal:'评测记录',clean:'清理测速记录',cleanBody:'删除所选测速会话。正式成绩和报告中已关联的测速快照仍会保留。',none:'尚无测速记录',empty:'新建评测时可选择测速，或直接开始评测。',unavailable:'缺少可核对的流式事件或 Token 口径。'},
   brand:'模型测评',local:'本地能力实验室',compare:'模型对比',jobs:'评测',history:'历史',settings:'设置',newRun:'新建评测',prepare:'准备环境',preparing:'准备中…',retry:'重试',close:'关闭',cancel:'取消',confirm:'确认',loading:'加载中…',refresh:'刷新',back:'返回',saved:'已保存',unknown:'未知',none:'暂无',seconds:'秒',score:'分',sample:'题',more:'加载更多',calls:'调用尝试',failures:'技术失败',route:'服务路由',unset:'未设置',recoveryIssue:'部分历史明细无法读取，原摘要仍保留；相关批次需先处理明细问题再清理。',horizontalHint:'左右滑动查看完整对比',tableRegion:'模型成绩对比表',cleanPlanned:'本次计划清理',
   title:{compare:'比较可用模型的表现',jobs:'评测任务',history:'本地评测历史',settings:'环境与存储'},
   general:'通用能力',writing:'中文写作',generalNote:'四类能力等权汇总 · 每轮完整运行固定题集',writingNote:'独立写作成绩 · 记录每题裁判条件，允许跨裁判比较',
