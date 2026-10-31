@@ -1,5 +1,7 @@
 # 项目记忆
 
+2026-11-01比较样稿：用户选择先体验合成交互样稿，独立单文件位于docs/prototypes/2026-11-01-model-comparison/index.html。24项浏览器流程与两轨道六场景检查通过，约752内容宽/1440/390px暗浅截图已看，报告重开回顶部另验；独立静态截图意见修正后复看收敛。Computer Use因浏览器URL可信度中止，未完成独立实机试用；file导航被工具禁止，未绕过。当前等待用户体验反馈，未进入正式比较实现，未改DESIGN.md/生产源码/安装/评分/真实历史，零真实调用，新两档仍关闭。见docs/handoffs/2026-11-01-comparison-prototype.md。
+
 2026-11-01比较体验：用户希望强化核心模型比较与图表/动效。已完成官方资料调研、源码检查和只读Desktop单配置观察，完整待审设计经fresh builder check无重要缺口；推荐关注条、能力/响应散点、雷达/差值、联动矩阵及按需历史。当前未实现、未改DESIGN.md/安装/评分/真实数据、零新增调用。见docs/design/2026-11-01-comparison-exploration.md与docs/handoffs/2026-11-01-comparison-design.md；两档资源门槛继续待决定。
 
 2026-11-01实施检查点：两档计划已批准。静态候选12032/454/236/107与120⊂400清单已核定；版本化registry保留legacy905+12，新增两档runtime-disabled。隔离stdio评分、精确BigInt数值和失败质量门槛工程检查点5274dce；22项相关回归与typecheck通过。真实CodeContests题1579_G的上游错误程序通过全部201测试，却在合法7段反例上失败，独立穷举最优1152且正确参考通过；额外非法输入也已确认。资源门槛失败，不代表容量已证不足100；Task3未完成、Task4+未开始。原测试/分母/已安装alpha.11/真实历史未改，零新增真实模型调用。见docs/evidence/tiers/coding-quality-gate.json及docs/handoffs/2026-11-01-two-tier-resource-gate.md。

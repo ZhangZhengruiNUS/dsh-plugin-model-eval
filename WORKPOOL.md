@@ -1,5 +1,7 @@
 # 工作池
 
+2026-11-01比较样稿已备好，等待用户体验反馈：docs/prototypes/2026-11-01-model-comparison/index.html。独立合成场景、图表/选择/矩阵/历史联动；24项浏览器流程和两轨道六场景检查通过，最终窄屏/明暗截图及三处独立静态意见复看完成。Computer Use因URL校验停止，未完成独立交互验收；未改生产/安装/真实数据、零真实调用。下一步按用户反馈迭代样稿，再确认正式实现范围；资源质量门槛仍独立待决。见docs/handoffs/2026-11-01-comparison-prototype.md。
+
 2026-11-01比较体验：用户希望强化核心模型比较与图表/动效。已完成官方资料调研、源码检查和只读Desktop单配置观察，完整待审设计经fresh builder check无重要缺口；推荐关注条、能力/响应散点、雷达/差值、联动矩阵及按需历史。当前未实现、未改DESIGN.md/安装/评分/真实数据、零新增调用。见docs/design/2026-11-01-comparison-exploration.md与docs/handoffs/2026-11-01-comparison-design.md；两档资源门槛继续待决定。
 
 2026-11-01当前：用户已批准12任务计划开始实施；任务1/2完成，任务3原型已提交5274dce，相关22/22回归和typecheck通过。评分质量门槛FAILED（已知错误程序漏检及非法输入），按已批准约束等待测试协议修订；新档位禁止新建，Task4—12未完成。现有alpha.11和真实历史保留、零新增真实调用。完整证据和下一步见docs/handoffs/2026-11-01-two-tier-resource-gate.md。
