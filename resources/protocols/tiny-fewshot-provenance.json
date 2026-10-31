@@ -1,0 +1,2422 @@
+{
+  "schema_version": 1,
+  "description": "Source IDs for the five in-context examples embedded in each original tiny input_formatted field; prompt data is unchanged.",
+  "tinyMMLU": {
+    "parent_dataset": "cais/mmlu",
+    "revision": "c30699e8356da336a370243923dbaf21066bb9fe",
+    "split": "all/dev",
+    "tiny_rows": 100,
+    "source_references": 500,
+    "rows": [
+      {
+        "tiny_row_index": 0,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=145",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=146",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=147",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=148",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=149"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 1,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=220",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=221",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=222",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=223",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=224"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 2,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=20",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=21",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=22",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=23",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=24"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 3,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=220",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=221",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=222",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=223",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=224"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 4,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=125",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=126",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=127",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=128",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=129"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 5,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=210",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=211",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=212",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=213",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=214"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 6,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=245",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=246",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=247",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=248",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=249"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 7,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=230",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=231",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=232",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=233",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=234"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 8,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=15",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=16",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=17",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=18",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=19"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 9,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=225",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=226",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=227",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=228",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=229"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 10,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=250",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=251",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=252",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=253",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=254"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 11,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=235",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=236",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=237",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=238",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=239"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 12,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=135",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=136",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=137",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=138",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=139"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 13,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=0",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=1",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=2",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=3",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=4"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 14,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=5",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=6",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=7",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=8",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=9"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 15,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=155",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=156",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=157",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=158",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=159"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 16,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=230",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=231",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=232",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=233",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=234"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 17,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=45",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=46",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=47",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=48",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=49"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 18,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=240",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=241",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=242",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=243",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=244"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 19,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=110",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=111",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=112",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=113",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=114"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 20,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=215",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=216",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=217",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=218",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=219"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 21,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=275",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=276",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=277",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=278",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=279"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 22,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=75",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=76",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=77",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=78",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=79"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 23,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=95",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=96",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=97",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=98",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=99"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 24,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=245",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=246",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=247",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=248",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=249"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 25,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=215",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=216",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=217",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=218",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=219"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 26,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=95",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=96",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=97",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=98",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=99"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 27,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=245",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=246",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=247",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=248",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=249"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 28,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=215",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=216",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=217",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=218",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=219"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 29,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=60",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=61",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=62",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=63",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=64"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 30,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=250",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=251",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=252",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=253",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=254"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 31,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=90",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=91",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=92",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=93",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=94"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 32,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=215",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=216",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=217",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=218",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=219"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 33,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=110",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=111",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=112",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=113",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=114"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 34,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=205",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=206",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=207",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=208",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=209"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 35,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=70",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=71",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=72",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=73",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=74"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 36,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=260",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=261",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=262",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=263",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=264"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 37,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=15",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=16",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=17",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=18",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=19"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 38,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=60",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=61",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=62",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=63",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=64"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 39,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=145",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=146",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=147",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=148",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=149"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 40,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=280",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=281",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=282",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=283",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=284"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 41,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=215",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=216",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=217",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=218",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=219"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 42,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=240",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=241",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=242",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=243",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=244"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 43,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=265",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=266",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=267",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=268",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=269"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 44,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=40",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=41",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=42",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=43",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=44"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 45,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=220",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=221",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=222",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=223",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=224"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 46,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=25",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=26",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=27",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=28",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=29"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 47,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=35",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=36",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=37",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=38",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=39"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 48,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=135",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=136",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=137",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=138",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=139"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 49,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=250",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=251",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=252",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=253",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=254"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 50,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=115",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=116",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=117",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=118",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=119"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 51,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=215",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=216",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=217",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=218",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=219"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 52,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=240",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=241",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=242",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=243",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=244"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 53,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=115",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=116",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=117",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=118",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=119"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 54,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=235",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=236",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=237",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=238",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=239"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 55,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=175",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=176",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=177",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=178",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=179"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 56,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=170",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=171",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=172",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=173",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=174"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 57,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=170",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=171",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=172",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=173",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=174"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 58,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=240",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=241",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=242",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=243",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=244"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 59,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=195",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=196",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=197",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=198",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=199"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 60,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=215",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=216",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=217",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=218",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=219"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 61,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=255",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=256",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=257",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=258",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=259"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 62,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=240",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=241",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=242",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=243",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=244"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 63,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=140",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=141",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=142",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=143",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=144"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 64,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=175",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=176",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=177",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=178",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=179"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 65,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=200",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=201",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=202",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=203",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=204"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 66,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=5",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=6",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=7",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=8",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=9"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 67,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=165",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=166",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=167",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=168",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=169"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 68,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=55",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=56",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=57",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=58",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=59"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 69,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=35",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=36",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=37",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=38",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=39"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 70,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=155",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=156",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=157",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=158",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=159"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 71,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=75",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=76",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=77",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=78",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=79"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 72,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=160",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=161",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=162",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=163",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=164"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 73,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=135",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=136",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=137",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=138",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=139"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 74,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=225",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=226",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=227",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=228",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=229"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 75,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=240",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=241",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=242",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=243",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=244"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 76,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=120",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=121",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=122",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=123",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=124"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 77,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=205",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=206",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=207",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=208",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=209"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 78,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=5",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=6",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=7",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=8",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=9"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 79,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=225",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=226",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=227",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=228",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=229"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 80,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=80",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=81",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=82",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=83",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=84"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 81,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=245",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=246",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=247",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=248",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=249"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 82,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=230",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=231",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=232",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=233",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=234"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 83,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=75",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=76",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=77",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=78",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=79"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 84,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=140",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=141",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=142",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=143",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=144"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 85,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=270",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=271",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=272",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=273",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=274"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 86,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=230",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=231",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=232",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=233",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=234"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 87,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=240",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=241",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=242",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=243",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=244"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 88,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=220",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=221",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=222",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=223",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=224"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 89,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=165",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=166",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=167",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=168",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=169"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 90,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=230",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=231",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=232",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=233",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=234"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 91,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=170",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=171",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=172",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=173",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=174"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 92,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=205",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=206",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=207",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=208",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=209"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 93,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=240",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=241",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=242",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=243",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=244"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 94,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=105",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=106",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=107",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=108",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=109"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 95,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=25",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=26",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=27",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=28",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=29"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 96,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=245",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=246",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=247",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=248",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=249"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 97,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=80",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=81",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=82",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=83",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=84"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 98,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=95",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=96",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=97",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=98",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=99"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      },
+      {
+        "tiny_row_index": 99,
+        "fewshot_source_ids": [
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=135",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=136",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=137",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=138",
+          "cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe:all/dev#row=139"
+        ],
+        "count": 5,
+        "match": "question.trim + exact ordered choices + answer"
+      }
+    ]
+  },
+  "tinyGSM8k": {
+    "parent_repository": "openai/grade-school-math",
+    "revision": "3101c7d5072418e28b9008a6636bde82a006892c",
+    "source_path": "grade_school_math/data/train.jsonl",
+    "tiny_rows": 100,
+    "source_references": 500,
+    "rows": [
+      {
+        "tiny_row_index": 0,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=6907",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=5422",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=2467",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=4018",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=6470"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 1,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=799",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=3856",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=1048",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=6069",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=2118"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 2,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=943",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=3318",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=170",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=2660",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=1407"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 3,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=1670",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=3361",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=4110",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=6348",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=5009"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 4,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=3408",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=7464",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=4839",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=3954",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=6572"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 5,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=5302",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=2741",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=539",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=2700",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=774"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 6,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=5872",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=6082",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=5911",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=3352",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=876"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 7,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=2810",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=5308",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=895",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=5547",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=6554"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 8,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=5540",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=5894",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=1945",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=3638",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=5001"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 9,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=3934",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=1635",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=794",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=210",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=1695"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 10,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=4233",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=6557",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=4681",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=5550",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=5081"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 11,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=3722",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=2719",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=4588",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=6286",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=5077"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 12,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=7454",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=1557",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=4087",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=6038",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=1635"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 13,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=5145",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=6129",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=1240",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=3372",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=5046"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 14,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=7305",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=1070",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=3957",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=3998",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=925"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 15,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=38",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=2138",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=1433",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=3335",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=4147"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 16,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=3376",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=2128",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=1275",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=2486",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=86"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 17,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=3437",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=1362",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=7246",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=3391",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=4039"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 18,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=1715",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=6235",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=6336",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=1381",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=4720"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 19,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=6272",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=4517",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=1262",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=5022",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=2319"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 20,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=4884",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=1269",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=3042",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=6314",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=733"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 21,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=2565",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=965",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=1954",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=2501",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=958"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 22,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=6414",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=6737",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=5904",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=2123",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=1367"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 23,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=2871",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=2102",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=6447",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=885",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=5901"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 24,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=3403",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=3742",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=4619",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=472",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=4577"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 25,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=2334",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=6163",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=6132",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=6420",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=3677"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 26,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=1837",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=6940",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=886",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=2868",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=6925"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 27,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=2713",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=5519",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=897",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=3412",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=4781"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 28,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=5802",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=1717",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=3591",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=6534",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=2386"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 29,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=5194",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=2239",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=6418",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=3690",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=4019"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 30,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=6073",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=7401",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=5946",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=2816",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=1734"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 31,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=611",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=1660",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=1115",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=6389",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=6309"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 32,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=5365",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=2",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=1289",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=711",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=2260"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 33,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=5434",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=5301",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=1396",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=2692",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=2928"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 34,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=4651",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=5524",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=6203",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=1582",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=1437"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 35,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=5710",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=5607",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=5790",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=426",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=1316"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 36,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=4723",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=5929",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=4628",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=1834",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=5487"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 37,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=7268",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=4403",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=1111",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=3183",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=3716"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 38,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=2985",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=6616",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=2591",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=3508",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=1381"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 39,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=3956",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=4164",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=6398",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=7456",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=1451"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 40,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=2569",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=3430",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=1240",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=3382",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=5656"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 41,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=2083",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=5004",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=1604",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=1536",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=989"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 42,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=4175",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=4360",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=4012",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=5805",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=4611"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 43,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=5911",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=2657",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=6363",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=4649",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=4884"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 44,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=5270",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=5499",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=3122",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=6437",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=4296"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 45,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=6316",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=5117",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=6627",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=7394",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=1356"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 46,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=4174",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=1545",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=6126",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=3209",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=2421"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 47,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=3073",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=3702",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=618",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=5190",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=6509"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 48,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=6838",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=2070",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=1591",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=938",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=1485"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 49,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=4119",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=869",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=2374",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=6446",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=5618"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 50,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=6971",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=4130",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=3834",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=2235",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=1579"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 51,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=1499",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=3058",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=5680",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=1158",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=4184"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 52,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=2903",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=2189",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=6512",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=3251",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=647"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 53,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=2718",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=2712",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=2955",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=2404",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=1789"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 54,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=1946",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=403",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=6109",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=3892",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=2200"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 55,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=1131",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=7004",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=7076",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=5400",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=975"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 56,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=4206",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=401",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=5547",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=2448",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=2131"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 57,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=559",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=3841",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=3622",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=5172",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=2480"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 58,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=2033",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=2241",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=3259",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=2808",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=2409"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 59,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=5120",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=2480",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=5033",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=4370",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=765"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 60,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=7366",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=661",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=2638",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=4983",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=1215"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 61,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=162",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=3373",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=993",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=2876",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=7105"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 62,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=2201",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=6004",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=7261",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=967",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=6319"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 63,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=740",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=1291",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=6615",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=5620",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=2492"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 64,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=830",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=6789",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=3927",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=6461",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=7078"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 65,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=4340",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=1951",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=3439",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=4030",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=490"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 66,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=0",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=4287",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=6679",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=6211",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=6946"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 67,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=103",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=5799",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=1124",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=5746",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=92"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 68,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=6315",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=4421",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=6841",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=6050",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=7239"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 69,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=1196",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=459",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=2183",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=6354",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=3214"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 70,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=195",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=1908",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=4436",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=2837",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=5209"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 71,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=6180",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=5061",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=407",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=5521",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=668"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 72,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=308",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=466",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=3020",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=6813",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=2351"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 73,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=969",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=5415",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=1886",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=3396",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=6645"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 74,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=6397",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=7048",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=7128",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=3629",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=6799"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 75,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=6637",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=5822",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=942",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=185",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=6956"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 76,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=5256",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=6058",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=4018",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=3775",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=1378"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 77,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=1616",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=3682",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=4851",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=3518",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=3185"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 78,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=4899",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=6426",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=2657",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=7075",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=3155"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 79,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=7223",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=3102",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=2877",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=4473",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=3074"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 80,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=101",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=2390",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=3389",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=3176",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=6382"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 81,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=6528",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=1366",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=926",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=1085",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=5703"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 82,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=1056",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=841",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=3142",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=4123",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=4822"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 83,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=3464",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=7111",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=5906",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=421",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=2356"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 84,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=6631",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=5408",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=3434",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=5037",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=6275"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 85,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=7348",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=4706",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=7116",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=2250",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=4020"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 86,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=7414",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=6940",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=6794",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=6626",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=2716"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 87,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=7314",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=7427",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=3748",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=1173",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=2591"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 88,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=1985",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=2669",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=3080",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=2296",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=6688"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 89,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=6986",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=606",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=3703",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=1414",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=7361"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 90,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=4509",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=5270",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=3101",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=3303",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=6693"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 91,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=1286",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=438",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=829",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=2712",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=1683"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 92,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=1087",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=4863",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=1852",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=4255",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=5570"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 93,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=1346",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=6066",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=1998",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=4227",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=1429"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 94,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=6924",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=3554",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=5283",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=6425",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=2713"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 95,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=5408",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=4270",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=1810",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=3387",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=2461"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 96,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=115",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=6034",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=2761",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=6477",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=2416"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 97,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=4066",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=7457",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=1701",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=5637",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=3937"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 98,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=2112",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=553",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=3134",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=5190",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=6460"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      },
+      {
+        "tiny_row_index": 99,
+        "fewshot_source_ids": [
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=7403",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=5315",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=1355",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=424",
+          "openai/grade-school-math@3101c7d5072418e28b9008a6636bde82a006892c:grade_school_math/data/train.jsonl#line=3246"
+        ],
+        "count": 5,
+        "match": "exact question+full answer; final empty-answer query exact"
+      }
+    ]
+  }
+}

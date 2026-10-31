@@ -1,0 +1,408 @@
+{
+  "schemaVersion": 1,
+  "resourceVersion": "suite-2026-10-31-v1",
+  "generalId": "general-chat-strict-v1",
+  "writingId": "work-writing-12-v1",
+  "datasets": [
+    {
+      "id": "tiny-mmlu",
+      "path": "protocols/tiny-mmlu.json",
+      "count": 100
+    },
+    {
+      "id": "tiny-gsm8k",
+      "path": "protocols/tiny-gsm8k.json",
+      "count": 100
+    },
+    {
+      "id": "ifeval",
+      "path": "protocols/ifeval.jsonl",
+      "count": 541
+    },
+    {
+      "id": "humaneval-plus",
+      "path": "protocols/humaneval-plus.json",
+      "count": 164
+    },
+    {
+      "id": "writing",
+      "path": "protocols/writing.json",
+      "count": 12
+    }
+  ],
+  "files": [
+    {
+      "path": "protocols/tiny-mmlu.json",
+      "size": 443422,
+      "sha256": "4754abec533548a4603dd2017a9f1fe035caa16ec992d983259185b9b9a382bf",
+      "kind": "dataset",
+      "source": "https://huggingface.co/datasets/tinyBenchmarks/tinyMMLU",
+      "revision": "cd6a8ee9e1e6f3f18f683535f6c096c386a85da3",
+      "license": "MIT parent data; exact fixed selection with recorded whitespace differences"
+    },
+    {
+      "path": "protocols/tiny-gsm8k.json",
+      "size": 415138,
+      "sha256": "bbcda2be6a5ecd892966b464a4dde7f91568ea365bb101897d70148d2064753e",
+      "kind": "dataset",
+      "source": "https://huggingface.co/datasets/tinyBenchmarks/tinyGSM8k",
+      "revision": "b870449ed96ee3e308748b550908332450ec4098",
+      "license": "MIT parent data; exact fixed selection"
+    },
+    {
+      "path": "protocols/ifeval.jsonl",
+      "size": 207111,
+      "sha256": "67ffeee0fcb87c317c5b08a2de85557b4a7e96ada6178aa645b4954fe4b53d49",
+      "kind": "dataset",
+      "source": "https://github.com/google-research/google-research/tree/e6890f85757dd84e27ca6df2dd30651dafad28e0/instruction_following_eval",
+      "revision": "e6890f85757dd84e27ca6df2dd30651dafad28e0",
+      "license": "Apache-2.0"
+    },
+    {
+      "path": "protocols/humaneval-plus.json",
+      "size": 40513506,
+      "sha256": "5963e2e24083a3774b2455f0bfcc42ef69ee03f1568fc225e8a1590a8c8a02e6",
+      "kind": "dataset",
+      "source": "https://github.com/evalplus/humanevalplus_release/releases/tag/v0.1.10",
+      "revision": "v0.1.10",
+      "license": "Apache-2.0 AND MIT"
+    },
+    {
+      "path": "protocols/writing.json",
+      "size": 78530,
+      "sha256": "bfc98addf418e3a4bb4664fdfacc50d2dd744ddeab5df241b2de7e481d8e75d4",
+      "kind": "dataset",
+      "source": "https://huggingface.co/datasets/IDEA-CCNL/Ziya-Writing-Eval-Chinese ; https://github.com/X-PLUG/WritingBench",
+      "revision": "f55b23a942608083cffe2813c803d3517ebb1e41 ; ae2d5176449b7b769815482641d35926f26793eb",
+      "license": "Apache-2.0"
+    },
+    {
+      "path": "protocols/general-chat-v1.json",
+      "size": 1184,
+      "sha256": "5e6f1ef0f3c9239000a11dd7a91daf094bc3eadee1328ccb421876a44d4aea13",
+      "kind": "protocol",
+      "source": "This tool; fixed public source mapping where attributed",
+      "revision": "v1",
+      "license": "MIT"
+    },
+    {
+      "path": "protocols/rubric-writing-v1.json",
+      "size": 2119,
+      "sha256": "b0f5de242e4848f28e7e6238560a43a11c597cfc8ab35d4d722fb1d186b69c06",
+      "kind": "protocol",
+      "source": "This tool; fixed public source mapping where attributed",
+      "revision": "v1",
+      "license": "MIT"
+    },
+    {
+      "path": "protocols/tiny-fewshot-provenance.json",
+      "size": 141027,
+      "sha256": "0d84cfc8c08651b09540e788178d0041a2c6b7802fb83d2e28ddd1229676929e",
+      "kind": "protocol",
+      "source": "This tool; fixed public source mapping where attributed",
+      "revision": "v1",
+      "license": "MIT"
+    },
+    {
+      "path": "licenses/CC0-1.0-legalcode.txt",
+      "size": 7048,
+      "sha256": "a2010f343487d3f7618affe54f789f5487602331c0a8d03f49e9a7c547cf0499",
+      "kind": "license",
+      "source": "See per-resource attribution and source URLs",
+      "revision": "suite-v1",
+      "license": "See file"
+    },
+    {
+      "path": "licenses/GSM8K-MIT.txt",
+      "size": 1082,
+      "sha256": "3655de2ac07a2ec4e6424b0285cffb2c7a2ddabbf213add2045dadd4c4bfa082",
+      "kind": "license",
+      "source": "See per-resource attribution and source URLs",
+      "revision": "suite-v1",
+      "license": "See file"
+    },
+    {
+      "path": "licenses/HACL-star-LICENSE",
+      "size": 11356,
+      "sha256": "c5accbbd8546e94c34aed24afe689a617627d18eed5a6c48277e48db57c23851",
+      "kind": "license",
+      "source": "See per-resource attribution and source URLs",
+      "revision": "suite-v1",
+      "license": "See file"
+    },
+    {
+      "path": "licenses/HumanEval-OpenAI-MIT.txt",
+      "size": 1083,
+      "sha256": "bcba3de214851cce46ed5af42d6698044616eeace887c3231bc7a20474ab639e",
+      "kind": "license",
+      "source": "See per-resource attribution and source URLs",
+      "revision": "suite-v1",
+      "license": "See file"
+    },
+    {
+      "path": "licenses/HumanEvalPlus-LICENSE.txt",
+      "size": 11549,
+      "sha256": "b0b08821a8c2b49e0f296b0b498c17d6e19b0439d1e4dd9cdb5f37712993c8a7",
+      "kind": "license",
+      "source": "See per-resource attribution and source URLs",
+      "revision": "suite-v1",
+      "license": "See file"
+    },
+    {
+      "path": "licenses/IFEval-Apache-2.0.txt",
+      "size": 11358,
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "kind": "license",
+      "source": "See per-resource attribution and source URLs",
+      "revision": "suite-v1",
+      "license": "See file"
+    },
+    {
+      "path": "licenses/MMLU-MIT.txt",
+      "size": 1091,
+      "sha256": "2a582ab008bf22916482bc3cdbeabba5ec7b729a4182bd25392bdae464e1f435",
+      "kind": "license",
+      "source": "See per-resource attribution and source URLs",
+      "revision": "suite-v1",
+      "license": "See file"
+    },
+    {
+      "path": "licenses/WritingBench-Apache-2.0.txt",
+      "size": 11357,
+      "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+      "kind": "license",
+      "source": "See per-resource attribution and source URLs",
+      "revision": "suite-v1",
+      "license": "See file"
+    },
+    {
+      "path": "licenses/Ziya-data-card.md",
+      "size": 2029,
+      "sha256": "018dc518cee2a935c89375038b12f7cb993ecfd6f7d46afc7af9848baa5f0edc",
+      "kind": "license",
+      "source": "See per-resource attribution and source URLs",
+      "revision": "suite-v1",
+      "license": "See file"
+    },
+    {
+      "path": "licenses/cais-mmlu-README.md",
+      "size": 53221,
+      "sha256": "665eef35ecd8a89037c1e4f1e1a0d7fd4c154edc04c81cea5634ace2d3e96953",
+      "kind": "license",
+      "source": "See per-resource attribution and source URLs",
+      "revision": "suite-v1",
+      "license": "See file"
+    },
+    {
+      "path": "licenses/compiler-rt-LICENSE.TXT",
+      "size": 16708,
+      "sha256": "1a8f1058753f1ba890de984e48f0242a3a5c29a6a8f2ed9fd813f36985387e8d",
+      "kind": "license",
+      "source": "See per-resource attribution and source URLs",
+      "revision": "suite-v1",
+      "license": "See file"
+    },
+    {
+      "path": "licenses/cpython-expat-COPYING",
+      "size": 1144,
+      "sha256": "31b15de82aa19a845156169a17a5488bf597e561b2c318d159ed583139b25e87",
+      "kind": "license",
+      "source": "See per-resource attribution and source URLs",
+      "revision": "suite-v1",
+      "license": "See file"
+    },
+    {
+      "path": "licenses/cpython-fstar-Apache-header.txt",
+      "size": 118,
+      "sha256": "7fc38c59e9e575a174ef56012d44d0901a6f5c647346ec48c1af8dbea42d42fb",
+      "kind": "license",
+      "source": "See per-resource attribution and source URLs",
+      "revision": "suite-v1",
+      "license": "See file"
+    },
+    {
+      "path": "licenses/cpython-hacl-MIT-header.txt",
+      "size": 1208,
+      "sha256": "be666f8bbbb71c2b0a866ac0efeb92e82f35df9a02224a660709751faf7c6eac",
+      "kind": "license",
+      "source": "See per-resource attribution and source URLs",
+      "revision": "suite-v1",
+      "license": "See file"
+    },
+    {
+      "path": "licenses/cpython-mpdecimal-BSD2-header.txt",
+      "size": 1360,
+      "sha256": "a02c7ec02daefd0998f4e7090b4199c4f6c44ece2ba13059b883965b0e24ef99",
+      "kind": "license",
+      "source": "See per-resource attribution and source URLs",
+      "revision": "suite-v1",
+      "license": "See file"
+    },
+    {
+      "path": "licenses/cpython-v3.13.15-LICENSE",
+      "size": 13809,
+      "sha256": "78b12c3a81360b357002334f0e70ea0e92eebf7a9b358805c03c48484945f3bb",
+      "kind": "license",
+      "source": "See per-resource attribution and source URLs",
+      "revision": "suite-v1",
+      "license": "See file"
+    },
+    {
+      "path": "licenses/llvm-project-LICENSE.TXT",
+      "size": 15141,
+      "sha256": "8d85c1057d742e597985c7d4e6320b015a9139385cff4cbae06ffc0ebe89afee",
+      "kind": "license",
+      "source": "See per-resource attribution and source URLs",
+      "revision": "suite-v1",
+      "license": "See file"
+    },
+    {
+      "path": "licenses/openai-gsm8k-README.md",
+      "size": 7935,
+      "sha256": "a17e882503578c9e324560630e31017617714ee025c87cf4fea6fd916895f3c1",
+      "kind": "license",
+      "source": "See per-resource attribution and source URLs",
+      "revision": "suite-v1",
+      "license": "See file"
+    },
+    {
+      "path": "licenses/runtime-components.json",
+      "size": 13742,
+      "sha256": "ad2a0faf2c10b7a8e26b517cbbddd665a79535e0ab1bbeeacab366444e3992db",
+      "kind": "license",
+      "source": "See per-resource attribution and source URLs",
+      "revision": "suite-v1",
+      "license": "See file"
+    },
+    {
+      "path": "licenses/tiny-provenance.md",
+      "size": 1028,
+      "sha256": "7101b4753a4032c54669a87d820781066cdd09f6eeb8aafc468a3d329867b6b6",
+      "kind": "license",
+      "source": "See per-resource attribution and source URLs",
+      "revision": "suite-v1",
+      "license": "See file"
+    },
+    {
+      "path": "licenses/tinyBenchmarks-MIT.txt",
+      "size": 1073,
+      "sha256": "03b276e45e47b9e0a02e40935eb0d2c9efe3b4259833f960edb2bfb64cdefd4a",
+      "kind": "license",
+      "source": "See per-resource attribution and source URLs",
+      "revision": "suite-v1",
+      "license": "See file"
+    },
+    {
+      "path": "licenses/tinyGSM8k-README.md",
+      "size": 5133,
+      "sha256": "a0544d0d06d73887b465e0ab09bae32353933a6470f39dac4d2937e01e88e6c8",
+      "kind": "license",
+      "source": "See per-resource attribution and source URLs",
+      "revision": "suite-v1",
+      "license": "See file"
+    },
+    {
+      "path": "licenses/tinyMMLU-README.md",
+      "size": 5730,
+      "sha256": "29bae8d433e342573560140d73cd52c0aed8a90b840476ab8fa5a821a82a2013",
+      "kind": "license",
+      "source": "See per-resource attribution and source URLs",
+      "revision": "suite-v1",
+      "license": "See file"
+    },
+    {
+      "path": "licenses/wasi-libc-LICENSE",
+      "size": 831,
+      "sha256": "673f577e363e80e0058bd78214683f045d1d0c63930969a87f01a1d87d7cf1d6",
+      "kind": "license",
+      "source": "See per-resource attribution and source URLs",
+      "revision": "suite-v1",
+      "license": "See file"
+    },
+    {
+      "path": "licenses/wasi-libc-LICENSE-APACHE",
+      "size": 10847,
+      "sha256": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2",
+      "kind": "license",
+      "source": "See per-resource attribution and source URLs",
+      "revision": "suite-v1",
+      "license": "See file"
+    },
+    {
+      "path": "licenses/wasi-libc-LICENSE-APACHE-LLVM",
+      "size": 12243,
+      "sha256": "268872b9816f90fd8e85db5a28d33f8150ebb8dd016653fb39ef1f94f2686bc5",
+      "kind": "license",
+      "source": "See per-resource attribution and source URLs",
+      "revision": "suite-v1",
+      "license": "See file"
+    },
+    {
+      "path": "licenses/wasi-libc-LICENSE-MIT",
+      "size": 1023,
+      "sha256": "23f18e03dc49df91622fe2a76176497404e46ced8a715d9d2b67a7446571cca3",
+      "kind": "license",
+      "source": "See per-resource attribution and source URLs",
+      "revision": "suite-v1",
+      "license": "See file"
+    },
+    {
+      "path": "licenses/wasi-libc-cloudlibc-LICENSE",
+      "size": 1292,
+      "sha256": "c8b789cf5a746611e6300a0cc7750dbf92b61912a709d04e639245f7290656d0",
+      "kind": "license",
+      "source": "See per-resource attribution and source URLs",
+      "revision": "suite-v1",
+      "license": "See file"
+    },
+    {
+      "path": "licenses/wasi-libc-dlmalloc-CC0-notice.txt",
+      "size": 28003,
+      "sha256": "5537473ceaa5f89c7ced319f0eefc4f69f7514b411c3b8261b814101d23c0c3d",
+      "kind": "license",
+      "source": "See per-resource attribution and source URLs",
+      "revision": "suite-v1",
+      "license": "See file"
+    },
+    {
+      "path": "licenses/wasi-libc-emmalloc-MIT-notice.txt",
+      "size": 1698,
+      "sha256": "372b596de72f90957dd663fe467c5e31b3e20eb50a54187cd9ceab2452e01c05",
+      "kind": "license",
+      "source": "See per-resource attribution and source URLs",
+      "revision": "suite-v1",
+      "license": "See file"
+    },
+    {
+      "path": "licenses/wasi-libc-musl-COPYRIGHT",
+      "size": 6204,
+      "sha256": "f9bc4423732350eb0b3f7ed7e91d530298476f8fec0c6c427a1c04ade22655af",
+      "kind": "license",
+      "source": "See per-resource attribution and source URLs",
+      "revision": "suite-v1",
+      "license": "See file"
+    },
+    {
+      "path": "licenses/wasi-sdk-24-LICENSE",
+      "size": 12243,
+      "sha256": "268872b9816f90fd8e85db5a28d33f8150ebb8dd016653fb39ef1f94f2686bc5",
+      "kind": "license",
+      "source": "See per-resource attribution and source URLs",
+      "revision": "suite-v1",
+      "license": "See file"
+    },
+    {
+      "path": "licenses/writing-provenance.md",
+      "size": 370,
+      "sha256": "f33bb12e5e0a1999bc54031857738735b032a7c77718d4c51fdd9abd96a9a5f7",
+      "kind": "license",
+      "source": "See per-resource attribution and source URLs",
+      "revision": "suite-v1",
+      "license": "See file"
+    }
+  ],
+  "gates": {
+    "resources": "passed",
+    "runtime": "pending"
+  }
+}

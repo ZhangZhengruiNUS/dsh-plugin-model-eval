@@ -1,0 +1,5 @@
+# Fixed tiny datasets
+
+The fixed 100+100 selections and their 500+500 source demonstrations are mapped to the original parent data. MMLU: cais/mmlu@c30699e8356da336a370243923dbaf21066bb9fe (dataset card MIT); GSM8K: openai/gsm8k@740312add88f781978c0658806c59bc2815b9866 (dataset card MIT), matching the OpenAI grade-school-math source. Parent IDs and raw hashes are retained in the dataset rows; demonstration IDs are in protocols/tiny-fewshot-provenance.json.
+
+MMLU has 92 exact matches and 8 question-boundary whitespace differences; choices and labels match exactly, and original tiny prompt strings are preserved. GSM8k questions and complete answers match exactly. The tiny HF cards do not declare a separate data license; distribution relies on the mapped MIT parent data, not an assumption about the software repository license. Retain the accompanying MIT notices. Cite Hendrycks et al., Measuring Massive Multitask Language Understanding (2021), and Cobbe et al., Training Verifiers to Solve Math Word Problems (2021).

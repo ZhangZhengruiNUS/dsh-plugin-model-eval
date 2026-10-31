@@ -1,0 +1,268 @@
+{
+  "inventoryLimit": "Constructed WASI artifact has no SBOM. This index covers components identified by recipe/source evidence and does not claim to prove every object statically linked into python.wasm.",
+  "pinnedRevisions": {
+    "wasi_sdk": {
+      "repository": "https://github.com/WebAssembly/wasi-sdk",
+      "tag": "wasi-sdk-24",
+      "tag_object": "a6f46397e473699e9f29c878fd563f532e7c0e3c",
+      "commit": "d2bea01edcc46f731156a817f710cdd9fc9c1c19",
+      "submodules": {
+        "src/llvm-project": "26a1d6601d727a96f4301d0d8647b5a42760ae0c",
+        "src/wasi-libc": "b9ef79d7dbd47c6c5bafdae760823467c2f60b70",
+        "src/config": "f992bcc08219edb283d2ab31dd3871a4a0e8220e"
+      }
+    },
+    "wasi_libc_nested_headers": {
+      "path": "tools/wasi-headers/WASI",
+      "commit": "59cbe140561db52fc505555e859de884e0ee7f00",
+      "classification": "build headers, not identified as statically linked code"
+    },
+    "cpython": {
+      "repository": "https://github.com/python/cpython",
+      "tag": "v3.13.15",
+      "tag_object": "9cb432a43babc597b349cabb704870e88a82a382",
+      "commit": "4061bc4c35f7c26f25264666d4ba083b93d2f6f9"
+    },
+    "hacl_star": {
+      "repository": "https://github.com/hacl-star/hacl-star",
+      "revision": "bb3d0dc8d9d15a5cd51094d5b69e70aa09005ff0",
+      "basis": "expected_hacl_star_rev in CPython Modules/_hacl/refresh.sh"
+    }
+  },
+  "files": [
+    {
+      "component": "WASI-SDK 24 toolchain",
+      "license_or_notice": "Apache-2.0",
+      "source_repository": "https://github.com/WebAssembly/wasi-sdk",
+      "source_revision": "d2bea01edcc46f731156a817f710cdd9fc9c1c19",
+      "source_path": "LICENSE",
+      "source_url": "https://github.com/WebAssembly/wasi-sdk/blob/d2bea01edcc46f731156a817f710cdd9fc9c1c19/LICENSE",
+      "bytes": 12243,
+      "sha256": "268872b9816f90fd8e85db5a28d33f8150ebb8dd016653fb39ef1f94f2686bc5",
+      "status": "collected",
+      "note": "Toolchain repository license; this alone does not enumerate every linked runtime object.",
+      "bundledPath": "licenses/wasi-sdk-24-LICENSE"
+    },
+    {
+      "component": "LLVM Project",
+      "license_or_notice": "Apache-2.0 WITH LLVM-exception",
+      "source_repository": "https://github.com/llvm/llvm-project",
+      "source_revision": "26a1d6601d727a96f4301d0d8647b5a42760ae0c",
+      "source_path": "LICENSE.TXT",
+      "source_url": "https://github.com/llvm/llvm-project/blob/26a1d6601d727a96f4301d0d8647b5a42760ae0c/LICENSE.TXT",
+      "bytes": 15141,
+      "sha256": "8d85c1057d742e597985c7d4e6320b015a9139385cff4cbae06ffc0ebe89afee",
+      "status": "collected",
+      "note": "Top-level notice for the pinned SDK llvm-project submodule.",
+      "bundledPath": "licenses/llvm-project-LICENSE.TXT"
+    },
+    {
+      "component": "compiler-rt",
+      "license_or_notice": "Apache-2.0 WITH LLVM-exception",
+      "source_repository": "https://github.com/llvm/llvm-project",
+      "source_revision": "26a1d6601d727a96f4301d0d8647b5a42760ae0c",
+      "source_path": "compiler-rt/LICENSE.TXT",
+      "source_url": "https://github.com/llvm/llvm-project/blob/26a1d6601d727a96f4301d0d8647b5a42760ae0c/compiler-rt/LICENSE.TXT",
+      "bytes": 16708,
+      "sha256": "1a8f1058753f1ba890de984e48f0242a3a5c29a6a8f2ed9fd813f36985387e8d",
+      "status": "collected",
+      "note": "Component-specific notice at the pinned llvm-project revision.",
+      "bundledPath": "licenses/compiler-rt-LICENSE.TXT"
+    },
+    {
+      "component": "wasi-libc",
+      "license_or_notice": "Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT; plus listed third-party notices",
+      "source_repository": "https://github.com/WebAssembly/wasi-libc",
+      "source_revision": "b9ef79d7dbd47c6c5bafdae760823467c2f60b70",
+      "source_path": "LICENSE",
+      "source_url": "https://github.com/WebAssembly/wasi-libc/blob/b9ef79d7dbd47c6c5bafdae760823467c2f60b70/LICENSE",
+      "bytes": 831,
+      "sha256": "673f577e363e80e0058bd78214683f045d1d0c63930969a87f01a1d87d7cf1d6",
+      "status": "collected",
+      "note": "Upstream LICENSE explicitly lists musl, cloudlibc, dlmalloc, and emmalloc notices.",
+      "bundledPath": "licenses/wasi-libc-LICENSE"
+    },
+    {
+      "component": "wasi-libc license option",
+      "license_or_notice": "Apache-2.0",
+      "source_repository": "https://github.com/WebAssembly/wasi-libc",
+      "source_revision": "b9ef79d7dbd47c6c5bafdae760823467c2f60b70",
+      "source_path": "LICENSE-APACHE",
+      "source_url": "https://github.com/WebAssembly/wasi-libc/blob/b9ef79d7dbd47c6c5bafdae760823467c2f60b70/LICENSE-APACHE",
+      "bytes": 10847,
+      "sha256": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2",
+      "status": "collected",
+      "note": "One of the root wasi-libc license alternatives.",
+      "bundledPath": "licenses/wasi-libc-LICENSE-APACHE"
+    },
+    {
+      "component": "wasi-libc license option",
+      "license_or_notice": "Apache-2.0 WITH LLVM-exception",
+      "source_repository": "https://github.com/WebAssembly/wasi-libc",
+      "source_revision": "b9ef79d7dbd47c6c5bafdae760823467c2f60b70",
+      "source_path": "LICENSE-APACHE-LLVM",
+      "source_url": "https://github.com/WebAssembly/wasi-libc/blob/b9ef79d7dbd47c6c5bafdae760823467c2f60b70/LICENSE-APACHE-LLVM",
+      "bytes": 12243,
+      "sha256": "268872b9816f90fd8e85db5a28d33f8150ebb8dd016653fb39ef1f94f2686bc5",
+      "status": "collected",
+      "note": "One of the root wasi-libc license alternatives.",
+      "bundledPath": "licenses/wasi-libc-LICENSE-APACHE-LLVM"
+    },
+    {
+      "component": "wasi-libc license option",
+      "license_or_notice": "MIT",
+      "source_repository": "https://github.com/WebAssembly/wasi-libc",
+      "source_revision": "b9ef79d7dbd47c6c5bafdae760823467c2f60b70",
+      "source_path": "LICENSE-MIT",
+      "source_url": "https://github.com/WebAssembly/wasi-libc/blob/b9ef79d7dbd47c6c5bafdae760823467c2f60b70/LICENSE-MIT",
+      "bytes": 1023,
+      "sha256": "23f18e03dc49df91622fe2a76176497404e46ced8a715d9d2b67a7446571cca3",
+      "status": "collected",
+      "note": "One of the root wasi-libc license alternatives.",
+      "bundledPath": "licenses/wasi-libc-LICENSE-MIT"
+    },
+    {
+      "component": "musl subtree in wasi-libc",
+      "license_or_notice": "MIT",
+      "source_repository": "https://github.com/WebAssembly/wasi-libc",
+      "source_revision": "b9ef79d7dbd47c6c5bafdae760823467c2f60b70",
+      "source_path": "libc-top-half/musl/COPYRIGHT",
+      "source_url": "https://github.com/WebAssembly/wasi-libc/blob/b9ef79d7dbd47c6c5bafdae760823467c2f60b70/libc-top-half/musl/COPYRIGHT",
+      "bytes": 6204,
+      "sha256": "f9bc4423732350eb0b3f7ed7e91d530298476f8fec0c6c427a1c04ade22655af",
+      "status": "collected",
+      "note": "Specific notice referenced by wasi-libc root LICENSE.",
+      "bundledPath": "licenses/wasi-libc-musl-COPYRIGHT"
+    },
+    {
+      "component": "cloudlibc subtree in wasi-libc",
+      "license_or_notice": "BSD-2-Clause",
+      "source_repository": "https://github.com/WebAssembly/wasi-libc",
+      "source_revision": "b9ef79d7dbd47c6c5bafdae760823467c2f60b70",
+      "source_path": "libc-bottom-half/cloudlibc/LICENSE",
+      "source_url": "https://github.com/WebAssembly/wasi-libc/blob/b9ef79d7dbd47c6c5bafdae760823467c2f60b70/libc-bottom-half/cloudlibc/LICENSE",
+      "bytes": 1292,
+      "sha256": "c8b789cf5a746611e6300a0cc7750dbf92b61912a709d04e639245f7290656d0",
+      "status": "collected",
+      "note": "Specific notice referenced by wasi-libc root LICENSE.",
+      "bundledPath": "licenses/wasi-libc-cloudlibc-LICENSE"
+    },
+    {
+      "component": "dlmalloc subtree in wasi-libc",
+      "license_or_notice": "CC0-1.0",
+      "source_repository": "https://github.com/WebAssembly/wasi-libc",
+      "source_revision": "b9ef79d7dbd47c6c5bafdae760823467c2f60b70",
+      "source_path": "dlmalloc/src/malloc.c",
+      "source_url": "https://github.com/WebAssembly/wasi-libc/blob/b9ef79d7dbd47c6c5bafdae760823467c2f60b70/dlmalloc/src/malloc.c",
+      "bytes": 28003,
+      "sha256": "5537473ceaa5f89c7ced319f0eefc4f69f7514b411c3b8261b814101d23c0c3d",
+      "status": "collected",
+      "note": "Extracted opening notice says public domain/CC0-1.0; full official CC0 legalcode is also collected.",
+      "bundledPath": "licenses/wasi-libc-dlmalloc-CC0-notice.txt"
+    },
+    {
+      "component": "CC0-1.0 legal text",
+      "license_or_notice": "CC0-1.0",
+      "source_repository": "https://creativecommons.org",
+      "source_revision": "1.0",
+      "source_path": "publicdomain/zero/1.0/legalcode.txt",
+      "source_url": "https://creativecommons.org/publicdomain/zero/1.0/legalcode.txt",
+      "bytes": 7048,
+      "sha256": "a2010f343487d3f7618affe54f789f5487602331c0a8d03f49e9a7c547cf0499",
+      "status": "collected",
+      "note": "Official CC0 legal text referenced by the pinned dlmalloc notice.",
+      "bundledPath": "licenses/CC0-1.0-legalcode.txt"
+    },
+    {
+      "component": "emmalloc subtree in wasi-libc",
+      "license_or_notice": "MIT option selected from upstream dual MIT/NCSA notice",
+      "source_repository": "https://github.com/WebAssembly/wasi-libc",
+      "source_revision": "b9ef79d7dbd47c6c5bafdae760823467c2f60b70",
+      "source_path": "emmalloc/emmalloc.c",
+      "source_url": "https://github.com/WebAssembly/wasi-libc/blob/b9ef79d7dbd47c6c5bafdae760823467c2f60b70/emmalloc/emmalloc.c",
+      "bytes": 1698,
+      "sha256": "372b596de72f90957dd663fe467c5e31b3e20eb50a54187cd9ceab2452e01c05",
+      "status": "collected",
+      "note": "Pinned wasi-libc root LICENSE identifies emmalloc as MIT; source header is dual-licensed. The MIT alternative is retained.",
+      "bundledPath": "licenses/wasi-libc-emmalloc-MIT-notice.txt"
+    },
+    {
+      "component": "CPython 3.13.15",
+      "license_or_notice": "PSF License Version 2 and notices in bundled source license",
+      "source_repository": "https://github.com/python/cpython",
+      "source_revision": "v3.13.15",
+      "source_path": "LICENSE",
+      "source_url": "https://github.com/python/cpython/blob/v3.13.15/LICENSE",
+      "bytes": 13809,
+      "sha256": "78b12c3a81360b357002334f0e70ea0e92eebf7a9b358805c03c48484945f3bb",
+      "status": "collected",
+      "note": "The exact same LICENSE bytes are already present in the python WASI zip.",
+      "bundledPath": "licenses/cpython-v3.13.15-LICENSE"
+    },
+    {
+      "component": "Expat bundled in CPython",
+      "license_or_notice": "Expat MIT-style license",
+      "source_repository": "https://github.com/python/cpython",
+      "source_revision": "v3.13.15",
+      "source_path": "Modules/expat/COPYING",
+      "source_url": "https://github.com/python/cpython/blob/v3.13.15/Modules/expat/COPYING",
+      "bytes": 1144,
+      "sha256": "31b15de82aa19a845156169a17a5488bf597e561b2c318d159ed583139b25e87",
+      "status": "collected",
+      "note": "CPython WASI recipe artifact explicitly includes Modules/expat/libexpat.a.",
+      "bundledPath": "licenses/cpython-expat-COPYING"
+    },
+    {
+      "component": "libmpdec bundled in CPython _decimal",
+      "license_or_notice": "BSD-2-Clause",
+      "source_repository": "https://github.com/python/cpython",
+      "source_revision": "v3.13.15",
+      "source_path": "Modules/_decimal/libmpdec/basearith.c",
+      "source_url": "https://github.com/python/cpython/blob/v3.13.15/Modules/_decimal/libmpdec/basearith.c",
+      "bytes": 1360,
+      "sha256": "a02c7ec02daefd0998f4e7090b4199c4f6c44ece2ba13059b883965b0e24ef99",
+      "status": "collected",
+      "note": "Extracted per-file notice; recipe artifact explicitly includes libmpdec.a.",
+      "bundledPath": "licenses/cpython-mpdecimal-BSD2-header.txt"
+    },
+    {
+      "component": "HACL* generated hash code in CPython",
+      "license_or_notice": "MIT per-file notice",
+      "source_repository": "https://github.com/python/cpython",
+      "source_revision": "v3.13.15",
+      "source_path": "Modules/_hacl/Hacl_Hash_SHA2.c",
+      "source_url": "https://github.com/python/cpython/blob/v3.13.15/Modules/_hacl/Hacl_Hash_SHA2.c",
+      "bytes": 1208,
+      "sha256": "be666f8bbbb71c2b0a866ac0efeb92e82f35df9a02224a660709751faf7c6eac",
+      "status": "collected",
+      "note": "README/refresh script pins HACL* source revision; all Hacl_Hash C/H files inspected begin with this MIT notice.",
+      "bundledPath": "licenses/cpython-hacl-MIT-header.txt"
+    },
+    {
+      "component": "HACL* upstream source",
+      "license_or_notice": "Apache-2.0 root license",
+      "source_repository": "https://github.com/hacl-star/hacl-star",
+      "source_revision": "bb3d0dc8d9d15a5cd51094d5b69e70aa09005ff0",
+      "source_path": "LICENSE",
+      "source_url": "https://github.com/hacl-star/hacl-star/blob/bb3d0dc8d9d15a5cd51094d5b69e70aa09005ff0/LICENSE",
+      "bytes": 11356,
+      "sha256": "c5accbbd8546e94c34aed24afe689a617627d18eed5a6c48277e48db57c23851",
+      "status": "collected",
+      "note": "Upstream commit recorded by CPython Modules/_hacl/refresh.sh.",
+      "bundledPath": "licenses/HACL-star-LICENSE"
+    },
+    {
+      "component": "KreMLin/FStar support header in CPython _hacl",
+      "license_or_notice": "Apache-2.0 per-file notice",
+      "source_repository": "https://github.com/python/cpython",
+      "source_revision": "v3.13.15",
+      "source_path": "Modules/_hacl/include/krml/FStar_UInt128_Verified.h",
+      "source_url": "https://github.com/python/cpython/blob/v3.13.15/Modules/_hacl/include/krml/FStar_UInt128_Verified.h",
+      "bytes": 118,
+      "sha256": "7fc38c59e9e575a174ef56012d44d0901a6f5c647346ec48c1af8dbea42d42fb",
+      "status": "collected",
+      "note": "Per-file notice for bundled support header.",
+      "bundledPath": "licenses/cpython-fstar-Apache-header.txt"
+    }
+  ]
+}

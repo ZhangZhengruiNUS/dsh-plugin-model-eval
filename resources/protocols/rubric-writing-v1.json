@@ -1,0 +1,16 @@
+{
+  "id": "work-writing-five-dimensions-v1",
+  "promptId": "writing-judge-json-v1",
+  "officialScore": false,
+  "anchors": { "0": "该维度严重失败", "1": "有明显问题，需要大幅修改", "2": "基本可用，但需要明显修改", "3": "大体可用，有少量问题", "4": "在原题要求下可直接使用" },
+  "dimensions": {
+    "faithfulness": { "label": "忠实与准确", "definition": "忠于给定材料，区分事实、推测和资料缺口；原题允许的方案假设或创作可成立。", "example": "材料没有日期时保留日期占位不应扣分；把材料中的负责人改成另一个人应扣分。" },
+    "logic": { "label": "逻辑与结构", "definition": "论述顺序清楚，因果和结论有依据，段落关系连贯。", "example": "会议材料中的不同意见需要分开说明；把建议写成已经决定的事项会破坏逻辑。" },
+    "coverage": { "label": "任务覆盖", "definition": "覆盖原题实际要求的要点，不凭空增加必填字段。", "example": "要求报告情况与建议时应同时覆盖；原题未要求预算时不得因缺少预算扣分。" },
+    "concision": { "label": "简洁与具体", "definition": "信息密度合适，有明确对象、动作和依据，避免重复铺陈和空泛夸大。", "example": "重复强调重要性而没有补充信息属于冗余；必要的背景说明不属于冗余。" },
+    "naturalness": { "label": "自然与得体", "definition": "符合文体和收件人，表达自然，避免机械重复与不合场景的口号。", "example": "正式通知采用规范条目不应扣分；不能用是否分点、禁词次数或AI检测器判断。" }
+  },
+  "requirements": ["逐维给出0至4整数、理由和可指认的原文证据", "不得编造引文", "未知事实可占位或说明待补", "完整空答本地判零；完全拒绝需语义判定", "传输或评分技术缺失不填零"],
+  "formula": "item = sum(dimensions) * 5; writing = mean(all 12 valid item scores)",
+  "coverageLimit": "当前固定子集不覆盖完整技术操作说明书或用户手册。"
+}
