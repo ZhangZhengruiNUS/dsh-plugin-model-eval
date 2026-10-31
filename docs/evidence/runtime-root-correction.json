@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "platform": "win32",
+  "arch": "x64",
+  "node": "v24.21.0",
+  "status": "passed",
+  "limits": {
+    "wallMs": 30000,
+    "memoryBytes": 536870912,
+    "computeBudget": 200000000000
+  },
+  "timingScope": "whole task including launch; fuel is not seconds",
+  "sourceReleaseSha256": "272720b90ac375502c8ed23cd791c2a93dfb22a911641a494da74a426c09f101",
+  "runtimePins": {
+    "code-host": "2cf3a2cc6ad2904d2e8e062e64af10150200d8ff1f697280d2db348950699d9a",
+    "wasi": "6324ce07e648de95b8e2eb214af6b01bcaf2b1f2a09fb7aa8cab095968bc8e62",
+    "trusted-ifeval": "8f5bfc80fa7ab229cb7368c0fc715c11597e45701af4aeb51f3aa8f0d4d28d3a"
+  },
+  "tasks": [
+    {
+      "id": "HumanEval/32",
+      "reference": "fixed-scan-bisection-ulp-v1",
+      "baseInputs": 100,
+      "plusInputs": 788,
+      "kind": "passed",
+      "elapsedMs": 1876
+    }
+  ],
+  "rules": null,
+  "actualHost": "unverified"
+}

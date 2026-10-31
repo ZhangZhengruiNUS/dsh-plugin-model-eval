@@ -62,7 +62,7 @@ for (const dataset of datasets) {
   const bytes = await readFile(join('resources', dataset.path));
   files.push({ path:dataset.path,size:bytes.length,sha256:hash(bytes),kind:'dataset',source:dataset.source,revision:dataset.revision,license:dataset.license });
 }
-for (const name of ['general-chat-v1.json','rubric-writing-v1.json','tiny-fewshot-provenance.json']) {
+for (const name of ['general-chat-v1.json','rubric-writing-v1.json','coding-root-oracle-v1.json','ifeval-tokenizer-v1.json','tiny-fewshot-provenance.json']) {
   const path=`protocols/${name}`,bytes=await readFile(join('resources',path));
   files.push({path,size:bytes.length,sha256:hash(bytes),kind:'protocol',source:'This tool; fixed public source mapping where attributed',revision:'v1',license:name.includes('provenance')?'MIT':'MIT'});
 }
@@ -70,7 +70,7 @@ for (const name of (await readdir('resources/licenses')).sort()) {
   const path = `licenses/${name}`, bytes = await readFile(join('resources', path));
   files.push({ path,size:bytes.length,sha256:hash(bytes),kind:'license',source:'See per-resource attribution and source URLs',revision:'suite-v1',license:'See file' });
 }
-const manifest = { schemaVersion:1,resourceVersion:'suite-2026-10-31-v1',generalId:'general-chat-strict-v1',writingId:'work-writing-12-v1',
+const manifest = { schemaVersion:1,resourceVersion:'suite-2026-10-31-v3',generalId:'general-chat-root-stable-rule-tokenizer-v3',writingId:'work-writing-12-v1',
   datasets:datasets.map(({id,path,count})=>({id,path,count})),files,gates:{resources:'passed',runtime:'pending'} };
 const raw = JSON.stringify(manifest, null, 2) + '\n';
 await writeFile('resources/manifest.json', raw);

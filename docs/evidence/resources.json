@@ -1,17 +1,19 @@
 {
   "schemaVersion": 1,
-  "status": "resources-passed-runtime-pending",
-  "scope": "Fixed public questions, source mappings, templates, rubric, trusted scoring source and notices. This is not a completed model evaluation or runtime conformance claim.",
+  "status": "resources-and-windows-runtime-passed",
+  "scope": "Fixed public questions, source mappings, templates, rubric and notices. Windows runtime conformance is recorded separately in runtime.json; no real model evaluation has been performed.",
   "datasets": [
     { "id": "tiny-mmlu", "count": 100, "status": "passed", "mapping": "92 exact; 8 question-boundary whitespace differences only; original tiny strings retained", "demonstrations": 500, "basis": "Mapped original parent dataset card declares MIT; original publisher notice bundled. Tiny card has no separate license declaration." },
     { "id": "tiny-gsm8k", "count": 100, "status": "passed", "mapping": "100 exact question and complete-answer matches", "demonstrations": 500, "basis": "Mapped original parent dataset card and OpenAI source declare MIT; notice bundled." },
     { "id": "ifeval", "count": 541, "status": "passed", "revision": "e6890f85757dd84e27ca6df2dd30651dafad28e0", "basis": "Official Google Research data and scorer under Apache-2.0; trusted source and offline dependencies staged separately." },
-    { "id": "humaneval-plus", "count": 164, "status": "passed", "revision": "v0.1.10", "inputs": { "base": 1570, "plus": 122683 }, "basis": "Official release Apache-2.0 plus inherited OpenAI MIT; both notices bundled.", "runtimeStatus": "pending: reference and isolated execution verification is independent of resource provenance" },
+    { "id": "humaneval-plus", "count": 164, "status": "passed", "revision": "v0.1.10", "inputs": { "base": 1570, "plus": 122683 }, "basis": "Official release Apache-2.0 plus inherited OpenAI MIT; both notices bundled.", "runtimeStatus": "passed with explicitly approved find-zero-stable-v1 adaptation; see runtime.json" },
     { "id": "writing", "count": 12, "status": "passed", "basis": "Ziya author card and WritingBench root Apache-2.0; unchanged selected prompts match approved hashes.", "materialLimit": "WritingBench 59/287 do not identify their external material sources; targeted audit found no contrary license statement, not a certification of third-party ownership." }
   ],
   "adaptation": "This tool's chat-generation protocol and equal-weight score; independent writing rubric. Not official whole-source or AA-equivalent scores.",
   "largeReferenceOutputs": "Exact SHA256 comparison of long strings, very large integers and strictly equal integer-valued sequences avoids storing hundreds of MB of redundant outputs; all fixed test inputs remain present.",
   "runtimeNotices": "Pinned recipe/component notices bundled; no upstream WASI artifact SBOM was available, so the component record does not claim a complete binary linkage audit.",
   "validation": ["Counts 100/100/541/164/12 and unique IDs", "Unchanged writing input hashes", "Manifest-bound files and one-character tamper rejection"],
-  "runtimeGate": "pending"
+  "runtimeGate": "passed; see runtime.json, full 164 coding tasks and 541 rule prompts",
+  "approvedAdaptations": ["find-zero-stable-v1: principled numerical oracle for HumanEval/32; all enhanced inputs retained", "ifeval-code-tokenizer-v1: fully bundled code-only sentence/tokenizer rules; no unclarified pretrained Punkt data"],
+  "tokenizerComparison": "540 public responses: 538 unchanged, 2 changed; a regression sample, not a bound for other answers or a live model score"
 }

@@ -1,0 +1,24 @@
+import test from 'node:test';import assert from 'node:assert/strict';
+import type {GeneratedAnswer,Question} from '../../src/contracts.ts';
+import {buildPrompt,gradeGeneral} from '../../src/evaluation/grade-general.ts';
+import {createCodeRunner} from '../../src/runtime/runner.ts';
+import {createRuleGrader} from '../../src/runtime/rule-grader.ts';
+const answer=(text:string,complete=true):GeneratedAnswer=>({text,complete,truncated:!complete,observations:{attemptId:'test',itemId:'q',track:'general',phase:'answer',startedAt:'2026-01-01',endedAt:'2026-01-01',usage:{available:false}}});
+const q=(datasetId:string,grading:Question['grading']):Question=>({id:'q',datasetId,grading,track:'general',sourceId:'fixture',sourceHash:'fixture',prompt:[{role:'user',content:'Original prompt'}]});
+test('fixed prompts and genuine incorrect, incomplete, rule and enhanced-test paths',async()=>{
+  const env={code:createCodeRunner('resources/runtime'),rules:createRuleGrader('resources/runtime/rules'),signal:new AbortController().signal};
+  const knowledge=q('tiny-mmlu',{choices:['a','b','c','d'],answer:'B',target:'B'});
+  assert.match(buildPrompt(knowledge)[0]!.content,/Original prompt/);
+  assert.match(buildPrompt(knowledge)[0]!.content,/Final answer: A/);
+  assert.equal((await gradeGeneral(knowledge,answer('Final answer: B'),env) as {passed:boolean}).passed,true);
+  assert.equal((await gradeGeneral(knowledge,answer('refusal'),env) as {passed:boolean}).passed,false);
+  assert.equal((await gradeGeneral(knowledge,answer('Final answer: B',false),env)).kind,'technical-missing');
+  const rules=q('ifeval',{key:1,prompt:'Say alpha and beta',instruction_id_list:['keywords:existence'],kwargs:[{keywords:['alpha','beta']}]});
+  assert.equal((await gradeGeneral(rules,answer('alpha'),env) as {passed:boolean}).passed,false);
+  assert.equal((await gradeGeneral(rules,answer('alpha beta'),env) as {passed:boolean}).passed,true);
+  const coding=q('humaneval-plus',{id:'fixture',entryPoint:'f',prompt:'def f(x):\n',cases:[{args:[{t:'int',v:'1'}],expected:{t:'int',v:'1'},group:'base'},{args:[{t:'int',v:'2'}],expected:{t:'int',v:'2'},group:'plus'}]});
+  const wrong=await gradeGeneral(coding,answer('```python\ndef f(x): return 1\n```'),env);
+  assert.equal((wrong as {passed:boolean}).passed,false);
+  const failed=await gradeGeneral(rules,answer('alpha beta'),{...env,rules:createRuleGrader('missing-runtime')});
+  assert.equal(failed.kind,'technical-missing');
+});

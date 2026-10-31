@@ -1,0 +1,10 @@
+{
+  "id": "ifeval-code-tokenizer-v1",
+  "label": "本工具适配版 IFEval：纯规则分句与分词 v1",
+  "questions": 541,
+  "sentenceCount": "Use split_into_sentences from the fixed official IFEval instructions_util.py, rather than the pretrained Punkt model.",
+  "capitalWordCount": "Use Apache-2.0 NLTK TreebankWordTokenizer directly, without a pretrained sentence model.",
+  "why": "The NLTK data maintainers explicitly identify Punkt and punkt_tab pretrained-data licenses as unclarified. Those model data are not redistributed.",
+  "comparison": { "publishedResponsesMatched": 540, "unchangedPromptGrades": 538, "changedPromptGrades": 2, "sentenceCountRows": 46, "capitalWordRows": 20, "sourceCommit": "e6890f85757dd84e27ca6df2dd30651dafad28e0", "responseSha256": "0cff1d1469b774e80296bee20ca696894df35f3c6d6539f2c886d67c07599dcb", "limit": "This is a tokenizer regression comparison on published responses, not a live model evaluation and not a bound on differences for other answers." },
+  "officialScore": false
+}

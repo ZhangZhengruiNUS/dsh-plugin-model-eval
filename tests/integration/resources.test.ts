@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { cp, readFile, writeFile, mkdir } from 'node:fs/promises';
 import { execFileSync } from 'node:child_process';
-import { dirname } from 'node:path';
+import { createHash } from 'node:crypto';
 import { join, resolve } from 'node:path';
 import { withTempRoot } from '../support/temp.ts';
 import { loadProtocolSet } from '../../src/evaluation/protocols.ts';
@@ -28,13 +28,12 @@ test('fixed_counts_and_tamper_detection', async () => {
 });
 
 test('resource hashes survive a Git checkout without newline conversion', async () => {
-  await withTempRoot(async root => {
-    const files = execFileSync('git', ['ls-files','-z','resources'], { encoding:'utf8' }).split('\0').filter(Boolean);
-    for (const file of files) {
-      const target=join(root,file.slice('resources/'.length));
-      await mkdir(dirname(target),{recursive:true});
-      await writeFile(target,execFileSync('git',['show',`:${file}`],{maxBuffer:64*1024*1024}));
-    }
-    await assert.doesNotReject(loadProtocolSet(root));
-  });
+  const manifest=JSON.parse(await readFile('resources/manifest.json','utf8'));
+  const files=['resources/manifest.json',...manifest.files.filter((x:{kind:string})=>x.kind!=='runtime').map((x:{path:string})=>'resources/'+x.path)];
+  for (const file of files) {
+    const raw=await readFile(file);
+    const rawId=createHash('sha1').update(`blob ${raw.length}\0`).update(raw).digest('hex');
+    const filteredId=execFileSync('git',['hash-object','--stdin',`--path=${file}`],{input:raw,encoding:'utf8',maxBuffer:1024}).trim();
+    assert.equal(filteredId,rawId,file);
+  }
 });

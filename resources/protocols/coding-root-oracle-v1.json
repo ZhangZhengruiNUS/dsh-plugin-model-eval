@@ -1,0 +1,13 @@
+{
+  "id": "find-zero-stable-v1",
+  "appliesTo": "HumanEval/32 only",
+  "label": "本工具适配版 HumanEval+：求根数值判分 v1",
+  "inputsChanged": false,
+  "inputsOmitted": false,
+  "candidateRepair": false,
+  "predicate": "For finite binary64 x: abs(P(x)) <= 1/10000 + gamma_d * S(x)",
+  "definitions": { "P": "sum(a_i*x^i), evaluated with exact rational arithmetic", "S": "sum(abs(a_i*x^i)), evaluated with exact rational arithmetic", "d": "effective polynomial degree after trimming zero leading coefficients", "u": "2^-53", "gamma_d": "d*u/(1-d*u)" },
+  "basis": "For a normal-domain exact root r rounded to x with abs(x-r)<=u*abs(r), the root representation residual is bounded by ((1-u)^(-d)-1)*S <= gamma_d*S. The fixed predicate is defined for every finite x; the explanatory relative-rounding guarantee does not automatically extend to subnormal roots.",
+  "limit": "This is a tool-specific numerical adaptation, not equality with the official original oracle and not a root-distance error guarantee.",
+  "reference": "Conformance uses a separately verified fixed scan/bisection/ULP reference because the published canonical has two remaining convergence failures even after the numerical correction. Production scores always evaluate the original model answer."
+}

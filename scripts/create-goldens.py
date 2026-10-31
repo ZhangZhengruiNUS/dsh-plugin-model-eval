@@ -39,7 +39,8 @@ for task in tasks:
     if row['entryPoint']=='find_zero':row['oracle']='find-zero'
     for group in ['base','plus']:
         for args in task[group+'_input']:
-            row['cases'].append({'group':group,'args':[typed(x) for x in args], 'expected':typed(fn(*copy.deepcopy(args)),True)})
+            # Hash encodings only apply to exact equality, never a tolerance.
+            row['cases'].append({'group':group,'args':[typed(x) for x in args], 'expected':typed(fn(*copy.deepcopy(args)),not task['atol'])})
     output.append(row)
     row_bytes=len(json.dumps(row,ensure_ascii=False,separators=(',',':')).encode())
     if row_bytes>5_000_000:print('Large reference task:',row['id'],'serialized bytes:',row_bytes,flush=True)

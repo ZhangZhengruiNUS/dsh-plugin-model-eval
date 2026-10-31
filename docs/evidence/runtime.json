@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 3,
+  "status": "passed",
+  "platform": "win32",
+  "arch": "x64",
+  "node": "v24.21.0",
+  "coding": {
+    "report": "runtime-code-corrected.json",
+    "sha256": "bfdccbfcedd832486575677f2673de313c39c29c79b827ab71d05526b41930c1",
+    "tasks": 164,
+    "baseInputs": 1570,
+    "plusInputs": 122683,
+    "limits": {
+      "wallMs": 30000,
+      "memoryBytes": 536870912,
+      "computeBudget": 200000000000
+    },
+    "runtimePins": {
+      "code-host": "2cf3a2cc6ad2904d2e8e062e64af10150200d8ff1f697280d2db348950699d9a",
+      "wasi": "6324ce07e648de95b8e2eb214af6b01bcaf2b1f2a09fb7aa8cab095968bc8e62",
+      "trusted-ifeval": "8f5bfc80fa7ab229cb7368c0fc715c11597e45701af4aeb51f3aa8f0d4d28d3a"
+    },
+    "adaptation": "find-zero-stable-v1; all original test inputs retained; one named conformance reference replaces defective canonical only in self-test"
+  },
+  "rules": {
+    "report": "runtime-rules-v3.json",
+    "sha256": "a583f99396340ad187ffb01ec051d48945e4bb8bae73d0e2703328ea70af76e3",
+    "required": 541,
+    "executed": 541,
+    "technicalFailures": 0,
+    "runtimeManifestSha256": "9b06ff09f6f4cd1c7d8cf0dd94b6389899e7fa28c2e05d3dc5a37092250f9f0a",
+    "dataSha256": "67ffeee0fcb87c317c5b08a2de85557b4a7e96ada6178aa645b4954fe4b53d49",
+    "adaptation": "ifeval-code-tokenizer-v1; no pretrained Punkt data; full 541 prompts executed with the fixed code-only splitter/tokenizer"
+  },
+  "safety": {
+    "command": [
+      "node",
+      "--import",
+      "tsx",
+      "--test",
+      "tests/integration/runtime.test.ts",
+      "tests/integration/rule-runtime.test.ts",
+      "tests/integration/runtime-integrity.test.ts",
+      "tests/unit/runtime-values.test.ts"
+    ],
+    "exitCode": 0,
+    "log": "task-3-safety.log",
+    "checks": [
+      "no host file access",
+      "read-only guest filesystem",
+      "reachable-local-server network denied",
+      "no host subprocess",
+      "fuel/memory/wall/cancellation/output limits",
+      "Host compares outputs",
+      "forged errors cannot become technical missing",
+      "manifest inventory and hashes",
+      "enhanced failures cannot be ignored"
+    ]
+  },
+  "bytes": 157878838,
+  "resourceManifestSha256": "8b510ec7a2f04543c2fad279d44ee562186de99e92a74f4a1d8fba937f1be16b",
+  "actualDshHost": "unverified",
+  "realModelRun": "not-performed"
+}

@@ -1,0 +1,191 @@
+{
+  "schemaVersion": 1,
+  "sourceRelease": "v0.1.10",
+  "sourceSha256": "272720b90ac375502c8ed23cd791c2a93dfb22a911641a494da74a426c09f101",
+  "taskId": "HumanEval/32",
+  "python": "3.14.8 (tags/v3.14.8:8e6e75d, Sep 30 2026, 18:19:33) [MSC v.1944 64 bit (AMD64)]",
+  "baseInputs": 100,
+  "plusInputs": 788,
+  "absoluteTolerance": 0.0001,
+  "canonicalFailures": [
+    {
+      "index": 219,
+      "group": "plus",
+      "output": 17.3124550475086,
+      "officialResidual": -0.0023150274059275944
+    },
+    {
+      "index": 277,
+      "group": "plus",
+      "output": -0.02777033164296834,
+      "officialResidual": 25.360830495867102
+    },
+    {
+      "index": 285,
+      "group": "plus",
+      "output": 0.04912698619385405,
+      "officialResidual": -142.99275774799713
+    },
+    {
+      "index": 499,
+      "group": "plus",
+      "output": 13.091719521058346,
+      "officialResidual": 0.0023935606772145235
+    },
+    {
+      "index": 750,
+      "group": "plus",
+      "output": 7999.418311588738,
+      "officialResidual": 2.811130718384961e+20
+    },
+    {
+      "index": 794,
+      "group": "plus",
+      "output": 5.466421282858954,
+      "officialResidual": 0.001629622516601259
+    },
+    {
+      "index": 880,
+      "group": "plus",
+      "output": 3.2096903517224047,
+      "officialResidual": 0.006036999577190727
+    }
+  ],
+  "exactPolynomialProofs": [
+    {
+      "index": 219,
+      "coefficients": [
+        9450000,
+        9,
+        -7,
+        3,
+        2,
+        6,
+        1,
+        -4,
+        -10,
+        6,
+        17,
+        -1
+      ],
+      "adjacentBinary64": [
+        17.3124550475086,
+        17.312455047508603
+      ],
+      "exactPolynomialAtEndpoints": [
+        0.004892908465387197,
+        -0.0038379341304294917
+      ],
+      "sturm": [
+        {
+          "constantShift": "0",
+          "totalRealRoots": 1,
+          "rootsBetweenAdjacentFloats": 1
+        },
+        {
+          "constantShift": "-1/10000",
+          "totalRealRoots": 1,
+          "rootsBetweenAdjacentFloats": 1
+        },
+        {
+          "constantShift": "1/10000",
+          "totalRealRoots": 1,
+          "rootsBetweenAdjacentFloats": 1
+        }
+      ]
+    },
+    {
+      "index": 499,
+      "coefficients": [
+        26,
+        1,
+        -2,
+        3,
+        -4,
+        6,
+        -6,
+        7,
+        21000,
+        -8,
+        9,
+        -10
+      ],
+      "adjacentBinary64": [
+        13.091719521058346,
+        13.091719521058348
+      ],
+      "exactPolynomialAtEndpoints": [
+        0.0033435635910766723,
+        -0.004189206247730529
+      ],
+      "sturm": [
+        {
+          "constantShift": "0",
+          "totalRealRoots": 1,
+          "rootsBetweenAdjacentFloats": 1
+        },
+        {
+          "constantShift": "-1/10000",
+          "totalRealRoots": 1,
+          "rootsBetweenAdjacentFloats": 1
+        },
+        {
+          "constantShift": "1/10000",
+          "totalRealRoots": 1,
+          "rootsBetweenAdjacentFloats": 1
+        }
+      ]
+    },
+    {
+      "index": 794,
+      "coefficients": [
+        -3,
+        -2,
+        3,
+        3,
+        -6,
+        -3,
+        5,
+        -6,
+        37,
+        3,
+        -630001,
+        -38,
+        9,
+        -10,
+        3,
+        -10,
+        9,
+        3
+      ],
+      "adjacentBinary64": [
+        5.466421282858953,
+        5.466421282858954
+      ],
+      "exactPolynomialAtEndpoints": [
+        -0.015869771993755676,
+        0.0006436153954626981
+      ],
+      "sturm": [
+        {
+          "constantShift": "0",
+          "totalRealRoots": 1,
+          "rootsBetweenAdjacentFloats": 1
+        },
+        {
+          "constantShift": "-1/10000",
+          "totalRealRoots": 1,
+          "rootsBetweenAdjacentFloats": 1
+        },
+        {
+          "constantShift": "1/10000",
+          "totalRealRoots": 1,
+          "rootsBetweenAdjacentFloats": 1
+        }
+      ]
+    }
+  ],
+  "finding": "Reference fails 7 unchanged plus inputs. For 3 inputs the exact-polynomial acceptable interval lies strictly between adjacent binary64 values.",
+  "limit": "This proves the exact-polynomial binary64 limitation, not global unsatisfiability of every rounded math.pow predicate.",
+  "status": "pending-protocol-decision"
+}

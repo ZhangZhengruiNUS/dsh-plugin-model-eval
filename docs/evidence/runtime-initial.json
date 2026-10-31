@@ -1,0 +1,1172 @@
+{
+  "schemaVersion": 1,
+  "platform": "win32",
+  "arch": "x64",
+  "node": "v24.21.0",
+  "status": "failed",
+  "limits": {
+    "wallMs": 30000,
+    "memoryBytes": 536870912,
+    "computeBudget": 200000000000
+  },
+  "timingScope": "whole task including launch; fuel is not seconds",
+  "sourceReleaseSha256": "272720b90ac375502c8ed23cd791c2a93dfb22a911641a494da74a426c09f101",
+  "tasks": [
+    {
+      "id": "HumanEval/0",
+      "baseInputs": 7,
+      "plusInputs": 999,
+      "kind": "passed",
+      "elapsedMs": 1548
+    },
+    {
+      "id": "HumanEval/1",
+      "baseInputs": 4,
+      "plusInputs": 83,
+      "kind": "passed",
+      "elapsedMs": 1370
+    },
+    {
+      "id": "HumanEval/2",
+      "baseInputs": 3,
+      "plusInputs": 971,
+      "kind": "passed",
+      "elapsedMs": 1475
+    },
+    {
+      "id": "HumanEval/3",
+      "baseInputs": 6,
+      "plusInputs": 898,
+      "kind": "passed",
+      "elapsedMs": 1448
+    },
+    {
+      "id": "HumanEval/4",
+      "baseInputs": 3,
+      "plusInputs": 785,
+      "kind": "passed",
+      "elapsedMs": 1456
+    },
+    {
+      "id": "HumanEval/5",
+      "baseInputs": 3,
+      "plusInputs": 153,
+      "kind": "passed",
+      "elapsedMs": 1462
+    },
+    {
+      "id": "HumanEval/6",
+      "baseInputs": 3,
+      "plusInputs": 66,
+      "kind": "passed",
+      "elapsedMs": 1492
+    },
+    {
+      "id": "HumanEval/7",
+      "baseInputs": 4,
+      "plusInputs": 178,
+      "kind": "passed",
+      "elapsedMs": 1486
+    },
+    {
+      "id": "HumanEval/8",
+      "baseInputs": 5,
+      "plusInputs": 1000,
+      "kind": "passed",
+      "elapsedMs": 1533
+    },
+    {
+      "id": "HumanEval/9",
+      "baseInputs": 4,
+      "plusInputs": 959,
+      "kind": "passed",
+      "elapsedMs": 1460
+    },
+    {
+      "id": "HumanEval/10",
+      "baseInputs": 5,
+      "plusInputs": 780,
+      "kind": "passed",
+      "elapsedMs": 1503
+    },
+    {
+      "id": "HumanEval/11",
+      "baseInputs": 3,
+      "plusInputs": 405,
+      "kind": "passed",
+      "elapsedMs": 1427
+    },
+    {
+      "id": "HumanEval/12",
+      "baseInputs": 3,
+      "plusInputs": 933,
+      "kind": "passed",
+      "elapsedMs": 1452
+    },
+    {
+      "id": "HumanEval/13",
+      "baseInputs": 4,
+      "plusInputs": 987,
+      "kind": "passed",
+      "elapsedMs": 1407
+    },
+    {
+      "id": "HumanEval/14",
+      "baseInputs": 3,
+      "plusInputs": 903,
+      "kind": "passed",
+      "elapsedMs": 1627
+    },
+    {
+      "id": "HumanEval/15",
+      "baseInputs": 3,
+      "plusInputs": 134,
+      "kind": "passed",
+      "elapsedMs": 5811
+    },
+    {
+      "id": "HumanEval/16",
+      "baseInputs": 5,
+      "plusInputs": 1000,
+      "kind": "passed",
+      "elapsedMs": 1417
+    },
+    {
+      "id": "HumanEval/17",
+      "baseInputs": 5,
+      "plusInputs": 215,
+      "kind": "passed",
+      "elapsedMs": 1490
+    },
+    {
+      "id": "HumanEval/18",
+      "baseInputs": 4,
+      "plusInputs": 1000,
+      "kind": "passed",
+      "elapsedMs": 1390
+    },
+    {
+      "id": "HumanEval/19",
+      "baseInputs": 5,
+      "plusInputs": 128,
+      "kind": "passed",
+      "elapsedMs": 1454
+    },
+    {
+      "id": "HumanEval/20",
+      "baseInputs": 5,
+      "plusInputs": 1000,
+      "kind": "passed",
+      "elapsedMs": 1520
+    },
+    {
+      "id": "HumanEval/21",
+      "baseInputs": 5,
+      "plusInputs": 999,
+      "kind": "passed",
+      "elapsedMs": 1541
+    },
+    {
+      "id": "HumanEval/22",
+      "baseInputs": 3,
+      "plusInputs": 953,
+      "kind": "passed",
+      "elapsedMs": 1484
+    },
+    {
+      "id": "HumanEval/23",
+      "baseInputs": 3,
+      "plusInputs": 964,
+      "kind": "passed",
+      "elapsedMs": 1442
+    },
+    {
+      "id": "HumanEval/24",
+      "baseInputs": 5,
+      "plusInputs": 168,
+      "kind": "passed",
+      "elapsedMs": 1568
+    },
+    {
+      "id": "HumanEval/25",
+      "baseInputs": 8,
+      "plusInputs": 138,
+      "kind": "passed",
+      "elapsedMs": 1660
+    },
+    {
+      "id": "HumanEval/26",
+      "baseInputs": 3,
+      "plusInputs": 862,
+      "kind": "passed",
+      "elapsedMs": 1507
+    },
+    {
+      "id": "HumanEval/27",
+      "baseInputs": 3,
+      "plusInputs": 973,
+      "kind": "passed",
+      "elapsedMs": 1418
+    },
+    {
+      "id": "HumanEval/28",
+      "baseInputs": 3,
+      "plusInputs": 861,
+      "kind": "passed",
+      "elapsedMs": 1511
+    },
+    {
+      "id": "HumanEval/29",
+      "baseInputs": 2,
+      "plusInputs": 996,
+      "kind": "passed",
+      "elapsedMs": 1480
+    },
+    {
+      "id": "HumanEval/30",
+      "baseInputs": 4,
+      "plusInputs": 999,
+      "kind": "passed",
+      "elapsedMs": 1406
+    },
+    {
+      "id": "HumanEval/31",
+      "baseInputs": 13,
+      "plusInputs": 154,
+      "kind": "passed",
+      "elapsedMs": 1541
+    },
+    {
+      "id": "HumanEval/32",
+      "baseInputs": 100,
+      "plusInputs": 788,
+      "kind": "failed",
+      "reason": "assertion",
+      "elapsedMs": 1768
+    },
+    {
+      "id": "HumanEval/33",
+      "baseInputs": 10,
+      "plusInputs": 955,
+      "kind": "passed",
+      "elapsedMs": 1522
+    },
+    {
+      "id": "HumanEval/34",
+      "baseInputs": 1,
+      "plusInputs": 903,
+      "kind": "passed",
+      "elapsedMs": 1422
+    },
+    {
+      "id": "HumanEval/35",
+      "baseInputs": 2,
+      "plusInputs": 938,
+      "kind": "passed",
+      "elapsedMs": 1455
+    },
+    {
+      "id": "HumanEval/36",
+      "baseInputs": 8,
+      "plusInputs": 148,
+      "kind": "passed",
+      "elapsedMs": 4099
+    },
+    {
+      "id": "HumanEval/37",
+      "baseInputs": 3,
+      "plusInputs": 974,
+      "kind": "passed",
+      "elapsedMs": 1432
+    },
+    {
+      "id": "HumanEval/38",
+      "baseInputs": 100,
+      "plusInputs": 999,
+      "kind": "passed",
+      "elapsedMs": 1489
+    },
+    {
+      "id": "HumanEval/39",
+      "baseInputs": 10,
+      "plusInputs": 2,
+      "kind": "passed",
+      "elapsedMs": 1427
+    },
+    {
+      "id": "HumanEval/40",
+      "baseInputs": 9,
+      "plusInputs": 979,
+      "kind": "passed",
+      "elapsedMs": 1446
+    },
+    {
+      "id": "HumanEval/41",
+      "baseInputs": 5,
+      "plusInputs": 78,
+      "kind": "passed",
+      "elapsedMs": 1417
+    },
+    {
+      "id": "HumanEval/42",
+      "baseInputs": 3,
+      "plusInputs": 999,
+      "kind": "passed",
+      "elapsedMs": 1461
+    },
+    {
+      "id": "HumanEval/43",
+      "baseInputs": 9,
+      "plusInputs": 974,
+      "kind": "passed",
+      "elapsedMs": 1438
+    },
+    {
+      "id": "HumanEval/44",
+      "baseInputs": 12,
+      "plusInputs": 466,
+      "kind": "passed",
+      "elapsedMs": 1441
+    },
+    {
+      "id": "HumanEval/45",
+      "baseInputs": 3,
+      "plusInputs": 1000,
+      "kind": "passed",
+      "elapsedMs": 1428
+    },
+    {
+      "id": "HumanEval/46",
+      "baseInputs": 4,
+      "plusInputs": 132,
+      "kind": "passed",
+      "elapsedMs": 1393
+    },
+    {
+      "id": "HumanEval/47",
+      "baseInputs": 5,
+      "plusInputs": 995,
+      "kind": "passed",
+      "elapsedMs": 1406
+    },
+    {
+      "id": "HumanEval/48",
+      "baseInputs": 7,
+      "plusInputs": 989,
+      "kind": "passed",
+      "elapsedMs": 1417
+    },
+    {
+      "id": "HumanEval/49",
+      "baseInputs": 7,
+      "plusInputs": 983,
+      "kind": "passed",
+      "elapsedMs": 1407
+    },
+    {
+      "id": "HumanEval/50",
+      "baseInputs": 100,
+      "plusInputs": 1000,
+      "kind": "passed",
+      "elapsedMs": 1435
+    },
+    {
+      "id": "HumanEval/51",
+      "baseInputs": 7,
+      "plusInputs": 997,
+      "kind": "passed",
+      "elapsedMs": 1459
+    },
+    {
+      "id": "HumanEval/52",
+      "baseInputs": 6,
+      "plusInputs": 419,
+      "kind": "passed",
+      "elapsedMs": 1370
+    },
+    {
+      "id": "HumanEval/53",
+      "baseInputs": 105,
+      "plusInputs": 866,
+      "kind": "passed",
+      "elapsedMs": 1410
+    },
+    {
+      "id": "HumanEval/54",
+      "baseInputs": 7,
+      "plusInputs": 999,
+      "kind": "passed",
+      "elapsedMs": 1401
+    },
+    {
+      "id": "HumanEval/55",
+      "baseInputs": 5,
+      "plusInputs": 45,
+      "kind": "passed",
+      "elapsedMs": 1398
+    },
+    {
+      "id": "HumanEval/56",
+      "baseInputs": 12,
+      "plusInputs": 1000,
+      "kind": "passed",
+      "elapsedMs": 1439
+    },
+    {
+      "id": "HumanEval/57",
+      "baseInputs": 8,
+      "plusInputs": 971,
+      "kind": "passed",
+      "elapsedMs": 1438
+    },
+    {
+      "id": "HumanEval/58",
+      "baseInputs": 4,
+      "plusInputs": 985,
+      "kind": "passed",
+      "elapsedMs": 1537
+    },
+    {
+      "id": "HumanEval/59",
+      "baseInputs": 5,
+      "plusInputs": 174,
+      "kind": "passed",
+      "elapsedMs": 5052
+    },
+    {
+      "id": "HumanEval/60",
+      "baseInputs": 5,
+      "plusInputs": 159,
+      "kind": "passed",
+      "elapsedMs": 1366
+    },
+    {
+      "id": "HumanEval/61",
+      "baseInputs": 12,
+      "plusInputs": 999,
+      "kind": "passed",
+      "elapsedMs": 1410
+    },
+    {
+      "id": "HumanEval/62",
+      "baseInputs": 5,
+      "plusInputs": 948,
+      "kind": "passed",
+      "elapsedMs": 1372
+    },
+    {
+      "id": "HumanEval/63",
+      "baseInputs": 7,
+      "plusInputs": 63,
+      "kind": "passed",
+      "elapsedMs": 1322
+    },
+    {
+      "id": "HumanEval/64",
+      "baseInputs": 7,
+      "plusInputs": 992,
+      "kind": "passed",
+      "elapsedMs": 1440
+    },
+    {
+      "id": "HumanEval/65",
+      "baseInputs": 5,
+      "plusInputs": 982,
+      "kind": "passed",
+      "elapsedMs": 1364
+    },
+    {
+      "id": "HumanEval/66",
+      "baseInputs": 8,
+      "plusInputs": 1000,
+      "kind": "passed",
+      "elapsedMs": 1353
+    },
+    {
+      "id": "HumanEval/67",
+      "baseInputs": 7,
+      "plusInputs": 341,
+      "kind": "passed",
+      "elapsedMs": 1363
+    },
+    {
+      "id": "HumanEval/68",
+      "baseInputs": 8,
+      "plusInputs": 1000,
+      "kind": "passed",
+      "elapsedMs": 1455
+    },
+    {
+      "id": "HumanEval/69",
+      "baseInputs": 25,
+      "plusInputs": 1000,
+      "kind": "passed",
+      "elapsedMs": 1389
+    },
+    {
+      "id": "HumanEval/70",
+      "baseInputs": 9,
+      "plusInputs": 975,
+      "kind": "passed",
+      "elapsedMs": 1399
+    },
+    {
+      "id": "HumanEval/71",
+      "baseInputs": 9,
+      "plusInputs": 1000,
+      "kind": "passed",
+      "elapsedMs": 1384
+    },
+    {
+      "id": "HumanEval/72",
+      "baseInputs": 6,
+      "plusInputs": 691,
+      "kind": "passed",
+      "elapsedMs": 1377
+    },
+    {
+      "id": "HumanEval/73",
+      "baseInputs": 8,
+      "plusInputs": 962,
+      "kind": "passed",
+      "elapsedMs": 1535
+    },
+    {
+      "id": "HumanEval/74",
+      "baseInputs": 9,
+      "plusInputs": 977,
+      "kind": "passed",
+      "elapsedMs": 1647
+    },
+    {
+      "id": "HumanEval/75",
+      "baseInputs": 4,
+      "plusInputs": 93,
+      "kind": "passed",
+      "elapsedMs": 1555
+    },
+    {
+      "id": "HumanEval/76",
+      "baseInputs": 10,
+      "plusInputs": 897,
+      "kind": "passed",
+      "elapsedMs": 1609
+    },
+    {
+      "id": "HumanEval/77",
+      "baseInputs": 16,
+      "plusInputs": 157,
+      "kind": "passed",
+      "elapsedMs": 1554
+    },
+    {
+      "id": "HumanEval/78",
+      "baseInputs": 13,
+      "plusInputs": 1000,
+      "kind": "passed",
+      "elapsedMs": 1534
+    },
+    {
+      "id": "HumanEval/79",
+      "baseInputs": 4,
+      "plusInputs": 198,
+      "kind": "passed",
+      "elapsedMs": 1460
+    },
+    {
+      "id": "HumanEval/80",
+      "baseInputs": 8,
+      "plusInputs": 941,
+      "kind": "passed",
+      "elapsedMs": 1564
+    },
+    {
+      "id": "HumanEval/81",
+      "baseInputs": 6,
+      "plusInputs": 1000,
+      "kind": "passed",
+      "elapsedMs": 1576
+    },
+    {
+      "id": "HumanEval/82",
+      "baseInputs": 16,
+      "plusInputs": 962,
+      "kind": "passed",
+      "elapsedMs": 1623
+    },
+    {
+      "id": "HumanEval/83",
+      "baseInputs": 5,
+      "plusInputs": 104,
+      "kind": "passed",
+      "elapsedMs": 3317
+    },
+    {
+      "id": "HumanEval/84",
+      "baseInputs": 5,
+      "plusInputs": 211,
+      "kind": "passed",
+      "elapsedMs": 1607
+    },
+    {
+      "id": "HumanEval/85",
+      "baseInputs": 4,
+      "plusInputs": 994,
+      "kind": "passed",
+      "elapsedMs": 1580
+    },
+    {
+      "id": "HumanEval/86",
+      "baseInputs": 7,
+      "plusInputs": 1000,
+      "kind": "passed",
+      "elapsedMs": 1506
+    },
+    {
+      "id": "HumanEval/87",
+      "baseInputs": 6,
+      "plusInputs": 207,
+      "kind": "passed",
+      "elapsedMs": 1542
+    },
+    {
+      "id": "HumanEval/88",
+      "baseInputs": 7,
+      "plusInputs": 1000,
+      "kind": "passed",
+      "elapsedMs": 1624
+    },
+    {
+      "id": "HumanEval/89",
+      "baseInputs": 8,
+      "plusInputs": 1000,
+      "kind": "passed",
+      "elapsedMs": 1590
+    },
+    {
+      "id": "HumanEval/90",
+      "baseInputs": 7,
+      "plusInputs": 822,
+      "kind": "passed",
+      "elapsedMs": 1520
+    },
+    {
+      "id": "HumanEval/91",
+      "baseInputs": 6,
+      "plusInputs": 1000,
+      "kind": "passed",
+      "elapsedMs": 1457
+    },
+    {
+      "id": "HumanEval/92",
+      "baseInputs": 10,
+      "plusInputs": 1000,
+      "kind": "passed",
+      "elapsedMs": 1565
+    },
+    {
+      "id": "HumanEval/93",
+      "baseInputs": 5,
+      "plusInputs": 1000,
+      "kind": "passed",
+      "elapsedMs": 1628
+    },
+    {
+      "id": "HumanEval/94",
+      "baseInputs": 9,
+      "plusInputs": 1000,
+      "kind": "passed",
+      "elapsedMs": 4440
+    },
+    {
+      "id": "HumanEval/95",
+      "baseInputs": 14,
+      "plusInputs": 510,
+      "kind": "passed",
+      "elapsedMs": 1522
+    },
+    {
+      "id": "HumanEval/96",
+      "baseInputs": 10,
+      "plusInputs": 180,
+      "kind": "passed",
+      "elapsedMs": 1631
+    },
+    {
+      "id": "HumanEval/97",
+      "baseInputs": 16,
+      "plusInputs": 969,
+      "kind": "passed",
+      "elapsedMs": 1591
+    },
+    {
+      "id": "HumanEval/98",
+      "baseInputs": 7,
+      "plusInputs": 1000,
+      "kind": "passed",
+      "elapsedMs": 1491
+    },
+    {
+      "id": "HumanEval/99",
+      "baseInputs": 5,
+      "plusInputs": 710,
+      "kind": "passed",
+      "elapsedMs": 1539
+    },
+    {
+      "id": "HumanEval/100",
+      "baseInputs": 5,
+      "plusInputs": 112,
+      "kind": "passed",
+      "elapsedMs": 2190
+    },
+    {
+      "id": "HumanEval/101",
+      "baseInputs": 6,
+      "plusInputs": 1000,
+      "kind": "passed",
+      "elapsedMs": 1565
+    },
+    {
+      "id": "HumanEval/102",
+      "baseInputs": 8,
+      "plusInputs": 944,
+      "kind": "passed",
+      "elapsedMs": 1602
+    },
+    {
+      "id": "HumanEval/103",
+      "baseInputs": 12,
+      "plusInputs": 939,
+      "kind": "passed",
+      "elapsedMs": 1468
+    },
+    {
+      "id": "HumanEval/104",
+      "baseInputs": 4,
+      "plusInputs": 999,
+      "kind": "passed",
+      "elapsedMs": 1494
+    },
+    {
+      "id": "HumanEval/105",
+      "baseInputs": 5,
+      "plusInputs": 999,
+      "kind": "passed",
+      "elapsedMs": 1591
+    },
+    {
+      "id": "HumanEval/106",
+      "baseInputs": 4,
+      "plusInputs": 104,
+      "kind": "passed",
+      "elapsedMs": 1573
+    },
+    {
+      "id": "HumanEval/107",
+      "baseInputs": 8,
+      "plusInputs": 169,
+      "kind": "passed",
+      "elapsedMs": 1593
+    },
+    {
+      "id": "HumanEval/108",
+      "baseInputs": 8,
+      "plusInputs": 1000,
+      "kind": "passed",
+      "elapsedMs": 1441
+    },
+    {
+      "id": "HumanEval/109",
+      "baseInputs": 5,
+      "plusInputs": 953,
+      "kind": "passed",
+      "elapsedMs": 1497
+    },
+    {
+      "id": "HumanEval/110",
+      "baseInputs": 7,
+      "plusInputs": 1000,
+      "kind": "passed",
+      "elapsedMs": 1549
+    },
+    {
+      "id": "HumanEval/111",
+      "baseInputs": 8,
+      "plusInputs": 655,
+      "kind": "passed",
+      "elapsedMs": 1505
+    },
+    {
+      "id": "HumanEval/112",
+      "baseInputs": 9,
+      "plusInputs": 997,
+      "kind": "passed",
+      "elapsedMs": 1592
+    },
+    {
+      "id": "HumanEval/113",
+      "baseInputs": 3,
+      "plusInputs": 983,
+      "kind": "passed",
+      "elapsedMs": 1635
+    },
+    {
+      "id": "HumanEval/114",
+      "baseInputs": 12,
+      "plusInputs": 1000,
+      "kind": "passed",
+      "elapsedMs": 1720
+    },
+    {
+      "id": "HumanEval/115",
+      "baseInputs": 5,
+      "plusInputs": 801,
+      "kind": "passed",
+      "elapsedMs": 1506
+    },
+    {
+      "id": "HumanEval/116",
+      "baseInputs": 8,
+      "plusInputs": 722,
+      "kind": "passed",
+      "elapsedMs": 1582
+    },
+    {
+      "id": "HumanEval/117",
+      "baseInputs": 14,
+      "plusInputs": 1000,
+      "kind": "passed",
+      "elapsedMs": 1493
+    },
+    {
+      "id": "HumanEval/118",
+      "baseInputs": 13,
+      "plusInputs": 1000,
+      "kind": "passed",
+      "elapsedMs": 1569
+    },
+    {
+      "id": "HumanEval/119",
+      "baseInputs": 12,
+      "plusInputs": 648,
+      "kind": "passed",
+      "elapsedMs": 1534
+    },
+    {
+      "id": "HumanEval/120",
+      "baseInputs": 11,
+      "plusInputs": 1000,
+      "kind": "passed",
+      "elapsedMs": 1681
+    },
+    {
+      "id": "HumanEval/121",
+      "baseInputs": 7,
+      "plusInputs": 998,
+      "kind": "passed",
+      "elapsedMs": 1696
+    },
+    {
+      "id": "HumanEval/122",
+      "baseInputs": 5,
+      "plusInputs": 1000,
+      "kind": "passed",
+      "elapsedMs": 1500
+    },
+    {
+      "id": "HumanEval/123",
+      "baseInputs": 4,
+      "plusInputs": 139,
+      "kind": "passed",
+      "elapsedMs": 1499
+    },
+    {
+      "id": "HumanEval/124",
+      "baseInputs": 16,
+      "plusInputs": 985,
+      "kind": "passed",
+      "elapsedMs": 1535
+    },
+    {
+      "id": "HumanEval/125",
+      "baseInputs": 8,
+      "plusInputs": 804,
+      "kind": "passed",
+      "elapsedMs": 1545
+    },
+    {
+      "id": "HumanEval/126",
+      "baseInputs": 13,
+      "plusInputs": 999,
+      "kind": "passed",
+      "elapsedMs": 1593
+    },
+    {
+      "id": "HumanEval/127",
+      "baseInputs": 8,
+      "plusInputs": 580,
+      "kind": "passed",
+      "elapsedMs": 1533
+    },
+    {
+      "id": "HumanEval/128",
+      "baseInputs": 8,
+      "plusInputs": 995,
+      "kind": "passed",
+      "elapsedMs": 1560
+    },
+    {
+      "id": "HumanEval/129",
+      "baseInputs": 10,
+      "plusInputs": 189,
+      "kind": "passed",
+      "elapsedMs": 1490
+    },
+    {
+      "id": "HumanEval/130",
+      "baseInputs": 10,
+      "plusInputs": 115,
+      "kind": "passed",
+      "elapsedMs": 12199
+    },
+    {
+      "id": "HumanEval/131",
+      "baseInputs": 7,
+      "plusInputs": 230,
+      "kind": "passed",
+      "elapsedMs": 1474
+    },
+    {
+      "id": "HumanEval/132",
+      "baseInputs": 14,
+      "plusInputs": 1000,
+      "kind": "passed",
+      "elapsedMs": 1514
+    },
+    {
+      "id": "HumanEval/133",
+      "baseInputs": 12,
+      "plusInputs": 998,
+      "kind": "passed",
+      "elapsedMs": 1606
+    },
+    {
+      "id": "HumanEval/134",
+      "baseInputs": 10,
+      "plusInputs": 991,
+      "kind": "passed",
+      "elapsedMs": 1590
+    },
+    {
+      "id": "HumanEval/135",
+      "baseInputs": 5,
+      "plusInputs": 970,
+      "kind": "passed",
+      "elapsedMs": 1512
+    },
+    {
+      "id": "HumanEval/136",
+      "baseInputs": 11,
+      "plusInputs": 998,
+      "kind": "passed",
+      "elapsedMs": 1552
+    },
+    {
+      "id": "HumanEval/137",
+      "baseInputs": 8,
+      "plusInputs": 1000,
+      "kind": "passed",
+      "elapsedMs": 1620
+    },
+    {
+      "id": "HumanEval/138",
+      "baseInputs": 8,
+      "plusInputs": 113,
+      "kind": "passed",
+      "elapsedMs": 1510
+    },
+    {
+      "id": "HumanEval/139",
+      "baseInputs": 4,
+      "plusInputs": 127,
+      "kind": "passed",
+      "elapsedMs": 6577
+    },
+    {
+      "id": "HumanEval/140",
+      "baseInputs": 5,
+      "plusInputs": 1000,
+      "kind": "passed",
+      "elapsedMs": 1532
+    },
+    {
+      "id": "HumanEval/141",
+      "baseInputs": 26,
+      "plusInputs": 1000,
+      "kind": "passed",
+      "elapsedMs": 1526
+    },
+    {
+      "id": "HumanEval/142",
+      "baseInputs": 11,
+      "plusInputs": 997,
+      "kind": "passed",
+      "elapsedMs": 1582
+    },
+    {
+      "id": "HumanEval/143",
+      "baseInputs": 7,
+      "plusInputs": 1000,
+      "kind": "passed",
+      "elapsedMs": 1533
+    },
+    {
+      "id": "HumanEval/144",
+      "baseInputs": 13,
+      "plusInputs": 998,
+      "kind": "passed",
+      "elapsedMs": 1591
+    },
+    {
+      "id": "HumanEval/145",
+      "baseInputs": 6,
+      "plusInputs": 1000,
+      "kind": "passed",
+      "elapsedMs": 1547
+    },
+    {
+      "id": "HumanEval/146",
+      "baseInputs": 7,
+      "plusInputs": 988,
+      "kind": "passed",
+      "elapsedMs": 1496
+    },
+    {
+      "id": "HumanEval/147",
+      "baseInputs": 4,
+      "plusInputs": 115,
+      "kind": "passed",
+      "elapsedMs": 1487
+    },
+    {
+      "id": "HumanEval/148",
+      "baseInputs": 11,
+      "plusInputs": 971,
+      "kind": "passed",
+      "elapsedMs": 1566
+    },
+    {
+      "id": "HumanEval/149",
+      "baseInputs": 7,
+      "plusInputs": 979,
+      "kind": "passed",
+      "elapsedMs": 1577
+    },
+    {
+      "id": "HumanEval/150",
+      "baseInputs": 10,
+      "plusInputs": 998,
+      "kind": "passed",
+      "elapsedMs": 1480
+    },
+    {
+      "id": "HumanEval/151",
+      "baseInputs": 7,
+      "plusInputs": 999,
+      "kind": "passed",
+      "elapsedMs": 1624
+    },
+    {
+      "id": "HumanEval/152",
+      "baseInputs": 4,
+      "plusInputs": 1000,
+      "kind": "passed",
+      "elapsedMs": 1560
+    },
+    {
+      "id": "HumanEval/153",
+      "baseInputs": 9,
+      "plusInputs": 194,
+      "kind": "passed",
+      "elapsedMs": 1465
+    },
+    {
+      "id": "HumanEval/154",
+      "baseInputs": 6,
+      "plusInputs": 1000,
+      "kind": "passed",
+      "elapsedMs": 1572
+    },
+    {
+      "id": "HumanEval/155",
+      "baseInputs": 8,
+      "plusInputs": 249,
+      "kind": "passed",
+      "elapsedMs": 1577
+    },
+    {
+      "id": "HumanEval/156",
+      "baseInputs": 14,
+      "plusInputs": 206,
+      "kind": "passed",
+      "elapsedMs": 1528
+    },
+    {
+      "id": "HumanEval/157",
+      "baseInputs": 11,
+      "plusInputs": 1000,
+      "kind": "passed",
+      "elapsedMs": 1684
+    },
+    {
+      "id": "HumanEval/158",
+      "baseInputs": 10,
+      "plusInputs": 897,
+      "kind": "passed",
+      "elapsedMs": 2031
+    },
+    {
+      "id": "HumanEval/159",
+      "baseInputs": 6,
+      "plusInputs": 976,
+      "kind": "passed",
+      "elapsedMs": 1621
+    },
+    {
+      "id": "HumanEval/160",
+      "baseInputs": 3,
+      "plusInputs": 449,
+      "kind": "passed",
+      "elapsedMs": 1554
+    },
+    {
+      "id": "HumanEval/161",
+      "baseInputs": 8,
+      "plusInputs": 983,
+      "kind": "passed",
+      "elapsedMs": 1577
+    },
+    {
+      "id": "HumanEval/162",
+      "baseInputs": 4,
+      "plusInputs": 1000,
+      "kind": "passed",
+      "elapsedMs": 1721
+    },
+    {
+      "id": "HumanEval/163",
+      "baseInputs": 4,
+      "plusInputs": 982,
+      "kind": "passed",
+      "elapsedMs": 1691
+    }
+  ],
+  "rules": {
+    "required": 541,
+    "executed": 541,
+    "technicalFailures": [],
+    "check": "nonempty input exercises every fixed prompt constraint; scores are conformance fixtures, not model results"
+  },
+  "actualHost": "unverified"
+}

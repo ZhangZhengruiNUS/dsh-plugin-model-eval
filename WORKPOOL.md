@@ -4,5 +4,7 @@
 | --- | --- | --- |
 | M0-1 最小插件与宿主契约 | local_pass | 构建/类型检查/2项测试通过；真实宿主与 Desktop 通道未验证，见 docs/evidence/host-contract.json |
 | M0-2 固定离线资源 | local_pass | 905+12固定题、原题哈希、parent映射和分发依据已核对；逐字篡改拒绝测试通过 |
-| M0-3 Windows 隔离运行器 | needs_protocol_decision | 只读WASI/Host判分原型和安全回归通过；163/164参考解通过，HumanEval/32上游数值问题待用户选择协议处理；IFEval完整约束遍历验证仍在执行 |
-| M1—M3 产品与验收 | pending | M0 通过后按实施计划继续 |
+| M0-3 Windows 隔离运行器 | local_pass | 两项协议适配均已获用户批准；164编程题、541规则题自检与13安全回归通过；runtime.json记录精确哈希 |
+| M1 模型/存储/评分/队列 | local_pass | 模型身份与宿主接口、中文路径准备、历史5项、通用评分3项、队列与metrics3项、写作2项测试通过；真实模型待验 |
+| M2 容量清理/服务/界面 | in_progress | 开始容量统计、批次明细清理与受保护服务，随后实现完整界面 |
+| M3 打包与真实验收 | pending | 最终离线包、UI视觉检查、真实宿主与模型分层记录 |

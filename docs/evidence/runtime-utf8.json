@@ -1,0 +1,4821 @@
+{
+  "schemaVersion": 1,
+  "platform": "win32",
+  "arch": "x64",
+  "node": "v24.21.0",
+  "status": "failed",
+  "limits": {
+    "wallMs": 30000,
+    "memoryBytes": 536870912,
+    "computeBudget": 200000000000
+  },
+  "timingScope": "whole task including launch; fuel is not seconds",
+  "sourceReleaseSha256": "272720b90ac375502c8ed23cd791c2a93dfb22a911641a494da74a426c09f101",
+  "runtimePins": {
+    "code-host": "2cf3a2cc6ad2904d2e8e062e64af10150200d8ff1f697280d2db348950699d9a",
+    "wasi": "6324ce07e648de95b8e2eb214af6b01bcaf2b1f2a09fb7aa8cab095968bc8e62",
+    "trusted-ifeval": "8f5bfc80fa7ab229cb7368c0fc715c11597e45701af4aeb51f3aa8f0d4d28d3a"
+  },
+  "tasks": [
+    {
+      "id": "HumanEval/0",
+      "reference": "official-canonical",
+      "baseInputs": 7,
+      "plusInputs": 999,
+      "kind": "passed",
+      "elapsedMs": 1480
+    },
+    {
+      "id": "HumanEval/1",
+      "reference": "official-canonical",
+      "baseInputs": 4,
+      "plusInputs": 83,
+      "kind": "passed",
+      "elapsedMs": 1407
+    },
+    {
+      "id": "HumanEval/2",
+      "reference": "official-canonical",
+      "baseInputs": 3,
+      "plusInputs": 971,
+      "kind": "passed",
+      "elapsedMs": 1391
+    },
+    {
+      "id": "HumanEval/3",
+      "reference": "official-canonical",
+      "baseInputs": 6,
+      "plusInputs": 898,
+      "kind": "passed",
+      "elapsedMs": 1444
+    },
+    {
+      "id": "HumanEval/4",
+      "reference": "official-canonical",
+      "baseInputs": 3,
+      "plusInputs": 785,
+      "kind": "passed",
+      "elapsedMs": 1510
+    },
+    {
+      "id": "HumanEval/5",
+      "reference": "official-canonical",
+      "baseInputs": 3,
+      "plusInputs": 153,
+      "kind": "passed",
+      "elapsedMs": 1478
+    },
+    {
+      "id": "HumanEval/6",
+      "reference": "official-canonical",
+      "baseInputs": 3,
+      "plusInputs": 66,
+      "kind": "passed",
+      "elapsedMs": 1416
+    },
+    {
+      "id": "HumanEval/7",
+      "reference": "official-canonical",
+      "baseInputs": 4,
+      "plusInputs": 178,
+      "kind": "passed",
+      "elapsedMs": 1484
+    },
+    {
+      "id": "HumanEval/8",
+      "reference": "official-canonical",
+      "baseInputs": 5,
+      "plusInputs": 1000,
+      "kind": "passed",
+      "elapsedMs": 1500
+    },
+    {
+      "id": "HumanEval/9",
+      "reference": "official-canonical",
+      "baseInputs": 4,
+      "plusInputs": 959,
+      "kind": "passed",
+      "elapsedMs": 1513
+    },
+    {
+      "id": "HumanEval/10",
+      "reference": "official-canonical",
+      "baseInputs": 5,
+      "plusInputs": 780,
+      "kind": "passed",
+      "elapsedMs": 1431
+    },
+    {
+      "id": "HumanEval/11",
+      "reference": "official-canonical",
+      "baseInputs": 3,
+      "plusInputs": 405,
+      "kind": "passed",
+      "elapsedMs": 1494
+    },
+    {
+      "id": "HumanEval/12",
+      "reference": "official-canonical",
+      "baseInputs": 3,
+      "plusInputs": 933,
+      "kind": "passed",
+      "elapsedMs": 1506
+    },
+    {
+      "id": "HumanEval/13",
+      "reference": "official-canonical",
+      "baseInputs": 4,
+      "plusInputs": 987,
+      "kind": "passed",
+      "elapsedMs": 1392
+    },
+    {
+      "id": "HumanEval/14",
+      "reference": "official-canonical",
+      "baseInputs": 3,
+      "plusInputs": 903,
+      "kind": "passed",
+      "elapsedMs": 1568
+    },
+    {
+      "id": "HumanEval/15",
+      "reference": "official-canonical",
+      "baseInputs": 3,
+      "plusInputs": 134,
+      "kind": "passed",
+      "elapsedMs": 5773
+    },
+    {
+      "id": "HumanEval/16",
+      "reference": "official-canonical",
+      "baseInputs": 5,
+      "plusInputs": 1000,
+      "kind": "passed",
+      "elapsedMs": 1433
+    },
+    {
+      "id": "HumanEval/17",
+      "reference": "official-canonical",
+      "baseInputs": 5,
+      "plusInputs": 215,
+      "kind": "passed",
+      "elapsedMs": 1461
+    },
+    {
+      "id": "HumanEval/18",
+      "reference": "official-canonical",
+      "baseInputs": 4,
+      "plusInputs": 1000,
+      "kind": "passed",
+      "elapsedMs": 1402
+    },
+    {
+      "id": "HumanEval/19",
+      "reference": "official-canonical",
+      "baseInputs": 5,
+      "plusInputs": 128,
+      "kind": "passed",
+      "elapsedMs": 1407
+    },
+    {
+      "id": "HumanEval/20",
+      "reference": "official-canonical",
+      "baseInputs": 5,
+      "plusInputs": 1000,
+      "kind": "passed",
+      "elapsedMs": 1521
+    },
+    {
+      "id": "HumanEval/21",
+      "reference": "official-canonical",
+      "baseInputs": 5,
+      "plusInputs": 999,
+      "kind": "passed",
+      "elapsedMs": 1499
+    },
+    {
+      "id": "HumanEval/22",
+      "reference": "official-canonical",
+      "baseInputs": 3,
+      "plusInputs": 953,
+      "kind": "passed",
+      "elapsedMs": 1446
+    },
+    {
+      "id": "HumanEval/23",
+      "reference": "official-canonical",
+      "baseInputs": 3,
+      "plusInputs": 964,
+      "kind": "passed",
+      "elapsedMs": 1398
+    },
+    {
+      "id": "HumanEval/24",
+      "reference": "official-canonical",
+      "baseInputs": 5,
+      "plusInputs": 168,
+      "kind": "passed",
+      "elapsedMs": 1588
+    },
+    {
+      "id": "HumanEval/25",
+      "reference": "official-canonical",
+      "baseInputs": 8,
+      "plusInputs": 138,
+      "kind": "passed",
+      "elapsedMs": 1667
+    },
+    {
+      "id": "HumanEval/26",
+      "reference": "official-canonical",
+      "baseInputs": 3,
+      "plusInputs": 862,
+      "kind": "passed",
+      "elapsedMs": 1458
+    },
+    {
+      "id": "HumanEval/27",
+      "reference": "official-canonical",
+      "baseInputs": 3,
+      "plusInputs": 973,
+      "kind": "passed",
+      "elapsedMs": 1483
+    },
+    {
+      "id": "HumanEval/28",
+      "reference": "official-canonical",
+      "baseInputs": 3,
+      "plusInputs": 861,
+      "kind": "passed",
+      "elapsedMs": 1520
+    },
+    {
+      "id": "HumanEval/29",
+      "reference": "official-canonical",
+      "baseInputs": 2,
+      "plusInputs": 996,
+      "kind": "passed",
+      "elapsedMs": 1430
+    },
+    {
+      "id": "HumanEval/30",
+      "reference": "official-canonical",
+      "baseInputs": 4,
+      "plusInputs": 999,
+      "kind": "passed",
+      "elapsedMs": 1417
+    },
+    {
+      "id": "HumanEval/31",
+      "reference": "official-canonical",
+      "baseInputs": 13,
+      "plusInputs": 154,
+      "kind": "passed",
+      "elapsedMs": 1522
+    },
+    {
+      "id": "HumanEval/32",
+      "reference": "fixed-scan-bisection-ulp-v1",
+      "baseInputs": 100,
+      "plusInputs": 788,
+      "kind": "passed",
+      "elapsedMs": 1861
+    },
+    {
+      "id": "HumanEval/33",
+      "reference": "official-canonical",
+      "baseInputs": 10,
+      "plusInputs": 955,
+      "kind": "passed",
+      "elapsedMs": 1420
+    },
+    {
+      "id": "HumanEval/34",
+      "reference": "official-canonical",
+      "baseInputs": 1,
+      "plusInputs": 903,
+      "kind": "passed",
+      "elapsedMs": 1433
+    },
+    {
+      "id": "HumanEval/35",
+      "reference": "official-canonical",
+      "baseInputs": 2,
+      "plusInputs": 938,
+      "kind": "passed",
+      "elapsedMs": 1451
+    },
+    {
+      "id": "HumanEval/36",
+      "reference": "official-canonical",
+      "baseInputs": 8,
+      "plusInputs": 148,
+      "kind": "passed",
+      "elapsedMs": 4192
+    },
+    {
+      "id": "HumanEval/37",
+      "reference": "official-canonical",
+      "baseInputs": 3,
+      "plusInputs": 974,
+      "kind": "passed",
+      "elapsedMs": 1451
+    },
+    {
+      "id": "HumanEval/38",
+      "reference": "official-canonical",
+      "baseInputs": 100,
+      "plusInputs": 999,
+      "kind": "passed",
+      "elapsedMs": 1435
+    },
+    {
+      "id": "HumanEval/39",
+      "reference": "official-canonical",
+      "baseInputs": 10,
+      "plusInputs": 2,
+      "kind": "passed",
+      "elapsedMs": 1400
+    },
+    {
+      "id": "HumanEval/40",
+      "reference": "official-canonical",
+      "baseInputs": 9,
+      "plusInputs": 979,
+      "kind": "passed",
+      "elapsedMs": 1464
+    },
+    {
+      "id": "HumanEval/41",
+      "reference": "official-canonical",
+      "baseInputs": 5,
+      "plusInputs": 78,
+      "kind": "passed",
+      "elapsedMs": 1505
+    },
+    {
+      "id": "HumanEval/42",
+      "reference": "official-canonical",
+      "baseInputs": 3,
+      "plusInputs": 999,
+      "kind": "passed",
+      "elapsedMs": 1420
+    },
+    {
+      "id": "HumanEval/43",
+      "reference": "official-canonical",
+      "baseInputs": 9,
+      "plusInputs": 974,
+      "kind": "passed",
+      "elapsedMs": 1423
+    },
+    {
+      "id": "HumanEval/44",
+      "reference": "official-canonical",
+      "baseInputs": 12,
+      "plusInputs": 466,
+      "kind": "passed",
+      "elapsedMs": 1397
+    },
+    {
+      "id": "HumanEval/45",
+      "reference": "official-canonical",
+      "baseInputs": 3,
+      "plusInputs": 1000,
+      "kind": "passed",
+      "elapsedMs": 1369
+    },
+    {
+      "id": "HumanEval/46",
+      "reference": "official-canonical",
+      "baseInputs": 4,
+      "plusInputs": 132,
+      "kind": "passed",
+      "elapsedMs": 1456
+    },
+    {
+      "id": "HumanEval/47",
+      "reference": "official-canonical",
+      "baseInputs": 5,
+      "plusInputs": 995,
+      "kind": "passed",
+      "elapsedMs": 1370
+    },
+    {
+      "id": "HumanEval/48",
+      "reference": "official-canonical",
+      "baseInputs": 7,
+      "plusInputs": 989,
+      "kind": "passed",
+      "elapsedMs": 1389
+    },
+    {
+      "id": "HumanEval/49",
+      "reference": "official-canonical",
+      "baseInputs": 7,
+      "plusInputs": 983,
+      "kind": "passed",
+      "elapsedMs": 1389
+    },
+    {
+      "id": "HumanEval/50",
+      "reference": "official-canonical",
+      "baseInputs": 100,
+      "plusInputs": 1000,
+      "kind": "passed",
+      "elapsedMs": 1424
+    },
+    {
+      "id": "HumanEval/51",
+      "reference": "official-canonical",
+      "baseInputs": 7,
+      "plusInputs": 997,
+      "kind": "passed",
+      "elapsedMs": 1466
+    },
+    {
+      "id": "HumanEval/52",
+      "reference": "official-canonical",
+      "baseInputs": 6,
+      "plusInputs": 419,
+      "kind": "passed",
+      "elapsedMs": 1775
+    },
+    {
+      "id": "HumanEval/53",
+      "reference": "official-canonical",
+      "baseInputs": 105,
+      "plusInputs": 866,
+      "kind": "passed",
+      "elapsedMs": 1727
+    },
+    {
+      "id": "HumanEval/54",
+      "reference": "official-canonical",
+      "baseInputs": 7,
+      "plusInputs": 999,
+      "kind": "passed",
+      "elapsedMs": 1536
+    },
+    {
+      "id": "HumanEval/55",
+      "reference": "official-canonical",
+      "baseInputs": 5,
+      "plusInputs": 45,
+      "kind": "passed",
+      "elapsedMs": 1507
+    },
+    {
+      "id": "HumanEval/56",
+      "reference": "official-canonical",
+      "baseInputs": 12,
+      "plusInputs": 1000,
+      "kind": "passed",
+      "elapsedMs": 1641
+    },
+    {
+      "id": "HumanEval/57",
+      "reference": "official-canonical",
+      "baseInputs": 8,
+      "plusInputs": 971,
+      "kind": "passed",
+      "elapsedMs": 1931
+    },
+    {
+      "id": "HumanEval/58",
+      "reference": "official-canonical",
+      "baseInputs": 4,
+      "plusInputs": 985,
+      "kind": "passed",
+      "elapsedMs": 1725
+    },
+    {
+      "id": "HumanEval/59",
+      "reference": "official-canonical",
+      "baseInputs": 5,
+      "plusInputs": 174,
+      "kind": "passed",
+      "elapsedMs": 5791
+    },
+    {
+      "id": "HumanEval/60",
+      "reference": "official-canonical",
+      "baseInputs": 5,
+      "plusInputs": 159,
+      "kind": "passed",
+      "elapsedMs": 1484
+    },
+    {
+      "id": "HumanEval/61",
+      "reference": "official-canonical",
+      "baseInputs": 12,
+      "plusInputs": 999,
+      "kind": "passed",
+      "elapsedMs": 2461
+    },
+    {
+      "id": "HumanEval/62",
+      "reference": "official-canonical",
+      "baseInputs": 5,
+      "plusInputs": 948,
+      "kind": "passed",
+      "elapsedMs": 1928
+    },
+    {
+      "id": "HumanEval/63",
+      "reference": "official-canonical",
+      "baseInputs": 7,
+      "plusInputs": 63,
+      "kind": "passed",
+      "elapsedMs": 1691
+    },
+    {
+      "id": "HumanEval/64",
+      "reference": "official-canonical",
+      "baseInputs": 7,
+      "plusInputs": 992,
+      "kind": "passed",
+      "elapsedMs": 1543
+    },
+    {
+      "id": "HumanEval/65",
+      "reference": "official-canonical",
+      "baseInputs": 5,
+      "plusInputs": 982,
+      "kind": "passed",
+      "elapsedMs": 1491
+    },
+    {
+      "id": "HumanEval/66",
+      "reference": "official-canonical",
+      "baseInputs": 8,
+      "plusInputs": 1000,
+      "kind": "passed",
+      "elapsedMs": 1701
+    },
+    {
+      "id": "HumanEval/67",
+      "reference": "official-canonical",
+      "baseInputs": 7,
+      "plusInputs": 341,
+      "kind": "passed",
+      "elapsedMs": 1811
+    },
+    {
+      "id": "HumanEval/68",
+      "reference": "official-canonical",
+      "baseInputs": 8,
+      "plusInputs": 1000,
+      "kind": "passed",
+      "elapsedMs": 1654
+    },
+    {
+      "id": "HumanEval/69",
+      "reference": "official-canonical",
+      "baseInputs": 25,
+      "plusInputs": 1000,
+      "kind": "passed",
+      "elapsedMs": 1855
+    },
+    {
+      "id": "HumanEval/70",
+      "reference": "official-canonical",
+      "baseInputs": 9,
+      "plusInputs": 975,
+      "kind": "passed",
+      "elapsedMs": 1755
+    },
+    {
+      "id": "HumanEval/71",
+      "reference": "official-canonical",
+      "baseInputs": 9,
+      "plusInputs": 1000,
+      "kind": "passed",
+      "elapsedMs": 1660
+    },
+    {
+      "id": "HumanEval/72",
+      "reference": "official-canonical",
+      "baseInputs": 6,
+      "plusInputs": 691,
+      "kind": "passed",
+      "elapsedMs": 1904
+    },
+    {
+      "id": "HumanEval/73",
+      "reference": "official-canonical",
+      "baseInputs": 8,
+      "plusInputs": 962,
+      "kind": "passed",
+      "elapsedMs": 1931
+    },
+    {
+      "id": "HumanEval/74",
+      "reference": "official-canonical",
+      "baseInputs": 9,
+      "plusInputs": 977,
+      "kind": "passed",
+      "elapsedMs": 2055
+    },
+    {
+      "id": "HumanEval/75",
+      "reference": "official-canonical",
+      "baseInputs": 4,
+      "plusInputs": 93,
+      "kind": "passed",
+      "elapsedMs": 1778
+    },
+    {
+      "id": "HumanEval/76",
+      "reference": "official-canonical",
+      "baseInputs": 10,
+      "plusInputs": 897,
+      "kind": "passed",
+      "elapsedMs": 1590
+    },
+    {
+      "id": "HumanEval/77",
+      "reference": "official-canonical",
+      "baseInputs": 16,
+      "plusInputs": 157,
+      "kind": "passed",
+      "elapsedMs": 1733
+    },
+    {
+      "id": "HumanEval/78",
+      "reference": "official-canonical",
+      "baseInputs": 13,
+      "plusInputs": 1000,
+      "kind": "passed",
+      "elapsedMs": 2046
+    },
+    {
+      "id": "HumanEval/79",
+      "reference": "official-canonical",
+      "baseInputs": 4,
+      "plusInputs": 198,
+      "kind": "passed",
+      "elapsedMs": 1859
+    },
+    {
+      "id": "HumanEval/80",
+      "reference": "official-canonical",
+      "baseInputs": 8,
+      "plusInputs": 941,
+      "kind": "passed",
+      "elapsedMs": 1476
+    },
+    {
+      "id": "HumanEval/81",
+      "reference": "official-canonical",
+      "baseInputs": 6,
+      "plusInputs": 1000,
+      "kind": "passed",
+      "elapsedMs": 1491
+    },
+    {
+      "id": "HumanEval/82",
+      "reference": "official-canonical",
+      "baseInputs": 16,
+      "plusInputs": 962,
+      "kind": "passed",
+      "elapsedMs": 1525
+    },
+    {
+      "id": "HumanEval/83",
+      "reference": "official-canonical",
+      "baseInputs": 5,
+      "plusInputs": 104,
+      "kind": "passed",
+      "elapsedMs": 3386
+    },
+    {
+      "id": "HumanEval/84",
+      "reference": "official-canonical",
+      "baseInputs": 5,
+      "plusInputs": 211,
+      "kind": "passed",
+      "elapsedMs": 1612
+    },
+    {
+      "id": "HumanEval/85",
+      "reference": "official-canonical",
+      "baseInputs": 4,
+      "plusInputs": 994,
+      "kind": "passed",
+      "elapsedMs": 1503
+    },
+    {
+      "id": "HumanEval/86",
+      "reference": "official-canonical",
+      "baseInputs": 7,
+      "plusInputs": 1000,
+      "kind": "passed",
+      "elapsedMs": 1420
+    },
+    {
+      "id": "HumanEval/87",
+      "reference": "official-canonical",
+      "baseInputs": 6,
+      "plusInputs": 207,
+      "kind": "passed",
+      "elapsedMs": 1422
+    },
+    {
+      "id": "HumanEval/88",
+      "reference": "official-canonical",
+      "baseInputs": 7,
+      "plusInputs": 1000,
+      "kind": "passed",
+      "elapsedMs": 1469
+    },
+    {
+      "id": "HumanEval/89",
+      "reference": "official-canonical",
+      "baseInputs": 8,
+      "plusInputs": 1000,
+      "kind": "passed",
+      "elapsedMs": 1470
+    },
+    {
+      "id": "HumanEval/90",
+      "reference": "official-canonical",
+      "baseInputs": 7,
+      "plusInputs": 822,
+      "kind": "passed",
+      "elapsedMs": 1621
+    },
+    {
+      "id": "HumanEval/91",
+      "reference": "official-canonical",
+      "baseInputs": 6,
+      "plusInputs": 1000,
+      "kind": "passed",
+      "elapsedMs": 1402
+    },
+    {
+      "id": "HumanEval/92",
+      "reference": "official-canonical",
+      "baseInputs": 10,
+      "plusInputs": 1000,
+      "kind": "passed",
+      "elapsedMs": 1412
+    },
+    {
+      "id": "HumanEval/93",
+      "reference": "official-canonical",
+      "baseInputs": 5,
+      "plusInputs": 1000,
+      "kind": "passed",
+      "elapsedMs": 1452
+    },
+    {
+      "id": "HumanEval/94",
+      "reference": "official-canonical",
+      "baseInputs": 9,
+      "plusInputs": 1000,
+      "kind": "passed",
+      "elapsedMs": 4186
+    },
+    {
+      "id": "HumanEval/95",
+      "reference": "official-canonical",
+      "baseInputs": 14,
+      "plusInputs": 510,
+      "kind": "passed",
+      "elapsedMs": 1367
+    },
+    {
+      "id": "HumanEval/96",
+      "reference": "official-canonical",
+      "baseInputs": 10,
+      "plusInputs": 180,
+      "kind": "passed",
+      "elapsedMs": 1524
+    },
+    {
+      "id": "HumanEval/97",
+      "reference": "official-canonical",
+      "baseInputs": 16,
+      "plusInputs": 969,
+      "kind": "passed",
+      "elapsedMs": 1463
+    },
+    {
+      "id": "HumanEval/98",
+      "reference": "official-canonical",
+      "baseInputs": 7,
+      "plusInputs": 1000,
+      "kind": "passed",
+      "elapsedMs": 1380
+    },
+    {
+      "id": "HumanEval/99",
+      "reference": "official-canonical",
+      "baseInputs": 5,
+      "plusInputs": 710,
+      "kind": "passed",
+      "elapsedMs": 1450
+    },
+    {
+      "id": "HumanEval/100",
+      "reference": "official-canonical",
+      "baseInputs": 5,
+      "plusInputs": 112,
+      "kind": "passed",
+      "elapsedMs": 2135
+    },
+    {
+      "id": "HumanEval/101",
+      "reference": "official-canonical",
+      "baseInputs": 6,
+      "plusInputs": 1000,
+      "kind": "passed",
+      "elapsedMs": 1504
+    },
+    {
+      "id": "HumanEval/102",
+      "reference": "official-canonical",
+      "baseInputs": 8,
+      "plusInputs": 944,
+      "kind": "passed",
+      "elapsedMs": 1423
+    },
+    {
+      "id": "HumanEval/103",
+      "reference": "official-canonical",
+      "baseInputs": 12,
+      "plusInputs": 939,
+      "kind": "passed",
+      "elapsedMs": 1410
+    },
+    {
+      "id": "HumanEval/104",
+      "reference": "official-canonical",
+      "baseInputs": 4,
+      "plusInputs": 999,
+      "kind": "passed",
+      "elapsedMs": 1493
+    },
+    {
+      "id": "HumanEval/105",
+      "reference": "official-canonical",
+      "baseInputs": 5,
+      "plusInputs": 999,
+      "kind": "passed",
+      "elapsedMs": 1463
+    },
+    {
+      "id": "HumanEval/106",
+      "reference": "official-canonical",
+      "baseInputs": 4,
+      "plusInputs": 104,
+      "kind": "passed",
+      "elapsedMs": 1500
+    },
+    {
+      "id": "HumanEval/107",
+      "reference": "official-canonical",
+      "baseInputs": 8,
+      "plusInputs": 169,
+      "kind": "passed",
+      "elapsedMs": 1456
+    },
+    {
+      "id": "HumanEval/108",
+      "reference": "official-canonical",
+      "baseInputs": 8,
+      "plusInputs": 1000,
+      "kind": "passed",
+      "elapsedMs": 1538
+    },
+    {
+      "id": "HumanEval/109",
+      "reference": "official-canonical",
+      "baseInputs": 5,
+      "plusInputs": 953,
+      "kind": "passed",
+      "elapsedMs": 1464
+    },
+    {
+      "id": "HumanEval/110",
+      "reference": "official-canonical",
+      "baseInputs": 7,
+      "plusInputs": 1000,
+      "kind": "passed",
+      "elapsedMs": 1498
+    },
+    {
+      "id": "HumanEval/111",
+      "reference": "official-canonical",
+      "baseInputs": 8,
+      "plusInputs": 655,
+      "kind": "passed",
+      "elapsedMs": 1432
+    },
+    {
+      "id": "HumanEval/112",
+      "reference": "official-canonical",
+      "baseInputs": 9,
+      "plusInputs": 997,
+      "kind": "passed",
+      "elapsedMs": 1444
+    },
+    {
+      "id": "HumanEval/113",
+      "reference": "official-canonical",
+      "baseInputs": 3,
+      "plusInputs": 983,
+      "kind": "passed",
+      "elapsedMs": 1386
+    },
+    {
+      "id": "HumanEval/114",
+      "reference": "official-canonical",
+      "baseInputs": 12,
+      "plusInputs": 1000,
+      "kind": "passed",
+      "elapsedMs": 1563
+    },
+    {
+      "id": "HumanEval/115",
+      "reference": "official-canonical",
+      "baseInputs": 5,
+      "plusInputs": 801,
+      "kind": "passed",
+      "elapsedMs": 1894
+    },
+    {
+      "id": "HumanEval/116",
+      "reference": "official-canonical",
+      "baseInputs": 8,
+      "plusInputs": 722,
+      "kind": "passed",
+      "elapsedMs": 1823
+    },
+    {
+      "id": "HumanEval/117",
+      "reference": "official-canonical",
+      "baseInputs": 14,
+      "plusInputs": 1000,
+      "kind": "passed",
+      "elapsedMs": 1550
+    },
+    {
+      "id": "HumanEval/118",
+      "reference": "official-canonical",
+      "baseInputs": 13,
+      "plusInputs": 1000,
+      "kind": "passed",
+      "elapsedMs": 1517
+    },
+    {
+      "id": "HumanEval/119",
+      "reference": "official-canonical",
+      "baseInputs": 12,
+      "plusInputs": 648,
+      "kind": "passed",
+      "elapsedMs": 1539
+    },
+    {
+      "id": "HumanEval/120",
+      "reference": "official-canonical",
+      "baseInputs": 11,
+      "plusInputs": 1000,
+      "kind": "passed",
+      "elapsedMs": 1372
+    },
+    {
+      "id": "HumanEval/121",
+      "reference": "official-canonical",
+      "baseInputs": 7,
+      "plusInputs": 998,
+      "kind": "passed",
+      "elapsedMs": 1495
+    },
+    {
+      "id": "HumanEval/122",
+      "reference": "official-canonical",
+      "baseInputs": 5,
+      "plusInputs": 1000,
+      "kind": "passed",
+      "elapsedMs": 1434
+    },
+    {
+      "id": "HumanEval/123",
+      "reference": "official-canonical",
+      "baseInputs": 4,
+      "plusInputs": 139,
+      "kind": "passed",
+      "elapsedMs": 1391
+    },
+    {
+      "id": "HumanEval/124",
+      "reference": "official-canonical",
+      "baseInputs": 16,
+      "plusInputs": 985,
+      "kind": "passed",
+      "elapsedMs": 1374
+    },
+    {
+      "id": "HumanEval/125",
+      "reference": "official-canonical",
+      "baseInputs": 8,
+      "plusInputs": 804,
+      "kind": "passed",
+      "elapsedMs": 1529
+    },
+    {
+      "id": "HumanEval/126",
+      "reference": "official-canonical",
+      "baseInputs": 13,
+      "plusInputs": 999,
+      "kind": "passed",
+      "elapsedMs": 1519
+    },
+    {
+      "id": "HumanEval/127",
+      "reference": "official-canonical",
+      "baseInputs": 8,
+      "plusInputs": 580,
+      "kind": "passed",
+      "elapsedMs": 1451
+    },
+    {
+      "id": "HumanEval/128",
+      "reference": "official-canonical",
+      "baseInputs": 8,
+      "plusInputs": 995,
+      "kind": "passed",
+      "elapsedMs": 1454
+    },
+    {
+      "id": "HumanEval/129",
+      "reference": "official-canonical",
+      "baseInputs": 10,
+      "plusInputs": 189,
+      "kind": "passed",
+      "elapsedMs": 1410
+    },
+    {
+      "id": "HumanEval/130",
+      "reference": "official-canonical",
+      "baseInputs": 10,
+      "plusInputs": 115,
+      "kind": "passed",
+      "elapsedMs": 11536
+    },
+    {
+      "id": "HumanEval/131",
+      "reference": "official-canonical",
+      "baseInputs": 7,
+      "plusInputs": 230,
+      "kind": "passed",
+      "elapsedMs": 1419
+    },
+    {
+      "id": "HumanEval/132",
+      "reference": "official-canonical",
+      "baseInputs": 14,
+      "plusInputs": 1000,
+      "kind": "passed",
+      "elapsedMs": 1500
+    },
+    {
+      "id": "HumanEval/133",
+      "reference": "official-canonical",
+      "baseInputs": 12,
+      "plusInputs": 998,
+      "kind": "passed",
+      "elapsedMs": 1408
+    },
+    {
+      "id": "HumanEval/134",
+      "reference": "official-canonical",
+      "baseInputs": 10,
+      "plusInputs": 991,
+      "kind": "passed",
+      "elapsedMs": 1449
+    },
+    {
+      "id": "HumanEval/135",
+      "reference": "official-canonical",
+      "baseInputs": 5,
+      "plusInputs": 970,
+      "kind": "passed",
+      "elapsedMs": 1511
+    },
+    {
+      "id": "HumanEval/136",
+      "reference": "official-canonical",
+      "baseInputs": 11,
+      "plusInputs": 998,
+      "kind": "passed",
+      "elapsedMs": 1467
+    },
+    {
+      "id": "HumanEval/137",
+      "reference": "official-canonical",
+      "baseInputs": 8,
+      "plusInputs": 1000,
+      "kind": "passed",
+      "elapsedMs": 1445
+    },
+    {
+      "id": "HumanEval/138",
+      "reference": "official-canonical",
+      "baseInputs": 8,
+      "plusInputs": 113,
+      "kind": "passed",
+      "elapsedMs": 1422
+    },
+    {
+      "id": "HumanEval/139",
+      "reference": "official-canonical",
+      "baseInputs": 4,
+      "plusInputs": 127,
+      "kind": "passed",
+      "elapsedMs": 6053
+    },
+    {
+      "id": "HumanEval/140",
+      "reference": "official-canonical",
+      "baseInputs": 5,
+      "plusInputs": 1000,
+      "kind": "passed",
+      "elapsedMs": 1478
+    },
+    {
+      "id": "HumanEval/141",
+      "reference": "official-canonical",
+      "baseInputs": 26,
+      "plusInputs": 1000,
+      "kind": "passed",
+      "elapsedMs": 1535
+    },
+    {
+      "id": "HumanEval/142",
+      "reference": "official-canonical",
+      "baseInputs": 11,
+      "plusInputs": 997,
+      "kind": "passed",
+      "elapsedMs": 1503
+    },
+    {
+      "id": "HumanEval/143",
+      "reference": "official-canonical",
+      "baseInputs": 7,
+      "plusInputs": 1000,
+      "kind": "passed",
+      "elapsedMs": 1358
+    },
+    {
+      "id": "HumanEval/144",
+      "reference": "official-canonical",
+      "baseInputs": 13,
+      "plusInputs": 998,
+      "kind": "passed",
+      "elapsedMs": 1427
+    },
+    {
+      "id": "HumanEval/145",
+      "reference": "official-canonical",
+      "baseInputs": 6,
+      "plusInputs": 1000,
+      "kind": "passed",
+      "elapsedMs": 1421
+    },
+    {
+      "id": "HumanEval/146",
+      "reference": "official-canonical",
+      "baseInputs": 7,
+      "plusInputs": 988,
+      "kind": "passed",
+      "elapsedMs": 1452
+    },
+    {
+      "id": "HumanEval/147",
+      "reference": "official-canonical",
+      "baseInputs": 4,
+      "plusInputs": 115,
+      "kind": "passed",
+      "elapsedMs": 1504
+    },
+    {
+      "id": "HumanEval/148",
+      "reference": "official-canonical",
+      "baseInputs": 11,
+      "plusInputs": 971,
+      "kind": "passed",
+      "elapsedMs": 1486
+    },
+    {
+      "id": "HumanEval/149",
+      "reference": "official-canonical",
+      "baseInputs": 7,
+      "plusInputs": 979,
+      "kind": "passed",
+      "elapsedMs": 1430
+    },
+    {
+      "id": "HumanEval/150",
+      "reference": "official-canonical",
+      "baseInputs": 10,
+      "plusInputs": 998,
+      "kind": "passed",
+      "elapsedMs": 1370
+    },
+    {
+      "id": "HumanEval/151",
+      "reference": "official-canonical",
+      "baseInputs": 7,
+      "plusInputs": 999,
+      "kind": "passed",
+      "elapsedMs": 1433
+    },
+    {
+      "id": "HumanEval/152",
+      "reference": "official-canonical",
+      "baseInputs": 4,
+      "plusInputs": 1000,
+      "kind": "passed",
+      "elapsedMs": 1552
+    },
+    {
+      "id": "HumanEval/153",
+      "reference": "official-canonical",
+      "baseInputs": 9,
+      "plusInputs": 194,
+      "kind": "passed",
+      "elapsedMs": 1464
+    },
+    {
+      "id": "HumanEval/154",
+      "reference": "official-canonical",
+      "baseInputs": 6,
+      "plusInputs": 1000,
+      "kind": "passed",
+      "elapsedMs": 1386
+    },
+    {
+      "id": "HumanEval/155",
+      "reference": "official-canonical",
+      "baseInputs": 8,
+      "plusInputs": 249,
+      "kind": "passed",
+      "elapsedMs": 1417
+    },
+    {
+      "id": "HumanEval/156",
+      "reference": "official-canonical",
+      "baseInputs": 14,
+      "plusInputs": 206,
+      "kind": "passed",
+      "elapsedMs": 1424
+    },
+    {
+      "id": "HumanEval/157",
+      "reference": "official-canonical",
+      "baseInputs": 11,
+      "plusInputs": 1000,
+      "kind": "passed",
+      "elapsedMs": 1335
+    },
+    {
+      "id": "HumanEval/158",
+      "reference": "official-canonical",
+      "baseInputs": 10,
+      "plusInputs": 897,
+      "kind": "passed",
+      "elapsedMs": 1372
+    },
+    {
+      "id": "HumanEval/159",
+      "reference": "official-canonical",
+      "baseInputs": 6,
+      "plusInputs": 976,
+      "kind": "passed",
+      "elapsedMs": 1412
+    },
+    {
+      "id": "HumanEval/160",
+      "reference": "official-canonical",
+      "baseInputs": 3,
+      "plusInputs": 449,
+      "kind": "passed",
+      "elapsedMs": 1475
+    },
+    {
+      "id": "HumanEval/161",
+      "reference": "official-canonical",
+      "baseInputs": 8,
+      "plusInputs": 983,
+      "kind": "passed",
+      "elapsedMs": 1428
+    },
+    {
+      "id": "HumanEval/162",
+      "reference": "official-canonical",
+      "baseInputs": 4,
+      "plusInputs": 1000,
+      "kind": "passed",
+      "elapsedMs": 1378
+    },
+    {
+      "id": "HumanEval/163",
+      "reference": "official-canonical",
+      "baseInputs": 4,
+      "plusInputs": 982,
+      "kind": "passed",
+      "elapsedMs": 1391
+    }
+  ],
+  "rules": {
+    "required": 541,
+    "executed": 309,
+    "technicalFailures": [
+      {
+        "id": 2605,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:2605",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 2616,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:2616",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 2617,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:2617",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 2622,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:2622",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 2628,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:2628",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 2637,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:2637",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 2649,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:2649",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 2653,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:2653",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 2662,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:2662",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 2667,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:2667",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 2674,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:2674",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 2677,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:2677",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 2683,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:2683",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 2685,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:2685",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 2691,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:2691",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 2704,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:2704",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 2713,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:2713",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 2716,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:2716",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 2724,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:2724",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 2728,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:2728",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 2736,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:2736",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 2739,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:2739",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 2749,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:2749",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 2751,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:2751",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 2752,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:2752",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 2759,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:2759",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 2765,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:2765",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 2768,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:2768",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 2779,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:2779",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 2780,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:2780",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 2785,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:2785",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 2787,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:2787",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 279,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:279",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 2790,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:2790",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 2798,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:2798",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 2801,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:2801",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 2807,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:2807",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 281,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:281",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 2811,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:2811",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 2817,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:2817",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 2820,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:2820",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 2825,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:2825",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 2828,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:2828",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 2829,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:2829",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 2832,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:2832",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 2844,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:2844",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 2849,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:2849",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 2853,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:2853",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 2857,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:2857",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 2859,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:2859",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 286,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:286",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 2870,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:2870",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 2871,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:2871",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 288,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:288",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 2880,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:2880",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 2887,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:2887",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 2889,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:2889",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 2904,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:2904",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 2905,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:2905",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 2908,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:2908",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 2909,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:2909",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 2912,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:2912",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 2918,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:2918",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 292,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:292",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 2921,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:2921",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 2925,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:2925",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 2929,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:2929",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 2941,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:2941",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 2943,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:2943",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 295,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:295",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 2957,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:2957",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 296,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:296",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 2969,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:2969",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 2977,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:2977",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 2985,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:2985",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 2997,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:2997",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 30,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:30",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3001,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3001",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 301,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:301",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3025,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3025",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3035,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3035",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3041,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3041",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3048,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3048",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3057,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3057",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3063,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3063",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3069,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3069",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3071,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3071",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3073,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3073",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3079,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3079",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3081,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3081",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3084,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3084",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3089,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3089",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3091,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3091",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3098,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3098",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3109,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3109",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3112,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3112",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3114,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3114",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3126,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3126",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3130,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3130",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3131,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3131",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3150,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3150",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3156,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3156",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3166,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3166",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3186,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3186",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3188,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3188",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3191,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3191",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3195,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3195",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3198,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3198",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 32,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:32",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3203,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3203",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3204,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3204",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 321,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:321",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 322,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:322",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3221,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3221",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3223,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3223",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3224,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3224",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3241,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3241",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3243,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3243",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3245,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3245",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3256,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3256",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3263,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3263",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3272,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3272",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3276,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3276",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3280,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3280",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3281,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3281",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3287,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3287",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3294,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3294",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3305,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3305",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 331,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:331",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3311,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3311",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3315,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3315",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 332,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:332",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3323,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3323",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3324,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3324",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3326,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3326",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3327,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3327",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3329,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3329",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3335,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3335",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 334,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:334",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3345,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3345",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3350,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3350",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3351,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3351",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3362,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3362",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3367,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3367",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3369,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3369",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 337,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:337",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3371,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3371",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3376,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3376",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3380,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3380",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3386,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3386",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 340,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:340",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3401,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3401",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3407,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3407",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3409,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3409",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3414,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3414",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3415,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3415",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3424,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3424",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3425,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3425",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3428,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3428",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3429,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3429",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 343,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:343",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3434,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3434",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3439,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3439",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3442,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3442",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3445,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3445",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3453,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3453",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3455,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3455",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3456,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3456",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3478,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3478",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3479,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3479",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3484,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3484",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 349,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:349",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3494,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3494",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3502,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3502",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3505,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3505",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3506,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3506",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3513,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3513",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3518,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3518",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3534,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3534",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3536,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3536",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3538,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3538",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3540,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3540",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3549,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3549",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3557,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3557",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3563,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3563",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3565,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3565",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3567,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3567",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3569,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3569",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 357,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:357",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3572,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3572",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3595,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3595",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3606,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3606",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3608,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3608",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3615,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3615",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3617,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3617",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3619,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3619",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3623,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3623",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3624,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3624",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3629,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3629",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3631,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3631",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3633,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3633",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3644,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3644",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3653,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3653",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3669,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3669",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3672,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3672",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3680,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3680",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3682,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3682",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3690,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3690",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3691,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3691",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3697,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3697",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3703,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3703",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3709,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3709",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 371,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:371",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3710,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3710",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3718,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3718",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3719,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3719",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3724,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3724",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3732,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3732",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3739,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3739",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 374,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:374",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3743,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3743",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3744,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3744",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3748,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3748",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3749,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3749",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3750,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3750",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3751,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3751",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3752,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3752",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3753,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3753",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3754,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3754",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3755,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3755",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3756,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3756",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      },
+      {
+        "id": 3757,
+        "outcome": {
+          "kind": "technical-missing",
+          "track": "general",
+          "itemId": "ifeval:3757",
+          "error": {
+            "code": "RULE_ENVIRONMENT_UNAVAILABLE",
+            "retryable": false,
+            "phase": "grader",
+            "message": "本地规则评分环境无法完成检查。"
+          },
+          "evidence": null
+        }
+      }
+    ],
+    "check": "nonempty input exercises every fixed prompt constraint; scores are conformance fixtures, not model results"
+  },
+  "actualHost": "unverified"
+}

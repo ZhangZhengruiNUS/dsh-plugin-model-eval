@@ -7,14 +7,16 @@ export interface TargetSnapshot {
   scopeId: string; providerId: string; modelId: string;
   routeTarget: ParamValue; controls: Record<string, ParamValue>;
   deployment?: { value: string; source: 'user' | 'service' };
+  origin?: { adapterInstance: string; settingsNs?: string; settingsRevision?: number; adapterEpoch?: number };
 }
 export interface PromptMessage { role: 'system' | 'user' | 'assistant'; content: string }
 export interface ModelChoice {
   scopeId: string; providerId: string; modelId: string; displayName: string;
   capabilities: Record<string, boolean>;
 }
-export interface GenerationInput { target: TargetSnapshot; messages: readonly PromptMessage[]; signal: AbortSignal }
-export interface GeneratedAnswer { text: string; complete: boolean; truncated: boolean; observations: AttemptObservation }
+export interface GenerationInput { target: TargetSnapshot; messages: readonly PromptMessage[]; signal: AbortSignal;
+  context: { attemptId: string; itemId: string; track: Track; phase: 'answer' | 'judge' } }
+export interface GeneratedAnswer { text: string; complete: boolean; truncated: boolean; observations: AttemptObservation; error?: TechnicalError }
 export interface HostAdapter {
   catalog(): Promise<ModelChoice[]>;
   snapshot(choice: ModelChoice, overrides: Record<string, ParamValue>): Promise<TargetSnapshot>;
@@ -28,7 +30,7 @@ export interface Question {
 export type RunState = 'queued' | 'checking' | 'running' | 'paused' | 'pending' | 'completed';
 export type DetailsState = 'available' | 'cleanup-pending' | 'partial' | 'cleared';
 export interface TrackSummary {
-  status: RunState; required: number; graded: number; score?: number; completedAt?: string;
+  status: RunState; required: number; graded: number; answered?: number; score?: number; completedAt?: string;
   measures: Record<string, { required: number; graded: number; passed?: number; score?: number }>;
 }
 export interface ProtocolRefs { generalId: string; writingId: string; resourceVersion: string }
@@ -38,10 +40,12 @@ export interface RunSummary {
   runId: string; batchId: string; target: TargetSnapshot; revision: number;
   tracks: Partial<Record<Track, TrackSummary>>; details: DetailsState; resumeAllowed: boolean;
   protocols: ProtocolRefs; judges: JudgeUsage[]; metrics: RunMetrics; completedAt?: string;
+  createdAt?: string;
 }
 export interface WritingDimensions { faithfulness: number; logic: number; coverage: number; concision: number; naturalness: number }
 export interface TechnicalError {
   code: string; retryable: boolean; phase: 'answer' | 'judge' | 'grader' | 'resource' | 'config' | 'storage'; message: string;
+  status?: number; retryAfterMs?: number;
 }
 export type GradeResult =
   | { kind: 'scored'; track: 'general'; itemId: string; passed: boolean; evidence: JsonValue }
@@ -55,11 +59,15 @@ export interface EvaluationRequest {
 export interface AttemptObservation {
   attemptId: string; itemId: string; track: Track; phase: 'answer' | 'judge';
   startedAt: string; endedAt: string; firstContentAt?: string;
-  usage: { available: boolean; inputTokens?: number; outputTokens?: number; reasoningTokens?: number };
+  usage: { available: boolean; inputTokens?: number; outputTokens?: number; reasoningTokens?: number;
+    cacheReadTokens?: number; cacheWriteTokens?: number; totalTokens?: number };
 }
 export interface PhaseMetrics {
   calls: number; failures: number; latencyMedianMs?: number; latencyP95Ms?: number;
   inputTokens?: number; outputTokens?: number; usageCoverage: number;
+  ttftMedianMs?: number; ttftP95Ms?: number; latencySamples?: number; ttftSamples?: number;
+  totalTokens?: number; reasoningTokens?: number; cacheReadTokens?: number; cacheWriteTokens?: number;
+  outputTokensPerSecond?: number;
 }
 export interface RunMetrics {
   tracks: Partial<Record<Track, { answer: PhaseMetrics; judge: PhaseMetrics; gradingMs: number }>>;

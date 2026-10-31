@@ -1,9 +1,9 @@
 {
-  "id": "general-chat-strict-v1",
+  "id": "general-chat-root-stable-rule-tokenizer-v3",
   "officialScore": false,
   "knowledge": { "sourcePrompt": "unchanged input_formatted, including the fixed source demonstrations", "suffix": "Give your final answer as a single option letter on the last line, in the form Final answer: A." },
   "math": { "sourcePrompt": "unchanged input_formatted", "suffix": "Put the final numeric answer on the last line in the form #### number." },
-  "instructions": { "sourcePrompt": "unchanged IFEval prompt", "metric": "prompt-level strict", "randomSeed": 0, "languageDetectionSeed": 0 },
-  "coding": { "sourcePrompt": "unchanged HumanEval+ function prompt", "suffix": "Return one complete implementation, including the requested function. Use a single code block. Do not include tests.", "metric": "one candidate; all base and plus inputs must pass", "runtime": "isolated WASI; Host compares outputs", "largeOutputs": "exact SHA256 equality for long strings, large integers, and strictly equal integer-valued sequences; no cases are omitted" },
+  "instructions": { "sourcePrompt": "unchanged IFEval prompt", "metric": "prompt-level strict", "tokenizer": "ifeval-code-tokenizer-v1", "randomSeed": 0, "languageDetectionSeed": 0 },
+  "coding": { "sourcePrompt": "unchanged HumanEval+ function prompt", "suffix": "Return one complete implementation, including the requested function. Use a single code block. Do not include tests.", "metric": "one candidate; all base and plus inputs must pass", "runtime": "isolated WASI; Host compares outputs", "rootOracle": "find-zero-stable-v1, explicitly adapted numerical criterion", "largeOutputs": "exact SHA256 equality for long strings, large integers, and strictly equal integer-valued sequences; no cases are omitted" },
   "aggregation": { "scale": [0,100], "weights": [0.25,0.25,0.25,0.25], "technicalMissing": "no official aggregate until every required item has a valid grade" }
 }

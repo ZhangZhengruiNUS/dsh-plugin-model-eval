@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "e6890f85757dd84e27ca6df2dd30651dafad28e0",
+  "referenceResponsesSha256": "0cff1d1469b774e80296bee20ca696894df35f3c6d6539f2c886d67c07599dcb",
+  "counts": {
+    "matched": 540,
+    "originalPassed": 417,
+    "adaptedPassed": 415,
+    "sentenceRows": 46,
+    "capitalRows": 20
+  },
+  "changedInstructionRows": 2,
+  "changedPromptScores": 2,
+  "changes": [
+    {
+      "key": 1967,
+      "instructions": [
+        "change_case:english_lowercase",
+        "length_constraints:number_sentences"
+      ],
+      "original": [
+        true,
+        true
+      ],
+      "adapted": [
+        true,
+        false
+      ],
+      "promptScoreChanged": true
+    },
+    {
+      "key": 2859,
+      "instructions": [
+        "length_constraints:number_sentences"
+      ],
+      "original": [
+        true
+      ],
+      "adapted": [
+        false
+      ],
+      "promptScoreChanged": true
+    }
+  ],
+  "unmatchedKeys": [
+    2785
+  ],
+  "note": "Comparison on published reference responses; no model calls. Candidate uses the official IFEval regex splitter and Apache-2.0 TreebankWordTokenizer, with no pretrained data."
+}
