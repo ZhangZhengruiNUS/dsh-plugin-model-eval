@@ -1,0 +1,137 @@
+{
+  "schemaVersion": 1,
+  "sources": [
+    {
+      "id": "mmlu-pro",
+      "domain": "knowledge",
+      "revision": "b189ec765aa7ed75c8acfea42df31fdae71f97be",
+      "url": "https://huggingface.co/datasets/TIGER-Lab/MMLU-Pro",
+      "rows": 12032,
+      "data": {
+        "path": "sources/mmlu-pro.json",
+        "sha256": "d26c4e693362453e12b6d97f882d019cc06b04d9512372407b50b02c1e36898b"
+      },
+      "artifact": {
+        "path": "artifacts/mmlu-pro.parquet",
+        "sha256": "0e24a191921c2f453518a537a8b2117bd137e7714d4ef1565e9ba06c1ecb9ad8",
+        "url": "https://huggingface.co/datasets/TIGER-Lab/MMLU-Pro/resolve/b189ec765aa7ed75c8acfea42df31fdae71f97be/data/test-00000-of-00001.parquet"
+      },
+      "license": {
+        "spdx": "MIT",
+        "path": "artifacts/mmlu-pro.README.md",
+        "sha256": "4bd710f67da3fa359a33edce1b4b5816b3de416c823c2624ba5e89c2557d2a47",
+        "status": "verified",
+        "basis": "Pinned publisher dataset card; attribution and full license texts must be retained before runtime packaging."
+      }
+    },
+    {
+      "id": "olympiad-text-math",
+      "domain": "math",
+      "revision": "91184b52131e7fc9455fef848035173aea8cc01a",
+      "url": "https://huggingface.co/datasets/Hothan/OlympiadBench",
+      "rows": 674,
+      "data": {
+        "path": "sources/olympiad-text-math.json",
+        "sha256": "eba905797c18fcc2ad5dc0165ed525c4b720fc741f5e90925bf89d93e899caa9"
+      },
+      "artifact": {
+        "path": "artifacts/olympiad-text-math.parquet",
+        "sha256": "7c17ca2662b3ea77cddcb66a64b04ad9b53d3d32fa372d444a4884739eb1638d",
+        "url": "https://huggingface.co/datasets/Hothan/OlympiadBench/resolve/91184b52131e7fc9455fef848035173aea8cc01a/OlympiadBench/OE_TO_maths_en_COMP/OE_TO_maths_en_COMP.parquet"
+      },
+      "license": {
+        "spdx": "Apache-2.0",
+        "path": "artifacts/olympiad-text-math.README.md",
+        "sha256": "fd6cd26c0021bb0df1d69b9160decf7db217991d4ec406842bde0e616bd40225",
+        "status": "verified",
+        "basis": "Pinned publisher dataset card; attribution and full license texts must be retained before runtime packaging."
+      }
+    },
+    {
+      "id": "code-contests-test",
+      "domain": "coding",
+      "revision": "802411c3010cb00d1b05bad57ca77365a3c699d6",
+      "url": "https://huggingface.co/datasets/deepmind/code_contests",
+      "rows": 165,
+      "data": {
+        "path": "sources/code-contests-test.json",
+        "sha256": "c986484f5ad5fb22fe23c628f5fbb82c36c1ebae7c52b044b8d63e8b7105e6ae"
+      },
+      "artifact": {
+        "path": "artifacts/code-contests-test.parquet",
+        "sha256": "aa426cbdb202bf8703b658bcb31fd1878ca7cfd33ca07d3b703dc94ca6a2b651",
+        "url": "https://huggingface.co/datasets/deepmind/code_contests/resolve/802411c3010cb00d1b05bad57ca77365a3c699d6/data/test-00000-of-00001-9c49eeff30aacaa8.parquet"
+      },
+      "license": {
+        "spdx": "CC-BY-4.0",
+        "path": "artifacts/code-contests-test.README.md",
+        "sha256": "36818c38c761a4469d3b4cade3b76e448419b5ca7a8b63b6ff1cedb64fcc7f61",
+        "status": "verified",
+        "basis": "Pinned publisher dataset card; attribution and full license texts must be retained before runtime packaging."
+      }
+    },
+    {
+      "id": "ifeval",
+      "domain": "instructions",
+      "revision": "e6890f85757dd84e27ca6df2dd30651dafad28e0",
+      "data": {
+        "path": "sources/ifeval.json",
+        "sha256": "87deac96abb5aa9dce69e2f6bd403e178c8c187cc3de672a2772aa8bd203a804"
+      },
+      "license": {
+        "spdx": "Apache-2.0",
+        "path": "sources/ifeval.LICENSE",
+        "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+        "status": "verified"
+      },
+      "url": "https://github.com/google-research/google-research/tree/e6890f85757dd84e27ca6df2dd30651dafad28e0/instruction_following_eval"
+    }
+  ],
+  "converter": {
+    "scriptSha256": "56eb32d07619c16777edd6dc7da5d72b51e264a18e6edc6b84e4f4504e8d4a56",
+    "versions": [
+      {
+        "rows": 12032,
+        "pyarrow": "26.0.0",
+        "python": "3.14.8"
+      },
+      {
+        "rows": 674,
+        "pyarrow": "26.0.0",
+        "python": "3.14.8"
+      },
+      {
+        "rows": 165,
+        "pyarrow": "26.0.0",
+        "python": "3.14.8"
+      }
+    ],
+    "requirements": "pyarrow==26.0.0 --hash=sha256:4a5fa8dc70dd50808990ff36faf44088e357b353d86c7682dd92d4b78d4c97d5\n"
+  },
+  "auditPolicy": "Pending code reviews are never eligible. No model or judge calls.",
+  "scope": "Developer source admission only; runtime release gate pending.",
+  "selection": {
+    "rule": "category-length-tertiles-round-robin-sha256-v1",
+    "lightPerAbility": 30,
+    "deepPerAbility": 100,
+    "usesModelOutcomes": false
+  },
+  "callBudget": {
+    "light": {
+      "general": 120,
+      "writingAnswer": 12,
+      "writingJudge": 12
+    },
+    "deep": {
+      "general": 400,
+      "writingAnswer": 12,
+      "writingJudge": 12
+    },
+    "upgradeGeneral": 280,
+    "retryLimit": 2,
+    "writingOptional": true,
+    "speedPreviewSeparate": true,
+    "durationTargets": "30 minutes / 2-3 hours are design targets, not measured guarantees",
+    "tokenBudget": "Uses user configuration. Exact tokens unavailable without model-specific tokenization and generation."
+  }
+}

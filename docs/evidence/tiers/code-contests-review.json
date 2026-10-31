@@ -1,0 +1,1487 @@
+{
+  "0": {
+    "sourceRecordHash": "13469a4829f0824b86febb722718e2c3c17f30ce1f6456996a936222caa9421a",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "1": {
+    "sourceRecordHash": "da3c38bc267dcb7cdbd796157c9ef397b3457985a038bf48587691eff6fcf6fe",
+    "status": "excluded",
+    "reason": "Floating output requires a tolerance checker outside the exact-token protocol.",
+    "uniqueOutput": false,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "2": {
+    "sourceRecordHash": "9fe2b685156440d62d7b8e89169adcc8e55a27597c2787119d6b68d8ca0b6a58",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available. No source Python3 reference; trusted implementation and runtime gate remain unverified.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "3": {
+    "sourceRecordHash": "3d7648c9cd95f6f6ccfc2713882a4dc478850955faa7d5d019c97b79b802b376",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "4": {
+    "sourceRecordHash": "9016f416ad26605c0ee47ad64ac47622e702325f339d8ae7372c307d6a3bed77",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available. No source Python3 reference; trusted implementation and runtime gate remain unverified.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "5": {
+    "sourceRecordHash": "27f21ebe20c07bdd0f65e90f3b71d88a2dc3fce0351fe5faf01c3eb1ae56ac17",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available. No source Python3 reference; trusted implementation and runtime gate remain unverified.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "6": {
+    "sourceRecordHash": "2fff38930e30ebdc51103311dfc5ac9b5513f25881ab9dd57268f37331ad996b",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available. No source Python3 reference; trusted implementation and runtime gate remain unverified.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "7": {
+    "sourceRecordHash": "5e864c1f4bcc44b7082ed2773b36919030ece8eac5370bbc4cabab82b947a664",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available. No source Python3 reference; trusted implementation and runtime gate remain unverified.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "8": {
+    "sourceRecordHash": "ed406a029ff7dbbb517d44afcddafbc0b296ef569d567aa5b18c8b9161f6630e",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "9": {
+    "sourceRecordHash": "ae6e6e48498057c6297d329fde2b4e9d414427528946a5d23bfc2f387c085631",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "10": {
+    "sourceRecordHash": "e605498c7e6068f90c66c4b982e11aa36ccf095e8ef62feeeb84fec0afc02edb",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "11": {
+    "sourceRecordHash": "a819e9afaaa5cd5aba350e28a88271626489f257ced81512672dbe64ae6631cc",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "12": {
+    "sourceRecordHash": "53779ffd6bb09c5506f721e0de7e50495af3982adf489ad6fb05ef23060c95b6",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available. No source Python3 reference; trusted implementation and runtime gate remain unverified.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "13": {
+    "sourceRecordHash": "8374dfc2780c34a1a78d334668d01214f838c3dc65475a82ee78d69d40e870b1",
+    "status": "excluded",
+    "reason": "Output permits varying letter case; exact-token protocol cannot accept every legal spelling.",
+    "uniqueOutput": false,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "14": {
+    "sourceRecordHash": "99128d26a3e4c08287057d80dbb06a9411e5840ae0afc2a1205cab80394db5b5",
+    "status": "excluded",
+    "reason": "Output permits multiple valid witnesses, constructions, orderings or other answers; requires a special checker.",
+    "uniqueOutput": false,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "15": {
+    "sourceRecordHash": "781d8c71dea6b349b14a80232a07c3572e8f78b7c43b5c38022d6654733027ea",
+    "status": "excluded",
+    "reason": "Output permits varying letter case; exact-token protocol cannot accept every legal spelling.",
+    "uniqueOutput": false,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "16": {
+    "sourceRecordHash": "1e74e05b79767b51e6bd3f034e6b25cc94242493899b9ffafae80630a888d9bb",
+    "status": "excluded",
+    "reason": "Output permits multiple valid witnesses, constructions, orderings or other answers; requires a special checker.",
+    "uniqueOutput": false,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "17": {
+    "sourceRecordHash": "471958c80f4553e8018b58314f9a098339b7368fe9986e06b8da654ae58c7e6f",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "18": {
+    "sourceRecordHash": "0b9b5a54853408599d21a3e708d012e14c9f952dae125b4d5af0a24531d5a9c0",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "19": {
+    "sourceRecordHash": "ae4cae398ce86b8a775f2f6ff402121ac2f8ff57403756045388b687f89b61ed",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "20": {
+    "sourceRecordHash": "f4ef43f958529f3ca28e7915ad340c08c3eb5018416d389b16125c7636efa58f",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "21": {
+    "sourceRecordHash": "eec0101640e010a0ffabc609fa2e5d2d3031a3eab007f06ed98da34b59883e27",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available. No source Python3 reference; trusted implementation and runtime gate remain unverified.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "22": {
+    "sourceRecordHash": "9354fc7c7851091be9c8aa89d3d8e1492c73232d5f5993410bcb73547329c7b5",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available. No source Python3 reference; trusted implementation and runtime gate remain unverified.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "23": {
+    "sourceRecordHash": "e0ca12f21c2cc4ecc8461de5a0454f1e80bc9b53d03c2a5761ecac32e4db2487",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available. No source Python3 reference; trusted implementation and runtime gate remain unverified.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "24": {
+    "sourceRecordHash": "8b095362fb68cf3e7624b20e52d2872bca37a064755183d5c07649a200bb83da",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available. No source Python3 reference; trusted implementation and runtime gate remain unverified.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "25": {
+    "sourceRecordHash": "0aa6e3224a8743b4e7493812d1e3ab0eefbc6c311f8c3b80eaff4fdf86b6ac69",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available. No source Python3 reference; trusted implementation and runtime gate remain unverified.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "26": {
+    "sourceRecordHash": "994df5919fc3ace4726360e1dca2308c5c6be6edcd74609e182cc4a4b5f8a376",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "27": {
+    "sourceRecordHash": "ccf546010a6426615e356e8c2ed7bb452adf8eefc6fd70ba8a08235afa3e4abd",
+    "status": "excluded",
+    "reason": "Output permits varying letter case; exact-token protocol cannot accept every legal spelling.",
+    "uniqueOutput": false,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "28": {
+    "sourceRecordHash": "444aa6cff55b716accefe38729a3c64cb9c467834017a79aa1313edf41a98775",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "29": {
+    "sourceRecordHash": "73f5f82ac1d225c61afe41bb75a2069bf148d51b4069ff5d794a39dde36b144c",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "30": {
+    "sourceRecordHash": "ccb682c41933f5949ff193723f2b409915f773ab1ef2fca597b01cb192e6dabd",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "31": {
+    "sourceRecordHash": "044e927915087b1aa8920ef5aa5915bc1d55f210250728575c1325d8f298cfeb",
+    "status": "excluded",
+    "reason": "Output permits multiple valid witnesses, constructions, orderings or other answers; requires a special checker.",
+    "uniqueOutput": false,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "32": {
+    "sourceRecordHash": "84e067cb6d8a1a786209f76c6f98ea2519b9ae18b3550d9819fc7e8ece11dd65",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available. No source Python3 reference; trusted implementation and runtime gate remain unverified.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "33": {
+    "sourceRecordHash": "7c6ffddb5cf95112d831dd4e355bd7e9f2cb4b3f8e1ec4546b3af88435aaebb7",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "34": {
+    "sourceRecordHash": "78e192d8c072f9879e03ba9811fa9473ea4506b66786cb2f9d15489e6bb9dc0f",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "35": {
+    "sourceRecordHash": "30b34bb36ee771b22faf66dfc36fccb9bd46797b258655568e802f27aad9b714",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available. No source Python3 reference; trusted implementation and runtime gate remain unverified.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "36": {
+    "sourceRecordHash": "c6bb26b31b166f5ecb375c26460438d91cccff3015b4d789e4d9eebe8de3f04d",
+    "status": "excluded",
+    "reason": "Output permits multiple valid witnesses, constructions, orderings or other answers; requires a special checker.",
+    "uniqueOutput": false,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "37": {
+    "sourceRecordHash": "d0cba09f347579c6e83475c832042e715b8067a6c5cea3f94751516c6108cfeb",
+    "status": "excluded",
+    "reason": "Output permits multiple valid witnesses, constructions, orderings or other answers; requires a special checker.",
+    "uniqueOutput": false,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "38": {
+    "sourceRecordHash": "7d1cb4c6c3ba27d9cac6b0c26e8b6077d67f56595842a3c7d5eea98d20249bea",
+    "status": "excluded",
+    "reason": "Output permits varying letter case; exact-token protocol cannot accept every legal spelling.",
+    "uniqueOutput": false,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "39": {
+    "sourceRecordHash": "66dea7aff30a47992b4f667d0174e12bf0d758ebc1598ff84f19168aed35b06a",
+    "status": "excluded",
+    "reason": "Interactive problem; batch stdin/stdout checker is unsupported.",
+    "uniqueOutput": false,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": true
+  },
+  "40": {
+    "sourceRecordHash": "41c48b5604a90a729b470f46b8086b62ca43b1291b314bd895c6db283cee053e",
+    "status": "excluded",
+    "reason": "Output permits multiple valid witnesses, constructions, orderings or other answers; requires a special checker.",
+    "uniqueOutput": false,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "41": {
+    "sourceRecordHash": "c4266dbf32cad074694b335801c8421c0a4f4ba31c57f223514655e9e3cf12de",
+    "status": "excluded",
+    "reason": "Output permits multiple valid witnesses, constructions, orderings or other answers; requires a special checker.",
+    "uniqueOutput": false,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "42": {
+    "sourceRecordHash": "ace7fce75fc556c4736bb13dc220ba5b345c1c47b10cf55e1dddc6ac3100c00e",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available. No source Python3 reference; trusted implementation and runtime gate remain unverified.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "43": {
+    "sourceRecordHash": "bab25cd0b977d31ba7d3ac1d30147de2c19b0ece35a348728dbb51f05a07bd91",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available. No source Python3 reference; trusted implementation and runtime gate remain unverified.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "44": {
+    "sourceRecordHash": "cd01b96baf81faafe6cc9277979ef781a631449f9641331ea470c8d843b8e2fd",
+    "status": "eligible",
+    "reason": "NONE/MULTIPLE are fixed; UNIQUE branch explicitly guarantees one grid. Runtime still unverified.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "45": {
+    "sourceRecordHash": "e0ffc278f4b5ee1afc8c955627ce86b5f7207615ee1eb43da08e3cd34100a61b",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "46": {
+    "sourceRecordHash": "2cf4c97165e8036c2096e992cfe2e9bf00f31297f868b0f7d61fa1652bce3518",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "47": {
+    "sourceRecordHash": "cf2aea19aa715362ab2d4f2b66e18f7af930d3e652041e2e080a536276f4f3ea",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "48": {
+    "sourceRecordHash": "989d17ba868b928ac21d1b115a4c4e2a778f7049db7287b87f654ececf9435d3",
+    "status": "excluded",
+    "reason": "Output permits varying letter case; exact-token protocol cannot accept every legal spelling.",
+    "uniqueOutput": false,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "49": {
+    "sourceRecordHash": "9ac4f0d1e1a394894cbaa163d281aed8b91d152e881fd868e3215b51e45a000b",
+    "status": "excluded",
+    "reason": "Output permits multiple valid witnesses, constructions, orderings or other answers; requires a special checker.",
+    "uniqueOutput": false,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "50": {
+    "sourceRecordHash": "522ca3c7f1b06b55926e2580ab852b1d703dd99937d0dc6b703b58b7eb6798a7",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "51": {
+    "sourceRecordHash": "b88ee32483276e17c82fdd0680a9e5ee7fe17ed39cfd5687bcfbdc5c7924c10c",
+    "status": "excluded",
+    "reason": "Output permits multiple valid witnesses, constructions, orderings or other answers; requires a special checker.",
+    "uniqueOutput": false,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "52": {
+    "sourceRecordHash": "0d34598c753671dcb48181f51134a2734a40880ed76f7480260f83d8fee074cd",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "53": {
+    "sourceRecordHash": "edffc0bfe25d69ffe18b8d792e44cb84a6c029cda7825ca587b9e6fbfb24d346",
+    "status": "excluded",
+    "reason": "Output permits multiple valid witnesses, constructions, orderings or other answers; requires a special checker.",
+    "uniqueOutput": false,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "54": {
+    "sourceRecordHash": "3f7e3ea890d11efe4e44add71d62c88dffa27014eff6cac99449e14776c82815",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "55": {
+    "sourceRecordHash": "cdd4865b843410c1213677cb74efd1414bb6aaa92f2e2208b8a1110d724013e8",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "56": {
+    "sourceRecordHash": "1a99f61d6ebb687ca92031572075701193230dcdeb1bad760b23f468cb5bea8b",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "57": {
+    "sourceRecordHash": "53b20c40b95fed6f1b52aba07292ab6f262c927a4b0b77dcd60a1892475c0c55",
+    "status": "excluded",
+    "reason": "Output permits varying letter case; exact-token protocol cannot accept every legal spelling.",
+    "uniqueOutput": false,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "58": {
+    "sourceRecordHash": "49c9b8b76b7e2920d7a095cfb3dddb77cbdaeeae16e19ac0af6fa1e3f83084eb",
+    "status": "excluded",
+    "reason": "Output permits varying letter case; exact-token protocol cannot accept every legal spelling.",
+    "uniqueOutput": false,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "59": {
+    "sourceRecordHash": "22bab3f12cfb3445a3a96635f2864e333b1ec7fb6e498ef43f08b5cf4e337666",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "60": {
+    "sourceRecordHash": "9e92ab1ec7130895fbf2c6fa7cf7d6cbcd737922e1f79343935047ea8bac361c",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "61": {
+    "sourceRecordHash": "34e7a08928ea77206e35f0350956b652d076abee6717d25b49faa06a42791228",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "62": {
+    "sourceRecordHash": "1c68ef4a775017ec8838bd792d2196aa5755d7c91291add45b9a512dc275f5cf",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "63": {
+    "sourceRecordHash": "b9e77b25142f989b7b0c50b199541181607a964e261e342e6f441d80e454640c",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "64": {
+    "sourceRecordHash": "9d32a3fe3ad1933591c9361b2228408528c5e15775fbc73656ab986d2f5bf6da",
+    "status": "excluded",
+    "reason": "Output permits multiple valid witnesses, constructions, orderings or other answers; requires a special checker.",
+    "uniqueOutput": false,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "65": {
+    "sourceRecordHash": "469c8aa3a9fcbc5d5d780e9f4bcc8327760578a53aa2c612425748df0f3e9e9a",
+    "status": "excluded",
+    "reason": "Output permits multiple valid witnesses, constructions, orderings or other answers; requires a special checker.",
+    "uniqueOutput": false,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "66": {
+    "sourceRecordHash": "3fc1472be3e6cd97845105e32702900fa0e5a8fa7167ee7b602a6b2bb5e0b583",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available. No source Python3 reference; trusted implementation and runtime gate remain unverified.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "67": {
+    "sourceRecordHash": "679fd08858498e5ea350431359fa344d4c530f2b6a0a91ce0c7636d5f1a778ca",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "68": {
+    "sourceRecordHash": "8aa9c63be9282936a201cc59087eb16ec6ae94baa2d5600093962e0c493a3f80",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available. No source Python3 reference; trusted implementation and runtime gate remain unverified.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "69": {
+    "sourceRecordHash": "3991f68f0f655cc0722be057945657d782b2a77707764362bac4bf68674c14a9",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available. No source Python3 reference; trusted implementation and runtime gate remain unverified.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "70": {
+    "sourceRecordHash": "f796f457460ce87b021cfd5ac9e2d94e223fe61b34a019beadf5f8cc1584105b",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available. No source Python3 reference; trusted implementation and runtime gate remain unverified.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "71": {
+    "sourceRecordHash": "ba7cd535ca411b344ebc0b36a34583dd1e713ce90d1746b8c0bdf0a68826e3f8",
+    "status": "excluded",
+    "reason": "Floating output requires a tolerance checker outside the exact-token protocol.",
+    "uniqueOutput": false,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "72": {
+    "sourceRecordHash": "5720b0ee10f6711b6320f0f65c5a7de0315ccf4a00cb69a4ca6cbbb83d50fa05",
+    "status": "excluded",
+    "reason": "Interactive problem; batch stdin/stdout checker is unsupported.",
+    "uniqueOutput": false,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": true
+  },
+  "73": {
+    "sourceRecordHash": "555469512488b44b3e12fef2ff108aa94baacc322b47a1bda8aeb1c0091cf516",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available. No source Python3 reference; trusted implementation and runtime gate remain unverified.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "74": {
+    "sourceRecordHash": "b74865a24efc244be8ef991a576fcf08fc6cd796221e521b4ba364f17859bc20",
+    "status": "excluded",
+    "reason": "Output permits multiple valid witnesses, constructions, orderings or other answers; requires a special checker.",
+    "uniqueOutput": false,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "75": {
+    "sourceRecordHash": "1ae24ad550daa0d62741b71d1ee24227a04ec0d3ca56dded90355285c746f5f2",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "76": {
+    "sourceRecordHash": "c81bd51e79e44dd29b31efc6fbddfb4bfdcf5980a21f9fb0615bf2f3c7eff3a6",
+    "status": "excluded",
+    "reason": "Output permits multiple valid witnesses, constructions, orderings or other answers; requires a special checker.",
+    "uniqueOutput": false,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "77": {
+    "sourceRecordHash": "088d479830e12cb994d0f1aa2ff5180c1c8dd2a25f807edc83bf9f04c15aa023",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "78": {
+    "sourceRecordHash": "633299762fa5435826b1f1e1a7565cdcf14f8e49c0e8e5d531371e6864d75f2c",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "79": {
+    "sourceRecordHash": "a54fb6b148666048590858d4c2953c9d2065bc45a6f7a1633c3de69f6f923c32",
+    "status": "excluded",
+    "reason": "Output permits multiple valid witnesses, constructions, orderings or other answers; requires a special checker.",
+    "uniqueOutput": false,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "80": {
+    "sourceRecordHash": "e3b9e98662bd6a908d5b63b6104561c5b16146505b87bde908fa2c82b2e309a3",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available. No source Python3 reference; trusted implementation and runtime gate remain unverified.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "81": {
+    "sourceRecordHash": "e5697a19dbc9f2cded5d8426d3e86f284f4812a0250d4d31f5f7a9fd39d903e5",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available. No source Python3 reference; trusted implementation and runtime gate remain unverified.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "82": {
+    "sourceRecordHash": "99a9a3017eadf88edfc242a22bfb6c785f13b89c2a8ed1f045533f1f22c97732",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available. No source Python3 reference; trusted implementation and runtime gate remain unverified.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "83": {
+    "sourceRecordHash": "4581bcd4df13fe20ce6e8cbf792971ad4697121db99e2f495a9330cc4a1addb9",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available. No source Python3 reference; trusted implementation and runtime gate remain unverified.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "84": {
+    "sourceRecordHash": "21d7b6a9d3188a668b73b07be83ef5faeae88448578c9690acecd1c82d111930",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available. No source Python3 reference; trusted implementation and runtime gate remain unverified.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "85": {
+    "sourceRecordHash": "bb90f074b805e6344526faa47162bae5da7a30d6043eee133c60f49297a2487b",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available. No source Python3 reference; trusted implementation and runtime gate remain unverified.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "86": {
+    "sourceRecordHash": "36f39dce920dd949dda9f4633a1c9af3813ae66efc8e01fce8c64e18d368ffa8",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available. No source Python3 reference; trusted implementation and runtime gate remain unverified.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "87": {
+    "sourceRecordHash": "86abbadc9dc826cacf3597da3ca10470a2a3e7375f0e73d9d29e3e5687b82602",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "88": {
+    "sourceRecordHash": "9526cb64f6868915dae593c0c58577f742867135729968a49e827233b7be4a69",
+    "status": "excluded",
+    "reason": "Output permits varying letter case; exact-token protocol cannot accept every legal spelling.",
+    "uniqueOutput": false,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "89": {
+    "sourceRecordHash": "bc8b016dad04cce6f6fb7c926f26b75987342ced9997cb7b79b930c92a641a69",
+    "status": "excluded",
+    "reason": "Output permits varying letter case; exact-token protocol cannot accept every legal spelling.",
+    "uniqueOutput": false,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "90": {
+    "sourceRecordHash": "32695220e1be5ad13472e5c53b441404fe2535862560e25e2a4168dd63d72ab2",
+    "status": "excluded",
+    "reason": "Output permits multiple valid witnesses, constructions, orderings or other answers; requires a special checker.",
+    "uniqueOutput": false,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "91": {
+    "sourceRecordHash": "a555cf838fd7d50b2cd85a2ad7fc26ae457c78fa016069b73a040a78df480539",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available. No source Python3 reference; trusted implementation and runtime gate remain unverified.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "92": {
+    "sourceRecordHash": "7782aa74f375887459827ef6c7f9cb62ddc68816e5b7cf5b395301035f1b9915",
+    "status": "excluded",
+    "reason": "Output permits multiple valid witnesses, constructions, orderings or other answers; requires a special checker.",
+    "uniqueOutput": false,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "93": {
+    "sourceRecordHash": "c7ca5f5d93ef22bfc556809dc6abfefda2a57dbbedbf9f62b7dc37c699065979",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "94": {
+    "sourceRecordHash": "fcf626818ba6d4fa3c43b83c329febae20eb2c1f6e9528fa1e318fdc18ca00b0",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "95": {
+    "sourceRecordHash": "4e0a5ded3a03970bd49a435fc7fe8358d68ca3eb07e501584c81be3ac1a6c756",
+    "status": "excluded",
+    "reason": "Output permits multiple valid witnesses, constructions, orderings or other answers; requires a special checker.",
+    "uniqueOutput": false,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "96": {
+    "sourceRecordHash": "860eb3cc9ca9d54770cd9e780f9e57d547cbb6d3155b7dafbcbc556e14529387",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "97": {
+    "sourceRecordHash": "68230fed727e778db68859893b84127f0c22148b363acf0f47711a6ae7205f2e",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available. No source Python3 reference; trusted implementation and runtime gate remain unverified.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "98": {
+    "sourceRecordHash": "0108d426b16d2d8a09c54ad99dba38c546a9b56ab0ff587cb43d27a005fa8a6e",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "99": {
+    "sourceRecordHash": "7c73c4a91a8f857d4fd573b548bf1e4548d97d646c3639d4316121598d07d5c8",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "100": {
+    "sourceRecordHash": "af2f400855838d9751d71ec384ef0272102a455400ee3c1ad17eeb8b42632004",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "101": {
+    "sourceRecordHash": "f40f2d4706dba144a2bbf2ad252e1e5963c97ee1201a851cc82a4c84631d13da",
+    "status": "excluded",
+    "reason": "Output permits varying letter case; exact-token protocol cannot accept every legal spelling.",
+    "uniqueOutput": false,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "102": {
+    "sourceRecordHash": "5bc02ad2d3a1b0d502ef50e06dd5c94b2f19f0a012165c34c28dd72ac6f98f9b",
+    "status": "excluded",
+    "reason": "Output permits multiple valid witnesses, constructions, orderings or other answers; requires a special checker.",
+    "uniqueOutput": false,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "103": {
+    "sourceRecordHash": "15229a810cb940128f4e16978d87102c96ab48662481b1486af7e84b00688373",
+    "status": "excluded",
+    "reason": "Output permits multiple valid witnesses, constructions, orderings or other answers; requires a special checker.",
+    "uniqueOutput": false,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "104": {
+    "sourceRecordHash": "662b1b85cc66c04e7271e3e0aedcf6f8908f68a564f66e6188e914bbaaf6dae7",
+    "status": "excluded",
+    "reason": "Output permits multiple valid witnesses, constructions, orderings or other answers; requires a special checker.",
+    "uniqueOutput": false,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "105": {
+    "sourceRecordHash": "5afc1da46668331ed8cd356b3e0273566d94253f1b7d5360eefd25d053ea491a",
+    "status": "excluded",
+    "reason": "Output permits multiple valid witnesses, constructions, orderings or other answers; requires a special checker.",
+    "uniqueOutput": false,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "106": {
+    "sourceRecordHash": "9f2260c99023e2be72a4cfdffff72fb246333bdeba742b5b124ad828e446a15d",
+    "status": "excluded",
+    "reason": "Output permits multiple valid witnesses, constructions, orderings or other answers; requires a special checker.",
+    "uniqueOutput": false,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "107": {
+    "sourceRecordHash": "d6da1da53286ac1f380c80cb117eba0554509fa3f12f475a7ec315ed2019747c",
+    "status": "excluded",
+    "reason": "Output permits multiple valid witnesses, constructions, orderings or other answers; requires a special checker.",
+    "uniqueOutput": false,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "108": {
+    "sourceRecordHash": "ce2ca849452948286cd021508197e1aefb5e283c2f112b2476556fc21c8a0b5f",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "109": {
+    "sourceRecordHash": "c9c69e87b853df5efc0d1fcfee14c33d9d910e92728c01575085e20cf4737645",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "110": {
+    "sourceRecordHash": "c80ca62231339748aab164463da6c1f9ad9c563f5ba3ba3c31339fc78ac389d7",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available. No source Python3 reference; trusted implementation and runtime gate remain unverified.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "111": {
+    "sourceRecordHash": "7b351ed19bc6f24246e7affeebf0bf5cdde6395413fb0c19be356d99027de1f4",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available. No source Python3 reference; trusted implementation and runtime gate remain unverified.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "112": {
+    "sourceRecordHash": "7a7c9836eecefaf370320f7c9bfa2d28270c8abf8c6f92e1315e38c20b3a9994",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available. No source Python3 reference; trusted implementation and runtime gate remain unverified.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "113": {
+    "sourceRecordHash": "af73c18f293087cc2cbbb7e59d20868a5a88462905965c434c2c29c2e337b2ea",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "114": {
+    "sourceRecordHash": "6e55c15901b42c2f7a247c04d79489c68176fbefe1cd0c8db18ca4ec05c99746",
+    "status": "excluded",
+    "reason": "Output permits multiple valid witnesses, constructions, orderings or other answers; requires a special checker.",
+    "uniqueOutput": false,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "115": {
+    "sourceRecordHash": "e44dd4912017f199e8b8562f56dc8a8595ee41992f9239440dd31feb0b61ed35",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "116": {
+    "sourceRecordHash": "f346c76dc0d7c2cbf0014f59fc2db1032d6246d189afbf53c4fbffd763dee83a",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "117": {
+    "sourceRecordHash": "f5e97d9d58931a83aa54da2f14d7d4486dc4d444aeb4a18d0094dfa884a770c8",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "118": {
+    "sourceRecordHash": "f96191e6c802e16fcde9820f06bb33d43e59d576c5877e9f0cae0c0b1baa4709",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available. No source Python3 reference; trusted implementation and runtime gate remain unverified.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "119": {
+    "sourceRecordHash": "4513e7b3c610103b9c760bffd04a4c92173f1e19d3184cf0798e2699bbdb2ca5",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "120": {
+    "sourceRecordHash": "96c11d5b243192ecbe5be8b4c273af9c2c26ac21da5ccc58bae3a37a2a52513f",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "121": {
+    "sourceRecordHash": "9e21a3b5ef977644f2f9a5b874f55fcf5654952c8b7bcfde284840c6047de555",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "122": {
+    "sourceRecordHash": "9e864b10edd79632598c254cfb8d1f509a0a32a7b640ff27a814994854f9fd35",
+    "status": "excluded",
+    "reason": "Output permits multiple valid witnesses, constructions, orderings or other answers; requires a special checker.",
+    "uniqueOutput": false,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "123": {
+    "sourceRecordHash": "321168bf7f4938b8fb529dd9d32c8f1a6a7c33c9231815b96a3b357447e4ec35",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "124": {
+    "sourceRecordHash": "8ba65e97be9ad7d925644a3e7ec9ce0bf56e0e949e1ab23cf1202fc45c0b0d50",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available. No source Python3 reference; trusted implementation and runtime gate remain unverified.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "125": {
+    "sourceRecordHash": "02e5971be030de4e8600d9aad4e90b5380718ac8936b79908921fed5466715d7",
+    "status": "excluded",
+    "reason": "Output permits multiple valid witnesses, constructions, orderings or other answers; requires a special checker.",
+    "uniqueOutput": false,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "126": {
+    "sourceRecordHash": "a93d12bb57266b3888ad34b14ee6a5d51118245e023f55427f15e1c4a14c8fb5",
+    "status": "excluded",
+    "reason": "Output permits multiple valid witnesses, constructions, orderings or other answers; requires a special checker.",
+    "uniqueOutput": false,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "127": {
+    "sourceRecordHash": "2cd747643e9a914d60eb2ec58b082c8c77eee6bf81882e4e2843745860f0721c",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "128": {
+    "sourceRecordHash": "9820e20ee1370a9ba0a25b3accda3aa9fd6ed179970837518872fddb79e075d9",
+    "status": "excluded",
+    "reason": "Output permits multiple valid witnesses, constructions, orderings or other answers; requires a special checker.",
+    "uniqueOutput": false,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "129": {
+    "sourceRecordHash": "5a1e8331230deecec8e5137cd7f26d588b15e4a06bc7c8177f66741cc4fa228b",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "130": {
+    "sourceRecordHash": "ed87d116cbc80ff0390c66d464b7e3108bad82c27e2ca3a2eea8402bd97ffc2b",
+    "status": "excluded",
+    "reason": "Interactive problem; batch stdin/stdout checker is unsupported.",
+    "uniqueOutput": false,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": true
+  },
+  "131": {
+    "sourceRecordHash": "15b255ad144fc79273cbc111f7c4fc558776390b7df8b94697402f0a27d73353",
+    "status": "excluded",
+    "reason": "Output permits multiple valid witnesses, constructions, orderings or other answers; requires a special checker.",
+    "uniqueOutput": false,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "132": {
+    "sourceRecordHash": "4027d244d4714cef654267f1a4414e07bd02d8215f9fd0fc5a6f019c3a493232",
+    "status": "excluded",
+    "reason": "Output permits multiple valid witnesses, constructions, orderings or other answers; requires a special checker.",
+    "uniqueOutput": false,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "133": {
+    "sourceRecordHash": "aa5b11d040e84739f249d258f99c5139158de2f4cf3f4a9a0e6f3ec11364c32f",
+    "status": "excluded",
+    "reason": "Output permits multiple valid witnesses, constructions, orderings or other answers; requires a special checker.",
+    "uniqueOutput": false,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "134": {
+    "sourceRecordHash": "f519620f12ea42f70991a23fdb6f479ee10537e58bb88b79ff6e32ce4ce7c364",
+    "status": "excluded",
+    "reason": "Output permits multiple valid witnesses, constructions, orderings or other answers; requires a special checker.",
+    "uniqueOutput": false,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "135": {
+    "sourceRecordHash": "20703a9b8bfed0f60c8fc54e99648f789c7a50009af3405b6a0aaa6206aae2b1",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "136": {
+    "sourceRecordHash": "a541adae82549ac04b358894bdefbac7afdc126d02d96323dc0130cc500ae035",
+    "status": "excluded",
+    "reason": "Output permits multiple valid witnesses, constructions, orderings or other answers; requires a special checker.",
+    "uniqueOutput": false,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "137": {
+    "sourceRecordHash": "3641de678c1eee9c2cd82bd0b459e59911a69e8d3dbc01bf343a1ae8f7734de7",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "138": {
+    "sourceRecordHash": "c51b494f45e910bf294a338dc85932df70bf645596c71ff1880533c75048eb6a",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "139": {
+    "sourceRecordHash": "dc7a177e3a2c06d403bcc6456114de5a4c9253d8a0bde4a7fb35fc5c1956ace2",
+    "status": "excluded",
+    "reason": "Output permits varying letter case; exact-token protocol cannot accept every legal spelling.",
+    "uniqueOutput": false,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "140": {
+    "sourceRecordHash": "211f933cda331ca0c3c9b8d762e564a14d551e1d4a1fffc286460f972e4261bd",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "141": {
+    "sourceRecordHash": "583750d02f2c0df1f51783ebea2df459e7516b5307e810250d585b034d6f0f42",
+    "status": "excluded",
+    "reason": "Output permits multiple valid witnesses, constructions, orderings or other answers; requires a special checker.",
+    "uniqueOutput": false,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "142": {
+    "sourceRecordHash": "950991b2dbc1e82a515254daf2e610ee29aea8333ad9e0ebfaba157ac225b57a",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "143": {
+    "sourceRecordHash": "a0cea27d02a81750ad9af32e51f890ae62cad1b7f7467007f79a7ed817e13fb5",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "144": {
+    "sourceRecordHash": "66d8de27813dedf08c99086088aa1525891799906370bdf285eadf80183e5bac",
+    "status": "excluded",
+    "reason": "Output permits multiple valid witnesses, constructions, orderings or other answers; requires a special checker.",
+    "uniqueOutput": false,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "145": {
+    "sourceRecordHash": "917f728356d3ac2d0891c12e9aac043fb46451cd99f0c84965d7c89d99cb8dc6",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "146": {
+    "sourceRecordHash": "ca01afdc838f6396ee5820863210869832ba601f4ab319726267261ea1a2f8d8",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "147": {
+    "sourceRecordHash": "2ab5856fb443929a126b4d29c14fe8c80e4f6d66fdba8ef17657defadc9bbccd",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "148": {
+    "sourceRecordHash": "410957116883afc9e97ec4ef64e168f4d2a25475aee5e761d41552a0c186e0e5",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "149": {
+    "sourceRecordHash": "aaf61c1dc91d3324a4a422dbab73d8822955c5ab7dcb73e7b89ce6a4abd88127",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "150": {
+    "sourceRecordHash": "2497bd70cc738340043afc59967e5026afff8a7dc479712e9d3c88781412e477",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "151": {
+    "sourceRecordHash": "e92710fe334df1674a096fa8f00a2115dd2513278dccb2cf14f6fcb43ecc5703",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "152": {
+    "sourceRecordHash": "7a8f25c9b976ae448e08b170a3ed786c70b8f1b0c87c4c4f1358e6a77736aee0",
+    "status": "excluded",
+    "reason": "Output permits multiple valid witnesses, constructions, orderings or other answers; requires a special checker.",
+    "uniqueOutput": false,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "153": {
+    "sourceRecordHash": "b2ca665e1a8a0358e37c1e6340046ba56d5378513b66a68a2bafe1fce31f408f",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available. No source Python3 reference; trusted implementation and runtime gate remain unverified.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "154": {
+    "sourceRecordHash": "3640a3a63bd7447863065c89a41280693e579565499911767561f4b93a19a4e0",
+    "status": "excluded",
+    "reason": "Output permits varying letter case; exact-token protocol cannot accept every legal spelling.",
+    "uniqueOutput": false,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "155": {
+    "sourceRecordHash": "84f82b643527dcf8a6c52eadadce3ce2c87a5b95855ffc1a4add39d63a3b7ab3",
+    "status": "excluded",
+    "reason": "Output permits multiple valid witnesses, constructions, orderings or other answers; requires a special checker.",
+    "uniqueOutput": false,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "156": {
+    "sourceRecordHash": "4273a723e35811f97e4f12b35dac3625388da1675357a7a33910a4029aabf2f4",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "157": {
+    "sourceRecordHash": "d095e6f84da51260f964b8e849b8439cb39605f6493376c02ecd9934592ec10d",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "158": {
+    "sourceRecordHash": "40d206d7fdb91dc58ff8817ea391a243ba7ddc2db455909516f796db0e98506c",
+    "status": "excluded",
+    "reason": "Output permits multiple valid witnesses, constructions, orderings or other answers; requires a special checker.",
+    "uniqueOutput": false,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "159": {
+    "sourceRecordHash": "780ec082c144124ab34610ffc3dc561b4af5cb167ce98f779ace58101873abc3",
+    "status": "excluded",
+    "reason": "Output permits multiple valid witnesses, constructions, orderings or other answers; requires a special checker.",
+    "uniqueOutput": false,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "160": {
+    "sourceRecordHash": "8896619fe5db6bd7aa958eec6e107d94cfc1188349a047f1f229a25f9dfaf58a",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "161": {
+    "sourceRecordHash": "d7d35803588be71f46a86f0aa31e9ec28fee3cff078c84d26d917ce9e01505f3",
+    "status": "excluded",
+    "reason": "Output permits multiple valid witnesses, constructions, orderings or other answers; requires a special checker.",
+    "uniqueOutput": false,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "162": {
+    "sourceRecordHash": "685f054d19b49bd060bca5c1e4cbb0f632947a25620e5889108a8fd75a75b7e1",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "163": {
+    "sourceRecordHash": "05b09243b18bfaa8fdd23666d459a5741d609453a4d551967f87759235cf18b3",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  },
+  "164": {
+    "sourceRecordHash": "4dfbe6cef215a47336411309a043ba673a707a4d23993e8277c5755746d3c3bc",
+    "status": "eligible",
+    "reason": "Output section defines a unique deterministic result; complete paired tests available.",
+    "uniqueOutput": true,
+    "textOnly": true,
+    "singleAnswer": true,
+    "interactive": false
+  }
+}
