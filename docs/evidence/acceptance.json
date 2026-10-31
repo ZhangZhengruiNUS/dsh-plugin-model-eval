@@ -26,7 +26,7 @@
   },
   "package": {
     "status": "verified-local",
-    "evidence": "versions/0.1.0-alpha.1/package.json",
+    "evidence": "versions/0.1.0-alpha.3/package.json",
     "scope": "Actual npm tgz; full resource hashes, zero runtime npm dependencies, Node-network-blocked/PATH-empty Host contract fixture; not OS-wide network disconnect",
     "previousInstalledVersionEvidence": "versions/0.1.0-alpha.0/package.json"
   },
@@ -88,17 +88,17 @@
     "actualHost": "unverified"
   },
   "hostProfile": {
-    "status": "alpha1-offline-installed-ui-reload-pending",
+    "status": "desktop-preview-and-stop-verified",
     "version": "0.2.1-rc.5",
     "profile": "desktop",
-    "reason": "User confirms previous evaluation stopped. Offline update installed alpha.1; all1441 installed package files match. Existing history unchanged. Actual alpha.1 UI reload/preview still needs confirmation.",
+    "reason": "Computer Use verified the bounded preview, old report and stop lifecycle after full host restart. Full formal ETA and prediction error remain unverified.",
     "desktopFileIpc": "unverified",
     "sourceContract": "ce7073d51254c26cd63b22a60835b8f948deb447",
     "evidence": "desktop-install.json",
-    "installedPluginVersion": "0.1.0-alpha.1",
-    "candidatePluginVersion": "0.1.0-alpha.1",
-    "candidateVerification": "offline-update-verified-ui-reload-pending",
-    "updateEvidence": "desktop-update-alpha1.json",
+    "installedPluginVersion": "0.1.0-alpha.3",
+    "candidatePluginVersion": "0.1.0-alpha.3",
+    "candidateVerification": "actual-preview-and-stop-verified",
+    "updateEvidence": "desktop-preview-validation.json",
     "priorOpeningConfirmedVersion": "0.1.0-alpha.0"
   },
   "performance": {
@@ -111,7 +111,7 @@
     "market": "not-submitted",
     "internalOperations": "user-manual"
   },
-  "candidateVersion": "0.1.0-alpha.1",
+  "candidateVersion": "0.1.0-alpha.3",
   "timeEstimation": {
     "status": "local-synthetic-validation-passed",
     "evidence": "time-estimation.json",

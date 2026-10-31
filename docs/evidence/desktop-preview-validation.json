@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-31",
+  "version": "0.1.0-alpha.3",
+  "status": "desktop-preview-and-stop-verified",
+  "desktopVersion": "0.2.1-rc.5",
+  "method": "computer-use @oai/sky through node_repl",
+  "observed": [
+    "previous report preserved",
+    "new preview entry and host default model selection",
+    "bounded general preview completed independently",
+    "separate history with usage and bytes",
+    "observable TTFT; unknown TPOT stays unavailable",
+    "stopping state then formal start enabled",
+    "insufficient samples withdraw full-duration range",
+    "initial configuration visible; feedback revealed on start"
+  ],
+  "fix": "reveal speed feedback on relevant transitions without scrolling initial empty form",
+  "regression": {
+    "typecheck": "passed",
+    "build": "passed",
+    "chromium": 25,
+    "redGreen": "feedback visibility and initial position"
+  },
+  "packageEvidence": "versions/0.1.0-alpha.3/package.json",
+  "limits": [
+    "No new full formal evaluation",
+    "No real prediction-error validation",
+    "No real destructive cleanup",
+    "No new actual writing judge preview"
+  ],
+  "credentials": "host configuration only; no credentials copied into source"
+}
