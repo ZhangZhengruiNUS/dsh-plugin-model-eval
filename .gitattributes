@@ -4,6 +4,6 @@
 *.exe binary
 *.zip binary
 # Checksums bind original resource bytes, including upstream line endings.
-resources/** -text
+resources/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 resources/licenses/** -diff
 resources/runtime/** -diff
