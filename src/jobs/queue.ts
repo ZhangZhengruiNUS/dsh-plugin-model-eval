@@ -1,4 +1,4 @@
-import {performanceConditionKey,normalizeObservation} from '../estimation/observations.ts';
+import {performanceConditionKey,normalizeObservation,isTimeoutFailure} from '../estimation/observations.ts';
 import type {PerformanceSample,EstimateSnapshot} from '../estimation/contracts.ts';
 import {randomUUID} from 'node:crypto';
 import {readdir} from 'node:fs/promises';
@@ -54,7 +54,7 @@ export function createQueue(store:HistoryStore,adapter:HostAdapter,protocols:Pro
       }finally{clearTimeout(timer);signal.removeEventListener('abort',abort);}
       if(child.signal.aborted){answer.complete=false;answer.error=failure(timedOut?'CALL_TIMEOUT':'ABORTED',phase,timedOut&&!signal.aborted);}
       attempt.status=answer.complete?'completed':signal.aborted?'interrupted':'failed';attempt.endedAt=answer.observations.endedAt;attempt.observations=answer.observations;if(answer.error)attempt.error=answer.error;
-      attempt.performance=normalizeObservation({...attempt.performanceKey!,sampleId:attempt.attemptId,itemId:q.id,startedAt:answer.observations.startedAt,endedAt:answer.observations.endedAt,durationMs:answer.observations.timing?.totalMs??(performance.now()-generatedStart),outcome:answer.complete?'completed':timedOut?'timeout':signal.aborted?'cancelled':'failed',truncated:answer.truncated,automaticRetry:!answer.complete&&!!answer.error?.retryable&&retryIndex<2&&!signal.aborted,...(answer.observations.timing?{timing:answer.observations.timing}:{}),usage:answer.observations.usage});
+      attempt.performance=normalizeObservation({...attempt.performanceKey!,sampleId:attempt.attemptId,itemId:q.id,startedAt:answer.observations.startedAt,endedAt:answer.observations.endedAt,durationMs:answer.observations.timing?.totalMs??(performance.now()-generatedStart),outcome:answer.complete?'completed':timedOut||isTimeoutFailure(answer.error)?'timeout':signal.aborted?'cancelled':'failed',truncated:answer.truncated,automaticRetry:!answer.complete&&!!answer.error?.retryable&&retryIndex<2&&!signal.aborted,...(answer.observations.timing?{timing:answer.observations.timing}:{}),usage:answer.observations.usage});
       if(phase==='judge')attempt.rawText=answer.text;
       item=await store.getItem(runId,q.id);state.attempts=[...(item?.attempts??[]).filter(x=>x.attemptId!==attempt.attemptId),attempt];
       if(phase==='answer')state.answer=answer;

@@ -1,7 +1,7 @@
 import {randomUUID} from 'node:crypto';
 import type {EvaluationRequest,GeneratedAnswer,HostAdapter,PromptMessage,ProtocolSet,Question} from '../contracts.ts';
 import type {SpeedConfigRecord,SpeedSession,PerformanceSample,StageKey} from '../estimation/contracts.ts';
-import {appendPerformanceSample,emptyPerformance,performanceConditionKey} from '../estimation/observations.ts';
+import {appendPerformanceSample,emptyPerformance,performanceConditionKey,isTimeoutFailure} from '../estimation/observations.ts';
 import type {SpeedHistory} from '../history/speed.ts';import {speedFail} from '../history/speed.ts';
 import {fingerprintTarget} from '../model/identity.ts';import {buildPrompt} from '../evaluation/grade-general.ts';import type {GradeServices} from '../jobs/queue.ts';
 import {selectProbeQuestions} from './probe-set.ts';import {speedClock,type SpeedClock} from './clock.ts';
@@ -24,7 +24,7 @@ export function createSpeedRunner(deps:{adapter:HostAdapter;protocols:ProtocolSe
     try{answer=await deps.adapter.generateOnce({target:phase==='judge'?config.judge!.target:config.target,messages,signal:child.signal,context:{attemptId:sampleId,itemId:q.id,track:q.track,phase}});}catch(e){answer={text:'',complete:false,truncated:false,observations:{attemptId:sampleId,itemId:q.id,track:q.track,phase,startedAt,endedAt:clock.now(),usage:{available:false}},error:{code:code(e),phase:'config',retryable:false,message:'测速调用未完成。'}};}
     finally{cancelTimer();abort.signal.removeEventListener('abort',parentAbort);}
     const cancelled=abort.signal.aborted||child.signal.aborted;
-    await record({...stage,sampleId,itemId:q.id,startedAt,endedAt:clock.now(),durationMs:answer.observations.timing?.totalMs??Math.max(0,clock.monotonicMs()-invoked),outcome:cancelled?(expired||timeout?'timeout':'cancelled'):answer.complete?'completed':'failed',truncated:answer.truncated,...(answer.observations.timing?{timing:answer.observations.timing}:{}),usage:answer.observations.usage});
+    await record({...stage,sampleId,itemId:q.id,startedAt,endedAt:clock.now(),durationMs:answer.observations.timing?.totalMs??Math.max(0,clock.monotonicMs()-invoked),outcome:cancelled?(expired||timeout?'timeout':'cancelled'):answer.complete?'completed':isTimeoutFailure(answer.error)?'timeout':'failed',truncated:answer.truncated,...(answer.observations.timing?{timing:answer.observations.timing}:{}),usage:answer.observations.usage});
     if(!cancelled&&answer.error?.phase==='config'){await update(s=>{s.configs[index]!.errorCode=answer.error!.code;s.configs[index]!.status='failed';s.status='failed';});controller.abort();}
     return answer.complete&&!cancelled?answer:undefined;
    }
