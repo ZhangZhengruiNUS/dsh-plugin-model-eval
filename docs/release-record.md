@@ -2,6 +2,8 @@
 
 版本：`0.1.0-alpha.0`，Windows x64；分支 `codex/model-eval-mvp`。未发布 npm、未打发布 tag、未提交市场。源码推送另记，不代替试装验收。
 
+已验证源码提交 `a3d37ea07e9c0657c994187aa5e78af7ca2bd42e`，已推送 [GitHub](https://github.com/ZhangZhengruiNUS/dsh-plugin-model-eval)。本地tgz SHA256 `33c33e44274fcee9ba289dce974cc267d4e50f262f331d477ee2af49bcb623be`，与离线集成测试中的实际包一致。交付与下一步见[交接](handoffs/2026-10-31-local-mvp.md)。
+
 已实现完整固定905题通用能力、独立公开12题写作、宿主模型与可改参数、配置身份、多模型顺序队列、有限重试与手动续测、本地逐题留存、容量预览和批次清理、对比与报告界面。
 
 资源放行见 `evidence/runtime.json`；本工具数值/规则适配有明确协议版本。真实 tgz 文件数、压缩/展开/资源字节、SHA256 和解包夹具的首次准备耗时见 `evidence/package.json`。包内评分不依赖开发机 Python/npm，离线夹具封锁 Node 网络且 PATH 为空；没有全机防火墙断网测试。
