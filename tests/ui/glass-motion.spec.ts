@@ -21,7 +21,9 @@ test('reduced motion keeps controls immediate and modal keyboard focus intact',a
 
 test('routine polling preserves the view and does not restart its entrance',async({page})=>{
   await page.goto('/?running=1');await page.getByRole('navigation').getByRole('button',{name:'评测',exact:true}).click();await page.getByTestId('batch-tokens').waitFor();
-  await page.evaluate(()=>{(window as any).viewNode=document.querySelector('.me-page-content');(window as any).viewEntries=0;(window as any).viewNode.addEventListener('animationstart',()=>{(window as any).viewEntries++;});});
+  // Monitor polling only after the initial navigation entrance has finished.
+  await page.locator('.me-page-content').evaluate(e=>Promise.all(e.getAnimations().map(a=>a.finished.catch(()=>{}))));
+  await page.evaluate(()=>{(window as any).viewNode=document.querySelector('.me-page-content');(window as any).viewEntries=0;(window as any).viewNode.addEventListener('animationstart',(event:AnimationEvent)=>{if(event.target===(window as any).viewNode&&(event.animationName==='me-view-in'))(window as any).viewEntries++;});});
   const n=await page.evaluate(()=>(window as any).fixtureActions.filter((x:string)=>x==='history').length);
   await expect.poll(()=>page.evaluate(()=>(window as any).fixtureActions.filter((x:string)=>x==='history').length)).toBeGreaterThan(n+1);
   expect(await page.evaluate(()=>(window as any).viewNode===document.querySelector('.me-page-content'))).toBe(true);expect(await page.evaluate(()=>(window as any).viewEntries)).toBe(0);

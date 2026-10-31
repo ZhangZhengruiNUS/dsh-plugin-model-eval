@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "status": "passed",
+  "name": "@aico/dsh-plugin-model-eval",
+  "version": "0.1.0-alpha.9",
+  "sha256": "c1f6adca97c3ae1cc2322e14555f541a73bba7b133281e123c440402f659d9f3",
+  "compressedBytes": 49843464,
+  "unpackedBytes": 158820736,
+  "resourceBytes": 157878838,
+  "files": 1441,
+  "resourceManifestSha256": "8b510ec7a2f04543c2fad279d44ee562186de99e92a74f4a1d8fba937f1be16b",
+  "runtimeDependencies": 0
+}
