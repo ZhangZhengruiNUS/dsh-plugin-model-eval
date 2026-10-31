@@ -1,5 +1,7 @@
 # 项目记忆
 
+2026-11-01比较体验：用户希望强化核心模型比较与图表/动效。已完成官方资料调研、源码检查和只读Desktop单配置观察，完整待审设计经fresh builder check无重要缺口；推荐关注条、能力/响应散点、雷达/差值、联动矩阵及按需历史。当前未实现、未改DESIGN.md/安装/评分/真实数据、零新增调用。见docs/design/2026-11-01-comparison-exploration.md与docs/handoffs/2026-11-01-comparison-design.md；两档资源门槛继续待决定。
+
 2026-11-01实施检查点：两档计划已批准。静态候选12032/454/236/107与120⊂400清单已核定；版本化registry保留legacy905+12，新增两档runtime-disabled。隔离stdio评分、精确BigInt数值和失败质量门槛工程检查点5274dce；22项相关回归与typecheck通过。真实CodeContests题1579_G的上游错误程序通过全部201测试，却在合法7段反例上失败，独立穷举最优1152且正确参考通过；额外非法输入也已确认。资源门槛失败，不代表容量已证不足100；Task3未完成、Task4+未开始。原测试/分母/已安装alpha.11/真实历史未改，零新增真实模型调用。见docs/evidence/tiers/coding-quality-gate.json及docs/handoffs/2026-11-01-two-tier-resource-gate.md。
 
 - 2026-11-01计划：用户已整体确认两档设计，含120/400、四类25%、复用同轮轻量补测。已完成12任务实施计划并自查，沿用主代理逐项实施/关键独立复核；先候选/许可容量及评分准入，再版本协议、事务导入、计量估时、界面、实包及受控校准。计划待审阅，未执行产品/资源/模型/UI任务，当前仍alpha.11。见docs/handoffs/2026-11-01-two-tier-plan.md。
