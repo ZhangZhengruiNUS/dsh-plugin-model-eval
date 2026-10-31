@@ -1,0 +1,67 @@
+/** Serialized, client-safe protocol. No host credentials or Node types. */
+export type JsonValue = null | boolean | number | string | JsonValue[] | { [key: string]: JsonValue };
+export type Track = 'general' | 'writing';
+export type ParamValue = { state: 'known'; value: JsonValue; source: 'user' | 'override' | 'adapter' }
+  | { state: 'unset' } | { state: 'unknown' };
+export interface TargetSnapshot {
+  scopeId: string; providerId: string; modelId: string;
+  routeTarget: ParamValue; controls: Record<string, ParamValue>;
+  deployment?: { value: string; source: 'user' | 'service' };
+}
+export interface PromptMessage { role: 'system' | 'user' | 'assistant'; content: string }
+export interface ModelChoice {
+  scopeId: string; providerId: string; modelId: string; displayName: string;
+  capabilities: Record<string, boolean>;
+}
+export interface GenerationInput { target: TargetSnapshot; messages: readonly PromptMessage[]; signal: AbortSignal }
+export interface GeneratedAnswer { text: string; complete: boolean; truncated: boolean; observations: AttemptObservation }
+export interface HostAdapter {
+  catalog(): Promise<ModelChoice[]>;
+  snapshot(choice: ModelChoice, overrides: Record<string, ParamValue>): Promise<TargetSnapshot>;
+  generateOnce(input: GenerationInput): Promise<GeneratedAnswer>;
+}
+export interface ProtocolSet { generalId: string; writingId: string; items: readonly Question[]; resourceVersion: string }
+export interface Question {
+  id: string; track: Track; datasetId: string; sourceId: string; sourceHash: string;
+  prompt: readonly PromptMessage[]; grading: JsonValue;
+}
+export type RunState = 'queued' | 'checking' | 'running' | 'paused' | 'pending' | 'completed';
+export type DetailsState = 'available' | 'cleanup-pending' | 'partial' | 'cleared';
+export interface TrackSummary {
+  status: RunState; required: number; graded: number; score?: number; completedAt?: string;
+  measures: Record<string, { required: number; graded: number; passed?: number; score?: number }>;
+}
+export interface ProtocolRefs { generalId: string; writingId: string; resourceVersion: string }
+export interface JudgeSnapshot { target: TargetSnapshot; rubricId: string; promptId: string }
+export interface JudgeUsage { snapshot: JudgeSnapshot; itemIds: string[] }
+export interface RunSummary {
+  runId: string; batchId: string; target: TargetSnapshot; revision: number;
+  tracks: Partial<Record<Track, TrackSummary>>; details: DetailsState; resumeAllowed: boolean;
+  protocols: ProtocolRefs; judges: JudgeUsage[]; metrics: RunMetrics; completedAt?: string;
+}
+export interface WritingDimensions { faithfulness: number; logic: number; coverage: number; concision: number; naturalness: number }
+export interface TechnicalError {
+  code: string; retryable: boolean; phase: 'answer' | 'judge' | 'grader' | 'resource' | 'config' | 'storage'; message: string;
+}
+export type GradeResult =
+  | { kind: 'scored'; track: 'general'; itemId: string; passed: boolean; evidence: JsonValue }
+  | { kind: 'scored'; track: 'writing'; itemId: string; score: number; dimensions: WritingDimensions; evidence: JsonValue;
+      assessment: { method: 'model'; judge: JudgeSnapshot } | { method: 'local-rule'; ruleId: 'empty-answer-v1' } }
+  | { kind: 'technical-missing'; track: Track; itemId: string; error: TechnicalError; evidence: JsonValue };
+export interface EvaluationRequest {
+  targets: TargetSnapshot[]; tracks: Track[]; judge?: JudgeSnapshot;
+  execution: { concurrency: 1 | 2 | 3 | 4; callTimeoutMs: number };
+}
+export interface AttemptObservation {
+  attemptId: string; itemId: string; track: Track; phase: 'answer' | 'judge';
+  startedAt: string; endedAt: string; firstContentAt?: string;
+  usage: { available: boolean; inputTokens?: number; outputTokens?: number; reasoningTokens?: number };
+}
+export interface PhaseMetrics {
+  calls: number; failures: number; latencyMedianMs?: number; latencyP95Ms?: number;
+  inputTokens?: number; outputTokens?: number; usageCoverage: number;
+}
+export interface RunMetrics {
+  tracks: Partial<Record<Track, { answer: PhaseMetrics; judge: PhaseMetrics; gradingMs: number }>>;
+  activeIntervals: { startedAt: string; endedAt?: string }[]; incompleteTiming: boolean;
+}

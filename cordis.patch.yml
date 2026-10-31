@@ -1,0 +1,3 @@
+- insert:
+    - id: '@aico/dsh-plugin-model-eval'
+      name: '@aico/dsh-plugin-model-eval'

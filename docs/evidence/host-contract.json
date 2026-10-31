@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "source": {
+    "repository": "https://github.com/deepseek-ai/deepseek-harness",
+    "revision": "ce7073d51254c26cd63b22a60835b8f948deb447",
+    "status": "source-observed",
+    "contracts": {
+      "mainPanel": "packages/client/ui-layout/src/client/index.ts:70",
+      "navigation": "packages/client/ui-sidebar/src/client/index.ts:49",
+      "protectedExactRoute": "packages/client/connection/src/rpc.ts:153",
+      "ownerOnly": "packages/client/connection/src/rpc-host.ts:214",
+      "carrierAdmission": "packages/client/connection/src/index.ts:145",
+      "slotEffectDisposal": "packages/client/ui-renderer/src/client/registry.ts:209"
+    }
+  },
+  "client": { "moduleLoader": true, "react": "host-provided", "slots": ["main", "sidebar.panellist"], "theme": "host CSS tokens", "locale": "zh-CN" },
+  "channel": { "web": "same-origin /api/aico/model-eval/v1", "desktopFileIpc": "unverified", "commandsExecute": "not used: requires a Session" },
+  "actualHost": { "status": "unverified", "version": null, "node": null, "profile": null, "carrier": null, "ownerAccepted": null, "nonOwnerRejected": null, "unload": null, "reason": "No running host or dsh executable was found in the implementation environment." }
+}
