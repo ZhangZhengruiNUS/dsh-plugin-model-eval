@@ -12,6 +12,6 @@ export function createSpeedHistory(store:HistoryStore){
  async function save(s:SpeedSession,expectedRevision:number):Promise<SpeedSession>{return store.exclusive(async()=>{validate(store,s);const old=await read(s.previewId);if((old?.revision??0)!==expectedRevision)speedFail('REVISION_CONFLICT');const dir=await checkedSpeedDirectory(store,true),next=structuredClone({...s,revision:expectedRevision+1,updatedAt:new Date().toISOString()});await writeRecord(join(dir!,speedId(s.previewId)+'.json'),next);return next;});}
  async function recoverInterrupted(){if(!store.writable)return;for(const s of await list())if(s.status==='running'||s.status==='stopping'){s.status='interrupted';for(const c of s.configs)if(c.status==='running'||c.status==='stopping'){c.status='stopped';c.errorCode='SPEED_INTERRUPTED';c.performance.activeStages=[];}await save(s,s.revision);}}
  async function measure(){const result=[];for(const s of await list()){const info=await lstat(await speedPath(store,s.previewId));result.push({previewId:s.previewId,totalBytes:info.size});}return result;}
- return {read,list,save,recoverInterrupted,measure};
+ return {rootId:store.rootId,read,list,save,recoverInterrupted,measure};
 }
 export type SpeedHistory=ReturnType<typeof createSpeedHistory>;

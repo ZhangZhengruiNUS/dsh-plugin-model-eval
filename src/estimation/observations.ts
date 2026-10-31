@@ -27,3 +27,5 @@ export function rebuildPerformance(items:readonly ItemRecord[],previous?:Perform
   const buckets=new Map<string,PerformanceSample[]>();for(const s of ordered){const key=stageId(s)+(s.outcome==='completed'?'complete':'other'),bucket=buckets.get(key)??[];bucket.push(s);buckets.set(key,bucket.slice(-20));}
   result.samples=[...buckets.values()].flat().filter(s=>s.outcome==='completed');result.recentFailures=[...buckets.values()].flat().filter(s=>s.outcome!=='completed');result.censoredBounds=[...bounds.values()];return result;
 }
+
+export function appendPerformanceSample(previous:PerformanceState,sample:PerformanceSample):PerformanceState {const next=rebuildPerformance([],{...previous,samples:[...previous.samples,normalizeObservation(sample)]});next.activeStages=previous.activeStages.filter(x=>x.sampleId!==sample.sampleId);return next;}
