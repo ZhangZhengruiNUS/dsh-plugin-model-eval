@@ -43,10 +43,11 @@
     "speedSamples": "independent; no formal score or raw-answer persistence",
     "realSpeedPreview": "not-performed",
     "predictionErrorReplay": "not-performed",
-    "candidateDesktopInstall": "not-performed",
-    "originalInstallation": "alpha.0 retained; no reload or live-history mutation",
+    "candidateDesktopInstall": "installed-offline; actual UI reload and real speed preview unverified",
+    "originalInstallation": "alpha.1 offline update after user confirms previous activity ended; original data preserved",
     "network": "Node network blocked and PATH empty in unpacked fixture; no OS-wide disconnect claim",
     "npm": "not-published",
     "market": "not-submitted"
-  }
+  },
+  "postValidationUpdate": "desktop-update-alpha1.json"
 }

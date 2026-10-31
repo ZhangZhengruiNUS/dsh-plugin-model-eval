@@ -88,16 +88,18 @@
     "actualHost": "unverified"
   },
   "hostProfile": {
-    "status": "desktop-installed-opened-user-confirmed",
+    "status": "alpha1-offline-installed-ui-reload-pending",
     "version": "0.2.1-rc.5",
     "profile": "desktop",
-    "reason": "Original alpha.0 install/opening confirmed by user; alpha.1 local candidate not installed. Keep existing installation until original batch is complete.",
+    "reason": "User confirms previous evaluation stopped. Offline update installed alpha.1; all1441 installed package files match. Existing history unchanged. Actual alpha.1 UI reload/preview still needs confirmation.",
     "desktopFileIpc": "unverified",
     "sourceContract": "ce7073d51254c26cd63b22a60835b8f948deb447",
     "evidence": "desktop-install.json",
-    "installedPluginVersion": "0.1.0-alpha.0",
+    "installedPluginVersion": "0.1.0-alpha.1",
     "candidatePluginVersion": "0.1.0-alpha.1",
-    "candidateVerification": "not-installed-or-verified"
+    "candidateVerification": "offline-update-verified-ui-reload-pending",
+    "updateEvidence": "desktop-update-alpha1.json",
+    "priorOpeningConfirmedVersion": "0.1.0-alpha.0"
   },
   "performance": {
     "status": "real-model-unverified",

@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-31",
+  "status": "installed-offline-ui-reload-pending",
+  "desktopVersion": "0.2.1-rc.5",
+  "profile": "desktop",
+  "pluginVersion": "0.1.0-alpha.1",
+  "sourceCommit": "aa5f132",
+  "packageSha256": "cdaf62f9ce4feba8a8458f5f3443f0f9b4daaaf6618336558dcd7127294dd323",
+  "installation": {
+    "exitCode": 0,
+    "downloadedPackages": 0,
+    "changedDependencies": [
+      "@aico/dsh-plugin-model-eval"
+    ],
+    "changedProfileFiles": [
+      "package.json",
+      "pnpm-lock.yaml"
+    ],
+    "preservedProfileFiles": [
+      "cordis.patch.yml",
+      "cordis.yml",
+      "pnpm-workspace.yaml"
+    ],
+    "peerWarning": "installer reported existing peer dependency warnings; no new compatibility claim"
+  },
+  "verification": {
+    "installedPackageFilesMatched": 1441,
+    "historyFilesUnchanged": 1851,
+    "profileAndHistoryBackupVerified": true,
+    "priorResultsPreserved": true,
+    "newModelCalls": 0,
+    "actualUi": "not-verified",
+    "reason": "Computer Use initialization failed to write kernel assets: path not found; user asked to reload using app UI and check preview entrance"
+  },
+  "boundaries": {
+    "writingPending": "retained; no automatic resume",
+    "speedPreview": "not-performed",
+    "realPredictionError": "not-performed",
+    "npm": "not-published",
+    "market": "not-submitted",
+    "artifact": "existing verified alpha.1 tgz retained, not repacked"
+  }
+}

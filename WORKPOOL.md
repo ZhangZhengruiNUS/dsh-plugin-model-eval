@@ -32,6 +32,6 @@
 | --- | --- | --- |
 | ETA-1—8 观测/互斥/执行/估算/API/界面/历史 | local_pass | 实现b68db05；90项单元集成、24项UI及类型/构建通过，核心/最终复核4项已修 |
 | ETA-9 实包与交付 | local_pass | alpha.1实际tgz及解包离线夹具通过，资源不变；time-estimation.json与版本package.json |
-| ETA 真实Desktop与预测误差 | waiting_original_batch | 原alpha.0保留；原批次完整处理后再更新，未做真实测速或新完整测，不宣称预测精度 |
+| ETA 真实Desktop与预测误差 | installed_wait_ui | 用户确认已停止后alpha.1离线更新成功，1441包文件匹配、1851数据文件未变；待用户重载核对新UI。真实测速和预测误差未验 |
 
 历史条目保留为当时记录，以上为最新状态。未发布npm/市场；保留当前开发分支并正常推送，无基础分支可创建PR。
