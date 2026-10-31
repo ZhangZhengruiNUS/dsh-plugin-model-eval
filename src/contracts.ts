@@ -54,7 +54,7 @@ export type GradeResult =
       assessment: { method: 'model'; judge: JudgeSnapshot } | { method: 'local-rule'; ruleId: 'empty-answer-v1' } }
   | { kind: 'technical-missing'; track: Track; itemId: string; error: TechnicalError; evidence: JsonValue };
 export interface EvaluationRequest {
-  targets: TargetSnapshot[]; tracks: Track[]; judge?: JudgeSnapshot;
+  targets: TargetSnapshot[]; tracks: Track[]; judge?: JudgeSnapshot;initialEstimates?:Record<string,RunEstimation>;
   execution: { concurrency: 1 | 2 | 3 | 4; callTimeoutMs: number };
 }
 export interface AttemptObservation {

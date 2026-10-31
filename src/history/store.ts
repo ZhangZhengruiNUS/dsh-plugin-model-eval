@@ -1,4 +1,4 @@
-import type {PerformanceSample,StageKey} from '../estimation/contracts.ts';
+import type {PerformanceSample,StageKey,ActiveStage,RunEstimation} from '../estimation/contracts.ts';
 import { randomUUID, createHash } from 'node:crypto';
 import { mkdir, lstat, realpath, readdir, rename } from 'node:fs/promises';
 import { join } from 'node:path';
@@ -10,11 +10,11 @@ import { readRecord, writeRecord } from './atomic.ts';
 import { acquireWriter } from './lock.ts';
 
 export interface RequiredItem {id:string;track:Track;datasetId:string}
-export interface RunManifestInput {batchId:string;target:TargetSnapshot;protocols:ProtocolRefs;requiredItems:RequiredItem[];judge?:JudgeSnapshot;execution?:{concurrency:1|2|3|4;callTimeoutMs:number}}
+export interface RunManifestInput {batchId:string;target:TargetSnapshot;protocols:ProtocolRefs;requiredItems:RequiredItem[];judge?:JudgeSnapshot;initialEstimation?:RunEstimation;execution?:{concurrency:1|2|3|4;callTimeoutMs:number}}
 export interface RunManifest extends RunManifestInput {schemaVersion:1;runId:string;createdAt:string}
 export interface AttemptRecord {attemptId:string;phase:'answer'|'judge';status:'started'|'completed'|'failed'|'interrupted';startedAt:string;endedAt?:string;judge?:JudgeSnapshot;itemId?:string;track?:Track;
-  observations?:GeneratedAnswer['observations'];error?:TechnicalError;rawText?:string;validationError?:TechnicalError;interruptedDetectedAt?:string;performance?:PerformanceSample;performanceKey?:StageKey}
-export interface ItemInput {gradingObservation?:PerformanceSample;itemId:string;attempts:AttemptRecord[];answer?:GeneratedAnswer;grade?:GradeResult;question?:Omit<Question,'grading'>}
+  observations?:GeneratedAnswer['observations'];error?:TechnicalError;rawText?:string;validationError?:TechnicalError;interruptedDetectedAt?:string;performance?:PerformanceSample;performanceKey?:StageKey;retryIndex?:number}
+export interface ItemInput {gradingActive?:ActiveStage;gradingObservation?:PerformanceSample;itemId:string;attempts:AttemptRecord[];answer?:GeneratedAnswer;grade?:GradeResult;question?:Omit<Question,'grading'>}
 export interface ItemRecord extends ItemInput {schemaVersion:1;revision:number;sequence:number;updatedAt:string;answerCommittedAt?:string;gradeCommittedAt?:string}
 export interface RecoveryDiagnostic {runId:string;itemId?:string;code:string}
 export interface RecoveryReport {recoveredRunIds:string[];diagnostics:RecoveryDiagnostic[];temporaryFiles:number}
@@ -121,7 +121,7 @@ export async function openHistory(root:string):Promise<HistoryStore> {
       const id=randomUUID(),createdAt=new Date().toISOString(),path=runPath(id);await mkdir(path);
       await directory(join(path,'details'));await directory(join(path,'details','items'));await directory(join(path,'details','attempts'));await directory(join(path,'diagnostics'));
       const manifest:RunManifest={...clone(input),schemaVersion:1,runId:id,createdAt};
-      const summary:RunSummary={runId:id,batchId:input.batchId,target:clone(input.target),revision:0,createdAt,tracks:{},details:'available',resumeAllowed:true,protocols:clone(input.protocols),judges:[],metrics:{tracks:{},activeIntervals:[],incompleteTiming:false}};
+      const summary:RunSummary={runId:id,batchId:input.batchId,target:clone(input.target),revision:0,createdAt,tracks:{},details:'available',resumeAllowed:true,protocols:clone(input.protocols),judges:[],metrics:{tracks:{},activeIntervals:[],incompleteTiming:false},...(input.initialEstimation?{estimation:clone(input.initialEstimation)}:{})};
       for(const track of ['general','writing'] as const){const required=input.requiredItems.filter(x=>x.track===track).length;if(required)summary.tracks[track]={status:'queued',required,graded:0,answered:0,measures:{}};}
       await writeRecord(join(path,'run.json'),manifest);await writeRecord(join(path,'summary.json'),summary);await writeRecord(join(path,'summary.backup.json'),summary);
       cache.set(id,{manifest,summary,items:new Map(),loaded:true});return clone(summary);
@@ -131,7 +131,7 @@ export async function openHistory(root:string):Promise<HistoryStore> {
       const old=await readItem(run,input.itemId);if((old?.revision??0)!==expected)return fail('REVISION_CONFLICT');
       if(old?.answer?.complete&&!isDeepStrictEqual(old.answer,input.answer))return fail('IMMUTABLE_ANSWER');
       if(old?.grade?.kind==='scored'&&!isDeepStrictEqual(old.grade,input.grade))return fail('IMMUTABLE_GRADE');
-      if(old?.gradingObservation&&!isDeepStrictEqual(old.gradingObservation,input.gradingObservation))return fail('IMMUTABLE_GRADE');
+      if(old?.grade?.kind==='scored'&&old.gradingObservation&&!isDeepStrictEqual(old.gradingObservation,input.gradingObservation))return fail('IMMUTABLE_GRADE');
       if(old?.question&&!isDeepStrictEqual(old.question,input.question))return fail('IMMUTABLE_QUESTION');
       if(new Set(input.attempts.map(x=>x.attemptId)).size!==input.attempts.length)return fail('DUPLICATE_ATTEMPT');
       for(const previous of old?.attempts??[]){const next=input.attempts.find(x=>x.attemptId===previous.attemptId);if(!next||next.phase!==previous.phase||next.startedAt!==previous.startedAt||!isDeepStrictEqual(previous.judge,next.judge)||previous.observations&&!isDeepStrictEqual(previous.observations,next.observations)||previous.performance&&!isDeepStrictEqual(previous.performance,next.performance)||previous.performanceKey&&!isDeepStrictEqual(previous.performanceKey,next.performanceKey)||previous.status!=='started'&&next.status!==previous.status)return fail('IMMUTABLE_ATTEMPT');}

@@ -1,5 +1,5 @@
 import {performanceConditionKey,normalizeObservation} from '../estimation/observations.ts';
-import type {PerformanceSample} from '../estimation/contracts.ts';
+import type {PerformanceSample,EstimateSnapshot} from '../estimation/contracts.ts';
 import {randomUUID} from 'node:crypto';
 import {readdir} from 'node:fs/promises';
 import {join} from 'node:path';
@@ -11,16 +11,16 @@ import {refreshRunSummary} from '../evaluation/aggregate-run.ts';
 import {buildPrompt} from '../evaluation/grade-general.ts';
 import {runAttempt,type RetryClock} from './attempts.ts';
 import {summarizeMetrics} from './metrics.ts';
-export interface BatchView {batchId:string;runIds:string[];status:'queued'|'running'|'paused'|'pending'|'completed';createdAt:string;lastError?:TechnicalError;judge?:JudgeSnapshot;execution:EvaluationRequest['execution']}
+export interface BatchView {batchId:string;runIds:string[];status:'queued'|'running'|'paused'|'pending'|'completed';createdAt:string;estimate?:EstimateSnapshot;lastError?:TechnicalError;judge?:JudgeSnapshot;execution:EvaluationRequest['execution']}
 export interface QueueView {activeBatchId?:string;batches:BatchView[];recoveryIssues?:{runId:string;code:string}[]}
 export interface GradeServices {
   general(question:Question,answer:GeneratedAnswer,signal:AbortSignal):Promise<GradeResult>;
   writing?:{build(question:Question,answer:GeneratedAnswer):readonly PromptMessage[];parse(question:Question,answer:GeneratedAnswer,judge:JudgeSnapshot,candidate:GeneratedAnswer):GradeResult;local(question:Question,answer:GeneratedAnswer):GradeResult|undefined};
 }
-export interface EvaluationQueue {enqueue(request:EvaluationRequest):Promise<BatchView>;pause(batchId:string):Promise<void>;resume(batchId:string,judge?:JudgeSnapshot):Promise<void>;snapshot():QueueView;idle():Promise<void>;dispose():Promise<void>}
+export interface EvaluationQueue {saveEstimate(batchId:string,estimate:EstimateSnapshot):Promise<void>;enqueue(request:EvaluationRequest):Promise<BatchView>;pause(batchId:string):Promise<void>;resume(batchId:string,judge?:JudgeSnapshot):Promise<void>;snapshot():QueueView;idle():Promise<void>;dispose():Promise<void>}
 const failure=(code:string,phase:TechnicalError['phase']='storage',retryable=false):TechnicalError=>({code,phase,retryable,message:phase==='storage'?'本地记录无法完成保存，已停止派发。':'本轮评测需要处理后继续。'});
 const fail=(code:string):never=>{throw Object.assign(new Error(code),{code});};
-export function createQueue(store:HistoryStore,adapter:HostAdapter,protocols:ProtocolSet,graders:GradeServices,options:{clock?:RetryClock}={}):EvaluationQueue {
+export function createQueue(store:HistoryStore,adapter:HostAdapter,protocols:ProtocolSet,graders:GradeServices,options:{clock?:RetryClock;onChange?:(runId:string)=>void}={}):EvaluationQueue {
   const batches=new Map<string,BatchView>(),recoveryIssues:NonNullable<QueueView['recoveryIssues']>=[];let active:string|undefined,controller:AbortController|undefined,running:Promise<void>=Promise.resolve(),disposed=false,admitting=false,gradingTail:Promise<unknown>=Promise.resolve();
   const metadata=join(store.root,'history','maintenance');
   const ready=(async()=>{
@@ -30,7 +30,7 @@ export function createQueue(store:HistoryStore,adapter:HostAdapter,protocols:Pro
     if(store.writable)for(const run of await store.listSummaries())if(run.details==='available')try{await refresh(run.runId);}catch{recoveryIssues.push({runId:run.runId,code:'SUMMARY_REBUILD_FAILED'});}
   })();
   async function persist(batch:BatchView):Promise<void>{await store.exclusive(async tx=>{await writeRecord(join(tx.maintenanceDirectory,`batch-${batch.batchId}.json`),batch);});}
-  async function refresh(runId:string):Promise<void> {await store.exclusive(tx=>refreshRunSummary(store,tx,runId));}
+  async function refresh(runId:string):Promise<void> {await store.exclusive(tx=>refreshRunSummary(store,tx,runId));try{options.onChange?.(runId);}catch{/* optional observer cannot invalidate a committed grade */}}
   async function trackState(runId:string,status:'running'|'paused'|'pending',begin=false,end=false):Promise<void> {
     await store.exclusive(async tx=>{const {summary}=await tx.getRun(runId);await tx.updateSummary(runId,summary.revision,next=>{
       for(const value of Object.values(next.tracks))if(value.status!=='completed')value.status=status;
@@ -40,11 +40,11 @@ export function createQueue(store:HistoryStore,adapter:HostAdapter,protocols:Pro
   }
   async function call(runId:string,q:Question,phase:'answer'|'judge',messages:readonly PromptMessage[],signal:AbortSignal,batch:BatchView):Promise<GeneratedAnswer|undefined> {
     const {manifest}=await store.getRun(runId),target=phase==='answer'?manifest.target:batch.judge?.target;if(!target)return undefined;
-    const outcome=await runAttempt<GeneratedAnswer>(async()=>{
-      let item=await store.getItem(runId,q.id);const attempt:AttemptRecord={attemptId:randomUUID(),phase,itemId:q.id,track:q.track,performanceKey:{conditionKey:performanceConditionKey(manifest.target,manifest.protocols,batch.execution,phase==='judge'?batch.judge:undefined),datasetId:q.datasetId,phase},status:'started',startedAt:new Date().toISOString(),...(phase==='judge'&&batch.judge?{judge:structuredClone(batch.judge)}:{})};
+    const outcome=await runAttempt<GeneratedAnswer>(async(retryIndex)=>{
+      let item=await store.getItem(runId,q.id);const attempt:AttemptRecord={attemptId:randomUUID(),phase,itemId:q.id,track:q.track,retryIndex,performanceKey:{conditionKey:performanceConditionKey(manifest.target,manifest.protocols,batch.execution,phase==='judge'?batch.judge:undefined),datasetId:q.datasetId,phase},status:'started',startedAt:new Date().toISOString(),...(phase==='judge'&&batch.judge?{judge:structuredClone(batch.judge)}:{})};
       const {grading:excluded,...question}=q;
       const state:ItemInput={itemId:q.id,question:item?.question??question,attempts:[...(item?.attempts??[]),attempt],...(item?.answer?{answer:item.answer}:{}),...(item?.grade?{grade:item.grade}:{})};
-      await store.saveItem(runId,item?.revision??0,state);
+      await store.saveItem(runId,item?.revision??0,state);await refresh(runId);
       const child=new AbortController(),abort=()=>child.abort();signal.addEventListener('abort',abort,{once:true});if(signal.aborted)abort();
       let timedOut=false;const timer=setTimeout(()=>{timedOut=true;child.abort();},batch.execution.callTimeoutMs);
       const generatedStart=performance.now();let answer:GeneratedAnswer;
@@ -54,16 +54,16 @@ export function createQueue(store:HistoryStore,adapter:HostAdapter,protocols:Pro
       }finally{clearTimeout(timer);signal.removeEventListener('abort',abort);}
       if(child.signal.aborted){answer.complete=false;answer.error=failure(timedOut?'CALL_TIMEOUT':'ABORTED',phase,timedOut&&!signal.aborted);}
       attempt.status=answer.complete?'completed':signal.aborted?'interrupted':'failed';attempt.endedAt=answer.observations.endedAt;attempt.observations=answer.observations;if(answer.error)attempt.error=answer.error;
-      attempt.performance=normalizeObservation({...attempt.performanceKey!,sampleId:attempt.attemptId,itemId:q.id,startedAt:answer.observations.startedAt,endedAt:answer.observations.endedAt,durationMs:answer.observations.timing?.totalMs??(performance.now()-generatedStart),outcome:answer.complete?'completed':timedOut?'timeout':signal.aborted?'cancelled':'failed',truncated:answer.truncated,...(answer.observations.timing?{timing:answer.observations.timing}:{}),usage:answer.observations.usage});
+      attempt.performance=normalizeObservation({...attempt.performanceKey!,sampleId:attempt.attemptId,itemId:q.id,startedAt:answer.observations.startedAt,endedAt:answer.observations.endedAt,durationMs:answer.observations.timing?.totalMs??(performance.now()-generatedStart),outcome:answer.complete?'completed':timedOut?'timeout':signal.aborted?'cancelled':'failed',truncated:answer.truncated,automaticRetry:!answer.complete&&!!answer.error?.retryable&&retryIndex<2&&!signal.aborted,...(answer.observations.timing?{timing:answer.observations.timing}:{}),usage:answer.observations.usage});
       if(phase==='judge')attempt.rawText=answer.text;
       item=await store.getItem(runId,q.id);state.attempts=[...(item?.attempts??[]).filter(x=>x.attemptId!==attempt.attemptId),attempt];
       if(phase==='answer')state.answer=answer;
       if(phase==='judge'&&answer.complete){const grade=graders.writing!.parse(q,answer,batch.judge!,state.answer!);state.grade=grade;
-        if(grade.kind==='technical-missing'){attempt.validationError=grade.error;await store.saveItem(runId,item?.revision??0,state);return {ok:false,error:grade.error};}}
-      await store.saveItem(runId,item?.revision??0,state);
+        if(grade.kind==='technical-missing'){attempt.validationError=grade.error;if(attempt.performance)attempt.performance.outcome='failed';await store.saveItem(runId,item?.revision??0,state);await refresh(runId);return {ok:false,error:grade.error};}}
+      await store.saveItem(runId,item?.revision??0,state);await refresh(runId);
       return answer.complete?{ok:true,value:answer}:{ok:false,error:answer.error??failure('ANSWER_INCOMPLETE',phase,true)};
     },signal,options.clock);
-    if(!outcome.ok){batch.lastError=outcome.error;controller?.abort();return undefined;}return outcome.value;
+    if(!outcome.ok){if(!signal.aborted)batch.lastError=outcome.error;controller?.abort();return undefined;}return outcome.value;
   }
   async function processItem(runId:string,q:Question,batch:BatchView,signal:AbortSignal):Promise<void> {
     let item=await store.getItem(runId,q.id);if(item?.grade?.kind==='scored')return;
@@ -74,10 +74,10 @@ export function createQueue(store:HistoryStore,adapter:HostAdapter,protocols:Pro
       grade=graders.writing.local(q,answer);
       if(!grade){await call(runId,q,'judge',graders.writing.build(q,answer),signal,batch);if(!signal.aborted)await refresh(runId);return;}
     }else {
-      const queued=performance.now();const work=gradingTail.then(async()=>{const start=performance.now(),startedAt=new Date().toISOString(),grade=await graders.general(q,answer,signal);return {grade,elapsed:performance.now()-start,queueWaitMs:start-queued,startedAt,endedAt:new Date().toISOString()};});gradingTail=work.catch(()=>{});const result=await work;grade=result.grade;const {manifest}=await store.getRun(runId);gradingObservation={conditionKey:performanceConditionKey(manifest.target,manifest.protocols,batch.execution),datasetId:q.datasetId,phase:'local-grade',sampleId:randomUUID(),itemId:q.id,startedAt:result.startedAt,endedAt:result.endedAt,durationMs:result.elapsed,queueWaitMs:result.queueWaitMs,outcome:grade.kind==='scored'?'completed':signal.aborted?'cancelled':'failed'};
+      const queued=performance.now();const work=gradingTail.then(async()=>{const start=performance.now(),startedAt=new Date().toISOString(),current=await store.getItem(runId,q.id),manifest=(await store.getRun(runId)).manifest;await store.saveItem(runId,current!.revision,{...current!,gradingActive:{conditionKey:performanceConditionKey(manifest.target,manifest.protocols,batch.execution),datasetId:q.datasetId,phase:'local-grade',sampleId:randomUUID(),itemId:q.id,startedAt}});await refresh(runId);const grade=await graders.general(q,answer,signal);return {grade,elapsed:performance.now()-start,queueWaitMs:start-queued,startedAt,endedAt:new Date().toISOString()};});gradingTail=work.catch(()=>{});const result=await work;grade=result.grade;const {manifest}=await store.getRun(runId);gradingObservation={conditionKey:performanceConditionKey(manifest.target,manifest.protocols,batch.execution),datasetId:q.datasetId,phase:'local-grade',sampleId:randomUUID(),itemId:q.id,startedAt:result.startedAt,endedAt:result.endedAt,durationMs:result.elapsed,queueWaitMs:result.queueWaitMs,outcome:grade.kind==='scored'?'completed':signal.aborted?'cancelled':'failed'};
       await store.exclusive(async tx=>{const {summary}=await tx.getRun(runId);await tx.updateSummary(runId,summary.revision,next=>{const value=next.metrics.tracks[q.track];if(value)value.gradingMs+=result.elapsed;});});
     }
-    item=await store.getItem(runId,q.id);await store.saveItem(runId,item!.revision,{...item!,grade,...(gradingObservation?{gradingObservation}:{})});
+    item=await store.getItem(runId,q.id);const {gradingActive:finishedStage,...savedItem}=item!;await store.saveItem(runId,item!.revision,{...savedItem,grade,...(gradingObservation?{gradingObservation}:{})});
     if(grade.kind==='technical-missing'){batch.lastError=grade.error;controller?.abort();}
     await refresh(runId);
   }
@@ -104,13 +104,13 @@ export function createQueue(store:HistoryStore,adapter:HostAdapter,protocols:Pro
     finally{active=undefined;await persist(batch).catch(()=>{batch.lastError=failure('STORAGE_FAILED');});}
   }
   function start(batch:BatchView):void{active=batch.batchId;controller=new AbortController();running=execute(batch);}
-  const queue:EvaluationQueue={snapshot(){return {batches:structuredClone([...batches.values()]),recoveryIssues:structuredClone(recoveryIssues),...(active?{activeBatchId:active}:{})};},async idle(){await ready;await running;},
+  const queue:EvaluationQueue={async saveEstimate(id,estimate){const batch=batches.get(id);if(!batch)return;batch.estimate=structuredClone(estimate);await persist(batch);},snapshot(){return {batches:structuredClone([...batches.values()]),recoveryIssues:structuredClone(recoveryIssues),...(active?{activeBatchId:active}:{})};},async idle(){await ready;await running;},
     async enqueue(request){await ready;if(disposed)fail('QUEUE_DISPOSED');if(active||admitting)fail('QUEUE_BUSY');if(!store.writable)fail('HISTORY_READ_ONLY');
       if(!request.targets.length||!request.tracks.length||new Set(request.tracks).size!==request.tracks.length||request.tracks.some(x=>!['general','writing'].includes(x)))fail('INVALID_BATCH');
       if(![1,2,3,4].includes(request.execution.concurrency)||!Number.isInteger(request.execution.callTimeoutMs)||request.execution.callTimeoutMs<1000||request.execution.callTimeoutMs>1800000)fail('INVALID_EXECUTION');
       const ids=request.targets.map(fingerprintTarget);if(new Set(ids).size!==ids.length)fail('DUPLICATE_TARGET');if(request.tracks.includes('writing')&&!request.judge)fail('JUDGE_REQUIRED');if(request.judge)fingerprintTarget(request.judge.target);
       admitting=true;try{const batch:BatchView={batchId:randomUUID(),runIds:[],createdAt:new Date().toISOString(),status:'queued',execution:structuredClone(request.execution),...(request.judge?{judge:structuredClone(request.judge)}:{})};
-        for(const target of request.targets){const run=await store.createRun({batchId:batch.batchId,target,protocols:{generalId:protocols.generalId,writingId:protocols.writingId,resourceVersion:protocols.resourceVersion},requiredItems:protocols.items.filter(x=>request.tracks.includes(x.track)).map(x=>({id:x.id,track:x.track,datasetId:x.datasetId})),execution:request.execution,...(request.judge?{judge:request.judge}:{})});batch.runIds.push(run.runId);}
+        for(const target of request.targets){const run=await store.createRun({batchId:batch.batchId,target,protocols:{generalId:protocols.generalId,writingId:protocols.writingId,resourceVersion:protocols.resourceVersion},requiredItems:protocols.items.filter(x=>request.tracks.includes(x.track)).map(x=>({id:x.id,track:x.track,datasetId:x.datasetId})),execution:request.execution,...(request.initialEstimates?.[fingerprintTarget(target)]?{initialEstimation:request.initialEstimates[fingerprintTarget(target)]!}:{}),...(request.judge?{judge:request.judge}:{})});batch.runIds.push(run.runId);}
         batches.set(batch.batchId,batch);await persist(batch);await store.exclusive(async()=>{if(disposed)return;start(batch);});return structuredClone(batch);
       }finally{admitting=false;}
     },
