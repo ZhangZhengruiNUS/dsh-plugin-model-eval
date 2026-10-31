@@ -1,0 +1,19 @@
+{
+  "name": "@aico/dsh-plugin-model-eval",
+  "version": "0.1.0-alpha.0",
+  "description": "DSH 模型能力测评与本地历史对比",
+  "type": "module",
+  "license": "MIT",
+  "scripts": {
+    "test:unit": "tsx --test",
+    "test:integration": "tsx --test",
+    "typecheck": "tsc --noEmit",
+    "build": "node scripts/build.mjs"
+  },
+  "devDependencies": {
+    "@types/node": "24.19.2",
+    "esbuild": "0.28.2",
+    "tsx": "4.23.15",
+    "typescript": "7.0.2"
+  }
+}
