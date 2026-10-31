@@ -1,8 +1,9 @@
+import {createSpeedHistory} from './speed.ts';
 import {randomUUID,createHash} from 'node:crypto';import {readdir,lstat,realpath,readFile,unlink} from 'node:fs/promises';import {join,relative,resolve} from 'node:path';
 import type {HistoryStore,HistoryTransaction} from './store.ts';import {readRecord,writeRecord} from './atomic.ts';
 import {refreshRunSummary} from '../evaluation/aggregate-run.ts';
 export interface RunUsage {runId:string;batchId:string;totalBytes:number;detailBytes:number;summaryBytes:number}
-export interface HistoryUsage {historyBytes:number;resourceBytes:number;sharedBytes:number;runs:RunUsage[];measurement:'file-bytes'}
+export interface HistoryUsage {historyBytes:number;resourceBytes:number;sharedBytes:number;runs:RunUsage[];previews?:{previewId:string;totalBytes:number}[];measurement:'file-bytes'}
 interface FileEntry {runId:string;path:string;size:number;sha256:string;state:'planned'|'deleting'|'deleted'|'missing'|'failed';error?:string}
 export interface CleanupPreview {token:string;rootId:string;batchIds:string[];runs:{runId:string;revision:number;losesResume:boolean}[];bytes:number;expiresAt:string}
 export interface CleanupOperation {operationId:string;rootId:string;batchIds:string[];runIds:string[];status:'running'|'partial'|'completed';plannedBytes:number;deletedBytes:number;unconfirmedBytes:number;remainingBytes:number;files:FileEntry[]}
@@ -26,7 +27,7 @@ export function createCleanup(store:HistoryStore,activeBatch:()=>string|undefine
     const summaries=await store.listSummaries(),runs:RunUsage[]=[];
     for(const summary of summaries){const path=join(store.root,'history','runs',summary.runId),files=await walk(path,path,false),totalBytes=files.reduce((n,x)=>n+x.size,0),detailBytes=files.filter(x=>x.path.startsWith('details/')).reduce((n,x)=>n+x.size,0);runs.push({runId:summary.runId,batchId:summary.batchId,totalBytes,detailBytes,summaryBytes:totalBytes-detailBytes});}
     const historyRoot=join(store.root,'history'),resources=join(store.root,'resources');const historyBytes=(await walk(historyRoot,historyRoot,false)).reduce((n,x)=>n+x.size,0),resourceBytes=(await walk(resources,resources,false)).reduce((n,x)=>n+x.size,0);
-    return {historyBytes,resourceBytes,sharedBytes:Math.max(0,historyBytes-runs.reduce((n,x)=>n+x.totalBytes,0)),runs,measurement:'file-bytes'};
+    const previews=await createSpeedHistory(store).measure();return {historyBytes,resourceBytes,sharedBytes:Math.max(0,historyBytes-runs.reduce((n,x)=>n+x.totalBytes,0)-previews.reduce((n,x)=>n+x.totalBytes,0)),runs,previews,measurement:'file-bytes'};
   }
   async function previewCleanup(ids:string[]):Promise<CleanupPreview>{return store.exclusive(async tx=>{
     const batchIds=[...new Set(ids)];if(!batchIds.length)return fail('CLEANUP_EMPTY');if(batchIds.includes(activeBatch()??''))return fail('BATCH_ACTIVE');
