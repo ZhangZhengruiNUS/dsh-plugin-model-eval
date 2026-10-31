@@ -1,6 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { cp, readFile, writeFile } from 'node:fs/promises';
+import { cp, readFile, writeFile, mkdir } from 'node:fs/promises';
+import { execFileSync } from 'node:child_process';
+import { dirname } from 'node:path';
 import { join, resolve } from 'node:path';
 import { withTempRoot } from '../support/temp.ts';
 import { loadProtocolSet } from '../../src/evaluation/protocols.ts';
@@ -22,5 +24,17 @@ test('fixed_counts_and_tamper_detection', async () => {
     const path = join(root, 'protocols', 'writing.json');
     await writeFile(path, (await readFile(path, 'utf8')).replace('周六', '周日'));
     await assert.rejects(loadProtocolSet(root), /RESOURCE_HASH_MISMATCH/);
+  });
+});
+
+test('resource hashes survive a Git checkout without newline conversion', async () => {
+  await withTempRoot(async root => {
+    const files = execFileSync('git', ['ls-files','-z','resources'], { encoding:'utf8' }).split('\0').filter(Boolean);
+    for (const file of files) {
+      const target=join(root,file.slice('resources/'.length));
+      await mkdir(dirname(target),{recursive:true});
+      await writeFile(target,execFileSync('git',['show',`:${file}`],{maxBuffer:64*1024*1024}));
+    }
+    await assert.doesNotReject(loadProtocolSet(root));
   });
 });

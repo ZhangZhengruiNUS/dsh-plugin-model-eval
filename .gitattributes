@@ -3,3 +3,7 @@
 *.wasm binary
 *.exe binary
 *.zip binary
+# Checksums bind original resource bytes, including upstream line endings.
+resources/** -text
+resources/licenses/** -diff
+resources/runtime/** -diff
