@@ -1,3 +1,4 @@
+import {SelectionBar} from '../components/SelectionBar.tsx';
 import * as React from 'react';
 import type {Track} from '../../contracts.ts';
 import {ComparisonTable} from '../components/ComparisonTable.tsx';
@@ -29,7 +30,7 @@ export function Compare(props:PageProps){
     </section>
     <section className="me-card me-results">
       <div className="me-results-heading"><div><h2>{t.latest}</h2><span role="status" aria-live="polite">{rows.length===completed.length?`${rows.length} 个配置`:`${rows.length} / ${completed.length} 个配置`}</span></div>
-        <div className="me-tabs" role="tablist" aria-label={t.tracks}>{(['general','writing'] as const).map(value=><button key={value} role="tab" aria-selected={track===value} onClick={()=>setTrack(value)}>{value==='general'?t.general:t.writing}</button>)}</div>
+        <SelectionBar label={t.tracks} value={track}>{(['general','writing'] as const).map(value=><button key={value} role="tab" aria-selected={track===value} onClick={()=>setTrack(value)}>{value==='general'?t.general:t.writing}</button>)}</SelectionBar>
       </div>
       <div className="me-results-toolbar">
         <div className="me-result-search"><Icon name="search" size={16}/><input type="search" aria-label="搜索模型、供应商或部署" placeholder="搜索模型、供应商或部署" value={query} onChange={e=>setQuery(e.target.value)}/>{query&&<Button kind="icon" icon="close" aria-label="清空搜索" onClick={()=>setQuery('')}/>}</div>
