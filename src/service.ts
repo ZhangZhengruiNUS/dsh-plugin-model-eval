@@ -1,3 +1,4 @@
+import {createActivityGate,type ActivityKind,type ActivityLease} from './jobs/activity.ts';
 import {join} from 'node:path';import {access,readFile} from 'node:fs/promises';import {createHash,randomUUID} from 'node:crypto';
 import type {HostAdapter,JudgeSnapshot,ParamValue,TargetSnapshot,Track,EvaluationRequest} from './contracts.ts';
 import {defaultRoot,switchRoot,prepareResources,type PreparedEnvironment} from './resources/prepare.ts';import {readResourceManifest,loadProtocolSet} from './evaluation/protocols.ts';
@@ -6,13 +7,15 @@ import {createQueue,type EvaluationQueue} from './jobs/queue.ts';import {gradeGe
 import type {Action} from './host/api.ts';import {fingerprintTarget} from './model/identity.ts';import {RESOURCE_MANIFEST_SHA256} from './resources/pins.ts';
 import {selfcheckEnvironment} from './resources/selfcheck.ts';
 const fail=(code:string):never=>{throw Object.assign(new Error(code),{code});};
-export interface ServiceDependencies {adapter:HostAdapter;packageResources:string;scopeId:string;initialRoot?:string;controlRoot?:string}
+export interface ServiceDependencies {adapter:HostAdapter;packageResources:string;scopeId:string;initialRoot?:string;controlRoot?:string;prepareEnvironment?:(rootPath:string)=>Promise<PreparedEnvironment>}
 export async function createEvaluationService(deps:ServiceDependencies) {
   const manifest=await readResourceManifest(deps.packageResources),protocols=await loadProtocolSet(deps.packageResources),rubric=JSON.parse(await readFile(join(deps.packageResources,'protocols','rubric-writing-v1.json'),'utf8')) as WritingRubric;
   const control=(await switchRoot(deps.controlRoot??deps.initialRoot??defaultRoot(),{writing:false})).path;
   const preference=join(control,`selection-${createHash('sha256').update(deps.scopeId).digest('hex').slice(0,24)}.json`);
   let selected=deps.initialRoot??control;try{const old=await readRecord<{root:string}>(preference);if(typeof old.root==='string')selected=old.root;}catch(error){if((error as NodeJS.ErrnoException).code!=='ENOENT')fail('SELECTION_CORRUPT');}
   let store:HistoryStore,queue:EvaluationQueue,cleanup:ReturnType<typeof createCleanup>,environment:PreparedEnvironment|undefined,preparing=false,disposed=false;
+  const activity=createActivityGate();let evaluationLease:ActivityLease|undefined;
+  async function prepareEnvironment(){if(deps.prepareEnvironment)return deps.prepareEnvironment(store.root);const candidate=await prepareResources(store.root,manifest,deps.packageResources);await selfcheckEnvironment(candidate.resourcesPath);return candidate;}
   let mutations:Promise<unknown>=Promise.resolve();const handles=new Map<string,TargetSnapshot>();
   async function bind(path:string):Promise<void>{
     const selection=await switchRoot(path,{writing:false});store=await openHistory(selection.path);
@@ -32,10 +35,10 @@ export async function createEvaluationService(deps:ServiceDependencies) {
   function target(handle:unknown):TargetSnapshot {if(typeof handle!=='string'||!handles.has(handle))return fail('CONFIGURATION_EXPIRED');return structuredClone(handles.get(handle)!);}
   function judge(handle:unknown):JudgeSnapshot{return {target:target(handle),rubricId:rubric.id,promptId:rubric.promptId};}
   function compactOperation(op:ReturnType<typeof cleanup.operation>){if(!op)return null;const {files,...safe}=op;return {...safe,failedFiles:files.filter(x=>x.state==='failed').length};}
-  async function dispatch(action:Action,payload:Record<string,unknown>):Promise<unknown> {
+  async function operate(action:Action,payload:Record<string,unknown>):Promise<unknown> {
     if(disposed)fail('SERVICE_DISPOSED');
     switch(action){
-      case 'status':return {apiVersion:1,ready:true,prepared:!!environment,preparing,writable:store.writable,rootPath:store.root,resourceVersion:manifest.resourceVersion,generalId:manifest.generalId,writingId:manifest.writingId,packageBytes:manifest.files.reduce((n,x)=>n+x.size,0),hostVerification:'unverified'};
+      case 'status':return {apiVersion:1,ready:true,prepared:!!environment,preparing,writable:store.writable,rootPath:store.root,resourceVersion:manifest.resourceVersion,generalId:manifest.generalId,writingId:manifest.writingId,packageBytes:manifest.files.reduce((n,x)=>n+x.size,0),hostVerification:'unverified',activeActivity:activity.snapshot()};
       case 'catalog':return deps.adapter.catalog();
       case 'settings':return {rootPath:store.root,writable:store.writable,prepared:!!environment,preparing,bytes:environment?.bytes??0,execution:{concurrency:4,callTimeoutMs:300000},rubricId:rubric.id,judgePromptId:rubric.promptId};
       case 'snapshot':{
@@ -46,13 +49,13 @@ export async function createEvaluationService(deps:ServiceDependencies) {
         const fingerprint=fingerprintTarget(snapshot),handle=randomUUID();handles.set(handle,snapshot);if(handles.size>1000)handles.delete(handles.keys().next().value!);
         return {handle,target:snapshot,fingerprint};
       }
-      case 'prepare':return mutate(async()=>{writable();inactive();preparing=true;environment=undefined;try{const candidate=await prepareResources(store.root,manifest,deps.packageResources);await selfcheckEnvironment(candidate.resourcesPath);environment=candidate;return {prepared:true,bytes:environment.bytes,cached:environment.cached};}finally{preparing=false;}});
+      case 'prepare':return mutate(async()=>{writable();inactive();preparing=true;environment=undefined;try{environment=await prepareEnvironment();return {prepared:true,bytes:environment.bytes,cached:environment.cached};}finally{preparing=false;}});
       case 'setRoot':return mutate(async()=>{inactive();if(typeof payload.path!=='string')return fail('INVALID_REQUEST');const selection=await switchRoot(payload.path,{writing:false});if(selection.path===store.root)return {rootPath:store.root};
         const oldRoot=store.root;await queue.dispose();await store.close();environment=undefined;
         try{await bind(selection.path);await writeRecord(preference,{root:store.root});}catch(error){await queue?.dispose().catch(()=>{});await store?.close().catch(()=>{});await bind(oldRoot);throw error;}return {rootPath:store.root,previousRoot:oldRoot,historyMoved:false};});
       case 'createBatch':return mutate(async()=>{writable();if(!environment)fail('ENVIRONMENT_NOT_PREPARED');const request:EvaluationRequest={targets:(payload.handles as unknown[]).map(target),tracks:payload.tracks as Track[],execution:payload.execution as EvaluationRequest['execution'],...(payload.judgeHandle?{judge:judge(payload.judgeHandle)}:{})};return queue.enqueue(request);});
       case 'queue':return queue.snapshot();
-      case 'pause':return mutate(async()=>{await queue.pause(String(payload.batchId));return queue.snapshot();});
+      case 'pause':return mutate(async()=>{if(queue.snapshot().activeBatchId===payload.batchId)evaluationLease?.stopping();await queue.pause(String(payload.batchId));return queue.snapshot();});
       case 'resume':return mutate(async()=>{writable();if(!environment)fail('ENVIRONMENT_NOT_PREPARED');await queue.resume(String(payload.batchId),payload.judgeHandle?judge(payload.judgeHandle):undefined);return queue.snapshot();});
       case 'history':return store.listSummaries();
       case 'report':{const run=await store.getRun(String(payload.runId));const records=run.summary.details==='available'?await store.listItems(run.summary.runId):[];
@@ -64,5 +67,10 @@ export async function createEvaluationService(deps:ServiceDependencies) {
       case 'cleanupStatus':return compactOperation(cleanup.operation(String(payload.token)));
     }
   }
-  return {dispatch,async dispose(){if(disposed)return;disposed=true;await mutations;await queue.dispose();await store.close();}};
+  const activityKinds:Partial<Record<Action,ActivityKind>>={prepare:'prepare',setRoot:'root-change',createBatch:'evaluation',resume:'evaluation',previewCleanup:'cleanup',commitCleanup:'cleanup'};
+  async function dispatch(action:Action,payload:Record<string,unknown>):Promise<unknown>{
+    if(disposed)fail('SERVICE_DISPOSED');const kind=activityKinds[action],lease=kind?activity.claim(kind,randomUUID()):undefined;let held=false;
+    try{const result=await operate(action,payload);if(lease&&kind==='evaluation'){const id=action==='createBatch'?(result as {batchId:string}).batchId:String(payload.batchId);lease.identify(id);held=true;evaluationLease=lease;void queue.idle().then(()=>{lease.release();if(evaluationLease===lease)evaluationLease=undefined;},()=>lease.fault('QUEUE_FAILED'));}return result;}finally{if(!held)lease?.release();}
+  }
+  return {dispatch,async dispose(){if(disposed)return;disposed=true;evaluationLease?.stopping();const stopping=queue.dispose();await mutations;await stopping;await store.close();}};
 }

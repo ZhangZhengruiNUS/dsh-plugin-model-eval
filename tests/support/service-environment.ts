@@ -1,0 +1,2 @@
+import {resolve} from 'node:path';import type {PreparedEnvironment} from '../../src/resources/prepare.ts';import {RESOURCE_MANIFEST_SHA256} from '../../src/resources/pins.ts';
+export const testEnvironment=(rootPath:string):PreparedEnvironment=>({rootPath,resourcesPath:resolve('resources'),resourceVersion:'suite-2026-10-31-v3',manifestHash:RESOURCE_MANIFEST_SHA256,bytes:0,preparedAt:new Date().toISOString(),preparationMs:0,cached:true});
