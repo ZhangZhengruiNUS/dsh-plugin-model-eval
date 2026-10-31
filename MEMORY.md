@@ -17,3 +17,4 @@
 - 统一 aggregate-run 从已提交评分/尝试重建总分、完成时间、写作五维、历次裁判和metrics；队列启动与清理前均调用。摘要无法重建时禁止清理；中断尝试在启动时已有item/track，用量和延迟仍未知。
 - 四种尺寸/主题截图实际查看并独立复核，已修窄屏背景、横滚提示和清理主数字标签；截图明确为合成数据。
 - 正常个人GitHub仓已建立，远端以git remote为准；代码推送、npm和市场各自记录。npm/市场未发布，无实际宿主兼容声明。
+- 用户现已提供本机DSH Desktop用于测试：实机版本0.2.1-rc.5，内置Node24.21.0，desktop profile。自带CLI以--offline安装本地tgz成功、下载0包；安装前5个profile文件已在总控忽略目录备份并记录哈希。两种UI控制内核均报写入kernel assets路径不存在，无法点击界面，已请用户打开插件反馈。未调用真实模型，不能把安装成功当完整兼容通过；见docs/evidence/desktop-install.json。

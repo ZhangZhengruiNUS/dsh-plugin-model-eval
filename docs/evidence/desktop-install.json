@@ -1,0 +1,16 @@
+{
+  "date": "2026-10-31",
+  "profile": "desktop",
+  "fullAcceptance": "pending-ui-and-real-model",
+  "desktopUi": "not-operated: both node_repl and cua_repl failed to write kernel assets (Windows error 3)",
+  "desktopVersion": "0.2.1-rc.5",
+  "unauthenticatedHttpStatus": 401,
+  "modelCalls": 0,
+  "installationMode": "bundled DSH CLI, pnpm --offline",
+  "runtimeNode": "24.21.0",
+  "packageSha256": "33c33e44274fcee9ba289dce974cc267d4e50f262f331d477ee2af49bcb623be",
+  "downloadedPackages": 0,
+  "installation": "passed",
+  "httpProbeLimit": "401 does not prove plugin route registration",
+  "backupFiles": 5
+}
