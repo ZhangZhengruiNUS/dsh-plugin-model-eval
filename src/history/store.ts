@@ -6,6 +6,7 @@ import { join } from 'node:path';
 import { isDeepStrictEqual } from 'node:util';
 import type { GeneratedAnswer, GradeResult, JudgeSnapshot, ProtocolRefs, RunSummary, TargetSnapshot, Track, TechnicalError,Question } from '../contracts.ts';
 import { fingerprintTarget } from '../model/identity.ts';
+import {validateGeneralDefinition} from '../evaluation/definitions.ts';
 import { inspectRoot } from '../resources/prepare.ts';
 import { readRecord, writeRecord } from './atomic.ts';
 import { acquireWriter } from './lock.ts';
@@ -61,6 +62,7 @@ export async function openHistory(root:string):Promise<HistoryStore> {
     const copies=await Promise.allSettled(['summary.json','summary.backup.json'].map(file=>readRecord<RunSummary>(join(path,file))));
     const valid=copies.flatMap(x=>x.status==='fulfilled'&&x.value.runId===id&&x.value.batchId===manifest.batchId?[x.value]:[]);
     const summary=valid.sort((a,b)=>b.revision-a.revision)[0];if(!summary)return fail('RUN_CORRUPT');
+    if(manifest.generalDefinition){validateGeneralDefinition(manifest.generalDefinition,manifest.requiredItems);if(!isDeepStrictEqual(manifest.generalDefinition,summary.generalDefinition))return fail('RUN_CORRUPT');}
     if(summary.runId!==id||summary.batchId!==manifest.batchId)return fail('RUN_CORRUPT');fingerprintTarget(summary.target);
     const entry={manifest,summary,items:new Map<string,ItemRecord>(),loaded:false};if(lease.writable)cache.set(id,entry);return entry;
   }
@@ -96,7 +98,7 @@ export async function openHistory(root:string):Promise<HistoryStore> {
   async function update(id:string,expected:number,change:(summary:RunSummary)=>void):Promise<RunSummary> {
     const run=await load(id),before=run.summary;if(before.revision!==expected)return fail('REVISION_CONFLICT');
     const next=clone(before);change(next);
-    if(next.runId!==before.runId||next.batchId!==before.batchId||!isDeepStrictEqual(next.target,before.target)||!isDeepStrictEqual(next.protocols,before.protocols))return fail('IMMUTABLE_RUN');
+    if(next.runId!==before.runId||next.batchId!==before.batchId||!isDeepStrictEqual(next.target,before.target)||!isDeepStrictEqual(next.protocols,before.protocols)||!isDeepStrictEqual(next.generalDefinition,before.generalDefinition))return fail('IMMUTABLE_RUN');
     if(before.details==='cleared'&&next.details!=='cleared'||!before.resumeAllowed&&next.resumeAllowed)return fail('IMMUTABLE_CLEANUP');
     for(const track of ['general','writing'] as const) {
       const old=before.tracks[track],value=next.tracks[track];
@@ -119,10 +121,11 @@ export async function openHistory(root:string):Promise<HistoryStore> {
     async createRun(input){return exclusive(async()=>{
       fingerprintTarget(input.target);
       if(!input.requiredItems.length||new Set(input.requiredItems.map(x=>x.id)).size!==input.requiredItems.length)return fail('INVALID_RUN_MANIFEST');
+      if(input.generalDefinition)validateGeneralDefinition(input.generalDefinition,input.requiredItems);
       const id=randomUUID(),createdAt=new Date().toISOString(),path=runPath(id);await mkdir(path);
       await directory(join(path,'details'));await directory(join(path,'details','items'));await directory(join(path,'details','attempts'));await directory(join(path,'diagnostics'));
       const manifest:RunManifest={...clone(input),schemaVersion:1,runId:id,createdAt};
-      const summary:RunSummary={runId:id,batchId:input.batchId,target:clone(input.target),revision:0,createdAt,tracks:{},details:'available',resumeAllowed:true,protocols:clone(input.protocols),judges:[],metrics:{tracks:{},activeIntervals:[],incompleteTiming:false},...(input.initialEstimation?{estimation:clone(input.initialEstimation)}:{})};
+      const summary:RunSummary={runId:id,batchId:input.batchId,target:clone(input.target),revision:0,createdAt,tracks:{},details:'available',resumeAllowed:true,protocols:clone(input.protocols),...(input.generalDefinition?{generalDefinition:clone(input.generalDefinition)}:{}),judges:[],metrics:{tracks:{},activeIntervals:[],incompleteTiming:false},...(input.initialEstimation?{estimation:clone(input.initialEstimation)}:{})};
       for(const track of ['general','writing'] as const){const required=input.requiredItems.filter(x=>x.track===track).length;if(required)summary.tracks[track]={status:'queued',required,graded:0,answered:0,measures:{}};}
       await writeRecord(join(path,'run.json'),manifest);await writeRecord(join(path,'summary.json'),summary);await writeRecord(join(path,'summary.backup.json'),summary);
       cache.set(id,{manifest,summary,items:new Map(),loaded:true});return clone(summary);

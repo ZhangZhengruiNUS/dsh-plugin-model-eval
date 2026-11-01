@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import type {GradeResult,ProtocolSet,Question} from '../../src/contracts.ts';
 import {summarizeGeneral} from '../../src/evaluation/aggregate.ts';
+import {legacyGeneralDefinition} from '../../src/evaluation/definitions.ts';
 import {extractFinalLetter,numericEquivalent,extractCode} from '../../src/evaluation/grade-general.ts';
 test('equal_domain_weights_and_fixed_denominator',()=>{
   const items:Question[]=[],grades:GradeResult[]=[];
@@ -9,13 +10,13 @@ test('equal_domain_weights_and_fixed_denominator',()=>{
     for(let i=0;i<count;i++){const id=datasetId+'/'+i;items.push({id,track:'general',datasetId,sourceId:id,sourceHash:'fixture',prompt:[],grading:null});grades.push({kind:'scored',track:'general',itemId:id,passed:i<passed,evidence:null});}
   }
   const required:ProtocolSet={generalId:'fixture',writingId:'fixture',resourceVersion:'fixture',items};
-  const summary=summarizeGeneral(grades,required);
+  const summary=summarizeGeneral(grades,legacyGeneralDefinition(required.items));
   assert.equal(summary.score,(80+70+325/541*100+148/164*100)/4);
   assert.equal(summary.measures['humaneval-plus']!.score,148/164*100);
-  assert.equal(summarizeGeneral(grades.slice(0,900),required).score,undefined);
-  assert.throws(()=>summarizeGeneral([...grades,grades[0]!],required),/DUPLICATE_GRADE/);
+  assert.equal(summarizeGeneral(grades.slice(0,900),legacyGeneralDefinition(required.items)).score,undefined);
+  assert.throws(()=>summarizeGeneral([...grades,grades[0]!],legacyGeneralDefinition(required.items)),/DUPLICATE_GRADE/);
   const simple={...required,items:items.filter(x=>!['ifeval','humaneval-plus'].includes(x.datasetId))};
-  assert.equal(summarizeGeneral(grades, simple).score,undefined,'all four fixed domains required');
+  assert.equal(summarizeGeneral(grades,legacyGeneralDefinition(simple.items)).score,undefined,'all four fixed domains required');
 });
 test('final answers are explicit and numeric comparison is exact',()=>{
   assert.equal(extractFinalLetter('Reason A was wrong.\nFinal answer: C.'),'C');

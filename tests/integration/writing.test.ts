@@ -1,5 +1,6 @@
 import test from 'node:test';import assert from 'node:assert/strict';import {join} from 'node:path';import {readFileSync} from 'node:fs';
 import type {HostAdapter,JudgeSnapshot,ProtocolSet,Question,TargetSnapshot} from '../../src/contracts.ts';
+import {legacyFixtureRegistry} from '../support/fixture-registry.ts';
 import {switchRoot} from '../../src/resources/prepare.ts';import {openHistory} from '../../src/history/store.ts';import {withTempRoot} from '../support/temp.ts';import {createQueue} from '../../src/jobs/queue.ts';import {createWritingGrader} from '../../src/writing/judge.ts';
 const target=(modelId:string):TargetSnapshot=>({scopeId:'s',providerId:'p',modelId,controls:{},routeTarget:{state:'unknown'}});
 test('switching judge fills only seven missing grades, preserving answers and general completion',async()=>withTempRoot(async parent=>{
@@ -16,7 +17,7 @@ test('switching judge fills only seven missing grades, preserving answers and ge
     if(input.target.modelId==='new')newCalls++;
     const dimensions=Object.fromEntries(['faithfulness','logic','coverage','concision','naturalness'].map(k=>[k,{score:3,reason:'report is clear',evidence:['report']}]));
     return {text:JSON.stringify({dimensions}),complete:true,truncated:false,observations:obs};}};
-  const queue=createQueue(store,adapter,protocols,{async general(q){return {kind:'scored',track:'general',itemId:q.id,passed:true,evidence:null};},writing:createWritingGrader(rubric)},{clock:{async wait(){}}});
+  const queue=createQueue(store,adapter,legacyFixtureRegistry(protocols),{async general(q){return {kind:'scored',track:'general',itemId:q.id,passed:true,evidence:null};},writing:createWritingGrader(rubric)},{clock:{async wait(){}}});
   const batch=await queue.enqueue({targets:[target('answer')],tracks:['general','writing'],judge:judge('old'),execution:{concurrency:1,callTimeoutMs:1000}});await queue.idle();
   const before=(await store.getRun(batch.runIds[0]!)).summary;assert.equal(before.tracks.general!.score,100);assert.equal(before.tracks.writing!.graded,5);
   // Remaining complete answers may be generated using the same original target; the saved sixth is reused.

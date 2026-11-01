@@ -1,11 +1,13 @@
 import {randomUUID} from 'node:crypto';
-import type {EvaluationRequest,GeneratedAnswer,HostAdapter,PromptMessage,ProtocolSet,Question} from '../contracts.ts';
+import type {EvaluationRequest,GeneratedAnswer,GradeResult,HostAdapter,PromptMessage,ProtocolSet,Question} from '../contracts.ts';
 import type {SpeedConfigRecord,SpeedSession,PerformanceSample,StageKey} from '../estimation/contracts.ts';
 import {appendPerformanceSample,emptyPerformance,performanceConditionKey,isTimeoutFailure} from '../estimation/observations.ts';
 import type {SpeedHistory} from '../history/speed.ts';import {speedFail} from '../history/speed.ts';
 import {fingerprintTarget} from '../model/identity.ts';import {buildPrompt} from '../evaluation/grade-general.ts';import type {GradeServices} from '../jobs/queue.ts';
 import {selectProbeQuestions} from './probe-set.ts';import {speedClock,type SpeedClock} from './clock.ts';
-export function createSpeedRunner(deps:{adapter:HostAdapter;protocols:ProtocolSet;graders:GradeServices;history:SpeedHistory;clock?:SpeedClock}){
+/** Legacy preview keeps its existing three-argument callback until tier probes are integrated. Service binds it to explicit legacy refs. */
+export type LegacySpeedGraders=Omit<GradeServices,'general'>&{general(question:Question,answer:GeneratedAnswer,signal:AbortSignal):Promise<GradeResult>};
+export function createSpeedRunner(deps:{adapter:HostAdapter;protocols:ProtocolSet;graders:LegacySpeedGraders;history:SpeedHistory;clock?:SpeedClock}){
  const clock=deps.clock??speedClock;let session:SpeedSession|undefined,controller=new AbortController(),running=Promise.resolve(),writeTail=Promise.resolve(),executing=false,disposed=false,failed:unknown;
  const code=(e:unknown)=>{const c=(e as {code?:unknown})?.code;return typeof c==='string'&&/^[A-Z][A-Z0-9_]{1,70}$/.test(c)?c:'SPEED_FAILED';};
  function update(change:(s:SpeedSession)=>void):Promise<void>{const next=writeTail.then(async()=>{const value=structuredClone(session!);change(value);session=await deps.history.save(value,session!.revision);});writeTail=next.catch(e=>{failed=e;controller.abort();});return next;}

@@ -1,4 +1,5 @@
 import {rebuildPerformance} from '../estimation/observations.ts';
+import {manifestGeneralDefinition} from './definitions.ts';
 import {isDeepStrictEqual} from 'node:util';import type {GradeResult,JudgeSnapshot,Question,RunSummary} from '../contracts.ts';import type {HistoryStore,HistoryTransaction,ItemRecord,RunManifest} from '../history/store.ts';import {fingerprintTarget} from '../model/identity.ts';import {summarizeGeneral} from './aggregate.ts';import {summarizeMetrics} from '../jobs/metrics.ts';
 /** Derive only from committed records. Never calls a model or regrades an answer. */
 export function rebuildRunSummary(manifest:RunManifest,summary:RunSummary,items:readonly ItemRecord[]):RunSummary {
@@ -6,8 +7,8 @@ export function rebuildRunSummary(manifest:RunManifest,summary:RunSummary,items:
   for(const track of ['general','writing'] as const){const old=next.tracks[track];if(!old||old.status==='completed')continue;
     const selected=manifest.requiredItems.filter(x=>x.track===track),ids=new Set(selected.map(x=>x.id));
     if(track==='general'){
-      const required=selected.map(x=>({...x,sourceId:x.id,sourceHash:'',prompt:[],grading:null})) as Question[];
-      const value=summarizeGeneral(valid,{...manifest.protocols,items:required});
+      const definition=manifestGeneralDefinition(manifest);if(!definition)continue;
+      const value=summarizeGeneral(valid,definition);
       next.tracks.general={...value,status:value.status==='completed'?'completed':old.status,answered:items.filter(x=>ids.has(x.itemId)&&x.answer?.complete).length};
     }else{
       const grades=valid.filter((x):x is Extract<GradeResult,{kind:'scored';track:'writing'}>=>x.kind==='scored'&&x.track==='writing'&&ids.has(x.itemId));const complete=grades.length===selected.length;

@@ -15,14 +15,24 @@ import {createQueue,type EvaluationQueue} from './jobs/queue.ts';import {gradeGe
 import type {Action} from './host/api.ts';import {fingerprintTarget} from './model/identity.ts';import {RESOURCE_MANIFEST_SHA256} from './resources/pins.ts';
 import {selfcheckEnvironment} from './resources/selfcheck.ts';
 import {readComparisonMetadata} from './comparison/project.ts';
+import {createProtocolRegistry} from './evaluation/registry.ts';
+import type {ProtocolRegistry,ResolvedProtocolSet} from './evaluation/tier-contracts.ts';
+import {protocolKey} from './evaluation/protocol-identity.ts';
+import {createContestRunner} from './runtime/contest-runner.ts';
 const fail=(code:string):never=>{throw Object.assign(new Error(code),{code});};
 export interface ServiceDependencies {adapter:HostAdapter;packageResources:string;scopeId:string;initialRoot?:string;controlRoot?:string;clock?:SpeedClock;prepareEnvironment?:(rootPath:string)=>Promise<PreparedEnvironment>}
 export async function createEvaluationService(deps:ServiceDependencies) {
   const manifest=await readResourceManifest(deps.packageResources),protocols=await loadProtocolSet(deps.packageResources),rubric=JSON.parse(await readFile(join(deps.packageResources,'protocols','rubric-writing-v1.json'),'utf8')) as WritingRubric;
+  const legacyRefs={generalId:protocols.generalId,writingId:protocols.writingId,resourceVersion:protocols.resourceVersion};
+  const refsKey=(p:{generalId:string;writingId:string;resourceVersion:string})=>protocolKey({generalId:p.generalId,writingId:p.writingId,resourceVersion:p.resourceVersion});
+  let registry:ProtocolRegistry,protocolError:string|undefined;
+  try{registry=await createProtocolRegistry(join(deps.packageResources,'..'));}
+  catch{protocolError='PROTOCOL_UNAVAILABLE';registry={list:()=>[],async resolve(){return fail('PROTOCOL_UNAVAILABLE');},async forNewRun(){return fail('PROTOCOL_UNAVAILABLE');}};}
+  const environments=new Map<string,PreparedEnvironment>();
   const control=(await switchRoot(deps.controlRoot??deps.initialRoot??defaultRoot(),{writing:false})).path;
   const preference=join(control,`selection-${createHash('sha256').update(deps.scopeId).digest('hex').slice(0,24)}.json`);
   let selected=deps.initialRoot??control;try{const old=await readRecord<{root:string}>(preference);if(typeof old.root==='string')selected=old.root;}catch(error){if((error as NodeJS.ErrnoException).code!=='ENOENT')fail('SELECTION_CORRUPT');}
-  let store:HistoryStore,queue:EvaluationQueue,cleanup:ReturnType<typeof createCleanup>,environment:PreparedEnvironment|undefined,preparing=false,disposed=false,rootEpoch=0;
+  let store:HistoryStore,queue:EvaluationQueue,cleanup:ReturnType<typeof createCleanup>,environment:PreparedEnvironment|undefined,preparing=false,disposed=false,rootEpoch=0,legacyPreviewProtocol:ResolvedProtocolSet|undefined;
   const clock=deps.clock??speedClock,activity=createActivityGate();let evaluationLease:ActivityLease|undefined,speedLease:ActivityLease|undefined,speedHistory:SpeedHistory,speedCleanup:ReturnType<typeof createSpeedCleanup>,speed:ReturnType<typeof createSpeedRunner>,live:ReturnType<typeof createLiveEstimator>|undefined,evaluationDone=Promise.resolve(),speedDone=Promise.resolve();
   async function prepareEnvironment(){if(deps.prepareEnvironment)return deps.prepareEnvironment(store.root);const candidate=await prepareResources(store.root,manifest,deps.packageResources);await selfcheckEnvironment(candidate.resourcesPath);return candidate;}
   let mutations:Promise<unknown>=Promise.resolve();const handles=new Map<string,TargetSnapshot>();
@@ -32,18 +42,20 @@ export async function createEvaluationService(deps:ServiceDependencies) {
     return result;
   }
   async function bind(path:string):Promise<void>{
+    environments.clear();environment=undefined;legacyPreviewProtocol=undefined;
     const selection=await switchRoot(path,{writing:false});store=await openHistory(selection.path);rootEpoch++;live=undefined;
     try{
       cleanup=createCleanup(store,()=>queue?.snapshot().activeBatchId);speedHistory=createSpeedHistory(store);speedCleanup=createSpeedCleanup(store,speedHistory);
       if(store.writable){await cleanup.recoverCleanup();await store.recover();await speedHistory.recoverInterrupted();await speedCleanup.recover();}
-      const graders={general(q:Parameters<typeof gradeGeneral>[0],a:Parameters<typeof gradeGeneral>[1],signal:AbortSignal){if(!environment)return Promise.resolve({kind:'technical-missing' as const,track:'general' as const,itemId:q.id,error:{code:'ENVIRONMENT_NOT_PREPARED',phase:'resource' as const,retryable:false,message:'请准备环境。'},evidence:null});return gradeGeneral(q,a,{code:createCodeRunner(join(environment.resourcesPath,'runtime')),rules:createRuleGrader(join(environment.resourcesPath,'runtime','rules')),signal});},writing:createWritingGrader(rubric)};
-      queue=createQueue(store,deps.adapter,protocols,graders,{onChange(runId){if(!live)return;const batch=queue.snapshot().batches.find(b=>b.runIds.includes(runId));if(batch)void live.invalidate(batch.batchId,'performance');}});
-      await queue.idle();speed=createSpeedRunner({adapter:deps.adapter,protocols,graders,history:speedHistory,clock});
+      const graders={general(q:Parameters<typeof gradeGeneral>[0],a:Parameters<typeof gradeGeneral>[1],signal:AbortSignal,protocol:ResolvedProtocolSet){const prepared=environments.get(refsKey(protocol));if(!prepared||prepared.resourceVersion!==protocol.resourceVersion)return Promise.resolve({kind:'technical-missing' as const,track:'general' as const,itemId:q.id,error:{code:'ENVIRONMENT_NOT_PREPARED',phase:'resource' as const,retryable:false,message:'请准备本轮评测对应的环境。'},evidence:null});return gradeGeneral(q,a,{code:createCodeRunner(join(prepared.resourcesPath,'runtime')),rules:createRuleGrader(join(prepared.resourcesPath,'runtime','rules')),contest:createContestRunner(join(prepared.resourcesPath,'runtime')),signal});},writing:createWritingGrader(rubric)};
+      queue=createQueue(store,deps.adapter,registry,graders,{onChange(runId){if(!live)return;const batch=queue.snapshot().batches.find(b=>b.runIds.includes(runId));if(batch)void live.invalidate(batch.batchId,'performance');}});
+      const legacySpeedGraders={...graders,async general(q:Parameters<typeof gradeGeneral>[0],a:Parameters<typeof gradeGeneral>[1],signal:AbortSignal){if(!legacyPreviewProtocol)return fail('PROTOCOL_UNAVAILABLE');return graders.general(q,a,signal,legacyPreviewProtocol);}};
+      await queue.idle();speed=createSpeedRunner({adapter:deps.adapter,protocols,graders:legacySpeedGraders,history:speedHistory,clock});
       live=createLiveEstimator({clock,getRuns:getInputs,getActiveBatchIds:()=>{const id=queue.snapshot().activeBatchId;return id?[id]:[];},publish(id,value){void queue.saveEstimate(id,value).catch(()=>{});}});
       for(const batch of queue.snapshot().batches)if(batch.estimate){const {remainingMs,totalMs,...base}=batch.estimate;live.restore(batch.batchId,batch.status==='pending'?{...base,state:'pending'}:batch.status==='completed'?batch.estimate:{...batch.estimate,state:'paused'});}
       for(const summary of await store.listSummaries())if(summary.estimation){const current=summary.estimation.final??summary.estimation.current,batch=queue.snapshot().batches.find(b=>b.batchId===summary.batchId);const {remainingMs,totalMs,...base}=current;live.restoreRun(summary.runId,summary.batchId,batch?.status==='pending'?{...base,state:'pending'}:batch?.status==='completed'?current:{...current,state:'paused'});}
       const destination=join(store.root,'resources',`${manifest.resourceVersion}-${RESOURCE_MANIFEST_SHA256.slice(0,12)}`);
-      try{await access(join(destination,'.ready.json'));const candidate=await prepareResources(store.root,manifest,deps.packageResources);await selfcheckEnvironment(candidate.resourcesPath);environment=candidate;}catch(error){if((error as NodeJS.ErrnoException).code!=='ENOENT')throw error;environment=undefined;}
+      try{await access(join(destination,'.ready.json'));const candidate=await prepareResources(store.root,manifest,deps.packageResources);await selfcheckEnvironment(candidate.resourcesPath);environment=candidate;environments.set(refsKey(legacyRefs),candidate);}catch(error){if((error as NodeJS.ErrnoException).code!=='ENOENT')throw error;environment=undefined;}
     }catch(error){live?.dispose();await speed?.dispose().catch(()=>{});await queue?.dispose().catch(()=>{});await store.close().catch(()=>{});throw error;}
   }
   await bind(selected);
@@ -55,7 +67,8 @@ export async function createEvaluationService(deps:ServiceDependencies) {
   function compactOperation(op:ReturnType<typeof cleanup.operation>){if(!op)return null;const {files,...safe}=op;return {...safe,failedFiles:files.filter(x=>x.state==='failed').length};}
   function requestFrom(payload:Record<string,unknown>):EvaluationRequest{
     if(!Array.isArray(payload.handles)||!payload.handles.length||payload.handles.length>20||!Array.isArray(payload.tracks)||!payload.execution||typeof payload.execution!=='object')fail('INVALID_REQUEST');
-    return {targets:(payload.handles as unknown[]).map(target),tracks:payload.tracks as Track[],execution:payload.execution as EvaluationRequest['execution'],...(payload.judgeHandle?{judge:judge(payload.judgeHandle)}:{})};
+    if(payload.generalId!==undefined&&(typeof payload.generalId!=='string'||!/^[a-zA-Z0-9._-]{1,128}$/.test(payload.generalId)))fail('INVALID_REQUEST');
+    return {...(typeof payload.generalId==='string'?{generalId:payload.generalId}:{}),targets:(payload.handles as unknown[]).map(target),tracks:payload.tracks as Track[],execution:payload.execution as EvaluationRequest['execution'],...(payload.judgeHandle?{judge:judge(payload.judgeHandle)}:{})};
   }
   async function finishEvaluation(batchId:string){await queue.idle();await live?.invalidate(batchId,'finish');const inputs=await getInputs(batchId),batch=queue.snapshot().batches.find(b=>b.batchId===batchId)!;
     await store.exclusive(async tx=>{for(let i=0;i<batch.runIds.length;i++){const id=batch.runIds[i]!,{summary}=await tx.getRun(id),input=inputs[i]!,computed=estimateBatch({runs:[input],now:clock.now()}),current=live?.snapshotRun(id)??computed;await tx.updateSummary(id,summary.revision,next=>{next.estimation={...next.estimation,current,...(computed.state==='completed'?{final:computed}:{})};});}});
@@ -64,7 +77,7 @@ export async function createEvaluationService(deps:ServiceDependencies) {
   async function operate(action:Action,payload:Record<string,unknown>):Promise<unknown> {
     if(disposed)fail('SERVICE_DISPOSED');
     switch(action){
-      case 'status':return {apiVersion:1,ready:true,rootId:store.rootId,rootEpoch,prepared:!!environment,preparing,writable:store.writable,rootPath:store.root,resourceVersion:manifest.resourceVersion,generalId:manifest.generalId,writingId:manifest.writingId,packageBytes:manifest.files.reduce((n,x)=>n+x.size,0),hostVerification:'unverified',activeActivity:activity.snapshot()};
+      case 'status':return {apiVersion:1,ready:true,rootId:store.rootId,rootEpoch,prepared:!!environment,preparing,writable:store.writable,rootPath:store.root,resourceVersion:manifest.resourceVersion,generalId:manifest.generalId,writingId:manifest.writingId,packageBytes:manifest.files.reduce((n,x)=>n+x.size,0),hostVerification:'unverified',...(protocolError?{protocolError}:{}),activeActivity:activity.snapshot()};
       case 'comparisonMetadata':{
         const captured=store,epoch=rootEpoch,stale=()=>disposed||store!==captured||rootEpoch!==epoch||activity.snapshot()?.kind==='root-change';
         if(stale())return fail('COMPARISON_STALE');
@@ -81,7 +94,7 @@ export async function createEvaluationService(deps:ServiceDependencies) {
         const fingerprint=fingerprintTarget(snapshot),handle=randomUUID();handles.set(handle,snapshot);if(handles.size>1000)handles.delete(handles.keys().next().value!);
         return {handle,target:snapshot,fingerprint};
       }
-      case 'prepare':return mutate(async()=>{writable();inactive();preparing=true;environment=undefined;try{environment=await prepareEnvironment();return {prepared:true,bytes:environment.bytes,cached:environment.cached};}finally{preparing=false;}});
+      case 'prepare':return mutate(async()=>{writable();inactive();await registry.resolve(legacyRefs);preparing=true;environment=undefined;environments.delete(refsKey(legacyRefs));try{environment=await prepareEnvironment();environments.set(refsKey(legacyRefs),environment);return {prepared:true,bytes:environment.bytes,cached:environment.cached};}finally{preparing=false;}});
       case 'setRoot':return mutate(async()=>{inactive();if(typeof payload.path!=='string')return fail('INVALID_REQUEST');const selection=await switchRoot(payload.path,{writing:false});if(selection.path===store.root)return {rootPath:store.root};
         const oldRoot=store.root;live?.dispose();await speed.dispose();await queue.dispose();await store.close();environment=undefined;
         try{await bind(selection.path);await writeRecord(preference,{root:store.root});}catch(error){await queue?.dispose().catch(()=>{});await store?.close().catch(()=>{});await bind(oldRoot);throw error;}return {rootPath:store.root,previousRoot:oldRoot,historyMoved:false};});
@@ -89,7 +102,7 @@ export async function createEvaluationService(deps:ServiceDependencies) {
       case 'queue':{const view=queue.snapshot();return {...view,estimates:Object.fromEntries(view.batches.flatMap(b=>{const e=live?.snapshot(b.batchId)??b.estimate;return e?[[b.batchId,e]]:[];}))};}
       case 'pause':return mutate(async()=>{if(queue.snapshot().activeBatchId===payload.batchId){evaluationLease?.stopping();await live?.invalidate(String(payload.batchId),'pause');}await queue.pause(String(payload.batchId));await evaluationDone;return queue.snapshot();});
       case 'resume':return mutate(async()=>{writable();if(!environment)fail('ENVIRONMENT_NOT_PREPARED');await queue.resume(String(payload.batchId),payload.judgeHandle?judge(payload.judgeHandle):undefined);await live?.invalidate(String(payload.batchId),'resume');return queue.snapshot();});
-      case 'startSpeedPreview':return mutate(async()=>{writable();if(!environment)fail('ENVIRONMENT_NOT_PREPARED');return speed.start({...requestFrom(payload),budgetMinutes:Number(payload.budgetMinutes)});});
+      case 'startSpeedPreview':return mutate(async()=>{writable();if(!environment)fail('ENVIRONMENT_NOT_PREPARED');const request=requestFrom(payload);if(request.generalId&&request.generalId!==legacyRefs.generalId)fail('PROTOCOL_NOT_VERIFIED');legacyPreviewProtocol=await registry.resolve(legacyRefs);return speed.start({...request,budgetMinutes:Number(payload.budgetMinutes)});});
       case 'speedPreviewStatus':{const row=await speedHistory.read(String(payload.previewId));if(!row)fail('PREVIEW_NOT_FOUND');const current=activity.snapshot();if(current?.kind==='speed-preview'&&current.id===row!.previewId&&current.state==='stopping')row!.status='stopping';return row;}
       case 'cancelSpeedPreview':{writable();const id=String(payload.previewId),current=activity.snapshot();if(current?.kind==='speed-preview'&&current.id===id){speedLease?.stopping();await speed.cancel(id);return {accepted:true,status:'stopping'};}const row=await speedHistory.read(id);if(!row)fail('PREVIEW_NOT_FOUND');return {accepted:true,status:row!.status};}
       case 'speedHistory':return speedHistory.list();
@@ -100,7 +113,13 @@ export async function createEvaluationService(deps:ServiceDependencies) {
       case 'report':return readBound(async captured=>{
         const run=await captured.getRun(String(payload.runId));const records=run.summary.details==='available'?await captured.listItems(run.summary.runId):[];
         const current=live?.snapshotRun(run.summary.runId);if(current)run.summary.estimation={...run.summary.estimation,current};return {summary:run.summary,questions:run.manifest.requiredItems.map(q=>{const item=records.find(x=>x.itemId===q.id);return {...q,answered:!!item?.answer?.complete,grade:item?.grade??null};})};});
-      case 'item':return readBound(async captured=>{const runId=String(payload.runId),id=String(payload.itemId),{manifest:runManifest}=await captured.getRun(runId);if(!runManifest.requiredItems.some(x=>x.id===id))return fail('ITEM_NOT_IN_PROTOCOL');const item=await captured.getItem(runId,id);const question=item?.question??(runManifest.protocols.resourceVersion===protocols.resourceVersion?protocols.items.find(x=>x.id===id):undefined);return {question:question?{id:question.id,track:question.track,datasetId:question.datasetId,sourceId:question.sourceId,sourceHash:question.sourceHash,prompt:question.prompt}:null,item:item??null};});
+      case 'item':return readBound(async captured=>{
+        const runId=String(payload.runId),id=String(payload.itemId),{manifest:runManifest}=await captured.getRun(runId);
+        if(!runManifest.requiredItems.some(x=>x.id===id))return fail('ITEM_NOT_IN_PROTOCOL');
+        const item=await captured.getItem(runId,id);let question=item?.question;
+        if(!question)try{question=(await registry.resolve(runManifest.protocols)).items.find(x=>x.id===id);}catch{/* Historical records stay readable; unknown refs never borrow current questions. */}
+        return {question:question?{id:question.id,track:question.track,datasetId:question.datasetId,sourceId:question.sourceId,sourceHash:question.sourceHash,prompt:question.prompt}:null,item:item??null};
+      });
       case 'usage':return cleanup.measureHistory();
       case 'previewCleanup':return mutate(()=>cleanup.previewCleanup(payload.batchIds as string[]));
       case 'commitCleanup':return mutate(async()=>compactOperation(await cleanup.commitCleanup(String(payload.token))));
