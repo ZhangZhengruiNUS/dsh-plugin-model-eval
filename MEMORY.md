@@ -1,5 +1,11 @@
 # 项目记忆
 
+2026-11-01资源门槛正式通过，源码f002664：V4全100编程正参考/177已知负例拒绝/25语义assertion、300非编程评分路径、legacy164/541全部通过；100题输入审计及35缺参考补齐。采用用户已批准统一60秒/512MiB/800B，固定保留14079原测试、6700已证非法generated排除、1264 public/private全留，增补69固定输入。独立复核的执行身份/多文件冻结恢复两项Important已RED→GREEN，无剩余阻断；69单元、11运行器/数值/审计、5安全、6资源注册检查与类型/构建通过。独立适配题文件及catalog已冻结runtimePassed=true，allowNewRuns仍false待队列/服务/UI接入。实际资源tgz54918724字节/1954文件、507缓存及共享兼容性核验通过（资源检查，未安装/发布）；旧文件/源失败保留。Task3已complete，下一步Task4；Desktop alpha.13及真实历史未动、零模型调用，前沿区分度/时长未校准。见docs/evidence/tiers/adapted-runtime-gate-v4.json、resource-package-v4-final.json。
+
+2026-11-01最新预算续订已获用户明确确认：新编程统一60秒/512MiB/800B整题共享fuel，旧协议/成绩不改。V4全部100正式正反参考正在重验，69固定增补、16类25程序canonical语义绑定；source119新增搬砖图反例把先前resource掩盖的错答明确变成assertion证据。legacy164编程已全过、541规则进行中，300非编程路径已过。冻结工具默认只读/部分报告拒绝，计划新增adapted-questions.json保留原questions.json，资源通过后仍待消费端接入才开放新run。Task3未完成、Task4+未开始，无Desktop/历史/模型调用变更；下条检查点中的“待选择预算”是此前快照，已被本条批准替代。
+
+2026-11-01 Task3续进：全部100编程题输入契约已审计，20779原测试保留14079、仅6700非法generated排除，1264 public/private全留；V3最终staging固定增补65输入。35处缺失参考全部补齐，连同4处优化共39份源码/独立oracle已入开发catalog，96/100正确参考曾在正式30秒/512MiB/200B通过；deep-only25/85/86/153仍超正式fuel。4题统一60秒/800B候选实际runner全部正确通过43.269/28.582/22.244/20.695秒，候选未获放行、正式预算不改，已请求用户选择。300非编程路径执行检查通过，legacy164/541新回归进行中。15类24已知漏检已绑定canonical反例且必须assertion失败，独立复核发现的缺失/漂移绕过已RED→GREEN；移除未获批准的逐题负例数量要求，保留全部已知错误。16项策略检查和类型通过，全套未称绿。缓存/首错优化见4efa91d/581567b；新档关闭、Task4+未开始、Desktop alpha.13及真实历史不动、零模型调用。详见docs/evidence/tiers/reference-validation-progress.md。
+
 2026-11-01测试适配方案A已批准并恢复Task3。独立staging四题输入审计：430非法generated排除/7固定输入增补，原件/合法测试不动；独立复核413个穷举子用例。补1604/E参考（84数组全部拆分穷举+保留测试），上游缺参考35中余34；96题输入仍pending。两项输出/审计状态边界Important已RED→GREEN修复，npm test131/131与typecheck通过。资源全表3通过/1预算失败/96待验，同一173测试两次30秒超时、旁路观察14.227秒通过，根因未定位，失败保留。新档继续关闭、Task4+未开始；旧资源/catalog/runtime/真实历史和Desktop alpha.13未动，零真实调用。见docs/evidence/tiers/adaptation-checkpoint.md；原始质量失败不再表示等待路线批准。
 
 2026-11-01供应商标签补全：按用户反馈将供应商＋模型ID作为比较界面可见主标识，散点为模型/供应商两行，关注条、图例、差值基准和辅助名称同步补全。alpha.13已装入Desktop并实看，19项相关UI、8项单元及类型/构建/实包通过；1445安装文件一致、1851非锁历史全部未变，零模型调用。仅改显示，原配置键继续区分参数/部署/路由，评分及两档门槛未改。见docs/evidence/comparison-alpha13.md。

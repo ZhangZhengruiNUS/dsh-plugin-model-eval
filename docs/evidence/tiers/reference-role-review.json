@@ -17,6 +17,6 @@
   ],
   "executionRequirement": "This exact corrected-role program must independently pass every retained and new fixed case including small and2000-cell cycles. Another positive passing does not waive it.",
   "otherNegatives": "The two other upstream programs still require rejection. No automatic reclassification based on passing tests is allowed.",
-  "runtimeAcceptance": "pending-separate-execution-evidence",
+  "runtimeAcceptance": "verified-separately: coding-adaptation-runtime-v4.json source77 contains this exact program as required:true with outcome.kind=passed; original label and static proof remain preserved",
   "releaseAllowed": false
 }
