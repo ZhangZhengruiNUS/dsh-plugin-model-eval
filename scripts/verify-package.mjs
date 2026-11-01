@@ -21,7 +21,16 @@ export function verifyPackage(path){
   if(!client.includes('require("react")')||client.includes('react-dom/client')||client.includes('createRoot('))throw new Error('HOST_REACT_CONTRACT');
   const manifestBytes=get('resources/manifest.json'),manifest=JSON.parse(manifestBytes);if(manifest.gates.runtime!=='passed'||!host.includes(hash(manifestBytes)))throw new Error('MANIFEST_PIN');
   for(const file of manifest.files){const packed=get('resources/'+file.path);if(packed.length!==file.size||hash(packed)!==file.sha256)throw new Error('RESOURCE_PACKAGE_MISMATCH: '+file.path);}
+  const tiers=verifyTierResources(get,host,manifest);
   for(const path of entries.keys())if(/(?:^|\/)(?:\.npmrc|\.env(?:\.[^/]*)?|\.git|node_modules|\.local|\.superpowers|AGENTS\.md|MEMORY\.md|WORKPOOL\.md)(?:\/|$)/i.test(path)||path.startsWith('package/tests/')||path.startsWith('package/docs/policies/'))throw new Error('FORBIDDEN_PACKAGE_FILE');
-  return {entries,report:{schemaVersion:1,status:'passed',name:pkg.name,version:pkg.version,sha256:hash(bytes),compressedBytes:bytes.length,unpackedBytes:[...entries.values()].reduce((n,x)=>n+x.length,0),resourceBytes:manifest.files.reduce((n,x)=>n+x.size,0),files:entries.size,resourceManifestSha256:hash(manifestBytes),runtimeDependencies:0}};
+  return {entries,report:{schemaVersion:1,status:'passed',name:pkg.name,version:pkg.version,sha256:hash(bytes),compressedBytes:bytes.length,unpackedBytes:[...entries.values()].reduce((n,x)=>n+x.length,0),resourceBytes:manifest.files.reduce((n,x)=>n+x.size,0),files:entries.size,resourceManifestSha256:hash(manifestBytes),runtimeDependencies:0,tiers}};
+}
+export function verifyTierResources(get,host,manifest){
+  const raw=get('resources/protocol-registry.json'),catalog=JSON.parse(raw),catalogSha256=hash(raw);
+  if(!host.includes(catalogSha256))throw Error('CATALOG_PIN');
+  if(catalog.schemaVersion!==1||catalog.entries.length!==3||catalog.legacyRefs.generalId!==manifest.generalId||catalog.legacyRefs.writingId!==manifest.writingId||catalog.legacyRefs.resourceVersion!==manifest.resourceVersion)throw Error('TIER_CATALOG_CONTRACT');
+  for(const [tier,count] of [['legacy',905],['light',120],['deep',400]]){const row=catalog.entries.find(e=>e.general.tier===tier);if(!row?.allowNewRuns||row.questionCount!==count||row.general.domains.length!==4||row.general.domains.some(d=>d.weight!==.25)||row.general.domains.reduce((n,d)=>n+d.itemIds.length,0)!==count)throw Error('TIER_ADMISSION_CONTRACT');}
+  for(const bundle of catalog.bundles){if(!bundle.runtimePassed)throw Error('TIER_RUNTIME_PENDING');for(const file of bundle.files){const bytes=get('resources/'+file.path);if(bytes.length!==file.size||hash(bytes)!==file.sha256)throw Error('TIER_RESOURCE_PACKAGE_MISMATCH: '+file.path);}}
+  return {catalogSha256,legacyManifestUnchanged:true,protocols:catalog.entries.map(e=>({refs:e.refs,tier:e.general.tier,count:e.questionCount})),bundles:catalog.bundles.map(b=>({id:b.id,files:b.files.length,questionSha256:hash(get('resources/'+b.questionPath))}))};
 }
 if(process.argv[1]&&resolve(process.argv[1])===fileURLToPath(import.meta.url)){try{process.stdout.write(JSON.stringify(verifyPackage(process.argv[2]).report,null,2)+'\n');}catch(error){process.stderr.write(error.message+'\n');process.exitCode=1;}}

@@ -10653,7 +10653,7 @@
         "definitionHash": "73dfd836d541e1772bb3f15e21be60b684b453df61436da0402c079e81c1758c"
       },
       "questionCount": 120,
-      "allowNewRuns": false,
+      "allowNewRuns": true,
       "bundleId": "two-tier-v1"
     },
     {
@@ -11095,7 +11095,7 @@
         "definitionHash": "f60992964e2de201a0e6a53f948ec5f37cb25830896e92a7925878a542dca8d7"
       },
       "questionCount": 400,
-      "allowNewRuns": false,
+      "allowNewRuns": true,
       "bundleId": "two-tier-v1"
     }
   ]

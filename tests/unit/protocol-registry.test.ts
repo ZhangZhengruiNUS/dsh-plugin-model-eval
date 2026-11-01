@@ -18,8 +18,8 @@ test('resolve_legacy_and_nested_tiers_without_mutating_ready_resources',async()=
     assert.deepEqual(question,deep.items.find(q=>q.id===question.id));
     assert.deepEqual(light.compatibility[question.id],deep.compatibility[question.id]);
   }
-  assert.equal(light.descriptor.allowNewRuns,false,'unverified runtime must remain unavailable');
-  await assert.rejects(registry.forNewRun(light.generalId),/PROTOCOL_NOT_VERIFIED/);
+  assert.equal(light.descriptor.allowNewRuns,true,'verified integrated protocols are admitted for local evaluation');
+  assert.equal((await registry.forNewRun(light.generalId)).items.length,132);
   await assert.rejects(registry.resolve({...light.descriptor.refs,resourceVersion:'unknown'}),/UNKNOWN_PROTOCOL/);
   const altered=registry.list() as any;altered[0].general.label='tampered';
   assert.notEqual(registry.list()[0]!.general.label,'tampered');

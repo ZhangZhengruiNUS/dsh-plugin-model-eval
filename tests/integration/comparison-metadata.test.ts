@@ -26,12 +26,12 @@ test('metadata_is_readonly_and_item_free',async()=>withTempRoot(async parent=>{
     const status:any=await service.dispatch('status',{});assert.equal(result.rootId,status.rootId);assert.equal(result.rootEpoch,status.rootEpoch);
     const report:any=await service.dispatch('report',{runId:old.runId});assert.equal(report.rootId,status.rootId);assert.equal(report.rootEpoch,status.rootEpoch);
     const item:any=await service.dispatch('item',{runId:old.runId,itemId:'PRIVATE_QUESTION'});assert.equal(item.rootId,status.rootId);assert.equal(item.rootEpoch,status.rootEpoch);
-    const pendingRead=service.dispatch('comparisonMetadata' as any,{});
+    const pendingRead=assert.rejects(service.dispatch('comparisonMetadata' as any,{}),{code:'COMPARISON_STALE'});
     const pendingItem=service.dispatch('item',{runId:old.runId,itemId:'PRIVATE_QUESTION'}),pendingReport=service.dispatch('report',{runId:old.runId});
     const changing=service.dispatch('setRoot',{path:join(parent,'second')});
     await Promise.all([assert.rejects(pendingItem,{code:'COMPARISON_STALE'}),assert.rejects(pendingReport,{code:'COMPARISON_STALE'})]);
     await assert.rejects(service.dispatch('comparisonMetadata' as any,{}),{code:'COMPARISON_STALE'});
-    await assert.rejects(pendingRead,{code:'COMPARISON_STALE'});await changing;
+    await pendingRead;await changing;
     const second:any=await service.dispatch('comparisonMetadata' as any,{});
     await service.dispatch('setRoot',{path});const returned:any=await service.dispatch('comparisonMetadata' as any,{});
     assert.notEqual(second.rootId,result.rootId);assert.equal(returned.rootId,result.rootId);assert.ok(returned.rootEpoch>second.rootEpoch&&second.rootEpoch>result.rootEpoch);

@@ -1,0 +1,154 @@
+{
+  "schemaVersion": 1,
+  "status": "implementation_and_native_noncall_verified",
+  "scope": "Two-tier implementation and local verification; real-model calibration is separate",
+  "candidateVersion": "0.1.0-alpha.14",
+  "implementation": {
+    "generalTiers": {
+      "light": 120,
+      "deep": 400
+    },
+    "abilities": 4,
+    "weightPerAbility": 0.25,
+    "upgrade": {
+      "copiedItems": 120,
+      "newItems": 280,
+      "keepsIncorrectGrades": true
+    },
+    "writing": {
+      "items": 12,
+      "separateScore": true
+    },
+    "legacyProtocolPreserved": true
+  },
+  "resourceEvidence": {
+    "frozenGate": "adapted-runtime-gate-v4.json",
+    "correctReferences": 100,
+    "knownWrongReferencesRejected": 177,
+    "canonicalSemanticAssertions": 25,
+    "noncodingExecutionPaths": 300,
+    "limits": {
+      "wallMs": 60000,
+      "wasiLinearMemoryBytes": 536870912,
+      "sharedFuel": 800000000000
+    },
+    "frozenCatalogSha256": "740fb3c37d234d6b410d27265a97f8f301cb22f9d59e12400822fae1066ff5dd",
+    "currentCatalogSha256": "904f99ab928c77fb31db5726c1b3b9b5e1cbf24d838d98d8c7a3bf6c84333f22",
+    "permittedCatalogDifference": "Only light/deep allowNewRuns flags promoted after integration",
+    "unchangedExecutionFiles": 22,
+    "questionSha256": "fc90520efa418c901a28eed710c24f60b7139c61e7cd7978bd146b3326c3ddfd"
+  },
+  "verification": {
+    "ui": {
+      "status": "passed",
+      "tests": 92,
+      "data": "synthetic only",
+      "sizes": [
+        1440,
+        390
+      ],
+      "themes": [
+        "light",
+        "dark"
+      ]
+    },
+    "node": {
+      "status": "verified_across_full_run_and_test_harness_correction",
+      "totalCoveredCases": 226,
+      "fullRun": {
+        "passed": 225,
+        "failed": 1,
+        "failedCase": "metadata_is_readonly_and_item_free",
+        "cause": "The test attached a rejection assertion after other awaited work; TAP confirmed unhandledRejection"
+      },
+      "correction": {
+        "scope": "Test only: attach the same rejection assertion immediately; no production or scoring change",
+        "relatedServiceCasesPassed": 12,
+        "failed": 0
+      },
+      "singleAllGreenFullRun": false
+    },
+    "offlinePackedFixture": {
+      "status": "passed",
+      "scope": "packaged Host contract fixture; no real DSH/model",
+      "preparationMs": 59011,
+      "preparedProtocols": 3,
+      "importedItems": 120,
+      "newAnswerCalls": 280,
+      "routesAfterDispose": 0,
+      "listenersAfterDispose": 0,
+      "sourceCleanupChildResume": "passed",
+      "answered": 1,
+      "syntheticCalls": 409,
+      "deletedBytes": 7401,
+      "speedDeletedBytes": 11649,
+      "speedPreview": "passed",
+      "speedCancel": "passed",
+      "speedRestore": "passed",
+      "speedCleanup": "passed",
+      "originSnapshot": "passed",
+      "network": "Node fetch and net blocked; PATH empty; WASI denies guest network. No OS-wide firewall/disconnect claim.",
+      "externalPython": false,
+      "externalNpmDependencies": false,
+      "restore": "passed",
+      "cleanup": "passed",
+      "disposal": "passed",
+      "realHost": false,
+      "realModels": false
+    },
+    "independentReview": {
+      "status": "findings_fixed",
+      "legacySnapshotDimensionsAndLabels": "Separate RED assertions then 7 related unit tests and typecheck passed"
+    },
+    "desktop": {
+      "status": "native_noncall_verified",
+      "host": "DeepSeek Harness Desktop",
+      "hostVersion": "0.2.1-rc.5",
+      "profile": "desktop",
+      "pluginVersion": "0.1.0-alpha.14",
+      "independentComputerUse": true,
+      "preparedQuestionCounts": [
+        905,
+        120,
+        400
+      ],
+      "defaultLight": true,
+      "deepSelection": true,
+      "independentWriting12": true,
+      "modelDropdown": true,
+      "parametersExpand": true,
+      "escapeEnterCancel": true,
+      "legacyReportAndItemEvidenceReadable": true,
+      "legacyMislabelAbsent": true,
+      "installedFiles": 1954,
+      "unchangedDataFiles": 1850,
+      "summaryRevisionOnly": 2,
+      "remainingSummaryPayloadsUnchanged": true,
+      "historyInventoryUnchanged": true,
+      "unrelatedProfileAndLockUnchanged": true,
+      "realModelCalls": 0,
+      "realSpeedPreviews": 0,
+      "realUpgrade": "not_performed_no_complete_real_light_record",
+      "screenshots": "No real user screenshots included in this public repository"
+    },
+    "package": {
+      "status": "passed",
+      "version": "0.1.0-alpha.14",
+      "sha256": "670bf9226ca4c108baa3ecd99e951aca608615e44d94d5b44634b7c1312608c2",
+      "files": 1954,
+      "runtimeDependencies": 0,
+      "hostAndClientIdenticalToOfflineTest": true
+    }
+  },
+  "realModelCalibration": {
+    "status": "not_performed",
+    "reason": "Requires named DSH configurations and explicit call budget",
+    "discrimination": "unverified",
+    "durationTargets": "unverified"
+  },
+  "publication": {
+    "npm": false,
+    "tag": false,
+    "market": false
+  }
+}

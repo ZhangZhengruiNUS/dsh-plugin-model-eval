@@ -12,8 +12,8 @@ test('versioned_preparation_failure_preserves_ready_legacy_bytes', {timeout:1200
     const root=await switchRoot(join(parent,'root'),{writing:false});
     const ready=await prepareProtocolResources(root.path,legacy,resolve('.'));
     const before=await readFile(join(ready.resourcesPath,'.ready.json'));
-    await assert.rejects(prepareProtocolResources(root.path,light,resolve('.')),/PROTOCOL_NOT_VERIFIED/);
-    await assert.rejects(prepareProtocolResources(root.path,{...light,allowNewRuns:true},resolve('.')),/DESCRIPTOR_MISMATCH/);
+    await assert.rejects(prepareProtocolResources(root.path,{...light,refs:{...light.refs,resourceVersion:'unknown'}},resolve('.')),/UNKNOWN_PROTOCOL/);
+    await assert.rejects(prepareProtocolResources(root.path,{...light,allowNewRuns:false},resolve('.')),/DESCRIPTOR_MISMATCH/);
     assert.deepEqual(await readFile(join(ready.resourcesPath,'.ready.json')),before);
     assert.deepEqual(await readdir(join(root.path,'resources')),[ready.resourcesPath.split(/[\\/]/).at(-1)]);
     assert.equal((await prepareProtocolResources(root.path,legacy,resolve('.'))).cached,true);

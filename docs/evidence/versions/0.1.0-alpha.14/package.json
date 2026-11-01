@@ -1,0 +1,135 @@
+{
+  "schemaVersion": 1,
+  "status": "passed",
+  "name": "@aico/dsh-plugin-model-eval",
+  "version": "0.1.0-alpha.14",
+  "sha256": "670bf9226ca4c108baa3ecd99e951aca608615e44d94d5b44634b7c1312608c2",
+  "compressedBytes": 54943404,
+  "unpackedBytes": 178308941,
+  "resourceBytes": 157878838,
+  "files": 1954,
+  "resourceManifestSha256": "8b510ec7a2f04543c2fad279d44ee562186de99e92a74f4a1d8fba937f1be16b",
+  "runtimeDependencies": 0,
+  "tiers": {
+    "catalogSha256": "904f99ab928c77fb31db5726c1b3b9b5e1cbf24d838d98d8c7a3bf6c84333f22",
+    "legacyManifestUnchanged": true,
+    "protocols": [
+      {
+        "refs": {
+          "generalId": "general-chat-root-stable-rule-tokenizer-v3",
+          "writingId": "work-writing-12-v1",
+          "resourceVersion": "suite-2026-10-31-v3"
+        },
+        "tier": "legacy",
+        "count": 905
+      },
+      {
+        "refs": {
+          "generalId": "general-two-tier-v1-light",
+          "writingId": "work-writing-12-v1",
+          "resourceVersion": "two-tier-v1"
+        },
+        "tier": "light",
+        "count": 120
+      },
+      {
+        "refs": {
+          "generalId": "general-two-tier-v1-deep",
+          "writingId": "work-writing-12-v1",
+          "resourceVersion": "two-tier-v1"
+        },
+        "tier": "deep",
+        "count": 400
+      }
+    ],
+    "bundles": [
+      {
+        "id": "two-tier-v1",
+        "files": 1902,
+        "questionSha256": "fc90520efa418c901a28eed710c24f60b7139c61e7cd7978bd146b3326c3ddfd"
+      }
+    ]
+  },
+  "offlineFixture": {
+    "scope": "packaged Host contract fixture; no real DSH/model",
+    "preparationMs": 59011,
+    "preparedProtocols": 3,
+    "importedItems": 120,
+    "newAnswerCalls": 280,
+    "routesAfterDispose": 0,
+    "listenersAfterDispose": 0,
+    "sourceCleanupChildResume": "passed",
+    "answered": 1,
+    "syntheticCalls": 409,
+    "deletedBytes": 7401,
+    "speedDeletedBytes": 11649,
+    "speedPreview": "passed",
+    "speedCancel": "passed",
+    "speedRestore": "passed",
+    "speedCleanup": "passed",
+    "originSnapshot": "passed",
+    "network": "Node fetch and net blocked; PATH empty; WASI denies guest network. No OS-wide firewall/disconnect claim.",
+    "externalPython": false,
+    "externalNpmDependencies": false,
+    "restore": "passed",
+    "cleanup": "passed",
+    "disposal": "passed"
+  },
+  "offlineTestArtifact": {
+    "version": "0.1.0-alpha.13",
+    "sha256": "ba4585c3220c39d18a126b3ff63bf679c839518e367ac2a38a4c35ac05a55ec8",
+    "scope": "Full offline flow executed before metadata-only SemVer promotion; final Host and client bytes are identical",
+    "hostSha256": "bdcc027ab4dcd00c99e46723ee6d444a2e2943bccc9a79a7b19fe6082c2d26c5",
+    "clientSha256": "9dafe9d78e64149d28f208b7c69ffd31891b47e34ada870df8622f0989eb5ee3"
+  },
+  "nodeVerification": {
+    "status": "verified_across_full_run_and_test_harness_correction",
+    "totalCoveredCases": 226,
+    "fullRun": {
+      "passed": 225,
+      "failed": 1,
+      "failedCase": "metadata_is_readonly_and_item_free",
+      "cause": "The test attached a rejection assertion after other awaited work; TAP confirmed unhandledRejection"
+    },
+    "correction": {
+      "scope": "Test only: attach the same rejection assertion immediately; no production or scoring change",
+      "relatedServiceCasesPassed": 12,
+      "failed": 0
+    },
+    "singleAllGreenFullRun": false
+  },
+  "uiTests": 92,
+  "actualHost": "Desktop 0.2.1-rc.5 native noncall UI and local preparation verified; no real new-tier inference",
+  "realModel": "not-performed",
+  "desktop": {
+    "status": "native_noncall_verified",
+    "host": "DeepSeek Harness Desktop",
+    "hostVersion": "0.2.1-rc.5",
+    "profile": "desktop",
+    "pluginVersion": "0.1.0-alpha.14",
+    "independentComputerUse": true,
+    "preparedQuestionCounts": [
+      905,
+      120,
+      400
+    ],
+    "defaultLight": true,
+    "deepSelection": true,
+    "independentWriting12": true,
+    "modelDropdown": true,
+    "parametersExpand": true,
+    "escapeEnterCancel": true,
+    "legacyReportAndItemEvidenceReadable": true,
+    "legacyMislabelAbsent": true,
+    "installedFiles": 1954,
+    "unchangedDataFiles": 1850,
+    "summaryRevisionOnly": 2,
+    "remainingSummaryPayloadsUnchanged": true,
+    "historyInventoryUnchanged": true,
+    "unrelatedProfileAndLockUnchanged": true,
+    "realModelCalls": 0,
+    "realSpeedPreviews": 0,
+    "realUpgrade": "not_performed_no_complete_real_light_record",
+    "screenshots": "No real user screenshots included in this public repository"
+  }
+}

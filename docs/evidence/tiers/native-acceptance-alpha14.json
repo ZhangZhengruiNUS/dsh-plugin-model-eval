@@ -1,0 +1,31 @@
+{
+  "status": "native_noncall_verified",
+  "host": "DeepSeek Harness Desktop",
+  "hostVersion": "0.2.1-rc.5",
+  "profile": "desktop",
+  "pluginVersion": "0.1.0-alpha.14",
+  "independentComputerUse": true,
+  "preparedQuestionCounts": [
+    905,
+    120,
+    400
+  ],
+  "defaultLight": true,
+  "deepSelection": true,
+  "independentWriting12": true,
+  "modelDropdown": true,
+  "parametersExpand": true,
+  "escapeEnterCancel": true,
+  "legacyReportAndItemEvidenceReadable": true,
+  "legacyMislabelAbsent": true,
+  "installedFiles": 1954,
+  "unchangedDataFiles": 1850,
+  "summaryRevisionOnly": 2,
+  "remainingSummaryPayloadsUnchanged": true,
+  "historyInventoryUnchanged": true,
+  "unrelatedProfileAndLockUnchanged": true,
+  "realModelCalls": 0,
+  "realSpeedPreviews": 0,
+  "realUpgrade": "not_performed_no_complete_real_light_record",
+  "screenshots": "No real user screenshots included in this public repository"
+}
