@@ -1,9 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {validateInput,adaptContest,coverageCases,sortingCases} from '../../scripts/support/contest-adaptation.ts';
+import {validateInput,adaptContest,coverageCases,sortingCases,REVIEWED_SOURCE_HASHES} from '../../scripts/support/contest-adaptation.ts';
 import {identityHash} from '../../src/evaluation/protocol-identity.ts';
 
-const row=(index:number,inputs:string[])=>({sourceId:String(index),sourceRecordHash:'a'.repeat(64),cases:inputs.map(stdin=>({stdin,expected:'1\n'})),raw:{
+const row=(index:number,inputs:string[])=>({sourceId:String(index),sourceRecordHash:REVIEWED_SOURCE_HASHES[String(index)]??'a'.repeat(64),cases:inputs.map(stdin=>({stdin,expected:'1\n'})),raw:{
   public_tests:{input:inputs.slice(0,1),output:['1\n']},private_tests:{input:[],output:[]},generated_tests:{input:inputs.slice(1),output:inputs.slice(1).map(()=>'1\n')}
 }});
 test('exclude_only_proven_illegal_generated_inputs_and_preserve_every_legal_test',()=>{

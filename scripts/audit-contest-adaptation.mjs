@@ -3,7 +3,7 @@ import {register} from 'tsx/esm/api';register();
 import {readFile} from 'node:fs/promises';
 import {resolve,join} from 'node:path';
 import {createHash} from 'node:crypto';
-import {adaptContest,ADAPTATION_VERSION} from './support/contest-adaptation.ts';
+import {adaptContest,ADAPTATION_VERSION,REVIEWED_SOURCE_HASHES} from './support/contest-adaptation.ts';
 import {identityHash} from '../src/evaluation/protocol-identity.ts';
 import {assertArtifactDestination,writeArtifact} from './support/adaptation-artifacts.ts';
 const sha=b=>createHash('sha256').update(b).digest('hex');
@@ -22,12 +22,7 @@ const questionBytes=await readFile('resources/suites/two-tier-v1/questions.json'
 const questions=JSON.parse(questionBytes).filter(q=>q.datasetId==='code-contests-selected');
 if(questions.length!==100||new Set(questions.map(q=>q.id)).size!==100||questions.some(q=>!admission.domains.coding.deepIds.includes(q.id)))throw Error('FROZEN_SELECTION_MISMATCH');
 // A validator is approved only for the exact statement whose contract was read.
-const reviewed={
- '0':'13469a4829f0824b86febb722718e2c3c17f30ce1f6456996a936222caa9421a',
- '8':'ed406a029ff7dbbb517d44afcddafbc0b296ef569d567aa5b18c8b9161f6630e',
- '19':'ae4cae398ce86b8a775f2f6ff402121ac2f8ff57403756045388b687f89b61ed',
- '91':'a555cf838fd7d50b2cd85a2ad7fc26ae457c78fa016069b73a040a78df480539'
-};
+const reviewed=REVIEWED_SOURCE_HASHES;
 const report={schemaVersion:1,policy:ADAPTATION_VERSION,status:'pending',releaseAllowed:false,
  scope:'Input legality and fixed independent oracle staging only; not all-reference validation, model calibration or release.',
  source:{revision:entry.revision,sourceDataSha256:sha(sourceBytes),frozenQuestionsSha256:sha(questionBytes),originalQualityEvidenceSha256:sha(await readFile('docs/evidence/tiers/coding-quality-gate.json'))},

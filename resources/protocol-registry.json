@@ -6968,12 +6968,12 @@
         {
           "path": "runtime/contest/runtime.json",
           "size": 200,
-          "sha256": "6819d1192b2f2caa2fd40cc6c3338b82b959b68e10a3c79a1bc8529b61371f50"
+          "sha256": "3eee5b74d202af29aab8644e4cc030ff110ffa3a445298106535029c8bc54a74"
         },
         {
           "path": "runtime/contest/execute_contest_wasi.py",
-          "size": 4671,
-          "sha256": "c91959e648c2abcb3decf810edff20d9f7529378805ccb27a9bb4eed2cf05fa9"
+          "size": 4864,
+          "sha256": "b555604c5f393c33786e70f85de1d64385125220d5fc3dbeed199b0ddd76549e"
         },
         {
           "path": "runtime/contest-cache/runtime.json",
@@ -9535,7 +9535,7 @@
           "wasi": "6324ce07e648de95b8e2eb214af6b01bcaf2b1f2a09fb7aa8cab095968bc8e62",
           "trusted-ifeval": "9b06ff09f6f4cd1c7d8cf0dd94b6389899e7fa28c2e05d3dc5a37092250f9f0a"
         },
-        "contest": "6819d1192b2f2caa2fd40cc6c3338b82b959b68e10a3c79a1bc8529b61371f50",
+        "contest": "3eee5b74d202af29aab8644e4cc030ff110ffa3a445298106535029c8bc54a74",
         "stdlibCache": "9252c42b83e2bd3bdfcfa61942bb8d45b5f9c6689fabe990d38608a34171e929",
         "mode": "checked-stdlib-bytecode-v1"
       }

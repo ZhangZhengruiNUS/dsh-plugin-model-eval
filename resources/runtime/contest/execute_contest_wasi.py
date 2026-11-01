@@ -45,7 +45,6 @@ def main():
     linker.define_wasi()
     inputs = json.loads(Path(request['inputPath']).read_text(encoding='utf-8'))
     remaining_fuel = request['computeBudget']
-    outputs = []
     total = 0
     for index, stdin in enumerate(inputs['inputs']):
         remaining_ms = request['wallMs'] - (time.monotonic() - start) * 1000
@@ -103,12 +102,16 @@ def main():
             if limited:
                 return {'failure': 'resource'}
             remaining_fuel = store.get_fuel()
-            outputs.append(base64.b64encode(b''.join(chunks)).decode('ascii'))
-    return {'outputs': outputs}
+            output = base64.b64encode(b''.join(chunks)).decode('ascii')
+        # Emit only after fuel accounting and Store cleanup; comparisons stay in Host.
+        sys.stdout.write(json.dumps({'case': index, 'output': output}) + '\n')
+        sys.stdout.flush()
+    return {'complete': True}
 
 
 try:
     result = main()
 except BaseException:
     result = {'environmentError': 'WASI_CONTEST_DRIVER_FAILED'}
-sys.stdout.write(json.dumps(result))
+sys.stdout.write(json.dumps(result) + '\n')
+sys.stdout.flush()

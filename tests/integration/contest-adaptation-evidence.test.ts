@@ -17,7 +17,7 @@ test('runtime_audit_rejects_forged_input_status_even_outside_requested_subset',a
   await withTempRoot(async root=>{
     const report=join(root,'input-audit.json'),out=join(root,'adapted.json');
     const stage=spawnSync(process.execPath,[resolve('scripts/audit-contest-adaptation.mjs'),'--report',report,'--out',out],{encoding:'utf8',windowsHide:true});assert.equal(stage.status,2,stage.stderr);
-    const audit=JSON.parse(await readFile(report,'utf8'));audit.items.find((i:any)=>i.sourceId==='100').status='audited';await writeFile(report,JSON.stringify(audit));
+    const audit=JSON.parse(await readFile(report,'utf8'));const forged=audit.items.find((i:any)=>i.status==='pending'&&i.sourceId!=='91')??audit.items[0];forged.status=forged.status==='pending'?'audited':'pending';await writeFile(report,JSON.stringify(audit));
     const check=spawnSync(process.execPath,[resolve('scripts/verify-contest-adaptation.mjs'),'--audit',report,'--staging',out,'--report',join(root,'runtime.json'),'--ids','91'],{encoding:'utf8',windowsHide:true});
     assert.equal(check.status,1,check.stdout);assert.match(check.stderr,/ADAPTATION_AUDIT_MISMATCH/);
   });

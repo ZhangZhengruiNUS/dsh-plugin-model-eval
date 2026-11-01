@@ -14,7 +14,7 @@ test('adaptation_audit_preserves_frozen_resources_and_blocks_incomplete_release'
     assert.equal(result.status,2,result.stderr+'\n'+result.stdout);
     const report=JSON.parse(await readFile(join(root,'audit.json'),'utf8'));
     assert.equal(report.releaseAllowed,false);assert.equal(report.counts.selected,100);
-    assert.equal(report.counts.missingReferences,35);assert.ok(report.counts.inputPending>0);
+    assert.equal(report.counts.missingReferences,35);assert.equal(report.counts.inputPending+report.counts.inputAudited,100);
     const sort=report.items.find((i:any)=>i.sourceId==='0');
     assert.ok(sort.excluded.some((x:any)=>x.sourceIndex===166&&x.origin==='generated'));
     const coverage=report.items.find((i:any)=>i.sourceId==='19');

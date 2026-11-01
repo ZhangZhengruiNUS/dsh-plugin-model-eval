@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "reviewKind": "independent-readonly-source-and-data-review",
+  "auditSha256": "37bf6b1dd8c91e2c191fb74cf0cd392910370c58f171553a26de965e7bf60b1f",
+  "validatorSha256": "f65ceffa17355ffcb601165e7b176ddc5b516d35dc0130dea199bffc0493a6b9",
+  "stagingHash": "cba078f854a23204efc739a6b3c154d05c96a9a7cfaff93930f3c551fe24f9c3",
+  "counts": {"questions":100,"originalCases":20779,"retainedCases":14079,"excludedGeneratedCases":6700,"publicAndPrivateRetained":1264},
+  "checks": [
+    "All100 Input sections and relevant full statements compared against validators; no demonstrated Important/Critical unjustified exclusion found.",
+    "Full adaptation replay reproduced retained/excluded IDs and hashes; source-lock, source records and validator identity match.",
+    "Independent physical-line reader confirmed all457 declared-line-width exclusions.",
+    "Independent angle-order plus exact BigInt collinearity check agreed on75 structurally valid source68 cases.",
+    "Independent direct-array clamp/add simulator agreed on4000 source69 generated operation groups.",
+    "All7 source77 wall exclusions independently exhibit conflicting descriptions of a shared wall."
+  ],
+  "geometryCounterexample": {"sourceId":"68","sourceIndex":109,"queryIndexOneBased":2,"query":[-852456290,-61238098,9],"hitNumber":9,"pivotOneBased":13,"pivot":[-9278222,1550313],"simultaneousUnpoppedHitsOneBased":[1,7,8,9,14,16],"reason":"All six hits lie on the same horizontal line through the pivot at the first positive rotation; the statement guarantees a single hit."},
+  "execution": "Read-only PowerShell here-string scripts piped to node or node --import tsx; no grader or submitted solution executed by reviewer.",
+  "limitations": ["Complete replay and statement review are not a second independent implementation of every numeric bound in all100 validators.","This review does not admit correctness, negative coverage, resource budget or the full400 suite."],
+  "releaseAllowed": false
+}
