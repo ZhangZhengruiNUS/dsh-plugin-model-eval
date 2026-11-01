@@ -20,3 +20,9 @@ test('A B A delayed old epoch cannot replace current comparison or retain an old
   await page.evaluate(()=>(window as any).releaseComparison());await expect.poll(()=>page.evaluate(()=>(window as any).comparisonReleased)).toBe(true);
   await page.waitForTimeout(100);await expect(page.locator('.me-comparison')).toContainText('Epoch-4-');await expect(page.locator('.me-comparison')).not.toContainText('Epoch-2-');
 });
+test('matrix sorts numeric scores while missing response values stay last',async({page})=>{
+  await page.goto('/');const matrix=page.locator('.me-comparison');await matrix.getByRole('button',{name:'综合分',exact:true}).click();
+  await expect(matrix.locator('tbody tr').first()).toContainText('Nebula-7B');
+  await matrix.getByRole('button',{name:'响应中位',exact:true}).click();await expect(matrix.locator('tbody tr').last()).toContainText('Nebula-7B');
+  await expect(matrix).toContainText('输入');await expect(matrix).toContainText('P95');
+});
