@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "status": "passed",
+  "scope": "Prototype resource package inspection only; not a new Desktop install, product acceptance or publication.",
+  "artifact": "aico-dsh-plugin-model-eval-0.1.0-alpha.13.tgz",
+  "packageVersion": "0.1.0-alpha.13",
+  "bytes": 54918724,
+  "sha256": "7e5a4e68b5f029924492595e98cb2558639d8a78f40ed66bd1fdb5ef8ad35dbf",
+  "files": 1954,
+  "counts": {
+    "legacy": 905,
+    "light": 120,
+    "deep": 400,
+    "writing": 12,
+    "checkedStdlibCache": 507
+  },
+  "sameSharedCompatibility": true,
+  "allBundleBytesVerified": true,
+  "runtimeDependencies": 0,
+  "allowNewRuns": false,
+  "releaseAllowed": false
+}

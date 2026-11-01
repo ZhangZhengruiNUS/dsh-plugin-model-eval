@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "version": "robot-factory-dsu-proof-v1",
+  "scope": "Developer reference role review only; no source data, test, expected output, score denominator or budget is changed.",
+  "sourceId": "77",
+  "sourceRecordHash": "088d479830e12cb994d0f1aa2ff5180c1c8dd2a25f807edc83bf9f04c15aa023",
+  "language": "PYTHON3",
+  "codeIdentitySha256": "3209245a910c9dd83f97e8f0a9887a2876b6a71bc82e483afa3d0372201acd4a",
+  "originalClassification": "incorrect_solutions/PYTHON3",
+  "effectiveRole": "positive-mandatory-execution",
+  "proof": [
+    "For valid walls each unblocked neighbor denotes exactly a graph edge; exterior walls prevent out-of-range accesses.",
+    "find first reaches the existing component root. Its simultaneous assignment compresses incompletely but points ancestors only to that same root; it cannot create a cycle or change connectivity.",
+    "Union-by-size preserves component partition and exact root size; duplicate union/cycles do not add size.",
+    "Even without compression the height is at most floor(log2(N*M)), at most19 in the declared domain; there is no recursive find.",
+    "Enumerating final roots gives exactly all room sizes. Static logic supports a positive role; original upstream non-AC reason is unknown."
+  ],
+  "executionRequirement": "This exact corrected-role program must independently pass every retained and new fixed case including small and2000-cell cycles. Another positive passing does not waive it.",
+  "otherNegatives": "The two other upstream programs still require rejection. No automatic reclassification based on passing tests is allowed.",
+  "runtimeAcceptance": "pending-separate-execution-evidence",
+  "releaseAllowed": false
+}

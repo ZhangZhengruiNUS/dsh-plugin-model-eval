@@ -1,0 +1,75 @@
+{
+  "schemaVersion": 1,
+  "scope": "Candidate budget experiment only; original formal limits unchanged. Not admission, model calibration, or release.",
+  "releaseAllowed": false,
+  "originalLimits": {
+    "wallMs": 30000,
+    "memoryBytes": 536870912,
+    "computeBudget": 200000000000
+  },
+  "proposedLimits": {
+    "wallMs": 60000,
+    "memoryBytes": 536870912,
+    "computeBudget": 800000000000
+  },
+  "items": [
+    {
+      "sourceId": "25",
+      "sourceRecordHash": "0aa6e3224a8743b4e7493812d1e3ab0eefbc6c311f8c3b80eaff4fdf86b6ac69",
+      "reference": "problems-codeforces.py",
+      "referenceSha256": "2ffa55c0edaec7882b74618ee8011a9b66a2057a9248c3eba88268e81b0ebf01",
+      "casesSha256": "4843986d59dca31aec3e14e94aa521e5b496320dd0c34b8080e0830a9b6488e2",
+      "testCount": 217,
+      "outcome": {
+        "kind": "passed",
+        "elapsedMs": 43269
+      }
+    },
+    {
+      "sourceId": "85",
+      "sourceRecordHash": "bb90f074b805e6344526faa47162bae5da7a30d6043eee133c60f49297a2487b",
+      "reference": "perfect-problem.py",
+      "referenceSha256": "905408f2ca7d727a8b5e053fb02ab89f5bb58d42149feee216c6891416eeb637",
+      "casesSha256": "e1c24199883e059dfc886f2c7abf09786e6b3c277d5873e26e8f34ea1d05e38d",
+      "testCount": 242,
+      "outcome": {
+        "kind": "passed",
+        "elapsedMs": 28582
+      }
+    },
+    {
+      "sourceId": "86",
+      "sourceRecordHash": "36f39dce920dd949dda9f4633a1c9af3813ae66efc8e01fce8c64e18d368ffa8",
+      "reference": "october-2017.py",
+      "referenceSha256": "04c3e773a6a32399865b0f609f35bbd93095b8d931b96785aaca6d89223c339d",
+      "casesSha256": "f96253ebec9c3c785310f27859d7097f3b36fdcec24d8ec238df3861502422ce",
+      "testCount": 53,
+      "outcome": {
+        "kind": "passed",
+        "elapsedMs": 22244
+      }
+    },
+    {
+      "sourceId": "153",
+      "sourceRecordHash": "b2ca665e1a8a0358e37c1e6340046ba56d5378513b66a68a2bafe1fce31f408f",
+      "reference": "subsequences-galore.py",
+      "referenceSha256": "9a0bf90fdf3c69252766d84770f29e9acabbc117d174b75bd2918f3c6595c1e2",
+      "casesSha256": "5c026354d578e6de5b3821964269322ce8e5be3eb7962755b9f44695e46e344d",
+      "testCount": 225,
+      "outcome": {
+        "kind": "passed",
+        "elapsedMs": 20695
+      }
+    }
+  ],
+  "runtimeIdentities": {
+    "src/runtime/contest-runner.ts": "82f73dffb6c535f163fc71e013e491ea09597062fc56c4844c212a9800ca4f0c",
+    "src/runtime/contest-frames.ts": "43bb68a619e983581c800d7e26d9d206a9715edf403c5f254ada4e07a1569528",
+    "resources/runtime/contest/execute_contest_wasi.py": "b555604c5f393c33786e70f85de1d64385125220d5fc3dbeed199b0ddd76549e",
+    "resources/runtime/contest/runtime.json": "3eee5b74d202af29aab8644e4cc030ff110ffa3a445298106535029c8bc54a74",
+    "resources/runtime/contest-cache/runtime.json": "9252c42b83e2bd3bdfcfa61942bb8d45b5f9c6689fabe990d38608a34171e929",
+    "resources/runtime/wasi/runtime.json": "6324ce07e648de95b8e2eb214af6b01bcaf2b1f2a09fb7aa8cab095968bc8e62",
+    "resources/runtime/code-host/runtime.json": "2cf3a2cc6ad2904d2e8e062e64af10150200d8ff1f697280d2db348950699d9a"
+  },
+  "identityCollection": "Collected after the serial experiment; each runtime file is byte-identical to the pre-experiment committed HEAD. Source/reference/cases hashes were captured per actual invocation."
+}

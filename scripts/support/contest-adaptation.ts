@@ -1,6 +1,6 @@
 /** Development-only input audits. Not shipped, and never a model-answer repair. */
 import {identityHash} from '../../src/evaluation/protocol-identity.ts';
-export const ADAPTATION_VERSION='code-contests-input-audit-v2';
+export const ADAPTATION_VERSION='code-contests-input-audit-v4';
 export const REVIEWED_SOURCE_HASHES:Record<string,string>=/* SOURCE_PINS_START */{
   "0": "13469a4829f0824b86febb722718e2c3c17f30ce1f6456996a936222caa9421a",
   "2": "9fe2b685156440d62d7b8e89169adcc8e55a27597c2787119d6b68d8ca0b6a58",
@@ -318,6 +318,139 @@ export function sortingCases(){
       oracle:'exact first-different-character ordering from statement, alternating ascending/descending per word',proofHash:identityHash({titles,order}),subcases:1};
   });
 }
+/** Fixed public-statement boundary coverage, not generated from any model answers. */
+export function boundaryCases(sourceId:string){
+  if(sourceId==='47')return [{test:{stdin:'1\n1 1\n-1\n',expected:'1\n'},oracle:'one item at coordinate-1: travel-distance lower bound1 is attained by one non-returning trip',proofHash:identityHash({position:-1,capacity:1,lowerBound:1,route:[0,-1]}),subcases:1}];
+  if(sourceId==='56')return [{test:{stdin:'6\n1\n2 white\n',expected:String(4n**62n%1000000007n)+'\n'},oracle:'63-node binary tree with one fixed non-root color: root has4 compatible colors and61 other nodes independently have4 colors; exact4^62 moduloP',proofHash:identityHash({nodes:63,fixedNode:2,choices:4,exponent:62,modulus:1000000007}),subcases:1}];
+  if(sourceId==='59'){
+    const availability=[[1,1,0,0,0],[1,1,0,0,0],[0,1,0,0,0],[1,0,0,0,0]];let possible=false;
+    for(let a=0;a<5;a++)for(let b=a+1;b<5;b++)for(let mask=0;mask<16;mask++)if(mask.toString(2).replaceAll('0','').length===2&&availability.every((row,i)=>row[mask&(1<<i)?a:b]===1))possible=true;
+    return [{test:{stdin:'1\n4\n'+availability.map(row=>row.join(' ')).join('\n')+'\n',expected:possible?'YES\n':'NO\n'},oracle:'exhaust every weekday pair and every balanced assignment of four students, without greedy choices',proofHash:identityHash({availability,assignments:60,possible}),subcases:1}];
+  }
+  if(sourceId==='77')return [
+    [[9,12],[3,6]],
+    [[9,...Array<number>(998).fill(10),12],[3,...Array<number>(998).fill(10),6]]
+  ].map(grid=>{
+    const n=grid.length,m=grid[0]!.length,seen=new Set<number>(),rooms:number[]=[];
+    for(let start=0;start<n*m;start++)if(!seen.has(start)){
+      seen.add(start);const queue=[start];for(const at of queue){const r=Math.floor(at/m),c=at%m;for(const [dr,dc,bit] of [[-1,0,8],[0,1,4],[1,0,2],[0,-1,1]]){const nr=r+dr!,nc=c+dc!;if(nr<0||nr>=n||nc<0||nc>=m||(grid[r]![c]!&bit!))continue;const next=nr*m+nc;if(!seen.has(next)){seen.add(next);queue.push(next);}}}rooms.push(queue.length);
+    }
+    rooms.sort((a,b)=>b-a);const test={stdin:n+' '+m+'\n'+grid.map(row=>row.join(' ')).join('\n')+'\n',expected:rooms.join(' ')+'\n'};
+    return {test,oracle:'literal cell-neighbor BFS on small and2000-cell cycles, counting each cell exactly once; cycles are not treated as trees',proofHash:identityHash({grid,rooms}),subcases:1};
+  });
+  if(sourceId==='78')return [10,100].map(n=>{
+    const factors=Array.from({length:n},(_,i)=>i+1).filter(k=>n%k===0);
+    return {test:{stdin:'1\n'+n+'\n'+Array(n).fill(1).join(' ')+'\n',expected:factors.join(' ')+'\n'},oracle:'all values1: each effective operation eliminates exactlyk ones, hence k must and may divide n; output increasing factors',proofHash:identityHash({n,ones:n,factors}),subcases:1};
+  });
+  if(sourceId==='87'){
+    const a=[2,1,3],minimum=Math.max(0,...a.map((x,i)=>x-i-1));
+    return [{test:{stdin:'1\n3\n'+a.join(' ')+'\n',expected:minimum+'\n'},oracle:'each original element needs at least a_i-i preceding insertions; inserting that many1s at the front attains the bound',proofHash:identityHash({a,minimum,witness:[1,2,1,3]}),subcases:1}];
+  }
+  if(sourceId==='9'){
+    const original=[[2,3],[1,2]],grid=original.map(row=>[...row]),balls=[1,2],exits:number[]=[];
+    for(const start of balls){let r=0,c=start-1;while(r<grid.length){const direction=grid[r]![c]!;grid[r]![c]=2;if(direction===1)c++;else if(direction===3)c--;else r++;}exits.push(c+1);}
+    return [{test:{stdin:'2 2 2\n'+original.map(row=>row.join(' ')).join('\n')+'\n'+balls.join(' ')+'\n',expected:exits.join(' ')+'\n'},oracle:'literal step-by-step ball motion, replacing each visited arrow by down; never infer an entire visited column prefix',proofHash:identityHash({original,balls,exits}),subcases:balls.length}];
+  }
+  if(sourceId==='94'){
+    const exponent=0,k=2,answer=(BigInt(k)+1n)*10n**BigInt(exponent);
+    return [{test:{stdin:'1\n1 2\n0\n',expected:answer+'\n'},oracle:'one denomination10^a: minimum coin count is exactly s/10^a, so first amount needing more thank coins is(k+1)*10^a',proofHash:identityHash({exponent,k,answer:String(answer)}),subcases:1}];
+  }
+  if(sourceId==='20'){
+    const small=['01100','10010','10010','10010','10010','01100'];
+    const grid=Array.from({length:60},()=>Array<string>(60).fill('0'));
+    for(let c=1;c<8;c++){grid[0]![c]='1';grid[9]![c]='1';}for(let r=1;r<9;r++){grid[r]![0]='1';grid[r]![8]='1';}
+    const matrices=[small,grid.map(row=>row.join(''))],witnesses=[[0,5,0,3],[0,9,0,8]];
+    matrices.forEach((matrix,i)=>{const [top,bottom,left,right]=witnesses[i]!;for(let r=top!;r<=bottom!;r++)for(let c=left!;c<=right!;c++){
+      if((r===top||r===bottom)&&(c===left||c===right))continue;
+      const required=r===top||r===bottom||c===left||c===right?'1':'0';if(matrix[r]![c]!==required)throw Error('ORACLE_ZERO_WITNESS_FAILED');
+    }});
+    const test={stdin:'2\n'+matrices.map(matrix=>matrix.length+' '+matrix[0]!.length+'\n'+matrix.join('\n')).join('\n')+'\n',expected:'0\n0\n'};
+    return [{test,oracle:'nonnegative edit cost plus explicitly checked zero-cost portal witnesses; one crosses both height9 and width8 heuristic limits',proofHash:identityHash({matrices,witnesses}),subcases:2}];
+  }
+  if(sourceId==='33'||sourceId==='34')return [[4,7,3,5],[0,0],[7,3,5],[0,1,2,3],[5,4,3,2,1],[1,2,4,8]].map(values=>{
+    const results=new Set([0]);for(let mask=1;mask<2**values.length;mask++){
+      const sequence=values.filter((_,i)=>mask&(1<<i));if(sequence.some((x,i)=>i>0&&x<=sequence[i-1]!))continue;results.add(sequence.reduce((x,y)=>x^y,0));
+    }
+    const sorted=[...results].sort((a,b)=>a-b),test={stdin:values.length+'\n'+values.join(' ')+'\n',expected:sorted.length+'\n'+sorted.join(' ')+'\n'};
+    return {test,oracle:'enumerate every subsequence by original position; require strict value increase and XOR directly, including improving an existing XOR tail',proofHash:identityHash({values,subsets:2**values.length,sorted}),subcases:1};
+  });
+  if(sourceId==='142')return [
+    [[3,2,1],[1,3,1],[1,1,3]],[[2,1],[1,2]],[[1,1],[1,1]],[[5,1,4],[2,5,1],[1,2,5],[4,4,4]]
+  ].map(matrix=>{
+    const shops=matrix.length,friends=matrix[0]!.length;let best=0;
+    for(let mask=1;mask<2**shops;mask++){
+      const selected=matrix.filter((_,i)=>mask&(1<<i));if(selected.length>=friends)continue;
+      best=Math.max(best,Math.min(...Array.from({length:friends},(_,j)=>Math.max(...selected.map(row=>row[j]!)))));
+    }
+    const test={stdin:'1\n\n'+shops+' '+friends+'\n'+matrix.map(row=>row.join(' ')).join('\n')+'\n',expected:best+'\n'};
+    return {test,oracle:'enumerate every nonempty shop subset of size at most friends-1 and directly maximize minimum available gift joy',proofHash:identityHash({matrix,best}),subcases:1};
+  });
+  if(sourceId==='145')return [
+    {k:1,mines:[[0,2,1],[1,2,1]]},{k:1,mines:[[2,0,1],[2,1,1]]},
+    {k:0,mines:[[0,0,5],[1,1,5],[2,2,5]]},{k:2,mines:[[0,0,4],[0,2,3],[2,2,5],[4,7,8]]}
+  ].map(({k,mines})=>{
+    const n=mines.length,components=mines.map((_,i)=>{
+      const pending=[i],seen=new Set([i]);
+      while(pending.length){const x=pending.pop()!,[a,b]=mines[x]!;for(let j=0;j<n;j++){const [c,d]=mines[j]!;if(!seen.has(j)&&((a===c&&Math.abs(b!-d!)<=k)||(b===d&&Math.abs(a!-c!)<=k))){seen.add(j);pending.push(j);}}}
+      return [...seen].reduce((mask,j)=>mask|(1<<j),0);
+    });
+    let states=new Set([0]),answer=-1;
+    for(let second=0;second<n;second++){
+      let automatic=0;mines.forEach((mine,i)=>{if(mine[2]!<=second)automatic|=components[i]!;});
+      const next=new Set<number>();for(const state of states){next.add(state|automatic);for(const component of components)next.add(state|automatic|component);}
+      if(next.has((1<<n)-1)){answer=second;break;}states=next;
+    }
+    const test={stdin:'1\n\n'+n+' '+k+'\n'+mines.map(m=>m.join(' ')).join('\n')+'\n',expected:answer+'\n'};
+    return {test,oracle:'direct pairwise explosion graph; enumerate all per-second manual choices and automatic component explosions',proofHash:identityHash({k,mines,components,answer}),subcases:1};
+  });
+  if(sourceId==='146')return [
+    {initial:Array.from({length:100},(_,i)=>i+1),ops:[[1,1,2],[2,1,100]]},
+    {initial:Array.from({length:101},(_,i)=>i+1),ops:[[1,1,2],[2,1,101],[1,1,2],[2,2,100],[1,3,4],[2,3,101]]},
+    {initial:Array.from({length:100},(_,i)=>(i+1)%100+1),ops:[[2,1,100],[1,1,51],[2,1,100],[2,51,99],[1,1,51],[2,1,100]]}
+  ].map(({initial,ops})=>{
+    const p=[0,...initial],answers:number[]=[];
+    for(const [kind,x,y] of ops){if(kind===1)[p[x!],p[y!]]=[p[y!]!,p[x!]!];else{let at=x!;for(let j=0;j<y!;j++)at=p[at]!;answers.push(at);}}
+    const test={stdin:initial.length+' '+ops.length+'\n'+initial.join(' ')+'\n'+ops.map(o=>o.join(' ')).join('\n')+'\n',expected:answers.join('\n')+'\n'};
+    return {test,oracle:'maintain the full permutation; perform every queried application directly, including 100-step jump boundary and repeated swaps',proofHash:identityHash({initial,ops,answers}),subcases:ops.filter(o=>o[0]===2).length};
+  });
+  if(sourceId==='11')return [[1],[2],[1,1],[2,2],[2,1],[1,2,2,3],[3,3,3],[1,1,2,2],[2,1,4,2,5,3,7]].map(values=>{
+    let best=0;
+    for(let mask=0;mask<2**values.length;mask++){
+      let position=0,matches=0;
+      for(let i=0;i<values.length;i++)if(mask&(1<<i)){position++;if(values[i]===position)matches++;}
+      best=Math.max(best,matches);
+    }
+    const test={stdin:values.length+'\n'+values.join(' ')+'\n',expected:best+'\n'};
+    return {test,oracle:'exhaustively enumerate every retained-position subset and count a_i=i directly',proofHash:identityHash({values,subsets:2**values.length,best}),subcases:1};
+  });
+  if(sourceId==='109')return ['BB','BW','B?','WB','WW','W?','?B','?W','??'].map(x=>[x]).concat([['BW','WB'],['BB','WW'],['BB','??'],['??','??'],['??','??','??'],['BB','??','W?','??']]).map(dominoes=>{
+    const cells=dominoes.join('').split(''),unknown=cells.flatMap((c,i)=>c==='?'?[i]:[]);let valid=0;
+    const feasible=(remaining:number[],order:number[]):boolean=>{
+      if(!remaining.length)return order.every((i,j)=>cells[2*i+1]!==cells[2*order[(j+1)%order.length]!]!);
+      return remaining.some((i,j)=>feasible(remaining.filter((_,k)=>k!==j),[...order,i]));
+    };
+    for(let mask=0;mask<2**unknown.length;mask++){
+      unknown.forEach((at,i)=>{cells[at]=mask&(1<<i)?'B':'W';});
+      if(feasible(dominoes.map((_,i)=>i),[]))valid++;
+    }
+    const test={stdin:dominoes.length+'\n'+dominoes.join('\n')+'\n',expected:valid+'\n'};
+    return {test,oracle:'enumerate every unknown-cell coloring and every unrotated domino permutation; check all cyclic seams directly',proofHash:identityHash({dominoes,colorings:2**unknown.length,valid}),subcases:1};
+  });
+  if(sourceId==='119')return [[1,1,3,3],[1,1,1,5],[2,4],[1,2,2]].map(values=>{
+    // Enumerate the actual move graph, not the divisibility formula used by references.
+    const initial=[...values].sort((a,b)=>a-b),queue=[initial],seen=new Set([initial.join(',')]);let best=Infinity;
+    for(const state of queue){
+      best=Math.min(best,state.at(-1)!-state[0]!);
+      for(let i=0;i<state.length;i++)if(state[i]!>0)for(let j=0;j<state.length;j++)if(i!==j){
+        const next=[...state];next[i]!--;next[j]!++;next.sort((a,b)=>a-b);const key=next.join(',');
+        if(!seen.has(key)){seen.add(key);queue.push(next);}
+      }
+    }
+    const test={stdin:'1\n'+values.length+'\n'+values.join(' ')+'\n',expected:best+'\n'};
+    return {test,oracle:'enumerate every reachable tower-height multiset using literal one-block transfers; take the minimum exact max-minus-min, without divisibility shortcut',proofHash:identityHash({values,reachableStates:seen.size,best}),subcases:1};
+  });
+  return [];
+}
 export function adaptContest(source:ContestSource){
   if(Object.hasOwn(REVIEWED_SOURCE_HASHES,source.sourceId)&&REVIEWED_SOURCE_HASHES[source.sourceId]!==source.sourceRecordHash)throw Error('VALIDATOR_STATEMENT_CHANGED');
   const flattened:TestCase[]=[],origins:('public'|'private'|'generated')[]=[];
@@ -343,6 +476,10 @@ export function adaptContest(source:ContestSource){
   }
   if(source.sourceId==='0')for(const extra of sortingCases()){
     if(validateInput('0',extra.test.stdin).status!=='valid')throw Error('INVALID_ORACLE_TEST');
+    cases.push(extra.test);added.push({caseHash:identityHash(extra.test),oracle:extra.oracle,proofHash:extra.proofHash,subcases:extra.subcases});
+  }
+  for(const extra of boundaryCases(source.sourceId)){
+    if(validateInput(source.sourceId,extra.test.stdin).status!=='valid')throw Error('INVALID_ORACLE_TEST');
     cases.push(extra.test);added.push({caseHash:identityHash(extra.test),oracle:extra.oracle,proofHash:extra.proofHash,subcases:extra.subcases});
   }
   return {sourceId:source.sourceId,sourceRecordHash:source.sourceRecordHash,policy:ADAPTATION_VERSION,status:pending?'pending' as const:'audited' as const,

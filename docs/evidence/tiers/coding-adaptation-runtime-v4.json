@@ -1,0 +1,4823 @@
+{
+  "schemaVersion": 1,
+  "status": "pending",
+  "releaseAllowed": false,
+  "scope": "Reference execution on audited staged inputs only; incomplete suite remains disabled.",
+  "startedAt": "2026-11-01T06:50:13.815Z",
+  "stagingHash": "ddbcf74d1835c78a034274f0c33a4047ed9966e46d16677abc1b010776c28274",
+  "validatorSha256": "fa0eb6c84911ca7a13c7ca8ce6f790a8e79a3a11c9c90105b743eff7f87fe3ad",
+  "contestRuntimeManifest": "3eee5b74d202af29aab8644e4cc030ff110ffa3a445298106535029c8bc54a74",
+  "stdlibCacheManifest": "9252c42b83e2bd3bdfcfa61942bb8d45b5f9c6689fabe990d38608a34171e929",
+  "negativeReferencesSha256": "4a988e8e2c7fb7bdbb5d70c13936526a74d8e7667029c12c71cb3cb7e35d8a94",
+  "referenceCatalogSha256": "d22a7cbd267fda6e530d8e8afd83599512443eae796bfac68dd867a82efe2595",
+  "verifierSha256": "6ad197237d4645a8d1ad089155750f949e66d046c902e6e0d8b082a77c4dd899",
+  "contestHostRunnerSha256": "82f73dffb6c535f163fc71e013e491ea09597062fc56c4844c212a9800ca4f0c",
+  "logicCoveragePolicySha256": "66f7f3d24099baea2db9bb30058caa3126b4fc4dea695aee0497e03bcef65e2c",
+  "referenceVerdictSha256": "d27f4b1b49cd8224d2902d0d0d76d0304ae8ef3e97c8433a707f0c3fa1f0cc6c",
+  "logicCoverageImplementationSha256": "b21466370e0aa700bf463e226d06c1922938db762f9af6b6fa472b64217579e3",
+  "referenceClassificationSha256": "2ecef313b8b42b61f08a261938307040392d81ea255be9eb96534b5c3da91814",
+  "budgetVersion": "contest-60s-512m-800b-v1",
+  "limits": {
+    "wallMs": 60000,
+    "memoryBytes": 536870912,
+    "computeBudget": 800000000000
+  },
+  "selectedIds": null,
+  "items": [
+    {
+      "id": "coding/code-contests-test/0",
+      "sourceId": "0",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 14,
+      "testBytes": 832,
+      "adaptedHash": "671c41837d8ea04ad80c6e08295d545685ce0e42c7fe91cc80230965c0525ae1",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-python3",
+          "codeHash": "7a6874b0c9f0d6ca79ac6cc0cbc7bbcb7af5e753a5ecef7942ae96d85a3fb384",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 2050
+          }
+        }
+      ],
+      "negatives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "18688ecbf30889eddfe33d686fc29fd0873378311d52cb602842fc52da5706f4",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1715
+          }
+        },
+        {
+          "referenceIndex": 1,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "6a44e5674d0bef6ea50668e0d5eee08af924cbaad41dcfe003d4138b06abd48b",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1258
+          }
+        },
+        {
+          "referenceIndex": 2,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "87b6129b1814b47369c8c226f2e93dd07adb04c062fc325cf3ed8fd8256a5f72",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1267
+          }
+        }
+      ],
+      "referenceClassifications": [],
+      "availableNegativeCount": 3,
+      "negativeCoverage": "all-available-known-errors"
+    },
+    {
+      "id": "coding/code-contests-test/100",
+      "sourceId": "100",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 201,
+      "testBytes": 27183,
+      "adaptedHash": "a1d08900d57122c7888c174f611c5850e77baf1abc3a2c18b55eb99a9dfa3164",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-python3",
+          "codeHash": "e8bb4b6a773f29e4564537537119a2e903b47a5218e96638d519cc73f9c3ca7e",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 10517
+          }
+        }
+      ],
+      "negatives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "7c51b569e0cb4fcc04ff477149e2112f120a129a9c728390f49f74a7a875b0c8",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1288
+          }
+        },
+        {
+          "referenceIndex": 1,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "cae53f22a5cee4c574f22aef779dec3cfeaa508285d6b43867febf287e0bc529",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1274
+          }
+        },
+        {
+          "referenceIndex": 2,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "a7bbca8a813f4ba1cb1d356d1cb98bd19b41b11d5ebad044db18d87c22d66149",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1773
+          }
+        }
+      ],
+      "referenceClassifications": [],
+      "availableNegativeCount": 3,
+      "negativeCoverage": "all-available-known-errors"
+    },
+    {
+      "id": "coding/code-contests-test/108",
+      "sourceId": "108",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 116,
+      "testBytes": 25202,
+      "adaptedHash": "9a740d388b9d7eaa07c125e6a0746861fc54c0fe6d610323a4e67692f124e683",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-python3",
+          "codeHash": "c78ab2fec65bddc725c80278f3d7a46144b207b484912c2e37d8b0eda36c93df",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1341
+          }
+        },
+        {
+          "referenceIndex": 1,
+          "origin": "upstream-python3",
+          "codeHash": "2947f58f086f2a4c07f88882fadbbe2221f293df3042466ffec66d55522687d8",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 7681
+          }
+        }
+      ],
+      "negatives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "a92fb8ace896bf9a20c891cac6c990f2b1e5975a50f496b09836eefa84d39240",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1379
+          }
+        },
+        {
+          "referenceIndex": 1,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "a9d515e8168dd2b3cbdb7635298bdc896cae51288f8e02e964fb1f65ef509104",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1450
+          }
+        },
+        {
+          "referenceIndex": 2,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "323478a538c561c878662712c9188faae0f546b64b0c9389444a622508f613a5",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1416
+          }
+        }
+      ],
+      "referenceClassifications": [],
+      "availableNegativeCount": 3,
+      "negativeCoverage": "all-available-known-errors"
+    },
+    {
+      "id": "coding/code-contests-test/109",
+      "sourceId": "109",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 222,
+      "testBytes": 85436,
+      "adaptedHash": "cabf99c03df8593c54a6f3a520bbdf82bd4d4f78e6c754aef31a2f5db8625c5a",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-python3",
+          "codeHash": "f987e589170ad53752f43f24fa5c69894d4b0fc3e2597940f0be904a17438571",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 11835
+          }
+        }
+      ],
+      "negatives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "6f9126cfe19a85a0f38375207249b6b09d383c31cdbed2f4bc630d1d86b634d1",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1626
+          }
+        },
+        {
+          "referenceIndex": 1,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "02e33672eaa6844a5a29b427de633da141d6b17aacc4db6b81c25e2ac4001a61",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 9542
+          },
+          "logicGap": {
+            "sourceId": "109",
+            "sourceRecordHash": "c9c69e87b853df5efc0d1fcfee14c33d9d910e92728c01575085e20cf4737645",
+            "codeHash": "02e33672eaa6844a5a29b427de633da141d6b17aacc4db6b81c25e2ac4001a61",
+            "language": "PYTHON3",
+            "originalReferenceIndex": 1,
+            "proofVersion": "fixed-boundary-oracles-v3",
+            "oracleCaseHashes": [
+              "219e3723f5cb1c5f4b6d1711f539b68558d91567dfe19adaad0a8a1b1556f8d7"
+            ]
+          },
+          "coverageCasesHash": "0f47206e5b19ec5a8c2c8ec63db0870625df5872af59b51b804e5ae421b7f92b",
+          "coverageOutcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1252
+          }
+        }
+      ],
+      "referenceClassifications": [],
+      "availableNegativeCount": 2,
+      "negativeCoverage": "all-available-known-errors"
+    },
+    {
+      "id": "coding/code-contests-test/11",
+      "sourceId": "11",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 213,
+      "testBytes": 8190,
+      "adaptedHash": "a1dec04607c61c5ba591a3d37e1c0cd45b6988e42e0b009330642c3d6ab6e597",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-python3",
+          "codeHash": "b8877931ab5fccabb22bcfc6861df05df0bf00675c93e5399db0b1137a6fd3eb",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 11528
+          }
+        }
+      ],
+      "negatives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "c2367503866af52f26ec860d94fc0ab9fb20b6ec1c7362a76548341ea3cb9b52",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1292
+          }
+        },
+        {
+          "referenceIndex": 1,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "72aabe6c564bfd9db696a444599c37b69729452b73383df28b48bf9a0ec60892",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 9586
+          },
+          "logicGap": {
+            "sourceId": "11",
+            "sourceRecordHash": "a819e9afaaa5cd5aba350e28a88271626489f257ced81512672dbe64ae6631cc",
+            "codeHash": "72aabe6c564bfd9db696a444599c37b69729452b73383df28b48bf9a0ec60892",
+            "language": "PYTHON3",
+            "originalReferenceIndex": 1,
+            "proofVersion": "fixed-boundary-oracles-v3",
+            "oracleCaseHashes": [
+              "496e257662bc3b627ab31ae3bdfb0d549727f83f719e7c20556e78d3eda90349"
+            ]
+          },
+          "coverageCasesHash": "92e61bde34b61a2e3820b818df9369481e5f5b86245662ff87583c6d92ab6b92",
+          "coverageOutcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1302
+          }
+        },
+        {
+          "referenceIndex": 2,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "fff4893eba39a0e2d1358f45b7f88caeef3ac0deee8e37830731e2daaf106dfa",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1290
+          }
+        }
+      ],
+      "referenceClassifications": [],
+      "availableNegativeCount": 3,
+      "negativeCoverage": "all-available-known-errors"
+    },
+    {
+      "id": "coding/code-contests-test/110",
+      "sourceId": "110",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 160,
+      "testBytes": 67509,
+      "adaptedHash": "47c23fc64e3f8c12597c0986b8f6ece001fb41655763dbb06acb846fdc0ad4c5",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "independent-reference",
+          "proof": "tests/integration/plain-references-small.test.ts",
+          "codeSha256": "023c467a510efe50295d3cb88c3989852521739b786f134042fb0b4640903844",
+          "codeHash": "5b428ba7a99f525f49d27b7bf838e6ddf303656a77ac8592f3244c1f8941963b",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 8460
+          }
+        }
+      ],
+      "negatives": [],
+      "referenceClassifications": [],
+      "availableNegativeCount": 0,
+      "negativeCoverage": "no-upstream-python3-negative-available"
+    },
+    {
+      "id": "coding/code-contests-test/111",
+      "sourceId": "111",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 79,
+      "testBytes": 23227,
+      "adaptedHash": "78c55d78c44d735a5e8665918fe0cfe89e305131d9d1df3beb6ded5573ad4dd6",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "independent-reference",
+          "proof": "tests/integration/ported-references-second.test.ts",
+          "codeSha256": "28cb76f25414680b30ef0a02976c283934cb81129e93debe79387c7bd3612c47",
+          "codeHash": "263692af187e6588b03adb960d78c48b38c8c96960f5c65330a8fd2330d587a6",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 8444
+          }
+        }
+      ],
+      "negatives": [],
+      "referenceClassifications": [],
+      "availableNegativeCount": 0,
+      "negativeCoverage": "no-upstream-python3-negative-available"
+    },
+    {
+      "id": "coding/code-contests-test/112",
+      "sourceId": "112",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 73,
+      "testBytes": 14028,
+      "adaptedHash": "f3b90b82627f61cfa72a460845469adb0fb280b87d67a777a9f72b911362bee8",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "independent-reference",
+          "proof": "tests/integration/plain-references-small.test.ts",
+          "codeSha256": "c2bf2cd20b3654b9c09f8bdb62335fbeff51f854fddcc8470a96dcb784a83832",
+          "codeHash": "719e91025d12d985da23e57232da3f4f41373fc4cddb07b7bcc65414f81f02e6",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 4604
+          }
+        }
+      ],
+      "negatives": [],
+      "referenceClassifications": [],
+      "availableNegativeCount": 0,
+      "negativeCoverage": "no-upstream-python3-negative-available"
+    },
+    {
+      "id": "coding/code-contests-test/113",
+      "sourceId": "113",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 161,
+      "testBytes": 16841,
+      "adaptedHash": "4f6c8fc3a715624cf357cd8d97b6b88c86639f14c00c2627212166dfbc9ad285",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-python3",
+          "codeHash": "e5d3ee570f48afa9cb4896cc6427be232394b80a6eab1f783c5c92baf77d687a",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 10570
+          }
+        }
+      ],
+      "negatives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "6af40d8e0b342c73a78e00cef267f5adf27e16d421eb598be2b68dcd02e80d0c",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1254
+          }
+        },
+        {
+          "referenceIndex": 1,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "6993d7bc054f3d7a8609934fbac28720fb44f514be966db1cff50f15d40b7fb4",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1535
+          }
+        },
+        {
+          "referenceIndex": 2,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "371a250ab7dbbb0e81af5b9009d6b1b30e9903ba317b729893514157ac00d33c",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1465
+          }
+        }
+      ],
+      "referenceClassifications": [],
+      "availableNegativeCount": 3,
+      "negativeCoverage": "all-available-known-errors"
+    },
+    {
+      "id": "coding/code-contests-test/115",
+      "sourceId": "115",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 29,
+      "testBytes": 2879,
+      "adaptedHash": "7106d44b7948296ef5843512a03928a5c84c6f87896fb5af758bbccd27b1228a",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-python3",
+          "codeHash": "0a094b59a62df082d8d705cd37131ef4153fe483a2aa777325469779082ac3ba",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 2669
+          }
+        }
+      ],
+      "negatives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "3ba0aa4e77e57a895bcb3f21c7c26edecde6ff005535e3db35a3ae48d5b0551f",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1291
+          }
+        },
+        {
+          "referenceIndex": 1,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "a2dcf912e43bb4c7b7949be596462103c079669f1e110051542fc54491f2fc91",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1292
+          }
+        },
+        {
+          "referenceIndex": 2,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "696b3cc3d6b6cfa98d6bf64c38c15fc9ffe354ea2eeb999284c58381ffe47595",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1394
+          }
+        }
+      ],
+      "referenceClassifications": [],
+      "availableNegativeCount": 3,
+      "negativeCoverage": "all-available-known-errors"
+    },
+    {
+      "id": "coding/code-contests-test/116",
+      "sourceId": "116",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 202,
+      "testBytes": 21045,
+      "adaptedHash": "25901a159a9b9fe0b6e3055a390f8301163e39866e8cf319aa044bb3cf7f2065",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-python3",
+          "codeHash": "ef2d1e50ea9bba3dd99c08ded37baaff895e2ecf231ba9f30fcde7d760287954",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 14808
+          }
+        }
+      ],
+      "negatives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "b314cf99c155e05b6d5ca7c24a4c6a2b3eab599a939273514ef102d59594c030",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1440
+          }
+        },
+        {
+          "referenceIndex": 1,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "8fbcc84820394b36a7546e53d1d171a7d25ed7aae401af835697fe69eb4f91b4",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1391
+          }
+        },
+        {
+          "referenceIndex": 2,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "dfa1ab9b8db810ab606bbd6e2be13533f93919412e5c8c9eacf1979e225d747f",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1398
+          }
+        }
+      ],
+      "referenceClassifications": [],
+      "availableNegativeCount": 3,
+      "negativeCoverage": "all-available-known-errors"
+    },
+    {
+      "id": "coding/code-contests-test/118",
+      "sourceId": "118",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 212,
+      "testBytes": 21956,
+      "adaptedHash": "9c9773759d42f670429351c9b656f323c11e8812d17afa84a6b3ac683c2cdaaf",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "independent-reference",
+          "proof": "tests/integration/plain-references-small.test.ts",
+          "codeSha256": "2c5171672fc9c4c538860c0efb691b57f69ff536fda41a2ca6cfb9d6a12b4ab8",
+          "codeHash": "a8c9dc31d51bcf9dbcf6772e50235eef24e90c5d004b1a574aaf7abe0bcf4fc4",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 11828
+          }
+        }
+      ],
+      "negatives": [],
+      "referenceClassifications": [],
+      "availableNegativeCount": 0,
+      "negativeCoverage": "no-upstream-python3-negative-available"
+    },
+    {
+      "id": "coding/code-contests-test/119",
+      "sourceId": "119",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 42,
+      "testBytes": 3119,
+      "adaptedHash": "e9a18f37498eded4c2450551a16bd48464196fb881747d742b062023e14585eb",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-python3",
+          "codeHash": "79e758eba156b35530701d30e54996ca03c850eaac67d211b4b9bab165607eef",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 3411
+          }
+        }
+      ],
+      "negatives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "b37a45a42582e9b25098619c0e7e788cb6c5ce743d89b7763e5937c6d945debc",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1523
+          }
+        },
+        {
+          "referenceIndex": 1,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "6c66991778a051557fccbf992cf2eaf476aa493146d3eb90fd3ed72ae8148332",
+          "outcome": {
+            "kind": "failed",
+            "reason": "resource",
+            "elapsedMs": 46542
+          },
+          "logicGap": {
+            "sourceId": "119",
+            "sourceRecordHash": "4513e7b3c610103b9c760bffd04a4c92173f1e19d3184cf0798e2699bbdb2ca5",
+            "codeHash": "6c66991778a051557fccbf992cf2eaf476aa493146d3eb90fd3ed72ae8148332",
+            "language": "PYTHON3",
+            "originalReferenceIndex": 1,
+            "proofVersion": "fixed-boundary-oracles-v4",
+            "oracleCaseHashes": [
+              "a768c36cb9db452c59cbd3a1d4dc51455409fe73ad66f97a66dc96ac2da1f915"
+            ]
+          },
+          "coverageCasesHash": "4851e25dcbdadafa8b7968ff177269a046d191ae1eb38457b80b4222c28f07aa",
+          "coverageOutcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1313
+          }
+        },
+        {
+          "referenceIndex": 2,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "272aa5a543b4a635e17a2ff8fcb2304fe20d699e7f4405420a93da87b4da79c9",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1293
+          }
+        }
+      ],
+      "referenceClassifications": [],
+      "availableNegativeCount": 3,
+      "negativeCoverage": "all-available-known-errors"
+    },
+    {
+      "id": "coding/code-contests-test/12",
+      "sourceId": "12",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 167,
+      "testBytes": 19888,
+      "adaptedHash": "b53114533a681706c9ac1179913d7feec7b2133db31861b5f090f19beb3b5a62",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "independent-reference",
+          "proof": "tests/integration/ported-references-third.test.ts",
+          "codeSha256": "1af154c13a966a80583dab836e94db8dfb284330c4960f3c37c5efb8d66aef96",
+          "codeHash": "f928fd6632c6b14e554a9fe2f4190c045a3bd3136617a1357a759ccf629f9136",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 10387
+          }
+        }
+      ],
+      "negatives": [],
+      "referenceClassifications": [],
+      "availableNegativeCount": 0,
+      "negativeCoverage": "no-upstream-python3-negative-available"
+    },
+    {
+      "id": "coding/code-contests-test/120",
+      "sourceId": "120",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 201,
+      "testBytes": 16929,
+      "adaptedHash": "1f7bda034f7b59272532609dd9c9293092d4871b3fcc6cca23e77416a44c3e6c",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-python3",
+          "codeHash": "d1d40200610b2865152d4e6b657322a4ddf96f14ef8769b752c990ad76736038",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 11055
+          }
+        }
+      ],
+      "negatives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "86be72d9f09ca710abcfc6fba2c4a7bebba25128cf38c8757edab771c8686273",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1267
+          }
+        },
+        {
+          "referenceIndex": 1,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "83e773d5698a2785f69dc2cc3194e463becd1ce627cb867ca2de2f603388e841",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 2267
+          }
+        },
+        {
+          "referenceIndex": 2,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "cbb2c5425b2c01a10afbc13df19d7684daf571081474bf4cf09189152488437c",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 2146
+          }
+        }
+      ],
+      "referenceClassifications": [],
+      "availableNegativeCount": 3,
+      "negativeCoverage": "all-available-known-errors"
+    },
+    {
+      "id": "coding/code-contests-test/121",
+      "sourceId": "121",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 192,
+      "testBytes": 26516,
+      "adaptedHash": "8b83ae762c260d7ad7cd69a4f6a4a814f36a16e6885df1f4c4a8b587b983dcaa",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-python3",
+          "codeHash": "963489e4e2d1e23a99d29da3866f318f65282b7bd9432315fe15e485a8fddaed",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 10100
+          }
+        }
+      ],
+      "negatives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "aec2a1a56758def1431661035f3bbc71a1625f5f8d75aa84f4059a4dea8424a8",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1767
+          }
+        },
+        {
+          "referenceIndex": 1,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "06334d8889e9fab49cfc45229d4a53b597acc60e63c7f5d6005f76efe88098b4",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1414
+          }
+        },
+        {
+          "referenceIndex": 2,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "a103adc9abbc1031cec02072e23faa0842458a1a710fb62ef8122bb992047918",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1419
+          }
+        }
+      ],
+      "referenceClassifications": [],
+      "availableNegativeCount": 3,
+      "negativeCoverage": "all-available-known-errors"
+    },
+    {
+      "id": "coding/code-contests-test/123",
+      "sourceId": "123",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 213,
+      "testBytes": 25864,
+      "adaptedHash": "9f27229c3d3c9147dba3019fd2b6a5b32ecb5b13c38da71a1aafdf11ca93a43a",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-python3",
+          "codeHash": "daeddb68a65e724ec4988203827557d46957c777880eb19d1ffd99243904d1e1",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 11616
+          }
+        }
+      ],
+      "negatives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "a833875dba8499497a144be3b7e0089d4ba90cefc54ce0ea896e895747216ba0",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1918
+          }
+        }
+      ],
+      "referenceClassifications": [],
+      "availableNegativeCount": 1,
+      "negativeCoverage": "all-available-known-errors"
+    },
+    {
+      "id": "coding/code-contests-test/124",
+      "sourceId": "124",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 54,
+      "testBytes": 7574,
+      "adaptedHash": "db0bf9e5f001d55e813b50eea325f8c7475cc3b128696445604f372c3f4a01a2",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "independent-reference",
+          "proof": "tests/integration/plain-references-algebra.test.ts",
+          "codeSha256": "eedb594e863a2ec9b8a143fc143038b22bce7952f7a833db0afea84d2c9b1e77",
+          "codeHash": "c7bc1240f71f9938f90af39d2ffba57504004d2a725611a4dc005ee919a94302",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 3929
+          }
+        }
+      ],
+      "negatives": [],
+      "referenceClassifications": [],
+      "availableNegativeCount": 0,
+      "negativeCoverage": "no-upstream-python3-negative-available"
+    },
+    {
+      "id": "coding/code-contests-test/127",
+      "sourceId": "127",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 125,
+      "testBytes": 22876,
+      "adaptedHash": "30b2fe7414741beac8d607d5d02ccf5bda657953c023dbebeb7c4c0421144c8d",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-python3",
+          "codeHash": "1aba02bcfe74b5dae90bf74a914c99bcdaac729bd6e75cf31e741f0f2ae82add",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 7077
+          }
+        }
+      ],
+      "negatives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "ba744ff0b099cae518eface125bc41e3dd73eb7debeeab8844e5356f565e5257",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1246
+          }
+        },
+        {
+          "referenceIndex": 1,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "1634d9be246e25f19ae639b156bb7edbaa47de361c1557f5ce594245050d7d00",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1265
+          }
+        },
+        {
+          "referenceIndex": 2,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "933789a96f679fb4bee6b5558e30353c773753a128c479919b844857b96d2b5f",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1269
+          }
+        }
+      ],
+      "referenceClassifications": [],
+      "availableNegativeCount": 3,
+      "negativeCoverage": "all-available-known-errors"
+    },
+    {
+      "id": "coding/code-contests-test/129",
+      "sourceId": "129",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 202,
+      "testBytes": 25293,
+      "adaptedHash": "6c009a28a39f263eed022ecc2446aeaa85891ddd1356ae32b198107b2c481fd4",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-python3",
+          "codeHash": "6832a1f8137a16be18d41ccd367b6616f9c400c6cd04a8f48ee4bd6f6318cdb9",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 13082
+          }
+        }
+      ],
+      "negatives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "a2f00fd732eb521be8fa5dc0c74e3f5ca65a3e6c7c820f0a12a2c38ab72971e5",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1272
+          }
+        },
+        {
+          "referenceIndex": 1,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "2ac98976b90d8d0d3a5b865189a3954e3494373291c94b04e6c22a4ee186a435",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1404
+          }
+        },
+        {
+          "referenceIndex": 2,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "22bbf9d785dc06f7f24bc50e5224c2dae5daa9d3d549107d0bffc3fe7414836a",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1402
+          }
+        }
+      ],
+      "referenceClassifications": [],
+      "availableNegativeCount": 3,
+      "negativeCoverage": "all-available-known-errors"
+    },
+    {
+      "id": "coding/code-contests-test/135",
+      "sourceId": "135",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 180,
+      "testBytes": 38509,
+      "adaptedHash": "7124a09faa7984f8141ea47910731efce0e667ddef32607fe34fa057e5cc1ff7",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-python3",
+          "codeHash": "d5d699f77bb6fd59da6d9dfe357d4300b9948bd9df3a43d236ebd9ddf4301ebc",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 13107
+          }
+        }
+      ],
+      "negatives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "5b822f91a715c9aafdf041dbfce37214fde0bd7156f2d2874eb9a2928d3cffeb",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1421
+          }
+        },
+        {
+          "referenceIndex": 1,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "00429d557e8f393547a8efbf7d656e236ec73c9b736ab0d7d18616334339cea3",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 9927
+          }
+        },
+        {
+          "referenceIndex": 2,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "903ffc8e8ebf15b738a995c56a67eadb349415154776094b54919c3fecb57e84",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1323
+          }
+        }
+      ],
+      "referenceClassifications": [],
+      "availableNegativeCount": 3,
+      "negativeCoverage": "all-available-known-errors"
+    },
+    {
+      "id": "coding/code-contests-test/138",
+      "sourceId": "138",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 189,
+      "testBytes": 16384,
+      "adaptedHash": "c52f8cf716f16474eb856879002dd39714bb0caf8bb55d946edd539e39f59a97",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-python3",
+          "codeHash": "0d93f80ee91a4aaa255a057882150848bcf86c3eeab13bab7314cdb572d9da9c",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 10500
+          }
+        }
+      ],
+      "negatives": [],
+      "referenceClassifications": [],
+      "availableNegativeCount": 0,
+      "negativeCoverage": "no-upstream-python3-negative-available"
+    },
+    {
+      "id": "coding/code-contests-test/140",
+      "sourceId": "140",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 337,
+      "testBytes": 35167,
+      "adaptedHash": "62a964dcaa2cd0bf5190c7534a5669ccf1f5a831f62b1388251173577259e38f",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-python3",
+          "codeHash": "6f6850fa09e35ec6fc301b5148f25724702631d7a60282a1ccb827d3385d30ef",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 24585
+          }
+        }
+      ],
+      "negatives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "3994ea1f86cf6ab1c931d0caa7c7067796f056f709158d64ef1b21b45c9d68c5",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1245
+          }
+        },
+        {
+          "referenceIndex": 1,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "2a7c44497c1166e2f9d4548780c8f4587bb570ac46db9eedd7664e7d4ab77b4b",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1253
+          }
+        },
+        {
+          "referenceIndex": 2,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "d1fc33b31bd752d283bec5c2ea67b261a0ba4bfe3a32833b6abc798919895a4c",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1364
+          }
+        }
+      ],
+      "referenceClassifications": [],
+      "availableNegativeCount": 3,
+      "negativeCoverage": "all-available-known-errors"
+    },
+    {
+      "id": "coding/code-contests-test/142",
+      "sourceId": "142",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 23,
+      "testBytes": 3493,
+      "adaptedHash": "9245ab4c2d84182b3a635ed88488e20db5f92e0f6ae81317e20d8c30cd00b82e",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-python3",
+          "codeHash": "507b879b7bc0dce7535b51271e16a9fb80647963a6c7b7bdabdf543825f666ed",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 2397
+          }
+        }
+      ],
+      "negatives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "e0e1052bb7727b1372aca0a41db90b8ea78bbd719a97e4bf216e9db21ee34ec6",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 2199
+          },
+          "logicGap": {
+            "sourceId": "142",
+            "sourceRecordHash": "950991b2dbc1e82a515254daf2e610ee29aea8333ad9e0ebfaba157ac225b57a",
+            "codeHash": "e0e1052bb7727b1372aca0a41db90b8ea78bbd719a97e4bf216e9db21ee34ec6",
+            "language": "PYTHON3",
+            "originalReferenceIndex": 0,
+            "proofVersion": "fixed-boundary-oracles-v3",
+            "oracleCaseHashes": [
+              "4d6d543cb62c15a51d804258970c875c9a1b61a65f75506c682929c50fb8ff78"
+            ]
+          },
+          "coverageCasesHash": "591a083faed98993054f3d179217b7eb42a998023e5543385cca32b2e0151aec",
+          "coverageOutcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1407
+          }
+        },
+        {
+          "referenceIndex": 1,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "18fdc0c678726046ce639d308e125fe34e8b8a2d8812a6dfaa4cf07a00ccd7a6",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 2196
+          },
+          "logicGap": {
+            "sourceId": "142",
+            "sourceRecordHash": "950991b2dbc1e82a515254daf2e610ee29aea8333ad9e0ebfaba157ac225b57a",
+            "codeHash": "18fdc0c678726046ce639d308e125fe34e8b8a2d8812a6dfaa4cf07a00ccd7a6",
+            "language": "PYTHON3",
+            "originalReferenceIndex": 1,
+            "proofVersion": "fixed-boundary-oracles-v3",
+            "oracleCaseHashes": [
+              "4d6d543cb62c15a51d804258970c875c9a1b61a65f75506c682929c50fb8ff78"
+            ]
+          },
+          "coverageCasesHash": "591a083faed98993054f3d179217b7eb42a998023e5543385cca32b2e0151aec",
+          "coverageOutcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1309
+          }
+        },
+        {
+          "referenceIndex": 2,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "3de1997afb8686f7eb8eefee0749d6c340640d4cff988c797d6d57269550d02c",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1363
+          }
+        }
+      ],
+      "referenceClassifications": [],
+      "availableNegativeCount": 3,
+      "negativeCoverage": "all-available-known-errors"
+    },
+    {
+      "id": "coding/code-contests-test/143",
+      "sourceId": "143",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 201,
+      "testBytes": 35941,
+      "adaptedHash": "0c7a84b93bbad1e8d4af81f10fb14b172f8fb3c5ba17b2e61eebca093808ab07",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-python3",
+          "codeHash": "6c42541c30004e124ea64d19680ef436b078eb1a02eee44e23c3c79ac80fc160",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 14292
+          }
+        }
+      ],
+      "negatives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "3201e89ab4916d03e9486fa2b2693075aa0eecb1c113283a15fe02cbb556308f",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 4553
+          }
+        },
+        {
+          "referenceIndex": 1,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "264826366ac07fec5c228fe066fdaa430b0a259c0c64f77990a8fe38b0d61148",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1272
+          }
+        },
+        {
+          "referenceIndex": 2,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "3963bbced69e3c7f6858f20a690c00af45b4c643b88b9f6f4200af3e85acf3a6",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 4015
+          }
+        }
+      ],
+      "referenceClassifications": [],
+      "availableNegativeCount": 3,
+      "negativeCoverage": "all-available-known-errors"
+    },
+    {
+      "id": "coding/code-contests-test/145",
+      "sourceId": "145",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 38,
+      "testBytes": 6247,
+      "adaptedHash": "be50c7d4b955c191646350d6589ead4e8a8406ec3115561739fce05395308c61",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-python3",
+          "codeHash": "9724938a518acfbf02b13287e1a4b86e2f93f38912f0904afa9bb1d95245058b",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 3315
+          }
+        }
+      ],
+      "negatives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "05def57707a9b14f14e497c07b3a2be394247621bc2e52d43423faafd626c8b7",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 2214
+          }
+        },
+        {
+          "referenceIndex": 1,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "dea53754eabee01676e7dd70f5fea4fd5ba765e956022dbce81a04835db40107",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 2907
+          },
+          "logicGap": {
+            "sourceId": "145",
+            "sourceRecordHash": "917f728356d3ac2d0891c12e9aac043fb46451cd99f0c84965d7c89d99cb8dc6",
+            "codeHash": "dea53754eabee01676e7dd70f5fea4fd5ba765e956022dbce81a04835db40107",
+            "language": "PYTHON3",
+            "originalReferenceIndex": 1,
+            "proofVersion": "fixed-boundary-oracles-v3",
+            "oracleCaseHashes": [
+              "16074573b0255cfa9ede6c17381d56ccea833df5461c6e80a09e0079a3f98ee6"
+            ]
+          },
+          "coverageCasesHash": "cf919c7a5ca49989c0c3f251a99770971367c05a2e5902297eb94927ae05c149",
+          "coverageOutcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1394
+          }
+        },
+        {
+          "referenceIndex": 2,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "2aab951a2528289999cda94b5b505bf5984e86b80f03c011c609a46a66c6faec",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1927
+          }
+        }
+      ],
+      "referenceClassifications": [],
+      "availableNegativeCount": 3,
+      "negativeCoverage": "all-available-known-errors"
+    },
+    {
+      "id": "coding/code-contests-test/146",
+      "sourceId": "146",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 124,
+      "testBytes": 21165,
+      "adaptedHash": "baf6c15614ba72f974314bf235c3230baa52af4e9ef07bedeab02b1d9ea370f6",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-python3",
+          "codeHash": "849f44106b1c5a794f6a0abedcca774e201a4d699cf4e767b0406f65be96ee33",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 7465
+          }
+        }
+      ],
+      "negatives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "2db827b1077aa9ab610ce099b7ee52cd3b98879e5b83cf006c1972bc99188cfd",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1359
+          }
+        },
+        {
+          "referenceIndex": 1,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "f2f1e82b5a9b8d5618239ce00d560344a13d4c2ec0ba7fb2e22669d4b9112b9c",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 6997
+          },
+          "logicGap": {
+            "sourceId": "146",
+            "sourceRecordHash": "ca01afdc838f6396ee5820863210869832ba601f4ab319726267261ea1a2f8d8",
+            "codeHash": "f2f1e82b5a9b8d5618239ce00d560344a13d4c2ec0ba7fb2e22669d4b9112b9c",
+            "language": "PYTHON3",
+            "originalReferenceIndex": 1,
+            "proofVersion": "fixed-boundary-oracles-v3",
+            "oracleCaseHashes": [
+              "0d2c759a4839510af86d33fcf3627f8661d18ed9314f139d7d58a50c1fa4e051"
+            ]
+          },
+          "coverageCasesHash": "f39c9865dba28cf4835c49732e45d27757b17cf48df6846ec8e398f0bc8a6487",
+          "coverageOutcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1252
+          }
+        },
+        {
+          "referenceIndex": 2,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "cc596152be10f8f0de1f9f3b5b75ff59703967891890ca074c4f6d44ce59deb9",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1378
+          }
+        }
+      ],
+      "referenceClassifications": [],
+      "availableNegativeCount": 3,
+      "negativeCoverage": "all-available-known-errors"
+    },
+    {
+      "id": "coding/code-contests-test/147",
+      "sourceId": "147",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 16,
+      "testBytes": 981,
+      "adaptedHash": "e0757c6e7f10426c5921fce30d3ce6becc8ca84698c5fec634bad781cb93ba51",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-python3",
+          "codeHash": "2b14f6d335c3b761e3f15569bd2e1481d549ba1c51bb507a20d4b1abc6c84a99",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 2404
+          }
+        }
+      ],
+      "negatives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "1ee527f92760b2cf1aa4036ea7f1398395175bf140a88a3862d9570de6d8d509",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1401
+          }
+        },
+        {
+          "referenceIndex": 1,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "7bb35a12eac20ae12c72ab3c53b9099238f17d2c25a8f5796e8521100a958a03",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1316
+          }
+        },
+        {
+          "referenceIndex": 2,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "3b128d93b176269352219cae308c652bd79775a65966ed9048740ada61b0d579",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1371
+          }
+        }
+      ],
+      "referenceClassifications": [],
+      "availableNegativeCount": 3,
+      "negativeCoverage": "all-available-known-errors"
+    },
+    {
+      "id": "coding/code-contests-test/148",
+      "sourceId": "148",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 9,
+      "testBytes": 1160,
+      "adaptedHash": "7751524465ae68cd738460968da6a3875829fb9895c9777a86b27d229c02dd5f",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-python3",
+          "codeHash": "e54f9b3f202fd9f031a1fc9a348ee280c56e34b605034d8e2f65fe81e5c2347a",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 1687
+          }
+        }
+      ],
+      "negatives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "e3bf3fa77cda04022d9cf67c8d340d39799c6a726d72e5ce8860c69fe8680844",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1270
+          }
+        },
+        {
+          "referenceIndex": 1,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "fdac238f7facf16a99df739f47220ddde917507b40e3e0301e2b484cdadccfd7",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1412
+          }
+        },
+        {
+          "referenceIndex": 2,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "5209c45097d52b23ff3a86b876186720e566f4c68f4ed3117d03fe4cb2041644",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1301
+          }
+        }
+      ],
+      "referenceClassifications": [],
+      "availableNegativeCount": 3,
+      "negativeCoverage": "all-available-known-errors"
+    },
+    {
+      "id": "coding/code-contests-test/149",
+      "sourceId": "149",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 193,
+      "testBytes": 132534,
+      "adaptedHash": "5e54cb5716cd240464fbac21e4a92a95753790216149e88c229cec1a7f720cdf",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-python3",
+          "codeHash": "75ad20b5bbbc0d5fad9c9daa4b5c151d1fb3bd6c9277aa3ae57029dac96e7cea",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 10288
+          }
+        }
+      ],
+      "negatives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "0e56187100f2ee7b09fc25873b7ea4cb5a371c1c8ede2fbefd9258a925f3a238",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1308
+          }
+        },
+        {
+          "referenceIndex": 1,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "896868f51d35c6e06edee75e10bac1403b3a990f5dbecc85989e4313ac127023",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1331
+          }
+        },
+        {
+          "referenceIndex": 2,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "1f35e8a4ec16644e1a66486241085d569f054b1636c19f87734554637b9e9a21",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1312
+          }
+        }
+      ],
+      "referenceClassifications": [],
+      "availableNegativeCount": 3,
+      "negativeCoverage": "all-available-known-errors"
+    },
+    {
+      "id": "coding/code-contests-test/150",
+      "sourceId": "150",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 155,
+      "testBytes": 8875,
+      "adaptedHash": "bebf5815fba4b78c01fdd7f5063ac29d301082b39c8b3e684a04459c72d39b58",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-python3",
+          "codeHash": "beeab4fe9064339ae11138f80cd752d44f0b009658403678472b20b6cc27adcd",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 8458
+          }
+        }
+      ],
+      "negatives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "c93441fe48c5145d11580ec70a2a16c281d8ae519f06b0b381d998f954b9ea93",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1541
+          }
+        },
+        {
+          "referenceIndex": 1,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "99335b3b15169b6dd20c1f2d73d81fdabd7e283bbd2b85c08d5c09da7cc50dbe",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1320
+          }
+        },
+        {
+          "referenceIndex": 2,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "96d41505d20ecdf6855e7ab7c13c1c3941b522dcb2e2cac234775b6a90df61eb",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1439
+          }
+        }
+      ],
+      "referenceClassifications": [],
+      "availableNegativeCount": 3,
+      "negativeCoverage": "all-available-known-errors"
+    },
+    {
+      "id": "coding/code-contests-test/151",
+      "sourceId": "151",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 207,
+      "testBytes": 8801,
+      "adaptedHash": "6403c1d704987ab833d05d9fe5cc5c7ea3bfefbf783355a69a4f9803b7d2cf95",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-python3",
+          "codeHash": "407d867e355d59536dc3f8b3df4b22c1c8f9b1362ca55c3eda65c12a1ed36296",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 19183
+          }
+        }
+      ],
+      "negatives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "a22a1a1ef000df3b4d85ba6dce5a038e588eb6ad7bb65e59888863cad2cf1734",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1350
+          }
+        },
+        {
+          "referenceIndex": 1,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "ca688c159f5b9fe006c4a1f5b900e21d8ca3468c735d034e3febcf2ab9244022",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1383
+          }
+        },
+        {
+          "referenceIndex": 2,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "6b92c6e879c13f6834069a192784fd7143ee3d8e4b5bb78db8de6c43283ee568",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1266
+          }
+        }
+      ],
+      "referenceClassifications": [],
+      "availableNegativeCount": 3,
+      "negativeCoverage": "all-available-known-errors"
+    },
+    {
+      "id": "coding/code-contests-test/153",
+      "sourceId": "153",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 225,
+      "testBytes": 16543,
+      "adaptedHash": "cf79fc76aa6165717eff6062ce2e137dc58d37adc28957bad542857b99b2454f",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "independent-reference",
+          "proof": "tests/integration/plain-references-algebra.test.ts",
+          "codeSha256": "9a0bf90fdf3c69252766d84770f29e9acabbc117d174b75bd2918f3c6595c1e2",
+          "codeHash": "8c557ec647edd3a048e385b828c85a41490c19001b78da6e05d9b92796a1f95d",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 20601
+          }
+        }
+      ],
+      "negatives": [],
+      "referenceClassifications": [],
+      "availableNegativeCount": 0,
+      "negativeCoverage": "no-upstream-python3-negative-available"
+    },
+    {
+      "id": "coding/code-contests-test/156",
+      "sourceId": "156",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 167,
+      "testBytes": 60359,
+      "adaptedHash": "71d92c3a82fbb259570827a425f14741f95f8189adb2a435395b4d69b5a674f8",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-python3",
+          "codeHash": "753c720f445bf7f7c6451f11bac3a353e3d1c545be26d748b848564a023fd26b",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 12992
+          }
+        }
+      ],
+      "negatives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "12ba27d301174b0ced8d93167e6dd15429f5d5c028d32eac6b50626be05788ac",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1429
+          }
+        },
+        {
+          "referenceIndex": 1,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "7c1363f4f9b9a6850e8c51b12182b433b773c3cc91b75406cd6f54e9580289eb",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1519
+          }
+        },
+        {
+          "referenceIndex": 2,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "63b7ff8e00293a5d13a1716fd5bf589d050286631ca581de5c2ec8911b0e2474",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 2528
+          }
+        }
+      ],
+      "referenceClassifications": [],
+      "availableNegativeCount": 3,
+      "negativeCoverage": "all-available-known-errors"
+    },
+    {
+      "id": "coding/code-contests-test/157",
+      "sourceId": "157",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 213,
+      "testBytes": 42973,
+      "adaptedHash": "21d04ae365077234dbef6fa618bc9ca33856b8940087cb56c767e2aae3c17c09",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-python3",
+          "codeHash": "49c808289a8c93c2f562742929752b2e731b6d58ddcfee9fe25a836047e3b961",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 13894
+          }
+        }
+      ],
+      "negatives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "e20bed4c3363aeae086f0ebf3d0ba000ce70ea431f72abc06f7350f8a69bab01",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1495
+          }
+        },
+        {
+          "referenceIndex": 1,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "6f12ba1960705aaa7cc05664da5c8438ddfcf063aef17965a468ed0cd3f781cc",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1435
+          }
+        },
+        {
+          "referenceIndex": 2,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "ed8bfd57580d1bbf4f08013ad0d94587be8e730eb592d24fd45d7cd7c0917e18",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1645
+          }
+        }
+      ],
+      "referenceClassifications": [],
+      "availableNegativeCount": 3,
+      "negativeCoverage": "all-available-known-errors"
+    },
+    {
+      "id": "coding/code-contests-test/160",
+      "sourceId": "160",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 172,
+      "testBytes": 20060,
+      "adaptedHash": "5c7bec9b192b105b41275c832f20c8934ab7684940144c1a370dc99019c78815",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-python3",
+          "codeHash": "6a98d4b5d5ad85bac619466bd09509f7180547ca8dc007890246f082ef0ba20f",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 9658
+          }
+        }
+      ],
+      "negatives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "864732d9ad81006b17fa4a872c37028ca1f5e351576b699c0fbfd3d5950db562",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1947
+          }
+        },
+        {
+          "referenceIndex": 1,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "17eb9aa2ea6fec6dc69d4b1118741803a461e2e9e6e2da446212eafc11ba31f8",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1208
+          }
+        },
+        {
+          "referenceIndex": 2,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "35864e204dc7b6a6760b68d2de43d4c4db82d32b3ef311c5ee7bee984039eae9",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 2085
+          }
+        }
+      ],
+      "referenceClassifications": [],
+      "availableNegativeCount": 3,
+      "negativeCoverage": "all-available-known-errors"
+    },
+    {
+      "id": "coding/code-contests-test/162",
+      "sourceId": "162",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 90,
+      "testBytes": 9451,
+      "adaptedHash": "2d8fa3a722fb4b256bf848e0c97824b7df200b808e1843ed633e62f0aaff4ddb",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-python3",
+          "codeHash": "4dcdd5a325620784141551ca68e84d375973b00588794e96d601ebd272c6fd33",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 5902
+          }
+        }
+      ],
+      "negatives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "a161d1a3b77d7676fb25af000116f0ccbec8f9f56dbbfd1fa8e28bf08264eccd",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 2588
+          }
+        },
+        {
+          "referenceIndex": 1,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "ce27ad3d3e7c332fa7f2b8f8a5b838d6baf508c4c3421d87940ba816949f0867",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1607
+          }
+        },
+        {
+          "referenceIndex": 2,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "c71d9f64b24243aee60bd5015b71d99fee40866bff9120ffef90cf15015a53f1",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1317
+          }
+        }
+      ],
+      "referenceClassifications": [],
+      "availableNegativeCount": 3,
+      "negativeCoverage": "all-available-known-errors"
+    },
+    {
+      "id": "coding/code-contests-test/163",
+      "sourceId": "163",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 278,
+      "testBytes": 106099,
+      "adaptedHash": "ac631a4096e61828027d5668306690854ca04528fb75b11ddd0395af284854ba",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "independent-reference",
+          "proof": "tests/integration/ported-references-fourth.test.ts",
+          "codeSha256": "c7209cbdecd43fd32bec4fb3492559f833777b2131c8956cbb21723657167fcb",
+          "codeHash": "016e0bfabaf0ceeb699db91046711bbcf85e25efd29d1176e44daa0f2b4802c1",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 14660
+          }
+        }
+      ],
+      "negatives": [],
+      "referenceClassifications": [],
+      "availableNegativeCount": 0,
+      "negativeCoverage": "no-upstream-python3-negative-available"
+    },
+    {
+      "id": "coding/code-contests-test/164",
+      "sourceId": "164",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 109,
+      "testBytes": 7905,
+      "adaptedHash": "58416d937aee09537381ca8e2632408a9abf7013e0de2ec54f8f08d66db99faf",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-python3",
+          "codeHash": "819019b0f825a920d4ac1e905daf05eaeefb85facb2986ac5bc2b1f75a35579e",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 6007
+          }
+        }
+      ],
+      "negatives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "a6c23e9d6ed0faf26070f6a0b7c3134209f1bd6f82cfc5a0531996fbf03e4bcc",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1326
+          }
+        },
+        {
+          "referenceIndex": 1,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "506eacc2e84279c35f968008dfaa6cafdbe2fa7a18d84b1b3353f81d9d0a4636",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1305
+          }
+        },
+        {
+          "referenceIndex": 2,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "cf7949ba7cd35dd8fb8d6b0ebe416aab9f812eceba2ba4e50df60678362ef47f",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1230
+          }
+        }
+      ],
+      "referenceClassifications": [],
+      "availableNegativeCount": 3,
+      "negativeCoverage": "all-available-known-errors"
+    },
+    {
+      "id": "coding/code-contests-test/17",
+      "sourceId": "17",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 147,
+      "testBytes": 17068,
+      "adaptedHash": "96058fa99d48a12b6e7cf63a517824f1c8111d18a5c0a5e1aff3b5c38249e60b",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-python3",
+          "codeHash": "aeafd80eca39d974a1fce57184f5aa0161e3f3ecf84c186c2fba380f9e357a92",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 9355
+          }
+        }
+      ],
+      "negatives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "89685466ef24f5595ee438d318700d217634c74c9fcb60b791a8afb83bbd9276",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1258
+          }
+        },
+        {
+          "referenceIndex": 1,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "db58f184b87374727538649a990803e9e817a08c7fec985e3ac2e875e465695f",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 2762
+          }
+        },
+        {
+          "referenceIndex": 2,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "b394235ee801942f08a030a2fc22761050df56ed1ad26c257fb40c09c29ac30c",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1182
+          }
+        }
+      ],
+      "referenceClassifications": [],
+      "availableNegativeCount": 3,
+      "negativeCoverage": "all-available-known-errors"
+    },
+    {
+      "id": "coding/code-contests-test/18",
+      "sourceId": "18",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 201,
+      "testBytes": 21281,
+      "adaptedHash": "39df3782a8400ca796af1dfdadcba44ba9615b6d5b36b87397463428a761456a",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-python3",
+          "codeHash": "e5d6246bf1235fe1dd4005eb14f55895d4e416ca0724ad0a56033d9a6a00ce9f",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 11291
+          }
+        }
+      ],
+      "negatives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "25aa47e041385500ad2bbfc76c6c79137a16e218c1a76b6cee82c08203f6eebb",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1265
+          }
+        },
+        {
+          "referenceIndex": 1,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "a5daa4669257ec52051bbaac548bbb71baf26f8e3e786fc7dd79797966e8edf9",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1655
+          }
+        },
+        {
+          "referenceIndex": 2,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "86c41110e2ddc99415c257e66eadee5eafcad0f4d09adf8b659e8aca1ed01593",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 5479
+          }
+        }
+      ],
+      "referenceClassifications": [],
+      "availableNegativeCount": 3,
+      "negativeCoverage": "all-available-known-errors"
+    },
+    {
+      "id": "coding/code-contests-test/19",
+      "sourceId": "19",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 53,
+      "testBytes": 14544,
+      "adaptedHash": "1fb57f256fd07eedccffe30185ad5714a81372f12bbddd10cd075e87d2f8dfd2",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-python3",
+          "codeHash": "59d78f925b987ef6f37b5c404ad27f42603eee5d3cbcfd2c27823c6c455f9e0b",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 11466
+          }
+        }
+      ],
+      "negatives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "ece90da2b6901586563be39ee8df44b24312c1450c73db981c7121e6498212c4",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 2088
+          }
+        },
+        {
+          "referenceIndex": 1,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "792018e458635e6e8c98c73eedbbf0b2426e303da960341e1fcb06a39c455896",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 3641
+          }
+        },
+        {
+          "referenceIndex": 2,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "79a47dbcc4592222d714702d603524f3e1cfe98634a8ef67e39c45db16c0eef6",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1622
+          }
+        }
+      ],
+      "referenceClassifications": [],
+      "availableNegativeCount": 3,
+      "negativeCoverage": "all-available-known-errors"
+    },
+    {
+      "id": "coding/code-contests-test/2",
+      "sourceId": "2",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 50,
+      "testBytes": 7665,
+      "adaptedHash": "cee63168550ba9e3c4181c673d706b77bdd7253e2062b1f049f6e21f7b77d2d9",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "independent-reference",
+          "proof": "tests/integration/ported-references-second.test.ts",
+          "codeSha256": "dd8d1cd0df85d508db32328ed657b9536ce901bbcca8007b98190bf8ba97944b",
+          "codeHash": "7dc48c6ee3d8300994cf25c83902c8141020f6fdb6dfe9bd1a117af359c42513",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 4568
+          }
+        }
+      ],
+      "negatives": [],
+      "referenceClassifications": [],
+      "availableNegativeCount": 0,
+      "negativeCoverage": "no-upstream-python3-negative-available"
+    },
+    {
+      "id": "coding/code-contests-test/20",
+      "sourceId": "20",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 176,
+      "testBytes": 18410,
+      "adaptedHash": "d012817deac18345d6bf8bce8f4f886123520ae1f8738a6b7e2f3e0aeb194e7c",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-python3",
+          "codeHash": "3da28420fa1f633b2a5e551b24ac595ccfe358bf68f996c9ba94e10ede109d1b",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 9096
+          }
+        }
+      ],
+      "negatives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "a9af8db26525ae47e9ddbf10b8f0803e9ef7ccaf9e7e9c424c337891965f6619",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 19711
+          },
+          "logicGap": {
+            "sourceId": "20",
+            "sourceRecordHash": "f4ef43f958529f3ca28e7915ad340c08c3eb5018416d389b16125c7636efa58f",
+            "codeHash": "a9af8db26525ae47e9ddbf10b8f0803e9ef7ccaf9e7e9c424c337891965f6619",
+            "language": "PYTHON3",
+            "originalReferenceIndex": 0,
+            "proofVersion": "fixed-boundary-oracles-v3",
+            "oracleCaseHashes": [
+              "78e86a25d2b52dc6db99a151bdeb5a65c03c491a0674345224a64107f9f0e878"
+            ]
+          },
+          "coverageCasesHash": "5be0dab7b6cdfc3be8cbdd29eb59688d113589581d0b6cbd09700b106fb741a6",
+          "coverageOutcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1337
+          }
+        },
+        {
+          "referenceIndex": 1,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "ab2ddd838e32dfc9ca0ada8542999783c7987d2d8ac96fad84a045f4e5d64d05",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 8290
+          },
+          "logicGap": {
+            "sourceId": "20",
+            "sourceRecordHash": "f4ef43f958529f3ca28e7915ad340c08c3eb5018416d389b16125c7636efa58f",
+            "codeHash": "ab2ddd838e32dfc9ca0ada8542999783c7987d2d8ac96fad84a045f4e5d64d05",
+            "language": "PYTHON3",
+            "originalReferenceIndex": 1,
+            "proofVersion": "fixed-boundary-oracles-v3",
+            "oracleCaseHashes": [
+              "78e86a25d2b52dc6db99a151bdeb5a65c03c491a0674345224a64107f9f0e878"
+            ]
+          },
+          "coverageCasesHash": "5be0dab7b6cdfc3be8cbdd29eb59688d113589581d0b6cbd09700b106fb741a6",
+          "coverageOutcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1459
+          }
+        },
+        {
+          "referenceIndex": 2,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "fd1a3197e2316d51806d41e39311a6fc613858e52b7eba130d0dde051dc1b5b9",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 8013
+          },
+          "logicGap": {
+            "sourceId": "20",
+            "sourceRecordHash": "f4ef43f958529f3ca28e7915ad340c08c3eb5018416d389b16125c7636efa58f",
+            "codeHash": "fd1a3197e2316d51806d41e39311a6fc613858e52b7eba130d0dde051dc1b5b9",
+            "language": "PYTHON3",
+            "originalReferenceIndex": 2,
+            "proofVersion": "fixed-boundary-oracles-v3",
+            "oracleCaseHashes": [
+              "78e86a25d2b52dc6db99a151bdeb5a65c03c491a0674345224a64107f9f0e878"
+            ]
+          },
+          "coverageCasesHash": "5be0dab7b6cdfc3be8cbdd29eb59688d113589581d0b6cbd09700b106fb741a6",
+          "coverageOutcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1439
+          }
+        }
+      ],
+      "referenceClassifications": [],
+      "availableNegativeCount": 3,
+      "negativeCoverage": "all-available-known-errors"
+    },
+    {
+      "id": "coding/code-contests-test/21",
+      "sourceId": "21",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 228,
+      "testBytes": 11991,
+      "adaptedHash": "047201d835061df201013bdf3a942440344d96ba682074f30f8569d31c06e313",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "independent-reference",
+          "proof": "tests/integration/ported-references-second.test.ts",
+          "codeSha256": "edc71ffb04a3e19983bd4ac44ff7b0a2b6cda5485490745a6661e8f23d1ec490",
+          "codeHash": "8888df7b9757dd232fc958b5e2b4bda5fa1d2620ffe6623c38ca3878edaf177e",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 20979
+          }
+        }
+      ],
+      "negatives": [],
+      "referenceClassifications": [],
+      "availableNegativeCount": 0,
+      "negativeCoverage": "no-upstream-python3-negative-available"
+    },
+    {
+      "id": "coding/code-contests-test/22",
+      "sourceId": "22",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 110,
+      "testBytes": 20715,
+      "adaptedHash": "b53944f0c5aa696be5dfe3e9e5af1046fd5a803d48c746d31ddb77f9a2e0c9ef",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "independent-reference",
+          "proof": "tests/integration/ported-references-second.test.ts",
+          "codeSha256": "d23c37d6f5bc75f58e822f3d7d3b6abc69d15964b6ffc7517fb9f650432b95e1",
+          "codeHash": "64d0f279a37cdf82b034c809f6073bd72abe4f8813d38eade86518e89852185b",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 6010
+          }
+        }
+      ],
+      "negatives": [],
+      "referenceClassifications": [],
+      "availableNegativeCount": 0,
+      "negativeCoverage": "no-upstream-python3-negative-available"
+    },
+    {
+      "id": "coding/code-contests-test/23",
+      "sourceId": "23",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 113,
+      "testBytes": 8789,
+      "adaptedHash": "eb9dcdc0c63a120fd556423fad37606d7fb2f2e4f2ff2afbda3033579c0016c4",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "independent-reference",
+          "proof": "tests/integration/ported-references-third.test.ts",
+          "codeSha256": "4cae138519b2931dc2eda1c5c55e0ab90b81f0aae77a792b675c452330c59653",
+          "codeHash": "30af40c871ac83fcf6d235115ba04a05f508d6650ebcc6332ce812ada9df5eae",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 6504
+          }
+        }
+      ],
+      "negatives": [],
+      "referenceClassifications": [],
+      "availableNegativeCount": 0,
+      "negativeCoverage": "no-upstream-python3-negative-available"
+    },
+    {
+      "id": "coding/code-contests-test/24",
+      "sourceId": "24",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 23,
+      "testBytes": 3743,
+      "adaptedHash": "cfd7c62c17af6a97cdb8ba1734c4d0e980001c3d92649df6f64c3b20ad16ea37",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "independent-reference",
+          "proof": "tests/integration/plain-references-graphs.test.ts",
+          "codeSha256": "2bcce33a62a7fe73dc9e1219cc25fa4104e4cf517bba1599c5a456d41de16c16",
+          "codeHash": "8a07006704e0321e4077ce62c3c77b45fa133475503286bb8c3ea9053bcf1580",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 2221
+          }
+        }
+      ],
+      "negatives": [],
+      "referenceClassifications": [],
+      "availableNegativeCount": 0,
+      "negativeCoverage": "no-upstream-python3-negative-available"
+    },
+    {
+      "id": "coding/code-contests-test/25",
+      "sourceId": "25",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 217,
+      "testBytes": 10719,
+      "adaptedHash": "a52c54ae35c97a541b91e9ce7f3abf523d02006e035ee4449ced85e8afc7cb0c",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "independent-reference",
+          "proof": "tests/integration/ported-references-third.test.ts",
+          "codeSha256": "2ffa55c0edaec7882b74618ee8011a9b66a2057a9248c3eba88268e81b0ebf01",
+          "codeHash": "94b8fd1932a10aec9588088dae63bf8248ca9724920a21895832b9966ff2c950",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 39069
+          }
+        }
+      ],
+      "negatives": [],
+      "referenceClassifications": [],
+      "availableNegativeCount": 0,
+      "negativeCoverage": "no-upstream-python3-negative-available"
+    },
+    {
+      "id": "coding/code-contests-test/26",
+      "sourceId": "26",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 108,
+      "testBytes": 23321,
+      "adaptedHash": "c3342a0b7de1cdb7e47db430c6bb20481d3b0d1bfc02bbc780ad9d828e7d75ae",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-python3",
+          "codeHash": "4e1ff2c9044806b5c3498f849acb20507fdc671756a341c5469c6a3a3817d8be",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 10461
+          }
+        }
+      ],
+      "negatives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "0b6f0409b6289fd769d1a2d24c86c273899f483a8d280c3dd13d03a3f72c5fd6",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1193
+          }
+        },
+        {
+          "referenceIndex": 1,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "0d5f4a3806c03b746c75d4260c44f102627551a2fd035dad191ef622a20eb115",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1125
+          }
+        },
+        {
+          "referenceIndex": 2,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "73e7e2753e844312c8c8751dd26ee7b9094d5dda00b06a45c6b2d76cfd105b1d",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1193
+          }
+        }
+      ],
+      "referenceClassifications": [],
+      "availableNegativeCount": 3,
+      "negativeCoverage": "all-available-known-errors"
+    },
+    {
+      "id": "coding/code-contests-test/28",
+      "sourceId": "28",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 131,
+      "testBytes": 9180,
+      "adaptedHash": "ca1d2addb42229ed8be2bd8ee4c0858100c29bf4b2eed9bcf088063889fd30a3",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-python3",
+          "codeHash": "31a8bfc8c79ee5cd6b27b0cc7dfa0777add9d2f81aa5fcae5c44450d5c90a5b3",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 7015
+          }
+        }
+      ],
+      "negatives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "641d6d1b9a71bbc5773dc2941ea68d9413aa31a56dfc7dfe9d812f0bf56abf03",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1225
+          }
+        },
+        {
+          "referenceIndex": 1,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "37b65356bb7651d8f3f7b03106f7bf85097f69d5d9fdccacc03892511f448149",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1250
+          }
+        },
+        {
+          "referenceIndex": 2,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "6c84d80b9471361bcbf1d42f0c4ddb450ab756fdd89c4ba225a52561fd9b07bb",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1187
+          }
+        }
+      ],
+      "referenceClassifications": [],
+      "availableNegativeCount": 3,
+      "negativeCoverage": "all-available-known-errors"
+    },
+    {
+      "id": "coding/code-contests-test/29",
+      "sourceId": "29",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 134,
+      "testBytes": 14616,
+      "adaptedHash": "0b58dc6929f2987a5f1e2890f1951df0b61860b5e077febe086ff3827c844f5d",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-python3",
+          "codeHash": "6d63ce1d65d673cefb238e66bae2705d6098199ed22591a7d504abf4a248b91c",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 6968
+          }
+        }
+      ],
+      "negatives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "7d4e68dd2023e6eba55f47221c4ac73457b47f511972c33df3e8ffb46e7ee8ff",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1234
+          }
+        },
+        {
+          "referenceIndex": 1,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "ec813b92efa91ace48aa69131b53a90361b3b74e15264f3f2bfbf83c5e6baced",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1334
+          }
+        },
+        {
+          "referenceIndex": 2,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "5f5e9a187ba2b6ab3e36e2037016563933b34c22eedc643afdc631c6569a4ed5",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1354
+          }
+        }
+      ],
+      "referenceClassifications": [],
+      "availableNegativeCount": 3,
+      "negativeCoverage": "all-available-known-errors"
+    },
+    {
+      "id": "coding/code-contests-test/3",
+      "sourceId": "3",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 274,
+      "testBytes": 10743,
+      "adaptedHash": "695fc6d5c47ee7ed809bac39b1e39df9e95483676c67ccbbcb8c2c65aed9c70e",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-python3",
+          "codeHash": "08d1893240999a690d59e4868fbcba98e32a885cd195217781efb9a539a05671",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 12546
+          }
+        }
+      ],
+      "negatives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "9e4bfb062c974727a74bd63df7b45e6a5f621fddd451af9ad05e9e1116c05ba5",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1453
+          }
+        },
+        {
+          "referenceIndex": 1,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "05762dcf092b722e7431bf5f6a387a8b9c0b52bd69d6de1aa1888bfaabaaa929",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1253
+          }
+        },
+        {
+          "referenceIndex": 2,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "8552b87c7f8f218bb3fd43486e4b5c6833a0692ef4ce76b6f5dd3c835670d6c4",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1211
+          }
+        }
+      ],
+      "referenceClassifications": [],
+      "availableNegativeCount": 3,
+      "negativeCoverage": "all-available-known-errors"
+    },
+    {
+      "id": "coding/code-contests-test/30",
+      "sourceId": "30",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 201,
+      "testBytes": 21966,
+      "adaptedHash": "2148706fe1d0e6ceaaa9fce4cbbf81edafabdf1a8a3ba33af06b4cae638a4de0",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-python3",
+          "codeHash": "74dc31204bb8427f5b0c84c25b6e553370b3a1c516c9c703eff1c4cc2bbc7682",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 11288
+          }
+        }
+      ],
+      "negatives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "d6dcc3440c8c9e84a409c0b7933fced913838ae4f9188012b64e48d05dba477d",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1216
+          }
+        },
+        {
+          "referenceIndex": 1,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "3b8ed8944a5bf056397da71b46208225129b12437727eefe80bd4c1c219733d4",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1572
+          }
+        },
+        {
+          "referenceIndex": 2,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "2b1ccfc452b93c9bcfab8f831187614c12dc48dc16b36468f0750251224ea21c",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1315
+          }
+        }
+      ],
+      "referenceClassifications": [],
+      "availableNegativeCount": 3,
+      "negativeCoverage": "all-available-known-errors"
+    },
+    {
+      "id": "coding/code-contests-test/32",
+      "sourceId": "32",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 107,
+      "testBytes": 43963,
+      "adaptedHash": "981a675a8d9e25c0d6385a68480ed2c30e224512e212a24b2df8e2651faf2665",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "independent-reference",
+          "proof": "tests/integration/ported-references.test.ts",
+          "codeSha256": "a8b86aa241b2e5106115383cd9986538dd950e173137d20d10619d7956c8ef36",
+          "codeHash": "0cda8c204565a52aeb2b4fedc737696e2c8f3d4af31a3df5a428114f833938fb",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 5813
+          }
+        }
+      ],
+      "negatives": [],
+      "referenceClassifications": [],
+      "availableNegativeCount": 0,
+      "negativeCoverage": "no-upstream-python3-negative-available"
+    },
+    {
+      "id": "coding/code-contests-test/33",
+      "sourceId": "33",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 218,
+      "testBytes": 184350,
+      "adaptedHash": "dc1f65170c254e005718e1df52cd2ec77af40be9ac480814e53e331cdd3e6f62",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-python3",
+          "codeHash": "e972da9631b06c34b54c676aea86f48fed5c22992b645cc015024a6abdc44c54",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 12718
+          }
+        }
+      ],
+      "negatives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "43e738e5dc41e805ddd27bf0f9c4087fcfb616dc2f0b583c115f611f75f4f330",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1971
+          }
+        },
+        {
+          "referenceIndex": 1,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "6704c8bdd3fbe3e5da1990680ac55cc4d26191e87f2152ab66a9275fa851f8e9",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 9147
+          },
+          "logicGap": {
+            "sourceId": "33",
+            "sourceRecordHash": "7c6ffddb5cf95112d831dd4e355bd7e9f2cb4b3f8e1ec4546b3af88435aaebb7",
+            "codeHash": "6704c8bdd3fbe3e5da1990680ac55cc4d26191e87f2152ab66a9275fa851f8e9",
+            "language": "PYTHON3",
+            "originalReferenceIndex": 1,
+            "proofVersion": "fixed-boundary-oracles-v3",
+            "oracleCaseHashes": [
+              "eac3d6807a695fe5e05251e8e68c4fbdf6134644416f0ec42e5afd81ec587b85"
+            ]
+          },
+          "coverageCasesHash": "a4ea63aa48f3c3748dbf58831c5e1d2acf2a9561c850d027b1f74074050240a4",
+          "coverageOutcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1225
+          }
+        },
+        {
+          "referenceIndex": 2,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "d462a40ba04930e6f2973608803ce4896ab8cce98a2b84b4ada775f0f4e1e256",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 5749
+          }
+        }
+      ],
+      "referenceClassifications": [],
+      "availableNegativeCount": 3,
+      "negativeCoverage": "all-available-known-errors"
+    },
+    {
+      "id": "coding/code-contests-test/34",
+      "sourceId": "34",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 224,
+      "testBytes": 754191,
+      "adaptedHash": "fc1c8c90572d090369fa3819d97315e96300c0efc4f401a66891e7b140d52116",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "independent-reference",
+          "proof": "tests/integration/increasing-xor-reference.test.ts",
+          "codeSha256": "9bcdbc6eb107e36a81e41afe8d7c9359024f01fd44c680ade39a96bf7901f501",
+          "codeHash": "bd1d869f2d1212b6a84c9257f41f7b531d7575536c680ae50a5e66dac3c56be2",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 10988
+          }
+        }
+      ],
+      "negatives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "84f3287a36baf3361a98e84a7fd62166aea074d5acecc3fc77f289b5f4f2ff3a",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 2070
+          }
+        },
+        {
+          "referenceIndex": 1,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "1de362d25450531d185b5bc4c6bc22222eb7864c6b3ab7a5cb4844a4f1d6d0fa",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1193
+          }
+        }
+      ],
+      "referenceClassifications": [],
+      "availableNegativeCount": 2,
+      "negativeCoverage": "all-available-known-errors"
+    },
+    {
+      "id": "coding/code-contests-test/35",
+      "sourceId": "35",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 208,
+      "testBytes": 71420,
+      "adaptedHash": "bd17dd9b81240e1dab1de6338d588af3cad499b04c4e27d1ad0fc9fd580e9bdd",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "independent-reference",
+          "proof": "tests/integration/ported-references-third.test.ts",
+          "codeSha256": "294878fcb0b9169f228e9faa40a2668d26150ff413f9b8d46d85c6540f876d4c",
+          "codeHash": "b3b13aea306b3e567460c16a3582a7a854360bc4ed428377ad76fa2b3acafbc8",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 11721
+          }
+        }
+      ],
+      "negatives": [],
+      "referenceClassifications": [],
+      "availableNegativeCount": 0,
+      "negativeCoverage": "no-upstream-python3-negative-available"
+    },
+    {
+      "id": "coding/code-contests-test/4",
+      "sourceId": "4",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 65,
+      "testBytes": 4571,
+      "adaptedHash": "9f9869db34435b4276d3b0cc22690d98a36daaf93873e242517e3df9a00cef30",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "independent-reference",
+          "proof": "tests/integration/ported-references-fourth.test.ts",
+          "codeSha256": "cc25aeba76d8a8f72577704c73b39cc7624ded7d19107e04df030aa70e03f393",
+          "codeHash": "80bd1ca707d27139175613e01375d6d5d20b145a35d9911aec479e61cf1ae477",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 4130
+          }
+        }
+      ],
+      "negatives": [],
+      "referenceClassifications": [],
+      "availableNegativeCount": 0,
+      "negativeCoverage": "no-upstream-python3-negative-available"
+    },
+    {
+      "id": "coding/code-contests-test/42",
+      "sourceId": "42",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 36,
+      "testBytes": 8006,
+      "adaptedHash": "37ca31e7030b276ac81f795cea309d77c0c1438a60d338c5c91378f4914fc839",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "independent-reference",
+          "proof": "tests/integration/plain-references-graphs.test.ts",
+          "codeSha256": "0fb8828a18e181f117cbf761f84d624a56ac6a471e010dcbb706d23ec79a49da",
+          "codeHash": "cf29e15401ca70a127646bf98ade42efa5c7e8454b3a7b0c06848cb6fceabbe3",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 2730
+          }
+        }
+      ],
+      "negatives": [],
+      "referenceClassifications": [],
+      "availableNegativeCount": 0,
+      "negativeCoverage": "no-upstream-python3-negative-available"
+    },
+    {
+      "id": "coding/code-contests-test/43",
+      "sourceId": "43",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 72,
+      "testBytes": 9311,
+      "adaptedHash": "3089a2b83aaaaf4ad414a11111a041ac6d52cc3530bfe8085f7456953e9610d5",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "independent-reference",
+          "proof": "tests/integration/plain-references-graphs.test.ts",
+          "codeSha256": "9cd3960fa7b5286d76e60cc675762bd05541492270093e94bc107138ad8b2e59",
+          "codeHash": "1e710c6760c2e847e82a3ee7439378cec8db639f3f6208ca69a7156e3d46c6af",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 4460
+          }
+        }
+      ],
+      "negatives": [],
+      "referenceClassifications": [],
+      "availableNegativeCount": 0,
+      "negativeCoverage": "no-upstream-python3-negative-available"
+    },
+    {
+      "id": "coding/code-contests-test/44",
+      "sourceId": "44",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 43,
+      "testBytes": 7115,
+      "adaptedHash": "54f0ea7be8c34f9ede6992a7979508c235a7c95fdff18c2ac5a70dcd5aff4aef",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-python3",
+          "codeHash": "73d1a2d1136f346b3b4533d878575980530548d3fddeaf886a0a34f7bbbed904",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 3058
+          }
+        }
+      ],
+      "negatives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "33bc6e6080762ba9c6a770053068fee31484cbf4fc2fc3f98a9ee390d7919f8c",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1187
+          }
+        }
+      ],
+      "referenceClassifications": [],
+      "availableNegativeCount": 1,
+      "negativeCoverage": "all-available-known-errors"
+    },
+    {
+      "id": "coding/code-contests-test/45",
+      "sourceId": "45",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 167,
+      "testBytes": 12574,
+      "adaptedHash": "a15b6b3ecc388e8d836fac3202bcb9089b0aed1322a8b01fa1e9c3fd935547dd",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-python3",
+          "codeHash": "e880f61445b756a8b380661396f347201c220597576b164783dc19221f91baf5",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 8343
+          }
+        }
+      ],
+      "negatives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "c2cd0f818fd8d430446317d9b208bf1f8afedc06cefb29bb8729f058341ac5b0",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1377
+          }
+        },
+        {
+          "referenceIndex": 1,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "3a127343e83bfc4b4f7a8480b812e8765dde5d9e73a67eabd03f3bb3cf274cd0",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1219
+          }
+        },
+        {
+          "referenceIndex": 2,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "26a9bc9f68a6561ca57d1a697f7df6d3f1b3fae5b06460793c549e0df1490ad5",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1228
+          }
+        }
+      ],
+      "referenceClassifications": [],
+      "availableNegativeCount": 3,
+      "negativeCoverage": "all-available-known-errors"
+    },
+    {
+      "id": "coding/code-contests-test/47",
+      "sourceId": "47",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 44,
+      "testBytes": 7112,
+      "adaptedHash": "cb09b8027257f89234d2c807175277e26dec29e083d5ae8622681d8c37d49610",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-python3",
+          "codeHash": "8d8d4e80ea6a44c0b75946f3d2f3c6070a9ee05035e83db842f2a0552f575bb5",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 3145
+          }
+        }
+      ],
+      "negatives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "e7e8b6f1de075f00c0971e48e4a543bddacdcafe96f4959af0a4aa9ca70ba9e7",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 2759
+          },
+          "logicGap": {
+            "sourceId": "47",
+            "sourceRecordHash": "cf2aea19aa715362ab2d4f2b66e18f7af930d3e652041e2e080a536276f4f3ea",
+            "codeHash": "e7e8b6f1de075f00c0971e48e4a543bddacdcafe96f4959af0a4aa9ca70ba9e7",
+            "language": "PYTHON3",
+            "originalReferenceIndex": 0,
+            "proofVersion": "fixed-boundary-oracles-v3",
+            "oracleCaseHashes": [
+              "9761e4535da5fd11d2ccac92f8c04d633f419f793e63a210d20003a2dca5c660"
+            ]
+          },
+          "coverageCasesHash": "cfb0e21b96fe3b1ac1b6a66fe6e75f1467fd372dc384afc09348e076669ba4a1",
+          "coverageOutcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1132
+          }
+        },
+        {
+          "referenceIndex": 1,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "7adbe0b6d14ddd21ac54404ab3faf9d07d4598c82cb5d57cb433513d8a47f8f8",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1833
+          }
+        },
+        {
+          "referenceIndex": 2,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "69f439ebe0f0276c7ffd8475162e77da1ae487cd74ea0b973c1b4cca9b25567f",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1669
+          }
+        }
+      ],
+      "referenceClassifications": [],
+      "availableNegativeCount": 3,
+      "negativeCoverage": "all-available-known-errors"
+    },
+    {
+      "id": "coding/code-contests-test/5",
+      "sourceId": "5",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 158,
+      "testBytes": 7514,
+      "adaptedHash": "5210cb5b8c00988431a5436d14c1fb0ceb0081ca71a38c205aad6bee0b6ac817",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "independent-reference",
+          "proof": "tests/integration/ported-references-fourth.test.ts",
+          "codeSha256": "d216564c078af86c0a4628eb3f5a532be302c384ec446e0ea85f5dca2501cec6",
+          "codeHash": "0a6149af789e8b669d6444b18e6e37606f478b8666f3b59b661015a63becb265",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 8903
+          }
+        }
+      ],
+      "negatives": [],
+      "referenceClassifications": [],
+      "availableNegativeCount": 0,
+      "negativeCoverage": "no-upstream-python3-negative-available"
+    },
+    {
+      "id": "coding/code-contests-test/50",
+      "sourceId": "50",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 206,
+      "testBytes": 60088,
+      "adaptedHash": "de522108ea906e4200ab9dd9a9cf853c61004c1ecf1523540b6b7d3cd2e26e0d",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-python3",
+          "codeHash": "f9d66117dcee60606c266b792e164dce202c536ffcdf3db3e55f0c5e445735fc",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 10098
+          }
+        }
+      ],
+      "negatives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "7ec1098911cfa6e9550dcfbf9273a0fd882d82cf9fc366ce2ad5458f45a84994",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1331
+          }
+        },
+        {
+          "referenceIndex": 1,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "9d0eac9a584e6197faf0f52a83fcffed2b387a8aedbb80f66cd2ad68a9721669",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1258
+          }
+        }
+      ],
+      "referenceClassifications": [],
+      "availableNegativeCount": 2,
+      "negativeCoverage": "all-available-known-errors"
+    },
+    {
+      "id": "coding/code-contests-test/54",
+      "sourceId": "54",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 49,
+      "testBytes": 12410,
+      "adaptedHash": "a520f776fa4f1f371392d8a22956d744e8a3fb0492df22162f0cc454eb0d3a75",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-python3",
+          "codeHash": "3121764af5bf50683cebb25f16636ad6f7bb5c138653c697877f43c81b8aaf30",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 3352
+          }
+        }
+      ],
+      "negatives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "e610eefcb19a9ac1162153994f11b63563068049868bd436f5ce512d0a44d8c2",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1282
+          }
+        },
+        {
+          "referenceIndex": 1,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "0804f5d0e15e194f7f03cb5318e7685ca46a15eae88b65d2c7e148e0125203a9",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1229
+          }
+        },
+        {
+          "referenceIndex": 2,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "6a6dbf66081dfa3568eb96646a08edd0ea0161915c740c1fd6347782393748f4",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1305
+          }
+        }
+      ],
+      "referenceClassifications": [],
+      "availableNegativeCount": 3,
+      "negativeCoverage": "all-available-known-errors"
+    },
+    {
+      "id": "coding/code-contests-test/55",
+      "sourceId": "55",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 63,
+      "testBytes": 2607,
+      "adaptedHash": "bd3155ae0ff2e2acb13812c0150864a4dbe140fc28fd34f16f499f0189196910",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-python3",
+          "codeHash": "e22510a1b97e3fba42997915cde524568e79a5647cfd9bafd5d4cc8515e4f289",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 3357
+          }
+        }
+      ],
+      "negatives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "7ec7a035bbbf1d5d2e3873480d0e75983678044ee8ec0e41050b44d5101bf23d",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1283
+          }
+        },
+        {
+          "referenceIndex": 1,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "c0fbcec30c1d56a10923876acc90d820bea800c25255d1c3e8c1e473d1c0c24c",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1462
+          }
+        },
+        {
+          "referenceIndex": 2,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "9ff5bf8ac25133ae1d08e82fc14c62d447994a7b75598647b70672b3bc1170a9",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1244
+          }
+        }
+      ],
+      "referenceClassifications": [],
+      "availableNegativeCount": 3,
+      "negativeCoverage": "all-available-known-errors"
+    },
+    {
+      "id": "coding/code-contests-test/56",
+      "sourceId": "56",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 22,
+      "testBytes": 1666,
+      "adaptedHash": "581a6be34b94ec09c39866e6518ea861eee3b391df600d3df1a9695e6a727223",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-python3",
+          "codeHash": "982193a25fdd0660d34b9a778afd77085610fc5580b941ac3adceb7fd14342ee",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 2173
+          }
+        }
+      ],
+      "negatives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "b7e26dbce706ed5c54164271823eab8272c424a24240bf7460055bbb48b6b091",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 2125
+          },
+          "logicGap": {
+            "sourceId": "56",
+            "sourceRecordHash": "1a99f61d6ebb687ca92031572075701193230dcdeb1bad760b23f468cb5bea8b",
+            "codeHash": "b7e26dbce706ed5c54164271823eab8272c424a24240bf7460055bbb48b6b091",
+            "language": "PYTHON3",
+            "originalReferenceIndex": 0,
+            "proofVersion": "fixed-boundary-oracles-v3",
+            "oracleCaseHashes": [
+              "3d5853771ed82ed95486eab67516354f2d5d9b8e7b9c1d1d0c2b6e09145b0cab"
+            ]
+          },
+          "coverageCasesHash": "78f6b5dcf157b9927bda5bb23463eb972acd7bb438bf101a8de4948a0b7cf6b6",
+          "coverageOutcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1197
+          }
+        },
+        {
+          "referenceIndex": 1,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "4bb21232ed45696f68b5c30b21b51752bd2915f8bea255bfe3de8c749e0b05d9",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1392
+          }
+        },
+        {
+          "referenceIndex": 2,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "4fab468f95f408306747427f6209cf7ae35744125fb2b656df21c3930b10dd55",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1950
+          },
+          "logicGap": {
+            "sourceId": "56",
+            "sourceRecordHash": "1a99f61d6ebb687ca92031572075701193230dcdeb1bad760b23f468cb5bea8b",
+            "codeHash": "4fab468f95f408306747427f6209cf7ae35744125fb2b656df21c3930b10dd55",
+            "language": "PYTHON3",
+            "originalReferenceIndex": 2,
+            "proofVersion": "fixed-boundary-oracles-v3",
+            "oracleCaseHashes": [
+              "3d5853771ed82ed95486eab67516354f2d5d9b8e7b9c1d1d0c2b6e09145b0cab"
+            ]
+          },
+          "coverageCasesHash": "78f6b5dcf157b9927bda5bb23463eb972acd7bb438bf101a8de4948a0b7cf6b6",
+          "coverageOutcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1201
+          }
+        }
+      ],
+      "referenceClassifications": [],
+      "availableNegativeCount": 3,
+      "negativeCoverage": "all-available-known-errors"
+    },
+    {
+      "id": "coding/code-contests-test/59",
+      "sourceId": "59",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 104,
+      "testBytes": 11600,
+      "adaptedHash": "1548b0dd4dc9d84edcca879b0b80a0ce402d4e1addf141038e8e0554bf30e394",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-python3",
+          "codeHash": "4433aedd3686587b729dc21638bbfe75249eb784431c9a820c3d6aad236da601",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 5694
+          }
+        }
+      ],
+      "negatives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "5094aed62cb2ddb421de2e9dea8c28394d95da38699d8c43fcce5603acf9109f",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 5250
+          },
+          "logicGap": {
+            "sourceId": "59",
+            "sourceRecordHash": "22bab3f12cfb3445a3a96635f2864e333b1ec7fb6e498ef43f08b5cf4e337666",
+            "codeHash": "5094aed62cb2ddb421de2e9dea8c28394d95da38699d8c43fcce5603acf9109f",
+            "language": "PYTHON3",
+            "originalReferenceIndex": 0,
+            "proofVersion": "fixed-boundary-oracles-v3",
+            "oracleCaseHashes": [
+              "1273fc6d861fa5f7c71c44b9671f98a519ee2ca428b60db99af204dda013de8c"
+            ]
+          },
+          "coverageCasesHash": "0dd6b4c72c41dfe9c14d9e2db06fe6f24c34bea9beaaf0c12684df5dd843464f",
+          "coverageOutcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1222
+          }
+        },
+        {
+          "referenceIndex": 1,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "50033470fdc8a4baad29140986a18f19d4085bd4d5f37f0c59abf5bdcfa31cbc",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1184
+          }
+        },
+        {
+          "referenceIndex": 2,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "ea40c01b536c57bf6708002dc5e3af9ec0242e826795378b26b79a0d15caa897",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 4186
+          }
+        }
+      ],
+      "referenceClassifications": [],
+      "availableNegativeCount": 3,
+      "negativeCoverage": "all-available-known-errors"
+    },
+    {
+      "id": "coding/code-contests-test/6",
+      "sourceId": "6",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 203,
+      "testBytes": 12609,
+      "adaptedHash": "5902dd605a4a6061705ec965b2eba62a7549a1f8267f3742358e2cbe7224c5c7",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "independent-reference",
+          "proof": "tests/integration/ported-references-second.test.ts",
+          "codeSha256": "0ed533c5f98f423f993ee11f4170f7bf6fc66311c5deb329c0f2bc17f2807c29",
+          "codeHash": "85f7496f0841d64bef22b22453cf0a7f5d4c01db0f515790a083ae9c1d579083",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 17892
+          }
+        }
+      ],
+      "negatives": [],
+      "referenceClassifications": [],
+      "availableNegativeCount": 0,
+      "negativeCoverage": "no-upstream-python3-negative-available"
+    },
+    {
+      "id": "coding/code-contests-test/60",
+      "sourceId": "60",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 134,
+      "testBytes": 12770,
+      "adaptedHash": "1b8493255e4046b7ecea5f9fc40c7d21da0c9604c6b1785ea441a2f539b48cdf",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-python3",
+          "codeHash": "2168889e9215aa3a4103ede2273691b748a79120bfcf0d04be241d7eddfcdc83",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 8743
+          }
+        }
+      ],
+      "negatives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "d7e89bf3d4846ffee1ba8fcdb91419467b0c04d34d218051b38a0a60403308fd",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 2093
+          }
+        },
+        {
+          "referenceIndex": 1,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "f94bfba0c05a15c929480874cf7d8701998393248eea95d0e26ec546c981b6af",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1122
+          }
+        },
+        {
+          "referenceIndex": 2,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "51624e7a5c693868cde5cc447d71210c3eb688f30f55b78ae9a6370d4bddae8e",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1318
+          }
+        }
+      ],
+      "referenceClassifications": [],
+      "availableNegativeCount": 3,
+      "negativeCoverage": "all-available-known-errors"
+    },
+    {
+      "id": "coding/code-contests-test/61",
+      "sourceId": "61",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 198,
+      "testBytes": 17358,
+      "adaptedHash": "3105985cf34395080ec8514e872ea46f7b6003f5781e2fa07b91473835c87e16",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-python3",
+          "codeHash": "c0010eca08a038289065560d2a72d187ce680fffc092d37ec570d7633b45a2b0",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 10120
+          }
+        }
+      ],
+      "negatives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "9d1efa812630545817cb9d45ad6368a62435e231b19974d49ed4689a31635154",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1222
+          }
+        },
+        {
+          "referenceIndex": 1,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "0fc9f723fd735e304257a9c7d032bf4d3c69340fd959e00bed802aaff25395c8",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1244
+          }
+        },
+        {
+          "referenceIndex": 2,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "48edc42677711f4fbd269995488673e3e96ceae42959658ed9c9e9ca8cbcfab4",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1365
+          }
+        }
+      ],
+      "referenceClassifications": [],
+      "availableNegativeCount": 3,
+      "negativeCoverage": "all-available-known-errors"
+    },
+    {
+      "id": "coding/code-contests-test/62",
+      "sourceId": "62",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 156,
+      "testBytes": 34691,
+      "adaptedHash": "67ecde7575783d7ea6d65db7d212d4839db64c899a75706d42ef258e4f609054",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-python3",
+          "codeHash": "449dfe14ae779972edd314d6beead3f70e67810110aba16c426406f9096c3376",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 18284
+          }
+        }
+      ],
+      "negatives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "e9bfba6cad9378391b0ed7d08d92b01fb91a88f4e9530e20917b6b5d86d29e6a",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1204
+          }
+        },
+        {
+          "referenceIndex": 1,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "f9406069534f520565cad9546667b90144e35aa33afdf8c5e8c2a93650db1315",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1159
+          }
+        },
+        {
+          "referenceIndex": 2,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "ef9305bef4d8a7cc085bac795fe7a11fca3a4d192e5ecbbbc69283466a98ca69",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1209
+          }
+        }
+      ],
+      "referenceClassifications": [],
+      "availableNegativeCount": 3,
+      "negativeCoverage": "all-available-known-errors"
+    },
+    {
+      "id": "coding/code-contests-test/63",
+      "sourceId": "63",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 126,
+      "testBytes": 15188,
+      "adaptedHash": "222828b2442914d044a2bd58944a3cef3486c26f53e1cae98c7194744977951e",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "independent-reference",
+          "proof": "tests/integration/plain-references-small.test.ts",
+          "codeSha256": "68199a888e050957027e636be5724569ff23ad4f550a68701969d200ede58714",
+          "codeHash": "f64d409907bef2f84c49ecbf919b5e4f2f62941c68e20279623c8f3fba7ec11b",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 6958
+          }
+        }
+      ],
+      "negatives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "f422ba547fd05b0ee88b343c6645e2ccadc98d2608cde0273e3966fdca382d6a",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 8309
+          }
+        },
+        {
+          "referenceIndex": 1,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "215a9d8fa7cb1f2b733557cdaa0e808d734ac8fbae691d7863e3b7adba490102",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 4955
+          }
+        },
+        {
+          "referenceIndex": 2,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "739282d61dce3bdc842a5e3855c52b83c493011194f3ffecf1eb3dab00fba74a",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 2473
+          }
+        }
+      ],
+      "referenceClassifications": [],
+      "availableNegativeCount": 3,
+      "negativeCoverage": "all-available-known-errors"
+    },
+    {
+      "id": "coding/code-contests-test/66",
+      "sourceId": "66",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 127,
+      "testBytes": 40708,
+      "adaptedHash": "2c9acb72dfbf330129677028feae738b199362ac7db5b6c3121c24535663c499",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "independent-reference",
+          "proof": "tests/integration/ported-references-fifth.test.ts",
+          "codeSha256": "dcfe19851e37eba062c2a51e2dcfe1e653767f5335647cb42ea90a6da36126fd",
+          "codeHash": "066eeb6dd8c56c25aa23381b883b52ce711f84af84824fb6f239a65f1ba93c2c",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 9832
+          }
+        }
+      ],
+      "negatives": [],
+      "referenceClassifications": [],
+      "availableNegativeCount": 0,
+      "negativeCoverage": "no-upstream-python3-negative-available"
+    },
+    {
+      "id": "coding/code-contests-test/68",
+      "sourceId": "68",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 74,
+      "testBytes": 30281,
+      "adaptedHash": "9944dc3e3a08457a76c68e5b0af9c7d18518374df0e0b7a64df2b7a63f1c3579",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "independent-reference",
+          "proof": "tests/integration/ported-references-fifth.test.ts",
+          "codeSha256": "0f25f30c1879f19a5729816c0ac32cdc6ad890b76a242ac0335170f74563252f",
+          "codeHash": "554576d2586f64e9b8c2a2f7a44e0e102c315d83331141aa1b7b63aeedef61c7",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 7797
+          }
+        }
+      ],
+      "negatives": [],
+      "referenceClassifications": [],
+      "availableNegativeCount": 0,
+      "negativeCoverage": "no-upstream-python3-negative-available"
+    },
+    {
+      "id": "coding/code-contests-test/69",
+      "sourceId": "69",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 42,
+      "testBytes": 7931,
+      "adaptedHash": "718dca9d53e30f8ed582abb8aeee9b398504fb9f1c5189dfd8ac25956e1421f6",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "independent-reference",
+          "proof": "tests/integration/ported-references-fifth.test.ts",
+          "codeSha256": "d3d15750d785515e59aed8abddb8f11e331cf36ca8d6632d24ba2df08436ab87",
+          "codeHash": "8ff9f6a07b174931153de3ffe5be4852e40baae1dfefc76b0f913dec62e27c20",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 3787
+          }
+        }
+      ],
+      "negatives": [],
+      "referenceClassifications": [],
+      "availableNegativeCount": 0,
+      "negativeCoverage": "no-upstream-python3-negative-available"
+    },
+    {
+      "id": "coding/code-contests-test/7",
+      "sourceId": "7",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 228,
+      "testBytes": 244482,
+      "adaptedHash": "a392906ca1cf9754fead5727f746efe9e377efc555ad23ae89ac360fbafad8eb",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "independent-reference",
+          "proof": "tests/integration/ported-references-fourth.test.ts",
+          "codeSha256": "35cfc1013d7472129a622b0f81f7d5a24cda5647d58aaaa212480b7cb8782153",
+          "codeHash": "86475a17b982575f216fe862e5ea25c4c9488344f50b6f43e5f0142f0b696e54",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 13528
+          }
+        }
+      ],
+      "negatives": [],
+      "referenceClassifications": [],
+      "availableNegativeCount": 0,
+      "negativeCoverage": "no-upstream-python3-negative-available"
+    },
+    {
+      "id": "coding/code-contests-test/70",
+      "sourceId": "70",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 67,
+      "testBytes": 5470,
+      "adaptedHash": "ef3367e5785c131c527f9d0cf155211e03859c869342119c9f243119f4fda1af",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "independent-reference",
+          "proof": "tests/integration/ported-references-sixth.test.ts",
+          "codeSha256": "97dce0d371c18a73c1698016a3cb9abf6f9a8be31f252f4417c691f3f8c6f421",
+          "codeHash": "d2705209762729dc9f97570fe6d296126a1a4b1e07646f9e4035c9486d15dbc7",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 4181
+          }
+        }
+      ],
+      "negatives": [],
+      "referenceClassifications": [],
+      "availableNegativeCount": 0,
+      "negativeCoverage": "no-upstream-python3-negative-available"
+    },
+    {
+      "id": "coding/code-contests-test/73",
+      "sourceId": "73",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 64,
+      "testBytes": 4830,
+      "adaptedHash": "b8a562f1000d8606f62b2b750059df0c323e696a0fe7e44b58431dac5d71629c",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "independent-reference",
+          "proof": "tests/integration/ported-references-sixth.test.ts",
+          "codeSha256": "6bb5e6729da2e3c0a47348db7d8d3a3fb86057b79e6881c243c45797c1c847d8",
+          "codeHash": "3f9be982d0cb5b1159a05927b29ee0fcab759de67ba98c57eb81ccb423db2cb0",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 4722
+          }
+        }
+      ],
+      "negatives": [],
+      "referenceClassifications": [],
+      "availableNegativeCount": 0,
+      "negativeCoverage": "no-upstream-python3-negative-available"
+    },
+    {
+      "id": "coding/code-contests-test/75",
+      "sourceId": "75",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 176,
+      "testBytes": 8082,
+      "adaptedHash": "8ed3a852cd825f044082224cbbb25258e379abcd9c827bc51801338bb057c791",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-python3",
+          "codeHash": "4fb594f543bba7eee1eda0e36dfb976b98e1e123b1ca8f986b96b29ea1f092d0",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 9570
+          }
+        }
+      ],
+      "negatives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "508d57ecfc45b6018565f38f7d87dee9a3896e6fcf2c310b8b8b15ab610bfe16",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1303
+          }
+        },
+        {
+          "referenceIndex": 1,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "8d410513e63e23b94a73f01fe25ffeb7a2468f6ede3411445163024842ddd27f",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1334
+          }
+        },
+        {
+          "referenceIndex": 2,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "e5ca6980f6b4d2f27333dc2ae18afa794188a49c4761f30fb5169c8e6fdb327d",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1379
+          }
+        }
+      ],
+      "referenceClassifications": [],
+      "availableNegativeCount": 3,
+      "negativeCoverage": "all-available-known-errors"
+    },
+    {
+      "id": "coding/code-contests-test/77",
+      "sourceId": "77",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 4,
+      "testBytes": 6242,
+      "adaptedHash": "0f1104c5b6437fe40788cc85f2b6c6b566c628b1200e892110498f7d5d4de680",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-python3",
+          "codeHash": "dadb6ee2dab780ee906ca682c541966762b5b2456985fd5cc247ee64061f978e",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1757
+          }
+        },
+        {
+          "referenceIndex": 1,
+          "origin": "upstream-python3",
+          "codeHash": "2588a3944ee9b006171705496a8a6bdc132c12526ca848cd2102af6ded90de44",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 1557
+          }
+        },
+        {
+          "referenceIndex": 0,
+          "origin": "reviewed-upstream-role-correction",
+          "required": true,
+          "proof": "docs/evidence/tiers/reference-role-review.json",
+          "codeHash": "3209245a910c9dd83f97e8f0a9887a2876b6a71bc82e483afa3d0372201acd4a",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 2065
+          }
+        }
+      ],
+      "negatives": [
+        {
+          "referenceIndex": 1,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "e519b47c7efe4defd58672724122b0104fe3fa86702447d24f58c013e7af343c",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1371
+          },
+          "logicGap": {
+            "sourceId": "77",
+            "sourceRecordHash": "088d479830e12cb994d0f1aa2ff5180c1c8dd2a25f807edc83bf9f04c15aa023",
+            "codeHash": "e519b47c7efe4defd58672724122b0104fe3fa86702447d24f58c013e7af343c",
+            "language": "PYTHON3",
+            "originalReferenceIndex": 1,
+            "proofVersion": "fixed-boundary-oracles-v3",
+            "oracleCaseHashes": [
+              "8648511e236c530e2ae0faa0d1b6e938ff863399ef4cd699f6f512df1d7b4678"
+            ]
+          },
+          "coverageCasesHash": "ef03a6fad08631a487b6acf9f412910e3cd94de5a7b5853e4af76d5e40939524",
+          "coverageOutcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1321
+          }
+        },
+        {
+          "referenceIndex": 2,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "b074f9fa52aa89e7dc9bf0ce62c68e2448453e7a6a3984f118c4eb349922bbbb",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1416
+          },
+          "logicGap": {
+            "sourceId": "77",
+            "sourceRecordHash": "088d479830e12cb994d0f1aa2ff5180c1c8dd2a25f807edc83bf9f04c15aa023",
+            "codeHash": "b074f9fa52aa89e7dc9bf0ce62c68e2448453e7a6a3984f118c4eb349922bbbb",
+            "language": "PYTHON3",
+            "originalReferenceIndex": 2,
+            "proofVersion": "fixed-boundary-oracles-v3",
+            "oracleCaseHashes": [
+              "8648511e236c530e2ae0faa0d1b6e938ff863399ef4cd699f6f512df1d7b4678"
+            ]
+          },
+          "coverageCasesHash": "ef03a6fad08631a487b6acf9f412910e3cd94de5a7b5853e4af76d5e40939524",
+          "coverageOutcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1439
+          }
+        }
+      ],
+      "referenceClassifications": [
+        {
+          "sourceId": "77",
+          "sourceHash": "088d479830e12cb994d0f1aa2ff5180c1c8dd2a25f807edc83bf9f04c15aa023",
+          "referenceIndex": 0,
+          "codeHash": "3209245a910c9dd83f97e8f0a9887a2876b6a71bc82e483afa3d0372201acd4a",
+          "language": "PYTHON3",
+          "originalClassification": "incorrect",
+          "effectiveRole": "positive",
+          "proofVersion": "robot-factory-dsu-proof-v1",
+          "proof": "docs/evidence/tiers/reference-role-review.json"
+        }
+      ],
+      "availableNegativeCount": 2,
+      "negativeCoverage": "all-available-known-errors"
+    },
+    {
+      "id": "coding/code-contests-test/78",
+      "sourceId": "78",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 201,
+      "testBytes": 23253,
+      "adaptedHash": "5cb34254c66416ea2338b7d3facb4d7eaca99a9d811a25d5878f3e73d5d85e61",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-python3",
+          "codeHash": "00375fe43f35a2a2510f42a60ea45a93ac4f4e3ddb8c2bcc9d77136bc96bf59e",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 10228
+          }
+        }
+      ],
+      "negatives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "53ba572ef31d2863689d3d0699c7befcfd972cefa5a9c77223f0991d55ce01bb",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 9788
+          },
+          "logicGap": {
+            "sourceId": "78",
+            "sourceRecordHash": "633299762fa5435826b1f1e1a7565cdcf14f8e49c0e8e5d531371e6864d75f2c",
+            "codeHash": "53ba572ef31d2863689d3d0699c7befcfd972cefa5a9c77223f0991d55ce01bb",
+            "language": "PYTHON3",
+            "originalReferenceIndex": 0,
+            "proofVersion": "fixed-boundary-oracles-v3",
+            "oracleCaseHashes": [
+              "f9c25e8f208496c546754b3f0b5f1c7af31239f2ed35bba2905e06a738a0722a",
+              "7e35476ceaa6a2067f0ecaec80c6231bd70fc96775269e56986f9ac457670e32"
+            ]
+          },
+          "coverageCasesHash": "b1dd2c8c0d30da11233ee00ad341aa3e7704d09392a553d6b468ed7396892eb5",
+          "coverageOutcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1187
+          }
+        },
+        {
+          "referenceIndex": 1,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "5435bc331f76a9e046b5e98823406cd8559632995c9d6f0a4e7fc23a15f64274",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 9642
+          },
+          "logicGap": {
+            "sourceId": "78",
+            "sourceRecordHash": "633299762fa5435826b1f1e1a7565cdcf14f8e49c0e8e5d531371e6864d75f2c",
+            "codeHash": "5435bc331f76a9e046b5e98823406cd8559632995c9d6f0a4e7fc23a15f64274",
+            "language": "PYTHON3",
+            "originalReferenceIndex": 1,
+            "proofVersion": "fixed-boundary-oracles-v3",
+            "oracleCaseHashes": [
+              "f9c25e8f208496c546754b3f0b5f1c7af31239f2ed35bba2905e06a738a0722a",
+              "7e35476ceaa6a2067f0ecaec80c6231bd70fc96775269e56986f9ac457670e32"
+            ]
+          },
+          "coverageCasesHash": "b1dd2c8c0d30da11233ee00ad341aa3e7704d09392a553d6b468ed7396892eb5",
+          "coverageOutcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1260
+          }
+        },
+        {
+          "referenceIndex": 2,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "c7c6025624eae90872852d1f3737b09069b157da6de1bdbeb0f692a557398964",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 8592
+          },
+          "logicGap": {
+            "sourceId": "78",
+            "sourceRecordHash": "633299762fa5435826b1f1e1a7565cdcf14f8e49c0e8e5d531371e6864d75f2c",
+            "codeHash": "c7c6025624eae90872852d1f3737b09069b157da6de1bdbeb0f692a557398964",
+            "language": "PYTHON3",
+            "originalReferenceIndex": 2,
+            "proofVersion": "fixed-boundary-oracles-v3",
+            "oracleCaseHashes": [
+              "f9c25e8f208496c546754b3f0b5f1c7af31239f2ed35bba2905e06a738a0722a",
+              "7e35476ceaa6a2067f0ecaec80c6231bd70fc96775269e56986f9ac457670e32"
+            ]
+          },
+          "coverageCasesHash": "b1dd2c8c0d30da11233ee00ad341aa3e7704d09392a553d6b468ed7396892eb5",
+          "coverageOutcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1192
+          }
+        }
+      ],
+      "referenceClassifications": [],
+      "availableNegativeCount": 3,
+      "negativeCoverage": "all-available-known-errors"
+    },
+    {
+      "id": "coding/code-contests-test/8",
+      "sourceId": "8",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 173,
+      "testBytes": 19454,
+      "adaptedHash": "9ddc7d52c2354c11355bcfeb1ed1218b955cf3b73697573a873e764742b89d2d",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-python3",
+          "codeHash": "ca9dff365af20e7c0ffa671bada3ae465746316ffbc5815c5ff89a06e3902c68",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 10507
+          }
+        }
+      ],
+      "negatives": [
+        {
+          "referenceIndex": 0,
+          "origin": "independent-known-logic-error",
+          "proof": "Published legal example requires39,32,0; ignoring the update gives39,39,0.",
+          "codeHash": "55866ec392452c3b84344dcbdcd4ab6d66e47d85418355a485514096e4e66fdf",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1248
+          }
+        }
+      ],
+      "referenceClassifications": [],
+      "availableNegativeCount": 1,
+      "negativeCoverage": "all-available-known-errors"
+    },
+    {
+      "id": "coding/code-contests-test/80",
+      "sourceId": "80",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 16,
+      "testBytes": 1671,
+      "adaptedHash": "dd286178ec7c3394411fa907f18ecd0c96a7b9b1edc4da245dc61c709bb70cd2",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "independent-reference",
+          "proof": "tests/integration/ported-references.test.ts",
+          "codeSha256": "495aa6fa8b0d156944e5191df54e7b8a5c360d1362c19ed77c516247130ba5e1",
+          "codeHash": "3627d93a26d75f36fad690beb42b3f996dc43b677c455fc75df177b2968a3be1",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 1948
+          }
+        }
+      ],
+      "negatives": [],
+      "referenceClassifications": [],
+      "availableNegativeCount": 0,
+      "negativeCoverage": "no-upstream-python3-negative-available"
+    },
+    {
+      "id": "coding/code-contests-test/81",
+      "sourceId": "81",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 144,
+      "testBytes": 12770,
+      "adaptedHash": "b0b791753547161b4a54ed5ff898a74aba14729c7d266963ddffe5d7ac766c69",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "independent-reference",
+          "proof": "tests/integration/ported-references-second.test.ts",
+          "codeSha256": "ffb64abe8e3e0bf27a44f44942f3f55a9958b296ee43834ffc7ff81d2d78e0a0",
+          "codeHash": "69b6e9b0bcaa4687fbb12e9112563acae44730bccf10c5318ec2cd7b63cf95a1",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 7718
+          }
+        }
+      ],
+      "negatives": [],
+      "referenceClassifications": [],
+      "availableNegativeCount": 0,
+      "negativeCoverage": "no-upstream-python3-negative-available"
+    },
+    {
+      "id": "coding/code-contests-test/82",
+      "sourceId": "82",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 125,
+      "testBytes": 15286,
+      "adaptedHash": "043d171d32f1d3c4483ffd6a0e7e96cb9b9a6e859654e0dfdd377003d3cfdc16",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "independent-reference",
+          "proof": "tests/integration/plain-references-small.test.ts",
+          "codeSha256": "25be78798411f33e2b45301d7f543924aae2eec20271cbf9c0f521e2ae5ce3a3",
+          "codeHash": "382c42c555a570053d268e5839222a4033177c8be81bd903372781a91efb82b9",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 10317
+          }
+        }
+      ],
+      "negatives": [],
+      "referenceClassifications": [],
+      "availableNegativeCount": 0,
+      "negativeCoverage": "no-upstream-python3-negative-available"
+    },
+    {
+      "id": "coding/code-contests-test/83",
+      "sourceId": "83",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 282,
+      "testBytes": 13256,
+      "adaptedHash": "890fdc88b1af93388041f7c9bd0516364e5ea5f5e953da6e48c52c3b2ec884eb",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "independent-reference",
+          "proof": "tests/integration/ported-references.test.ts",
+          "codeSha256": "baf8eeb6614b19cd3bc355274650f1cdd95b12a3471559f44ba188f9c1d342dd",
+          "codeHash": "a663edde4288aaf11de4d828ea40247f8e9935e51bc6aee43971a2babea08490",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 30767
+          }
+        }
+      ],
+      "negatives": [],
+      "referenceClassifications": [],
+      "availableNegativeCount": 0,
+      "negativeCoverage": "no-upstream-python3-negative-available"
+    },
+    {
+      "id": "coding/code-contests-test/84",
+      "sourceId": "84",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 201,
+      "testBytes": 12966,
+      "adaptedHash": "5825d6638eba08cbd6a8379c4c4d2c41ae7189af6c2a8e48eda9a88e7d241af5",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "independent-reference",
+          "proof": "tests/integration/plain-references-small.test.ts",
+          "codeSha256": "34d8d49b72fce92ad63be53e18bbc10a41372bba475e303a63d336c1aa2d6409",
+          "codeHash": "95134126b63cb6c26dc557745de8f801c1eebaf9dd729645c4c4a5592a6cb328",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 22142
+          }
+        }
+      ],
+      "negatives": [],
+      "referenceClassifications": [],
+      "availableNegativeCount": 0,
+      "negativeCoverage": "no-upstream-python3-negative-available"
+    },
+    {
+      "id": "coding/code-contests-test/85",
+      "sourceId": "85",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 242,
+      "testBytes": 12001,
+      "adaptedHash": "a7d032afe1606ca22b4a0b57921fde3c999a36da88253fd29af5819c94b69482",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "independent-reference",
+          "proof": "tests/integration/plain-references-small.test.ts",
+          "codeSha256": "905408f2ca7d727a8b5e053fb02ab89f5bb58d42149feee216c6891416eeb637",
+          "codeHash": "70d6047fc8b423b88e31d0cdbd023f3ab3022ae7f3eae680e5a7caa89687e9b1",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 38577
+          }
+        }
+      ],
+      "negatives": [],
+      "referenceClassifications": [],
+      "availableNegativeCount": 0,
+      "negativeCoverage": "no-upstream-python3-negative-available"
+    },
+    {
+      "id": "coding/code-contests-test/86",
+      "sourceId": "86",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 53,
+      "testBytes": 10271,
+      "adaptedHash": "ba423284583d1424c3414d2648ea7e06861af690d142449d3f4027ebe05208de",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "independent-reference",
+          "proof": "tests/integration/plain-references-algebra.test.ts",
+          "codeSha256": "04c3e773a6a32399865b0f609f35bbd93095b8d931b96785aaca6d89223c339d",
+          "codeHash": "0f77b54a988f3a054aaf9bec0b799d588dc181362ac72f4daaec481601819d92",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 21618
+          }
+        }
+      ],
+      "negatives": [],
+      "referenceClassifications": [],
+      "availableNegativeCount": 0,
+      "negativeCoverage": "no-upstream-python3-negative-available"
+    },
+    {
+      "id": "coding/code-contests-test/87",
+      "sourceId": "87",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 119,
+      "testBytes": 47368,
+      "adaptedHash": "f2d44905975bbb25ace7589c33b1bd3297e2ba32d1dfac80118a214e92e2da73",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-python3",
+          "codeHash": "bbf49a05697ff0bc3d8d48c45fdbbe74139457c493bc69e1da28821a2abd7c48",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 6326
+          }
+        }
+      ],
+      "negatives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "0fb2af01c4a674397e6ecccc7f850b64df32b17953a9c7462053bb49e2f44723",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 5881
+          },
+          "logicGap": {
+            "sourceId": "87",
+            "sourceRecordHash": "86abbadc9dc826cacf3597da3ca10470a2a3e7375f0e73d9d29e3e5687b82602",
+            "codeHash": "0fb2af01c4a674397e6ecccc7f850b64df32b17953a9c7462053bb49e2f44723",
+            "language": "PYTHON3",
+            "originalReferenceIndex": 0,
+            "proofVersion": "fixed-boundary-oracles-v3",
+            "oracleCaseHashes": [
+              "38f088d5a78f66ccce4240522aad49befefe51319814497c2a68117f03c185c0"
+            ]
+          },
+          "coverageCasesHash": "aa1ed46f6ade928309a9578d3ba3445d35452c99a1ba67b9fa279fc36ef34456",
+          "coverageOutcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1162
+          }
+        },
+        {
+          "referenceIndex": 1,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "df0ce7ab1255d369c64eb3d40fe77004b1a46f2fa3ce7f11cdf2f4663a5021bb",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 5757
+          },
+          "logicGap": {
+            "sourceId": "87",
+            "sourceRecordHash": "86abbadc9dc826cacf3597da3ca10470a2a3e7375f0e73d9d29e3e5687b82602",
+            "codeHash": "df0ce7ab1255d369c64eb3d40fe77004b1a46f2fa3ce7f11cdf2f4663a5021bb",
+            "language": "PYTHON3",
+            "originalReferenceIndex": 1,
+            "proofVersion": "fixed-boundary-oracles-v3",
+            "oracleCaseHashes": [
+              "38f088d5a78f66ccce4240522aad49befefe51319814497c2a68117f03c185c0"
+            ]
+          },
+          "coverageCasesHash": "aa1ed46f6ade928309a9578d3ba3445d35452c99a1ba67b9fa279fc36ef34456",
+          "coverageOutcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1148
+          }
+        },
+        {
+          "referenceIndex": 2,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "2499fff25ebb0c92eec4ec729186f2df8955ddbdb4a92b6d0e13bea04fc9c450",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 5455
+          },
+          "logicGap": {
+            "sourceId": "87",
+            "sourceRecordHash": "86abbadc9dc826cacf3597da3ca10470a2a3e7375f0e73d9d29e3e5687b82602",
+            "codeHash": "2499fff25ebb0c92eec4ec729186f2df8955ddbdb4a92b6d0e13bea04fc9c450",
+            "language": "PYTHON3",
+            "originalReferenceIndex": 2,
+            "proofVersion": "fixed-boundary-oracles-v3",
+            "oracleCaseHashes": [
+              "38f088d5a78f66ccce4240522aad49befefe51319814497c2a68117f03c185c0"
+            ]
+          },
+          "coverageCasesHash": "aa1ed46f6ade928309a9578d3ba3445d35452c99a1ba67b9fa279fc36ef34456",
+          "coverageOutcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1322
+          }
+        }
+      ],
+      "referenceClassifications": [],
+      "availableNegativeCount": 3,
+      "negativeCoverage": "all-available-known-errors"
+    },
+    {
+      "id": "coding/code-contests-test/9",
+      "sourceId": "9",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 39,
+      "testBytes": 3863,
+      "adaptedHash": "37a5341f67fb8d9966bafd857757b92d6da56d2f36b79a290fbf87e73e4a6766",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-python3",
+          "codeHash": "53ef5e7a207d28f47c1e125c3c64a6eb4d5a31c93dd8411ffdbc7bbff7387424",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 3010
+          }
+        }
+      ],
+      "negatives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "928511258dab6144a78b883101b9cad74f540b762cdb69330178d421ff5bc745",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1172
+          }
+        },
+        {
+          "referenceIndex": 1,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "50664b6317b017fa22f4918a3569d4c09839fb00b1cd33d1592f535087a4a4ac",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 2602
+          },
+          "logicGap": {
+            "sourceId": "9",
+            "sourceRecordHash": "ae6e6e48498057c6297d329fde2b4e9d414427528946a5d23bfc2f387c085631",
+            "codeHash": "50664b6317b017fa22f4918a3569d4c09839fb00b1cd33d1592f535087a4a4ac",
+            "language": "PYTHON3",
+            "originalReferenceIndex": 1,
+            "proofVersion": "fixed-boundary-oracles-v3",
+            "oracleCaseHashes": [
+              "c789f39650f4014ce335a91e0603d48348d438787d27e08d3d5cda140ed68ba3"
+            ]
+          },
+          "coverageCasesHash": "c75c3382b37dade824cd0d4a3f53b4eb7731240176a90c7c06e14e4408f35f16",
+          "coverageOutcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1197
+          }
+        },
+        {
+          "referenceIndex": 2,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "fffd602929dc36841b90be94af8e781dd93d873ac8b0b3effff7e38870b0faa6",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1359
+          }
+        }
+      ],
+      "referenceClassifications": [],
+      "availableNegativeCount": 3,
+      "negativeCoverage": "all-available-known-errors"
+    },
+    {
+      "id": "coding/code-contests-test/91",
+      "sourceId": "91",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 143,
+      "testBytes": 17710,
+      "adaptedHash": "3a25d7f32e97490604b3c9988d262c82d5fcce4b73ae6d83733daea212a549b2",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "independent-reference",
+          "proof": "tests/integration/extreme-reference.test.ts",
+          "codeSha256": "d3d2b44e08cc942704674618c0dc754dbe036166b0f1730dbe9ff4072c846cf6",
+          "codeHash": "56b1e4a9b06e3150df0bf0fe847eabf5f235cc36b39b838bce00a5dd68701fbd",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 7472
+          }
+        }
+      ],
+      "negatives": [
+        {
+          "referenceIndex": 0,
+          "origin": "independent-known-logic-error",
+          "proof": "Published legal array[5,4,3] has total5; whole-array-only extreme is3.",
+          "codeHash": "b4de306cacea6e1ec27b14ca17d60d5949963360c584672e952094bd555406d1",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1198
+          }
+        }
+      ],
+      "referenceClassifications": [],
+      "availableNegativeCount": 1,
+      "negativeCoverage": "all-available-known-errors"
+    },
+    {
+      "id": "coding/code-contests-test/93",
+      "sourceId": "93",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 195,
+      "testBytes": 23380,
+      "adaptedHash": "04e1317550c977e12799c9e12e38876cc3261104ab3049031658691a7d4032a8",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-python3",
+          "codeHash": "4044d76ad7c602f533cfc908f38da16c287565c793d7507b4b729aab7551c03e",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 9831
+          }
+        }
+      ],
+      "negatives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "78c706f9fb23d512911fd07bca80be689883cf70de83ece0610dcf4ec51e7291",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1201
+          }
+        },
+        {
+          "referenceIndex": 1,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "ec1a3619d6b885788d58736f0b1907d9cd046ae6300cded2c5bbfa62a4d2836e",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1215
+          }
+        },
+        {
+          "referenceIndex": 2,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "188f0b0fb2c1e9bca44c0516b11f028ad320ceb3485aff165b958a16f9a3609f",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1258
+          }
+        }
+      ],
+      "referenceClassifications": [],
+      "availableNegativeCount": 3,
+      "negativeCoverage": "all-available-known-errors"
+    },
+    {
+      "id": "coding/code-contests-test/94",
+      "sourceId": "94",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 190,
+      "testBytes": 26768,
+      "adaptedHash": "3c0ad1ec1ded7dcb447e81af1db0af1cd9663c3902abe236ee0a1df99cb2e3a9",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-python3",
+          "codeHash": "ace7c79d64e09474da1fac6d1ba26f97bc4a92cfa6ca9a1c2979285327939d37",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 9490
+          }
+        }
+      ],
+      "negatives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "27e9d589ed322994e917e53fdc4a42070a0b92280e25293b8481d0dbe17e4b82",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 2752
+          }
+        },
+        {
+          "referenceIndex": 1,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "99b619dd1b9518621ea51e8c84a8cd958f084db4b120d79110ced2fccd0d3898",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 3517
+          }
+        },
+        {
+          "referenceIndex": 2,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "99b8e06368fb5e8fd57143a14a7ab7ae01262c6b8432c13f23cc4eb4fe45b062",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 8255
+          },
+          "logicGap": {
+            "sourceId": "94",
+            "sourceRecordHash": "fcf626818ba6d4fa3c43b83c329febae20eb2c1f6e9528fa1e318fdc18ca00b0",
+            "codeHash": "99b8e06368fb5e8fd57143a14a7ab7ae01262c6b8432c13f23cc4eb4fe45b062",
+            "language": "PYTHON3",
+            "originalReferenceIndex": 2,
+            "proofVersion": "fixed-boundary-oracles-v3",
+            "oracleCaseHashes": [
+              "b574addf05752368488ad4289009851a4536de42736413e6399b035e54f7dee2"
+            ]
+          },
+          "coverageCasesHash": "ee2e376d1541a9ee68b4eeea8f596b96bab33fbbc53f710aece8d2fb99605f90",
+          "coverageOutcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1258
+          }
+        }
+      ],
+      "referenceClassifications": [],
+      "availableNegativeCount": 3,
+      "negativeCoverage": "all-available-known-errors"
+    },
+    {
+      "id": "coding/code-contests-test/96",
+      "sourceId": "96",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 286,
+      "testBytes": 12599,
+      "adaptedHash": "6b6c0d05019b8a38e6cf65417717dc8cc7b2f1294f89c1b84859d2eca4374c8c",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "independent-reference",
+          "proof": "tests/integration/plain-references-small.test.ts",
+          "codeSha256": "3565d585e6b984983b258ef2ac8ee71b2d1a2861395264c627f353cd1f3081da",
+          "codeHash": "6ea43289f8b017d23206f164cc802504f9db7f1e3feff87b4ce0a1ad02afd579",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 24576
+          }
+        }
+      ],
+      "negatives": [],
+      "referenceClassifications": [],
+      "availableNegativeCount": 0,
+      "negativeCoverage": "no-upstream-python3-negative-available"
+    },
+    {
+      "id": "coding/code-contests-test/97",
+      "sourceId": "97",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 182,
+      "testBytes": 21999,
+      "adaptedHash": "cbb89eefb16f3b4575d44c98f600d74b8821ce533112e8fdd9fe5759f258e86d",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "independent-reference",
+          "proof": "tests/integration/plain-references-graphs.test.ts",
+          "codeSha256": "9cef881643340c4aabc197cd458c6a60b442f10bde98579caf768ffd24fc2124",
+          "codeHash": "798088d8435a22f237705ebd3e25ad8695196d88ff7438dafc3a0155a97ff61f",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 10125
+          }
+        }
+      ],
+      "negatives": [],
+      "referenceClassifications": [],
+      "availableNegativeCount": 0,
+      "negativeCoverage": "no-upstream-python3-negative-available"
+    },
+    {
+      "id": "coding/code-contests-test/99",
+      "sourceId": "99",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 202,
+      "testBytes": 23722,
+      "adaptedHash": "4d0f2a166049fd0224d2c9807354b96331b1962c3f15e65c14676916f357b80e",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-python3",
+          "codeHash": "ab17d821399aa8d1f6a670146eb7c5b908662e90580161112b04065504ad9bd0",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 9989
+          }
+        }
+      ],
+      "negatives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "0c4a81ad63ebd836da7b62644b5a41c6d5e900908f6566c87d49e34de226987c",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 7846
+          }
+        },
+        {
+          "referenceIndex": 1,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "d41508a83cdf1bf2706fdeaac18154bb91aa8c346f0299b47ca9032cfebc7715",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1212
+          }
+        },
+        {
+          "referenceIndex": 2,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "143b2decfea89166910c1453fea2578c9c1a888df8e892f43c1e8ec9078bd793",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1225
+          }
+        }
+      ],
+      "referenceClassifications": [],
+      "availableNegativeCount": 3,
+      "negativeCoverage": "all-available-known-errors"
+    }
+  ],
+  "counts": {
+    "passed": 100,
+    "failed": 0,
+    "pending": 0
+  },
+  "remainingGates": [
+    "Complete statement-specific input audits for all selected questions.",
+    "All100 correct references and known incorrect/invalid outputs must satisfy the unchanged runtime limits.",
+    "Full400 reference paths, legacy164/541 selfchecks, attribution, compatibility hashes and package validation."
+  ],
+  "endedAt": "2026-11-01T07:15:10.963Z"
+}

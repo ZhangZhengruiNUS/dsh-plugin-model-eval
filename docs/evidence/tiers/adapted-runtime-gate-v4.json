@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "status": "passed",
+  "scope": "Local resource reference admission only; no model calibration or product release.",
+  "coding": 100,
+  "noncoding": 300,
+  "legacyCoding": 164,
+  "legacyRules": 541,
+  "evidenceHashes": {
+    "executionSnapshot": "be1d62215b9d175e92e7cb41a62e66087dfb08e8341d98d878232b30ff3f6719",
+    "audit": "d57389da6b09c59afde85406ecaafc98cf165f8eca4f388c136703cb4c44ee86",
+    "staged": "889540d2ab66d3f72f5436098e0273563f389a4681ebb81e85cf241d6b9cb1f4",
+    "runtime": "9fe03f93ad96af5d30edb18fd227f8da825c9d6bc19054a5d805426982d8a48a",
+    "noncoding": "443fe84e1757634d489c1537a43680db89879c6572331c1fb77459744a08feaf",
+    "legacy": "244f9caac44008690bf56e833ca1f1bcda82ae705b8bb355b1d8dedd6509f724"
+  },
+  "budgetVersion": "contest-60s-512m-800b-v1",
+  "limits": {
+    "wallMs": 60000,
+    "memoryBytes": 536870912,
+    "computeBudget": 800000000000
+  },
+  "questionSha256": "fc90520efa418c901a28eed710c24f60b7139c61e7cd7978bd146b3326c3ddfd",
+  "catalogSha256": "740fb3c37d234d6b410d27265a97f8f301cb22f9d59e12400822fae1066ff5dd",
+  "runtimePassed": true,
+  "allowNewRuns": false,
+  "releaseAllowed": false
+}

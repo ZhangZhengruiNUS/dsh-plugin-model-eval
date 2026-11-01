@@ -1,0 +1,318 @@
+{
+  "schemaVersion": 1,
+  "negativeReferencesSha256": "4a988e8e2c7fb7bdbb5d70c13936526a74d8e7667029c12c71cb3cb7e35d8a94",
+  "references": [
+    {
+      "sourceId": "2",
+      "sourceRecordHash": "9fe2b685156440d62d7b8e89169adcc8e55a27597c2787119d6b68d8ca0b6a58",
+      "file": "scripts/references/cyclic-sum.py",
+      "codeSha256": "dd8d1cd0df85d508db32328ed657b9536ce901bbcca8007b98190bf8ba97944b",
+      "oracleTest": "tests/integration/ported-references-second.test.ts",
+      "scope": "Developer correct witness; independent oracle and full retained budget results are separate required evidence, not implied by catalog membership."
+    },
+    {
+      "sourceId": "4",
+      "sourceRecordHash": "9016f416ad26605c0ee47ad64ac47622e702325f339d8ae7372c307d6a3bed77",
+      "file": "scripts/references/city-park-tour.py",
+      "codeSha256": "cc25aeba76d8a8f72577704c73b39cc7624ded7d19107e04df030aa70e03f393",
+      "oracleTest": "tests/integration/ported-references-fourth.test.ts",
+      "scope": "Developer correct witness; independent oracle and full retained budget results are separate required evidence, not implied by catalog membership."
+    },
+    {
+      "sourceId": "5",
+      "sourceRecordHash": "27f21ebe20c07bdd0f65e90f3b71d88a2dc3fce0351fe5faf01c3eb1ae56ac17",
+      "file": "scripts/references/finding-expected-value.py",
+      "codeSha256": "d216564c078af86c0a4628eb3f5a532be302c384ec446e0ea85f5dca2501cec6",
+      "oracleTest": "tests/integration/ported-references-fourth.test.ts",
+      "scope": "Developer correct witness; independent oracle and full retained budget results are separate required evidence, not implied by catalog membership."
+    },
+    {
+      "sourceId": "6",
+      "sourceRecordHash": "2fff38930e30ebdc51103311dfc5ac9b5513f25881ab9dd57268f37331ad996b",
+      "file": "scripts/references/gcd-festival.py",
+      "codeSha256": "0ed533c5f98f423f993ee11f4170f7bf6fc66311c5deb329c0f2bc17f2807c29",
+      "oracleTest": "tests/integration/ported-references-second.test.ts",
+      "scope": "Developer correct witness; independent oracle and full retained budget results are separate required evidence, not implied by catalog membership."
+    },
+    {
+      "sourceId": "7",
+      "sourceRecordHash": "5e864c1f4bcc44b7082ed2773b36919030ece8eac5370bbc4cabab82b947a664",
+      "file": "scripts/references/holiday-ornaments.py",
+      "codeSha256": "35cfc1013d7472129a622b0f81f7d5a24cda5647d58aaaa212480b7cb8782153",
+      "oracleTest": "tests/integration/ported-references-fourth.test.ts",
+      "scope": "Developer correct witness; independent oracle and full retained budget results are separate required evidence, not implied by catalog membership."
+    },
+    {
+      "sourceId": "12",
+      "sourceRecordHash": "53779ffd6bb09c5506f721e0de7e50495af3982adf489ad6fb05ef23060c95b6",
+      "file": "scripts/references/telephone-poles.py",
+      "codeSha256": "1af154c13a966a80583dab836e94db8dfb284330c4960f3c37c5efb8d66aef96",
+      "oracleTest": "tests/integration/ported-references-third.test.ts",
+      "scope": "Developer correct witness; independent oracle and full retained budget results are separate required evidence, not implied by catalog membership."
+    },
+    {
+      "sourceId": "21",
+      "sourceRecordHash": "eec0101640e010a0ffabc609fa2e5d2d3031a3eab007f06ed98da34b59883e27",
+      "file": "scripts/references/mathematics-curriculum.py",
+      "codeSha256": "edc71ffb04a3e19983bd4ac44ff7b0a2b6cda5485490745a6661e8f23d1ec490",
+      "oracleTest": "tests/integration/ported-references-second.test.ts",
+      "scope": "Developer correct witness; independent oracle and full retained budget results are separate required evidence, not implied by catalog membership."
+    },
+    {
+      "sourceId": "22",
+      "sourceRecordHash": "9354fc7c7851091be9c8aa89d3d8e1492c73232d5f5993410bcb73547329c7b5",
+      "file": "scripts/references/train-maintenance.py",
+      "codeSha256": "d23c37d6f5bc75f58e822f3d7d3b6abc69d15964b6ffc7517fb9f650432b95e1",
+      "oracleTest": "tests/integration/ported-references-second.test.ts",
+      "scope": "Developer correct witness; independent oracle and full retained budget results are separate required evidence, not implied by catalog membership."
+    },
+    {
+      "sourceId": "23",
+      "sourceRecordHash": "e0ca12f21c2cc4ecc8461de5a0454f1e80bc9b53d03c2a5761ecac32e4db2487",
+      "file": "scripts/references/subsequence-tree.py",
+      "codeSha256": "4cae138519b2931dc2eda1c5c55e0ab90b81f0aae77a792b675c452330c59653",
+      "oracleTest": "tests/integration/ported-references-third.test.ts",
+      "scope": "Developer correct witness; independent oracle and full retained budget results are separate required evidence, not implied by catalog membership."
+    },
+    {
+      "sourceId": "24",
+      "sourceRecordHash": "8b095362fb68cf3e7624b20e52d2872bca37a064755183d5c07649a200bb83da",
+      "file": "scripts/references/railway-construction.py",
+      "codeSha256": "2bcce33a62a7fe73dc9e1219cc25fa4104e4cf517bba1599c5a456d41de16c16",
+      "oracleTest": "tests/integration/plain-references-graphs.test.ts",
+      "scope": "Developer correct witness; independent oracle and full retained budget results are separate required evidence, not implied by catalog membership."
+    },
+    {
+      "sourceId": "25",
+      "sourceRecordHash": "0aa6e3224a8743b4e7493812d1e3ab0eefbc6c311f8c3b80eaff4fdf86b6ac69",
+      "file": "scripts/references/problems-codeforces.py",
+      "codeSha256": "2ffa55c0edaec7882b74618ee8011a9b66a2057a9248c3eba88268e81b0ebf01",
+      "oracleTest": "tests/integration/ported-references-third.test.ts",
+      "scope": "Developer correct witness; independent oracle and full retained budget results are separate required evidence, not implied by catalog membership."
+    },
+    {
+      "sourceId": "32",
+      "sourceRecordHash": "84e067cb6d8a1a786209f76c6f98ea2519b9ae18b3550d9819fc7e8ece11dd65",
+      "file": "scripts/references/pchelyonok-segments.py",
+      "codeSha256": "a8b86aa241b2e5106115383cd9986538dd950e173137d20d10619d7956c8ef36",
+      "oracleTest": "tests/integration/ported-references.test.ts",
+      "scope": "Developer correct witness; independent oracle and full retained budget results are separate required evidence, not implied by catalog membership."
+    },
+    {
+      "sourceId": "34",
+      "sourceRecordHash": "78e192d8c072f9879e03ba9811fa9473ea4506b66786cb2f9d15489e6bb9dc0f",
+      "file": "scripts/references/increasing-xor-bitsets.py",
+      "codeSha256": "9bcdbc6eb107e36a81e41afe8d7c9359024f01fd44c680ade39a96bf7901f501",
+      "oracleTest": "tests/integration/increasing-xor-reference.test.ts",
+      "scope": "Developer correct witness; independent oracle and full retained budget results are separate required evidence, not implied by catalog membership."
+    },
+    {
+      "sourceId": "35",
+      "sourceRecordHash": "30b34bb36ee771b22faf66dfc36fccb9bd46797b258655568e802f27aad9b714",
+      "file": "scripts/references/kuzya-homework.py",
+      "codeSha256": "294878fcb0b9169f228e9faa40a2668d26150ff413f9b8d46d85c6540f876d4c",
+      "oracleTest": "tests/integration/ported-references-third.test.ts",
+      "scope": "Developer correct witness; independent oracle and full retained budget results are separate required evidence, not implied by catalog membership."
+    },
+    {
+      "sourceId": "42",
+      "sourceRecordHash": "ace7fce75fc556c4736bb13dc220ba5b345c1c47b10cf55e1dddc6ac3100c00e",
+      "file": "scripts/references/time-travel.py",
+      "codeSha256": "0fb8828a18e181f117cbf761f84d624a56ac6a471e010dcbb706d23ec79a49da",
+      "oracleTest": "tests/integration/plain-references-graphs.test.ts",
+      "scope": "Developer correct witness; independent oracle and full retained budget results are separate required evidence, not implied by catalog membership."
+    },
+    {
+      "sourceId": "43",
+      "sourceRecordHash": "bab25cd0b977d31ba7d3ac1d30147de2c19b0ece35a348728dbb51f05a07bd91",
+      "file": "scripts/references/omkar-tours.py",
+      "codeSha256": "9cd3960fa7b5286d76e60cc675762bd05541492270093e94bc107138ad8b2e59",
+      "oracleTest": "tests/integration/plain-references-graphs.test.ts",
+      "scope": "Developer correct witness; independent oracle and full retained budget results are separate required evidence, not implied by catalog membership."
+    },
+    {
+      "sourceId": "63",
+      "sourceRecordHash": "b9e77b25142f989b7b0c50b199541181607a964e261e342e6f441d80e454640c",
+      "file": "scripts/references/rbs-grouped.py",
+      "codeSha256": "68199a888e050957027e636be5724569ff23ad4f550a68701969d200ede58714",
+      "oracleTest": "tests/integration/plain-references-small.test.ts",
+      "scope": "Developer correct witness; independent oracle and full retained budget results are separate required evidence, not implied by catalog membership."
+    },
+    {
+      "sourceId": "66",
+      "sourceRecordHash": "3fc1472be3e6cd97845105e32702900fa0e5a8fa7167ee7b602a6b2bb5e0b583",
+      "file": "scripts/references/restaurant-game.py",
+      "codeSha256": "dcfe19851e37eba062c2a51e2dcfe1e653767f5335647cb42ea90a6da36126fd",
+      "oracleTest": "tests/integration/ported-references-fifth.test.ts",
+      "scope": "Developer correct witness; independent oracle and full retained budget results are separate required evidence, not implied by catalog membership."
+    },
+    {
+      "sourceId": "68",
+      "sourceRecordHash": "8aa9c63be9282936a201cc59087eb16ec6ae94baa2d5600093962e0c493a3f80",
+      "file": "scripts/references/bubble-popping.py",
+      "codeSha256": "0f25f30c1879f19a5729816c0ac32cdc6ad890b76a242ac0335170f74563252f",
+      "oracleTest": "tests/integration/ported-references-fifth.test.ts",
+      "scope": "Developer correct witness; independent oracle and full retained budget results are separate required evidence, not implied by catalog membership."
+    },
+    {
+      "sourceId": "69",
+      "sourceRecordHash": "3991f68f0f655cc0722be057945657d782b2a77707764362bac4bf68674c14a9",
+      "file": "scripts/references/two-arrays-fibonacci.py",
+      "codeSha256": "d3d15750d785515e59aed8abddb8f11e331cf36ca8d6632d24ba2df08436ab87",
+      "oracleTest": "tests/integration/ported-references-fifth.test.ts",
+      "scope": "Developer correct witness; independent oracle and full retained budget results are separate required evidence, not implied by catalog membership."
+    },
+    {
+      "sourceId": "70",
+      "sourceRecordHash": "f796f457460ce87b021cfd5ac9e2d94e223fe61b34a019beadf5f8cc1584105b",
+      "file": "scripts/references/mars-connectivity.py",
+      "codeSha256": "97dce0d371c18a73c1698016a3cb9abf6f9a8be31f252f4417c691f3f8c6f421",
+      "oracleTest": "tests/integration/ported-references-sixth.test.ts",
+      "scope": "Developer correct witness; independent oracle and full retained budget results are separate required evidence, not implied by catalog membership."
+    },
+    {
+      "sourceId": "73",
+      "sourceRecordHash": "555469512488b44b3e12fef2ff108aa94baacc322b47a1bda8aeb1c0091cf516",
+      "file": "scripts/references/desert-cactus.py",
+      "codeSha256": "6bb5e6729da2e3c0a47348db7d8d3a3fb86057b79e6881c243c45797c1c847d8",
+      "oracleTest": "tests/integration/ported-references-sixth.test.ts",
+      "scope": "Developer correct witness; independent oracle and full retained budget results are separate required evidence, not implied by catalog membership."
+    },
+    {
+      "sourceId": "80",
+      "sourceRecordHash": "e3b9e98662bd6a908d5b63b6104561c5b16146505b87bde908fa2c82b2e309a3",
+      "file": "scripts/references/optimal-insertion.py",
+      "codeSha256": "495aa6fa8b0d156944e5191df54e7b8a5c360d1362c19ed77c516247130ba5e1",
+      "oracleTest": "tests/integration/ported-references.test.ts",
+      "scope": "Developer correct witness; independent oracle and full retained budget results are separate required evidence, not implied by catalog membership."
+    },
+    {
+      "sourceId": "81",
+      "sourceRecordHash": "e5697a19dbc9f2cded5d8426d3e86f284f4812a0250d4d31f5f7a9fd39d903e5",
+      "file": "scripts/references/difficult-mountain.py",
+      "codeSha256": "ffb64abe8e3e0bf27a44f44942f3f55a9958b296ee43834ffc7ff81d2d78e0a0",
+      "oracleTest": "tests/integration/ported-references-second.test.ts",
+      "scope": "Developer correct witness; independent oracle and full retained budget results are separate required evidence, not implied by catalog membership."
+    },
+    {
+      "sourceId": "82",
+      "sourceRecordHash": "99a9a3017eadf88edfc242a22bfb6c785f13b89c2a8ed1f045533f1f22c97732",
+      "file": "scripts/references/phys-ed-online.py",
+      "codeSha256": "25be78798411f33e2b45301d7f543924aae2eec20271cbf9c0f521e2ae5ce3a3",
+      "oracleTest": "tests/integration/plain-references-small.test.ts",
+      "scope": "Developer correct witness; independent oracle and full retained budget results are separate required evidence, not implied by catalog membership."
+    },
+    {
+      "sourceId": "83",
+      "sourceRecordHash": "4581bcd4df13fe20ce6e8cbf792971ad4697121db99e2f495a9330cc4a1addb9",
+      "file": "scripts/references/two-sorts.py",
+      "codeSha256": "baf8eeb6614b19cd3bc355274650f1cdd95b12a3471559f44ba188f9c1d342dd",
+      "oracleTest": "tests/integration/ported-references.test.ts",
+      "scope": "Developer correct witness; independent oracle and full retained budget results are separate required evidence, not implied by catalog membership."
+    },
+    {
+      "sourceId": "84",
+      "sourceRecordHash": "21d7b6a9d3188a668b73b07be83ef5faeae88448578c9690acecd1c82d111930",
+      "file": "scripts/references/artistic-partition.py",
+      "codeSha256": "34d8d49b72fce92ad63be53e18bbc10a41372bba475e303a63d336c1aa2d6409",
+      "oracleTest": "tests/integration/plain-references-small.test.ts",
+      "scope": "Developer correct witness; independent oracle and full retained budget results are separate required evidence, not implied by catalog membership."
+    },
+    {
+      "sourceId": "85",
+      "sourceRecordHash": "bb90f074b805e6344526faa47162bae5da7a30d6043eee133c60f49297a2487b",
+      "file": "scripts/references/perfect-problem.py",
+      "codeSha256": "905408f2ca7d727a8b5e053fb02ab89f5bb58d42149feee216c6891416eeb637",
+      "oracleTest": "tests/integration/plain-references-small.test.ts",
+      "scope": "Developer correct witness; independent oracle and full retained budget results are separate required evidence, not implied by catalog membership."
+    },
+    {
+      "sourceId": "86",
+      "sourceRecordHash": "36f39dce920dd949dda9f4633a1c9af3813ae66efc8e01fce8c64e18d368ffa8",
+      "file": "scripts/references/october-2017.py",
+      "codeSha256": "04c3e773a6a32399865b0f609f35bbd93095b8d931b96785aaca6d89223c339d",
+      "oracleTest": "tests/integration/plain-references-algebra.test.ts",
+      "scope": "Developer correct witness; independent oracle and full retained budget results are separate required evidence, not implied by catalog membership."
+    },
+    {
+      "sourceId": "91",
+      "sourceRecordHash": "a555cf838fd7d50b2cd85a2ad7fc26ae457c78fa016069b73a040a78df480539",
+      "file": "scripts/references/extreme-extension.py",
+      "codeSha256": "d3d2b44e08cc942704674618c0dc754dbe036166b0f1730dbe9ff4072c846cf6",
+      "oracleTest": "tests/integration/extreme-reference.test.ts",
+      "scope": "Developer correct witness; independent oracle and full retained budget results are separate required evidence, not implied by catalog membership."
+    },
+    {
+      "sourceId": "96",
+      "sourceRecordHash": "860eb3cc9ca9d54770cd9e780f9e57d547cbb6d3155b7dafbcbc556e14529387",
+      "file": "scripts/references/arena-winners.py",
+      "codeSha256": "3565d585e6b984983b258ef2ac8ee71b2d1a2861395264c627f353cd1f3081da",
+      "oracleTest": "tests/integration/plain-references-small.test.ts",
+      "scope": "Developer correct witness; independent oracle and full retained budget results are separate required evidence, not implied by catalog membership."
+    },
+    {
+      "sourceId": "97",
+      "sourceRecordHash": "68230fed727e778db68859893b84127f0c22148b363acf0f47711a6ae7205f2e",
+      "file": "scripts/references/tree-queries.py",
+      "codeSha256": "9cef881643340c4aabc197cd458c6a60b442f10bde98579caf768ffd24fc2124",
+      "oracleTest": "tests/integration/plain-references-graphs.test.ts",
+      "scope": "Developer correct witness; independent oracle and full retained budget results are separate required evidence, not implied by catalog membership."
+    },
+    {
+      "sourceId": "110",
+      "sourceRecordHash": "c80ca62231339748aab164463da6c1f9ad9c563f5ba3ba3c31339fc78ac389d7",
+      "file": "scripts/references/cells-on-paper.py",
+      "codeSha256": "023c467a510efe50295d3cb88c3989852521739b786f134042fb0b4640903844",
+      "oracleTest": "tests/integration/plain-references-small.test.ts",
+      "scope": "Developer correct witness; independent oracle and full retained budget results are separate required evidence, not implied by catalog membership."
+    },
+    {
+      "sourceId": "111",
+      "sourceRecordHash": "7b351ed19bc6f24246e7affeebf0bf5cdde6395413fb0c19be356d99027de1f4",
+      "file": "scripts/references/mex-counting.py",
+      "codeSha256": "28cb76f25414680b30ef0a02976c283934cb81129e93debe79387c7bd3612c47",
+      "oracleTest": "tests/integration/ported-references-second.test.ts",
+      "scope": "Developer correct witness; independent oracle and full retained budget results are separate required evidence, not implied by catalog membership."
+    },
+    {
+      "sourceId": "112",
+      "sourceRecordHash": "7a7c9836eecefaf370320f7c9bfa2d28270c8abf8c6f92e1315e38c20b3a9994",
+      "file": "scripts/references/alphabetic-tree.py",
+      "codeSha256": "c2bf2cd20b3654b9c09f8bdb62335fbeff51f854fddcc8470a96dcb784a83832",
+      "oracleTest": "tests/integration/plain-references-small.test.ts",
+      "scope": "Developer correct witness; independent oracle and full retained budget results are separate required evidence, not implied by catalog membership."
+    },
+    {
+      "sourceId": "118",
+      "sourceRecordHash": "f96191e6c802e16fcde9820f06bb33d43e59d576c5877e9f0cae0c0b1baa4709",
+      "file": "scripts/references/tree-coloring.py",
+      "codeSha256": "2c5171672fc9c4c538860c0efb691b57f69ff536fda41a2ca6cfb9d6a12b4ab8",
+      "oracleTest": "tests/integration/plain-references-small.test.ts",
+      "scope": "Developer correct witness; independent oracle and full retained budget results are separate required evidence, not implied by catalog membership."
+    },
+    {
+      "sourceId": "124",
+      "sourceRecordHash": "8ba65e97be9ad7d925644a3e7ec9ce0bf56e0e949e1ab23cf1202fc45c0b0d50",
+      "file": "scripts/references/legondary-grandmaster.py",
+      "codeSha256": "eedb594e863a2ec9b8a143fc143038b22bce7952f7a833db0afea84d2c9b1e77",
+      "oracleTest": "tests/integration/plain-references-algebra.test.ts",
+      "scope": "Developer correct witness; independent oracle and full retained budget results are separate required evidence, not implied by catalog membership."
+    },
+    {
+      "sourceId": "153",
+      "sourceRecordHash": "b2ca665e1a8a0358e37c1e6340046ba56d5378513b66a68a2bafe1fce31f408f",
+      "file": "scripts/references/subsequences-galore.py",
+      "codeSha256": "9a0bf90fdf3c69252766d84770f29e9acabbc117d174b75bd2918f3c6595c1e2",
+      "oracleTest": "tests/integration/plain-references-algebra.test.ts",
+      "scope": "Developer correct witness; independent oracle and full retained budget results are separate required evidence, not implied by catalog membership."
+    },
+    {
+      "sourceId": "163",
+      "sourceRecordHash": "05b09243b18bfaa8fdd23666d459a5741d609453a4d551967f87759235cf18b3",
+      "file": "scripts/references/robot-cleaner-events.py",
+      "codeSha256": "c7209cbdecd43fd32bec4fb3492559f833777b2131c8956cbb21723657167fcb",
+      "oracleTest": "tests/integration/ported-references-fourth.test.ts",
+      "scope": "Developer correct witness; independent oracle and full retained budget results are separate required evidence, not implied by catalog membership."
+    }
+  ]
+}

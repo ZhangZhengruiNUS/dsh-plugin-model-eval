@@ -1,0 +1,1927 @@
+{
+  "schemaVersion": 1,
+  "status": "pending",
+  "scope": "local reference verification, no models or calibration",
+  "limits": {
+    "wallMs": 30000,
+    "memoryBytes": 536870912,
+    "computeBudget": 200000000000
+  },
+  "catalogHash": "5fc28a9af944f89718ef989d924d5b2fafc4b3dfcaf5338e68095f3361cfcb83",
+  "items": [
+    {
+      "id": "instructions/ifeval/1000",
+      "status": "passed",
+      "inputBytes": 336,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/1012",
+      "status": "passed",
+      "inputBytes": 383,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/1040",
+      "status": "passed",
+      "inputBytes": 263,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/1069",
+      "status": "passed",
+      "inputBytes": 236,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/1107",
+      "status": "passed",
+      "inputBytes": 156,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/1122",
+      "status": "passed",
+      "inputBytes": 150,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/1129",
+      "status": "passed",
+      "inputBytes": 434,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/1137",
+      "status": "passed",
+      "inputBytes": 203,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/1174",
+      "status": "passed",
+      "inputBytes": 351,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/1219",
+      "status": "passed",
+      "inputBytes": 306,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/127",
+      "status": "passed",
+      "inputBytes": 382,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/1305",
+      "status": "passed",
+      "inputBytes": 236,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/1314",
+      "status": "passed",
+      "inputBytes": 287,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/1325",
+      "status": "passed",
+      "inputBytes": 287,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/1342",
+      "status": "passed",
+      "inputBytes": 387,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/1348",
+      "status": "passed",
+      "inputBytes": 255,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/1379",
+      "status": "passed",
+      "inputBytes": 243,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/1392",
+      "status": "passed",
+      "inputBytes": 286,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/1418",
+      "status": "passed",
+      "inputBytes": 258,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/142",
+      "status": "passed",
+      "inputBytes": 217,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/143",
+      "status": "passed",
+      "inputBytes": 336,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/1481",
+      "status": "passed",
+      "inputBytes": 542,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/1512",
+      "status": "passed",
+      "inputBytes": 350,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/152",
+      "status": "passed",
+      "inputBytes": 178,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/1571",
+      "status": "passed",
+      "inputBytes": 236,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/1582",
+      "status": "passed",
+      "inputBytes": 286,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/1619",
+      "status": "passed",
+      "inputBytes": 212,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/1627",
+      "status": "passed",
+      "inputBytes": 409,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/1643",
+      "status": "passed",
+      "inputBytes": 196,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/1670",
+      "status": "passed",
+      "inputBytes": 310,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/1705",
+      "status": "passed",
+      "inputBytes": 262,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/1739",
+      "status": "passed",
+      "inputBytes": 506,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/1813",
+      "status": "passed",
+      "inputBytes": 281,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/1825",
+      "status": "passed",
+      "inputBytes": 296,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/1843",
+      "status": "passed",
+      "inputBytes": 240,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/1897",
+      "status": "passed",
+      "inputBytes": 276,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/1908",
+      "status": "passed",
+      "inputBytes": 402,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/2035",
+      "status": "passed",
+      "inputBytes": 186,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/2069",
+      "status": "passed",
+      "inputBytes": 186,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/2162",
+      "status": "passed",
+      "inputBytes": 252,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/2216",
+      "status": "passed",
+      "inputBytes": 500,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/2246",
+      "status": "passed",
+      "inputBytes": 348,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/2275",
+      "status": "passed",
+      "inputBytes": 384,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/2284",
+      "status": "passed",
+      "inputBytes": 298,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/2372",
+      "status": "passed",
+      "inputBytes": 265,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/2416",
+      "status": "passed",
+      "inputBytes": 321,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/2439",
+      "status": "passed",
+      "inputBytes": 355,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/2471",
+      "status": "passed",
+      "inputBytes": 313,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/2549",
+      "status": "passed",
+      "inputBytes": 431,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/2571",
+      "status": "passed",
+      "inputBytes": 444,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/2583",
+      "status": "passed",
+      "inputBytes": 177,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/2616",
+      "status": "passed",
+      "inputBytes": 241,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/2683",
+      "status": "passed",
+      "inputBytes": 399,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/2724",
+      "status": "passed",
+      "inputBytes": 215,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/2736",
+      "status": "passed",
+      "inputBytes": 236,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/2751",
+      "status": "passed",
+      "inputBytes": 157,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/2765",
+      "status": "passed",
+      "inputBytes": 245,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/2785",
+      "status": "passed",
+      "inputBytes": 332,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/279",
+      "status": "passed",
+      "inputBytes": 243,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/2853",
+      "status": "passed",
+      "inputBytes": 200,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/2943",
+      "status": "passed",
+      "inputBytes": 432,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/30",
+      "status": "passed",
+      "inputBytes": 243,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/3035",
+      "status": "passed",
+      "inputBytes": 198,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/3063",
+      "status": "passed",
+      "inputBytes": 535,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/3069",
+      "status": "passed",
+      "inputBytes": 221,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/3084",
+      "status": "passed",
+      "inputBytes": 199,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/3098",
+      "status": "passed",
+      "inputBytes": 402,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/3114",
+      "status": "passed",
+      "inputBytes": 253,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/3188",
+      "status": "passed",
+      "inputBytes": 373,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/3195",
+      "status": "passed",
+      "inputBytes": 174,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/3204",
+      "status": "passed",
+      "inputBytes": 263,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/3243",
+      "status": "passed",
+      "inputBytes": 213,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/3272",
+      "status": "passed",
+      "inputBytes": 349,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/3276",
+      "status": "passed",
+      "inputBytes": 217,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/3287",
+      "status": "passed",
+      "inputBytes": 198,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/3305",
+      "status": "passed",
+      "inputBytes": 415,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/331",
+      "status": "passed",
+      "inputBytes": 272,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/3311",
+      "status": "passed",
+      "inputBytes": 211,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/332",
+      "status": "passed",
+      "inputBytes": 321,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/3324",
+      "status": "passed",
+      "inputBytes": 263,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/3327",
+      "status": "passed",
+      "inputBytes": 196,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/3335",
+      "status": "passed",
+      "inputBytes": 342,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/3345",
+      "status": "passed",
+      "inputBytes": 418,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/3350",
+      "status": "passed",
+      "inputBytes": 315,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/3369",
+      "status": "passed",
+      "inputBytes": 280,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/3371",
+      "status": "passed",
+      "inputBytes": 412,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/3380",
+      "status": "passed",
+      "inputBytes": 228,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/3414",
+      "status": "passed",
+      "inputBytes": 188,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/3415",
+      "status": "passed",
+      "inputBytes": 171,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/3494",
+      "status": "passed",
+      "inputBytes": 317,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/3502",
+      "status": "passed",
+      "inputBytes": 269,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/3534",
+      "status": "passed",
+      "inputBytes": 220,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/3565",
+      "status": "passed",
+      "inputBytes": 229,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/3633",
+      "status": "passed",
+      "inputBytes": 373,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/3672",
+      "status": "passed",
+      "inputBytes": 181,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/3709",
+      "status": "passed",
+      "inputBytes": 255,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/3710",
+      "status": "passed",
+      "inputBytes": 394,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/3718",
+      "status": "passed",
+      "inputBytes": 399,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/3724",
+      "status": "passed",
+      "inputBytes": 315,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "instructions/ifeval/3744",
+      "status": "passed",
+      "inputBytes": 228,
+      "attempts": [],
+      "scope": "rule execution sanity, not a correct-answer reference"
+    },
+    {
+      "id": "knowledge/mmlu-pro/10405",
+      "status": "passed",
+      "inputBytes": 1963,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/10472",
+      "status": "passed",
+      "inputBytes": 1479,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/10608",
+      "status": "passed",
+      "inputBytes": 787,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/10626",
+      "status": "passed",
+      "inputBytes": 761,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/10706",
+      "status": "passed",
+      "inputBytes": 752,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/10715",
+      "status": "passed",
+      "inputBytes": 732,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/10747",
+      "status": "passed",
+      "inputBytes": 671,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/10791",
+      "status": "passed",
+      "inputBytes": 532,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/10839",
+      "status": "passed",
+      "inputBytes": 535,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/10931",
+      "status": "passed",
+      "inputBytes": 244,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/11175",
+      "status": "passed",
+      "inputBytes": 484,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/11184",
+      "status": "passed",
+      "inputBytes": 613,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/11240",
+      "status": "passed",
+      "inputBytes": 258,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/11254",
+      "status": "passed",
+      "inputBytes": 504,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/11334",
+      "status": "passed",
+      "inputBytes": 569,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/11362",
+      "status": "passed",
+      "inputBytes": 1125,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/11462",
+      "status": "passed",
+      "inputBytes": 654,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/1154",
+      "status": "passed",
+      "inputBytes": 1886,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/11735",
+      "status": "passed",
+      "inputBytes": 700,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/1179",
+      "status": "passed",
+      "inputBytes": 1985,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/12018",
+      "status": "passed",
+      "inputBytes": 1341,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/12082",
+      "status": "passed",
+      "inputBytes": 1282,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/12188",
+      "status": "passed",
+      "inputBytes": 563,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/1513",
+      "status": "passed",
+      "inputBytes": 1298,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/1642",
+      "status": "passed",
+      "inputBytes": 910,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/1798",
+      "status": "passed",
+      "inputBytes": 2174,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/182",
+      "status": "passed",
+      "inputBytes": 543,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/1831",
+      "status": "passed",
+      "inputBytes": 977,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/2002",
+      "status": "passed",
+      "inputBytes": 1314,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/2409",
+      "status": "passed",
+      "inputBytes": 951,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/2533",
+      "status": "passed",
+      "inputBytes": 529,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/2540",
+      "status": "passed",
+      "inputBytes": 685,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/2577",
+      "status": "passed",
+      "inputBytes": 526,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/2639",
+      "status": "passed",
+      "inputBytes": 459,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/2654",
+      "status": "passed",
+      "inputBytes": 514,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/2815",
+      "status": "passed",
+      "inputBytes": 441,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/2831",
+      "status": "passed",
+      "inputBytes": 1190,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/2881",
+      "status": "passed",
+      "inputBytes": 2275,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/2951",
+      "status": "passed",
+      "inputBytes": 1261,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/3010",
+      "status": "passed",
+      "inputBytes": 964,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/3057",
+      "status": "passed",
+      "inputBytes": 418,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/3365",
+      "status": "passed",
+      "inputBytes": 1298,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/3437",
+      "status": "passed",
+      "inputBytes": 482,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/3753",
+      "status": "passed",
+      "inputBytes": 421,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/3820",
+      "status": "passed",
+      "inputBytes": 469,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/3949",
+      "status": "passed",
+      "inputBytes": 447,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/4023",
+      "status": "passed",
+      "inputBytes": 828,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/4096",
+      "status": "passed",
+      "inputBytes": 903,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/4357",
+      "status": "passed",
+      "inputBytes": 926,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/4432",
+      "status": "passed",
+      "inputBytes": 418,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/460",
+      "status": "passed",
+      "inputBytes": 401,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/4706",
+      "status": "passed",
+      "inputBytes": 1032,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/4819",
+      "status": "passed",
+      "inputBytes": 1032,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/4835",
+      "status": "passed",
+      "inputBytes": 1295,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/4846",
+      "status": "passed",
+      "inputBytes": 935,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/4885",
+      "status": "passed",
+      "inputBytes": 1853,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/4889",
+      "status": "passed",
+      "inputBytes": 2124,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/5025",
+      "status": "passed",
+      "inputBytes": 1780,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/5216",
+      "status": "passed",
+      "inputBytes": 912,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/5291",
+      "status": "passed",
+      "inputBytes": 652,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/5407",
+      "status": "passed",
+      "inputBytes": 650,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/5475",
+      "status": "passed",
+      "inputBytes": 1169,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/548",
+      "status": "passed",
+      "inputBytes": 420,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/5485",
+      "status": "passed",
+      "inputBytes": 442,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/5873",
+      "status": "passed",
+      "inputBytes": 907,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/5987",
+      "status": "passed",
+      "inputBytes": 1142,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/6102",
+      "status": "passed",
+      "inputBytes": 556,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/6237",
+      "status": "passed",
+      "inputBytes": 859,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/6282",
+      "status": "passed",
+      "inputBytes": 370,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/6325",
+      "status": "passed",
+      "inputBytes": 801,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/645",
+      "status": "passed",
+      "inputBytes": 517,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/6530",
+      "status": "passed",
+      "inputBytes": 428,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/6638",
+      "status": "passed",
+      "inputBytes": 264,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/6796",
+      "status": "passed",
+      "inputBytes": 909,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/6950",
+      "status": "passed",
+      "inputBytes": 686,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/7221",
+      "status": "passed",
+      "inputBytes": 780,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/7261",
+      "status": "passed",
+      "inputBytes": 542,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/7342",
+      "status": "passed",
+      "inputBytes": 1314,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/747",
+      "status": "passed",
+      "inputBytes": 553,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/7552",
+      "status": "passed",
+      "inputBytes": 603,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/7586",
+      "status": "passed",
+      "inputBytes": 812,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/7681",
+      "status": "passed",
+      "inputBytes": 1068,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/7899",
+      "status": "passed",
+      "inputBytes": 556,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/8058",
+      "status": "passed",
+      "inputBytes": 273,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/831",
+      "status": "passed",
+      "inputBytes": 360,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/8445",
+      "status": "passed",
+      "inputBytes": 504,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/849",
+      "status": "passed",
+      "inputBytes": 369,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/8556",
+      "status": "passed",
+      "inputBytes": 378,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/8579",
+      "status": "passed",
+      "inputBytes": 421,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/8580",
+      "status": "passed",
+      "inputBytes": 732,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/863",
+      "status": "passed",
+      "inputBytes": 2015,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/9014",
+      "status": "passed",
+      "inputBytes": 258,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/9052",
+      "status": "passed",
+      "inputBytes": 917,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/9166",
+      "status": "passed",
+      "inputBytes": 1264,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/9314",
+      "status": "passed",
+      "inputBytes": 614,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/933",
+      "status": "passed",
+      "inputBytes": 1315,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/9622",
+      "status": "passed",
+      "inputBytes": 513,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/9725",
+      "status": "passed",
+      "inputBytes": 448,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/9884",
+      "status": "passed",
+      "inputBytes": 945,
+      "attempts": []
+    },
+    {
+      "id": "knowledge/mmlu-pro/9968",
+      "status": "passed",
+      "inputBytes": 437,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/1828",
+      "status": "passed",
+      "inputBytes": 765,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/1945",
+      "status": "passed",
+      "inputBytes": 577,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/2004",
+      "status": "passed",
+      "inputBytes": 591,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/2006",
+      "status": "passed",
+      "inputBytes": 964,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/2021",
+      "status": "passed",
+      "inputBytes": 443,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/2241",
+      "status": "passed",
+      "inputBytes": 283,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/2251",
+      "status": "passed",
+      "inputBytes": 296,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/2257",
+      "status": "passed",
+      "inputBytes": 783,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/2261",
+      "status": "passed",
+      "inputBytes": 581,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/2280",
+      "status": "passed",
+      "inputBytes": 386,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/2321",
+      "status": "passed",
+      "inputBytes": 385,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/2328",
+      "status": "passed",
+      "inputBytes": 1064,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/2339",
+      "status": "passed",
+      "inputBytes": 377,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/2342",
+      "status": "passed",
+      "inputBytes": 318,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/2377",
+      "status": "passed",
+      "inputBytes": 392,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/2388",
+      "status": "passed",
+      "inputBytes": 317,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/2390",
+      "status": "passed",
+      "inputBytes": 359,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/2392",
+      "status": "passed",
+      "inputBytes": 258,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/2407",
+      "status": "passed",
+      "inputBytes": 571,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/2430",
+      "status": "passed",
+      "inputBytes": 661,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/2431",
+      "status": "passed",
+      "inputBytes": 676,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/2494",
+      "status": "passed",
+      "inputBytes": 426,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/2496",
+      "status": "passed",
+      "inputBytes": 396,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/2504",
+      "status": "passed",
+      "inputBytes": 330,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/2522",
+      "status": "passed",
+      "inputBytes": 851,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/2525",
+      "status": "passed",
+      "inputBytes": 654,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/2527",
+      "status": "passed",
+      "inputBytes": 569,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/2558",
+      "status": "passed",
+      "inputBytes": 346,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/2580",
+      "status": "passed",
+      "inputBytes": 341,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/2582",
+      "status": "passed",
+      "inputBytes": 485,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/2601",
+      "status": "passed",
+      "inputBytes": 275,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/2603",
+      "status": "passed",
+      "inputBytes": 320,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/2604",
+      "status": "passed",
+      "inputBytes": 601,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/2606",
+      "status": "passed",
+      "inputBytes": 341,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/2607",
+      "status": "passed",
+      "inputBytes": 447,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/2611",
+      "status": "passed",
+      "inputBytes": 306,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/2648",
+      "status": "passed",
+      "inputBytes": 322,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/2659",
+      "status": "passed",
+      "inputBytes": 261,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/2661",
+      "status": "passed",
+      "inputBytes": 554,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/2667",
+      "status": "passed",
+      "inputBytes": 426,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/2668",
+      "status": "passed",
+      "inputBytes": 325,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/2676",
+      "status": "passed",
+      "inputBytes": 346,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/2677",
+      "status": "passed",
+      "inputBytes": 496,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/2711",
+      "status": "passed",
+      "inputBytes": 483,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/2714",
+      "status": "passed",
+      "inputBytes": 776,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/2721",
+      "status": "passed",
+      "inputBytes": 503,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/2722",
+      "status": "passed",
+      "inputBytes": 469,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/2724",
+      "status": "passed",
+      "inputBytes": 368,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/2733",
+      "status": "passed",
+      "inputBytes": 272,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/2738",
+      "status": "passed",
+      "inputBytes": 341,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/2739",
+      "status": "passed",
+      "inputBytes": 355,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/2760",
+      "status": "passed",
+      "inputBytes": 389,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/2764",
+      "status": "passed",
+      "inputBytes": 356,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/2772",
+      "status": "passed",
+      "inputBytes": 277,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/2777",
+      "status": "passed",
+      "inputBytes": 377,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/2784",
+      "status": "passed",
+      "inputBytes": 346,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/2785",
+      "status": "passed",
+      "inputBytes": 273,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/2801",
+      "status": "passed",
+      "inputBytes": 487,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/2818",
+      "status": "passed",
+      "inputBytes": 392,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/2825",
+      "status": "passed",
+      "inputBytes": 412,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/2835",
+      "status": "passed",
+      "inputBytes": 392,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/2839",
+      "status": "passed",
+      "inputBytes": 649,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/2851",
+      "status": "passed",
+      "inputBytes": 562,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/2859",
+      "status": "passed",
+      "inputBytes": 316,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/2893",
+      "status": "passed",
+      "inputBytes": 504,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/2894",
+      "status": "passed",
+      "inputBytes": 749,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/2896",
+      "status": "passed",
+      "inputBytes": 406,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/2899",
+      "status": "passed",
+      "inputBytes": 340,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/2901",
+      "status": "passed",
+      "inputBytes": 304,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/2902",
+      "status": "passed",
+      "inputBytes": 526,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/2904",
+      "status": "passed",
+      "inputBytes": 390,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/2916",
+      "status": "passed",
+      "inputBytes": 777,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/2925",
+      "status": "passed",
+      "inputBytes": 369,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/2927",
+      "status": "passed",
+      "inputBytes": 321,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/2954",
+      "status": "passed",
+      "inputBytes": 301,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/2955",
+      "status": "passed",
+      "inputBytes": 646,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/2963",
+      "status": "passed",
+      "inputBytes": 383,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/2973",
+      "status": "passed",
+      "inputBytes": 585,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/2979",
+      "status": "passed",
+      "inputBytes": 413,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/2982",
+      "status": "passed",
+      "inputBytes": 537,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/2989",
+      "status": "passed",
+      "inputBytes": 577,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/2990",
+      "status": "passed",
+      "inputBytes": 396,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/2992",
+      "status": "passed",
+      "inputBytes": 1284,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/2994",
+      "status": "passed",
+      "inputBytes": 1284,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/3001",
+      "status": "passed",
+      "inputBytes": 1286,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/3020",
+      "status": "passed",
+      "inputBytes": 389,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/3025",
+      "status": "passed",
+      "inputBytes": 610,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/3034",
+      "status": "passed",
+      "inputBytes": 303,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/3035",
+      "status": "passed",
+      "inputBytes": 432,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/3037",
+      "status": "passed",
+      "inputBytes": 414,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/3039",
+      "status": "passed",
+      "inputBytes": 425,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/3040",
+      "status": "passed",
+      "inputBytes": 349,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/3079",
+      "status": "passed",
+      "inputBytes": 578,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/3083",
+      "status": "passed",
+      "inputBytes": 753,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/3085",
+      "status": "passed",
+      "inputBytes": 671,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/3086",
+      "status": "passed",
+      "inputBytes": 397,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/3087",
+      "status": "passed",
+      "inputBytes": 435,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/3088",
+      "status": "passed",
+      "inputBytes": 463,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/3096",
+      "status": "passed",
+      "inputBytes": 320,
+      "attempts": []
+    },
+    {
+      "id": "math/olympiad-text-math/3098",
+      "status": "passed",
+      "inputBytes": 524,
+      "attempts": []
+    }
+  ],
+  "counts": {
+    "passed": 300,
+    "failed": 0,
+    "pending": 0
+  },
+  "legacyChecks": "not-run",
+  "startedAt": "2026-11-01T06:42:13.302Z",
+  "endedAt": "2026-11-01T06:43:48.658Z",
+  "releaseAllowed": false,
+  "remainingGates": [
+    "All selected correct references must pass; missing references are not valid passes.",
+    "Legacy 164-code and 541-rule checks must pass.",
+    "Full dataset attribution and package verification required."
+  ]
+}

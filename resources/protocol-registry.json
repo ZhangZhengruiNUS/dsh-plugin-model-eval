@@ -9514,21 +9514,27 @@
           "path": "runtime/contest-cache/python/lib/python3.13/zoneinfo/_zoneinfo.cpython-313.pyc",
           "size": 27505,
           "sha256": "a447ea4bfe017bd26ab99fd5d4097f84310e7b8489ba0b3b9c7eb767564cbd65"
+        },
+        {
+          "path": "suites/two-tier-v1/adapted-questions.json",
+          "size": 3742947,
+          "sha256": "fc90520efa418c901a28eed710c24f60b7139c61e7cd7978bd146b3326c3ddfd"
         }
       ],
-      "questionPath": "suites/two-tier-v1/questions.json",
-      "runtimePassed": false,
+      "questionPath": "suites/two-tier-v1/adapted-questions.json",
+      "runtimePassed": true,
       "grading": {
         "choice": "last-letter-v1",
         "numeric": "exact-final-number-v1",
         "instructions": "ifeval-rule-adaptation-v1",
-        "coding": "all-tests-whitespace-tokens-v1"
+        "coding": "adapted-stdio-all-tests-v4",
+        "inputAdaptation": "code-contests-input-audit-v4"
       },
       "runtime": {
         "limits": {
-          "wallMs": 30000,
+          "wallMs": 60000,
           "memoryBytes": 536870912,
-          "computeBudget": 200000000000
+          "computeBudget": 800000000000
         },
         "pins": {
           "code-host": "2cf3a2cc6ad2904d2e8e062e64af10150200d8ff1f697280d2db348950699d9a",
@@ -9537,7 +9543,8 @@
         },
         "contest": "3eee5b74d202af29aab8644e4cc030ff110ffa3a445298106535029c8bc54a74",
         "stdlibCache": "9252c42b83e2bd3bdfcfa61942bb8d45b5f9c6689fabe990d38608a34171e929",
-        "mode": "checked-stdlib-bytecode-v1"
+        "mode": "checked-stdlib-bytecode-v1",
+        "budgetVersion": "contest-60s-512m-800b-v1"
       }
     }
   ],

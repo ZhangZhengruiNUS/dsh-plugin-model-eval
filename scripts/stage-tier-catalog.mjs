@@ -8,12 +8,13 @@ import {RUNTIME_PINS} from '../src/runtime/pins.ts';
 import {CONTEST_RUNTIME_SHA256} from '../src/runtime/contest-pin.ts';
 import {CONTEST_CACHE_SHA256} from '../src/runtime/contest-cache-pin.ts';
 import {verifyRuntime} from '../src/runtime/integrity.ts';
+import {CONTEST_SCORING_LIMITS,CONTEST_BUDGET_VERSION} from '../src/evaluation/contest-budget.ts';
 const sha=b=>createHash('sha256').update(b).digest('hex'),root='resources',dir='suites/two-tier-v1';
 const admission=JSON.parse(await readFile('docs/evidence/tiers/admission.json','utf8'));
 if(admission.status!=='passed'||admission.deepIds.length!==400)throw Error('ADMISSION_REQUIRED');
 const sources=JSON.parse(await readFile('.local/tier-candidates/source-lock.json','utf8'));
 const rows=(await Promise.all(sources.sources.map(async source=>JSON.parse(await readFile(join('.local/tier-candidates',source.data.path),'utf8')).map(row=>({...row,id:source.domain+'/'+row.id,domain:source.domain}))))).flat();
-const limits={wallMs:30000,memoryBytes:536870912,computeBudget:200000000000},selected=new Set(admission.deepIds);
+const limits=CONTEST_SCORING_LIMITS,selected=new Set(admission.deepIds);
 const questions=rows.filter(r=>selected.has(r.id)).sort((a,b)=>a.id.localeCompare(b.id)).map(row=>{
  let prompt=row.question,grading,datasetId;
  if(row.domain==='knowledge'){
@@ -48,7 +49,7 @@ for(const path of [dir+'/questions.json',...JSON.parse(await readFile(root+'/man
 }
 const newRefs=generalId=>({generalId,writingId:legacy.writingId,resourceVersion:'two-tier-v1'}),deepId='general-two-tier-v1-deep',lightId='general-two-tier-v1-light';
 const catalog={schemaVersion:1,legacyRefs,bundles:[{id:'two-tier-v1',resourceVersion:'two-tier-v1',files,questionPath:dir+'/questions.json',runtimePassed:false,
- grading:{choice:'last-letter-v1',numeric:'exact-final-number-v1',instructions:'ifeval-rule-adaptation-v1',coding:'all-tests-whitespace-tokens-v1'},runtime:{limits,pins:RUNTIME_PINS,contest:CONTEST_RUNTIME_SHA256,stdlibCache:CONTEST_CACHE_SHA256,mode:'checked-stdlib-bytecode-v1'}}],
+ grading:{choice:'last-letter-v1',numeric:'exact-final-number-v1',instructions:'ifeval-rule-adaptation-v1',coding:'all-tests-whitespace-tokens-v1'},runtime:{limits,budgetVersion:CONTEST_BUDGET_VERSION,pins:RUNTIME_PINS,contest:CONTEST_RUNTIME_SHA256,stdlibCache:CONTEST_CACHE_SHA256,mode:'checked-stdlib-bytecode-v1'}}],
  entries:[
  {refs:legacyRefs,general:definition('legacy','旧版基线',legacy.items),questionCount:905,allowNewRuns:true,bundleId:'legacy'},
  {refs:newRefs(lightId),general:definition('light','轻量',questions.filter(q=>admission.lightIds.includes(q.id))),questionCount:120,allowNewRuns:false,bundleId:'two-tier-v1'},

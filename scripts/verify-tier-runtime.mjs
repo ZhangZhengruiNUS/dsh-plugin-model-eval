@@ -11,7 +11,8 @@ const {identityHash}=await import('../src/evaluation/protocol-identity.ts');
 const args=process.argv.slice(2),reportPath=args[args.indexOf('--report')+1];
 if(!args.includes('--report')||!reportPath)throw Error('Usage: verify-tier-runtime.mjs --report <json> [--coding-only] [--ids 0,1]');
 const selectedIds=args.includes('--ids')?new Set(args[args.indexOf('--ids')+1].split(',').map(Number)):undefined;
-const codingOnly=args.includes('--coding-only'),runtimeRoot=resolve('resources/runtime'),runner=createContestRunner(runtimeRoot),rules=createRuleGrader(join(runtimeRoot,'rules'));
+const codingOnly=args.includes('--coding-only'),nonCodingOnly=args.includes('--non-coding-only'),runtimeRoot=resolve('resources/runtime'),runner=createContestRunner(runtimeRoot),rules=createRuleGrader(join(runtimeRoot,'rules'));
+if(nonCodingOnly&&(codingOnly||selectedIds))throw Error('CONFLICTING_REFERENCE_SCOPE');
 const questions=JSON.parse(await readFile('resources/suites/two-tier-v1/questions.json','utf8'));
 const rows=JSON.parse(await readFile('.local/tier-candidates/sources/code-contests-test.json','utf8'));
 const codeMap=new Map(rows.map(r=>[r.sourceId,r]));
@@ -29,6 +30,7 @@ if(!args.includes('--diagnostic')){
 for(const question of questions){
  const raw=question.grading;
  if(codingOnly&&question.datasetId!=='code-contests-selected')continue;
+ if(nonCodingOnly&&question.datasetId==='code-contests-selected')continue;
  if(selectedIds&&(question.datasetId!=='code-contests-selected'||!selectedIds.has(Number(question.sourceId))))continue;
  const evidence={id:question.id,status:'pending',inputBytes:Buffer.byteLength(JSON.stringify(question.prompt)),attempts:[]};
  if(question.datasetId==='mmlu-pro-selected'){
