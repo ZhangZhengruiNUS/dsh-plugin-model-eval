@@ -1,6 +1,6 @@
 import type {RunSummary,TargetSnapshot,Track} from '../../contracts.ts';
 import type {ComparisonExecution,ComparisonMetadata} from '../../comparison/contracts.ts';
-import {targetKey} from '../store.ts';
+import {targetKey,protocolComparisonKey,generalTierLabel} from '../store.ts';
 export const generalNames=['知识与推理','数学推理','指令遵循','编程解题'];
 export const writingNames=['忠实与准确','逻辑与结构','任务覆盖','简洁与具体','自然与得体'];
 const legacy='general-chat-root-stable-rule-tokenizer-v3';
@@ -8,8 +8,7 @@ const abilityKeys=['knowledge','math','instructions','coding'];
 function supportedDefinition(run:RunSummary):boolean{const domains=run.generalDefinition?.domains;return Array.isArray(domains)&&domains.length===4&&new Set(domains.map(d=>d.id)).size===4&&domains.every(d=>abilityKeys.includes(d.id)&&d.weight===.25&&Array.isArray(d.itemIds));}
 export function stable(value:unknown):string{return JSON.stringify(value,(_key,v)=>v&&typeof v==='object'&&!Array.isArray(v)?Object.fromEntries(Object.keys(v).sort().map(k=>[k,v[k]])):v);}
 export function scopeKeyFor(run:RunSummary,track:Track):string{
-  const p=run.protocols;if(!p?.generalId||!p?.writingId||!p?.resourceVersion)return 'unknown:'+run.runId+':'+track;
-  return stable({track,protocols:p,...(track==='general'&&run.generalDefinition?{definition:run.generalDefinition}:{})});
+  return protocolComparisonKey(run,track);
 }
 const finite=(v:unknown,max=Infinity):number|null=>typeof v==='number'&&Number.isFinite(v)&&v>=0&&v<=max?v:null;
 export function judgeIdentity(run:RunSummary):string|null{
@@ -30,7 +29,7 @@ export function buildComparison(metadata:ComparisonMetadata,track:Track):Compari
     if(!old||((t.completedAt??'')+'|'+r.runId)>((old.tracks[track]?.completedAt??'')+'|'+old.runId))latest.set(key,r);}
   for(const r of latest.values()){
     const key=scopeKeyFor(r,track),known=track==='writing'?r.protocols?.writingId==='work-writing-12-v1':r.generalDefinition?supportedDefinition(r):r.protocols?.generalId===legacy;
-    let group=groups.get(key);if(!group){group={key,label:track==='writing'?`中文写作 · ${r.protocols?.writingId??'未知协议'}`:r.generalDefinition&&known?`${r.generalDefinition.label} · ${r.protocols.generalId}`:r.protocols?.generalId===legacy&&!r.generalDefinition?'通用基线 · 905题':`未知协议 · ${r.protocols?.generalId??r.runId}`,known,rows:[]};groups.set(key,group);}
+    let group=groups.get(key);if(!group){group={key,label:track==='writing'?`中文写作 · ${r.protocols?.writingId??'未知协议'}`:r.generalDefinition&&known?`${generalTierLabel(r)} · ${r.tracks.general!.required}题`:r.protocols?.generalId===legacy&&!r.generalDefinition?'通用基线 · 905题':`未知协议 · ${r.protocols?.generalId??r.runId}`,known,rows:[]};groups.set(key,group);}
     const metric=r.metrics.tracks[track]?.answer,keys=track==='writing'?['faithfulness','logic','coverage','concision','naturalness']:r.generalDefinition?['knowledge','math','instructions','coding']:['tiny-mmlu','tiny-gsm8k','ifeval','humaneval-plus'];
     const condition=metadata.runs.find(x=>x.runId===r.runId&&x.revision===r.revision),judges=r.judges.filter(j=>j.itemIds.length>0);
     group.rows.push({protocolKnown:known,configKey:targetKey(r.target),runId:r.runId,target:r.target,completedAt:r.tracks[track]?.completedAt??null,score:finite(r.tracks[track]?.score,100),dimensions:keys.map(k=>known?finite(r.tracks[track]?.measures[k]?.score,track==='writing'?4:100):null),

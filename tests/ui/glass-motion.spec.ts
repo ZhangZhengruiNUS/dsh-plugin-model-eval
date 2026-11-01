@@ -38,14 +38,14 @@ test('reduced transparency yields opaque surfaces without losing content',async(
 
 test('high contrast retains selected controls and readable dialog actions',async({page})=>{
   await page.emulateMedia({forcedColors:'active'});await page.goto('/');await page.getByRole('tab',{name:'中文写作',exact:true}).click();await aligned(page.getByRole('tablist',{name:'评测内容'}));await page.getByRole('button',{name:'新建评测',exact:true}).click();await expect(page.getByRole('dialog').getByRole('button',{name:'取消',exact:true})).toBeVisible();
-  await page.screenshot({path:'docs/evidence/ui/alpha.8/forced-colors.png',animations:'disabled'});
+  await page.screenshot({path:'.local/ui-regression/alpha.8/forced-colors.png',animations:'disabled'});
 });
 
 for(const theme of ['light','dark'] as const)for(const width of [1440,390])test(`glass material ${width} ${theme}`,async({page})=>{
   const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.setViewportSize({width,height:width===1440?900:844});await page.emulateMedia({colorScheme:theme});await page.goto('/');await expect(page.getByRole('table')).toBeVisible();await aligned(page.getByRole('navigation'));await aligned(page.getByRole('tablist',{name:'评测内容'}));
   expect(await page.locator('.me-comparison').evaluate(e=>getComputedStyle(e).backdropFilter)).toBe('none');
-  await page.screenshot({path:`docs/evidence/ui/alpha.8/compare-${width}-${theme}.png`,fullPage:true,animations:'disabled'});
-  await page.getByRole('button',{name:'查看报告 Atlas-32B-Instruct',exact:true}).first().click();await expect(page.getByRole('dialog')).toBeVisible();await aligned(page.getByRole('tablist',{name:'查看报告'}));await page.screenshot({path:`docs/evidence/ui/alpha.8/report-${width}-${theme}.png`,animations:'disabled'});
+  await page.screenshot({path:`.local/ui-regression/alpha.8/compare-${width}-${theme}.png`,fullPage:true,animations:'disabled'});
+  await page.getByRole('button',{name:'查看报告 Atlas-32B-Instruct',exact:true}).first().click();await expect(page.getByRole('dialog')).toBeVisible();await aligned(page.getByRole('tablist',{name:'查看报告'}));await page.screenshot({path:`.local/ui-regression/alpha.8/report-${width}-${theme}.png`,animations:'disabled'});
   await page.keyboard.press('Escape');expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);expect(errors).toEqual([]);
   await expect.poll(()=>page.locator('.model-eval').evaluate(e=>e.getAnimations({subtree:true}).filter(a=>a.playState==='running').length)).toBe(0);
 });

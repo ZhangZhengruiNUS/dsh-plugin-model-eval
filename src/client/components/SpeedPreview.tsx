@@ -1,6 +1,6 @@
 import {zh as t} from '../locales.ts';
 import * as React from 'react';import type {ClientApi} from '../api.ts';import {Button} from '../ui.tsx';import type {ActivityView} from '../../jobs/activity.ts';import type {SpeedSession} from '../../estimation/contracts.ts';import {estimateLabels,formatEstimate,speedUsage} from '../estimation-view.ts';import {formatElapsed} from '../batch-metrics.ts';
-export interface SpeedPayload {handles:string[];tracks:string[];execution:{concurrency:number;callTimeoutMs:number};judgeHandle?:string}
+export interface SpeedPayload {generalId?:string;handles:string[];tracks:string[];execution:{concurrency:number;callTimeoutMs:number};judgeHandle?:string}
 interface Props {tracks:readonly string[];draftKey:string;request:()=>Promise<SpeedPayload>;api:ClientApi;disabled:boolean;configCount:number;activity?:ActivityView;onAdopt:(id:string|undefined)=>void;onRunningChange:(running:boolean,starting?:boolean)=>void;registerCancel:(handler:()=>Promise<boolean>)=>void;onRefresh:()=>void}
 const terminal=(r:SpeedSession|undefined)=>!!r&&!['running','stopping'].includes(r.status);
 export function SpeedPreview(p:Props){const [budget,setBudget]=React.useState(1),[row,setRow]=React.useState<SpeedSession>(),[creating,setCreating]=React.useState(false),[error,setError]=React.useState(''),[now,setNow]=React.useState(Date.now);const alive=React.useRef(true),generation=React.useRef(0),measuredKey=React.useRef<string>(),id=React.useRef<string>(),starting=React.useRef(false);

@@ -6,11 +6,11 @@ type View='compare'|'jobs'|'history'|'settings';
 export function App({api:provided}:{api?:ClientApi}){const api=React.useMemo(()=>provided??createClientApi(),[provided]),[view,setView]=React.useState<View>('compare'),[data,setData]=React.useState<ViewData>(),[error,setError]=React.useState(''),[busy,setBusy]=React.useState(false),[newRun,setNewRun]=React.useState(false),[report,setReport]=React.useState<{id:string;rootId:string;rootEpoch:number;openId:string}>();const sequence=React.useRef(0),alive=React.useRef(true);
   const comparisonCache=React.useRef<{signature:string;snapshot:ComparisonMetadata}>();
   const refresh=React.useCallback(async()=>{const seq=++sequence.current;try{
-    const [status,models,runs,queue]=await Promise.all([api<ViewData['status']>('status'),api<ViewData['models']>('catalog'),api<ViewData['runs']>('history'),api<ViewData['queue']>('queue')]);
+    const [status,models,runs,queue,protocols]=await Promise.all([api<ViewData['status']>('status'),api<ViewData['models']>('catalog'),api<ViewData['runs']>('history'),api<ViewData['queue']>('queue'),api<ViewData['protocols']>('protocolCatalog')]);
     const signature=JSON.stringify([status.rootId,status.rootEpoch,runs.map(r=>[r.runId,r.revision]).sort()]);let comparison:ComparisonMetadata|undefined,comparisonError:string|undefined;
     try{comparison=comparisonCache.current?.signature===signature?comparisonCache.current.snapshot:await api<ComparisonMetadata>('comparisonMetadata');if(comparison.rootId!==status.rootId||comparison.rootEpoch!==status.rootEpoch){comparison=undefined;comparisonError='数据目录正在切换，请刷新后重试。';}}
     catch(e){comparisonError=(e as Error).message;}
-    if(alive.current&&seq===sequence.current){if(comparison)comparisonCache.current={signature,snapshot:comparison};else comparisonCache.current=undefined;setData({status,models,runs,queue,...(comparison?{comparison}:{}),...(comparisonError?{comparisonError}:{})});setError('');}
+    if(alive.current&&seq===sequence.current){if(comparison)comparisonCache.current={signature,snapshot:comparison};else comparisonCache.current=undefined;setData({status,models,runs,queue,protocols,...(comparison?{comparison}:{}),...(comparisonError?{comparisonError}:{})});setError('');}
   }catch(e){if(alive.current&&seq===sequence.current)setError((e as Error).message);}},[api]);
   React.useEffect(()=>{setReport(undefined);},[data?.status.rootId,data?.status.rootEpoch]);
   React.useEffect(()=>{alive.current=true;void refresh();return()=>{alive.current=false;sequence.current++;};},[refresh]);
