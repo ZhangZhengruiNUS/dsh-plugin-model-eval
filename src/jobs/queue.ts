@@ -6,12 +6,13 @@ import {join} from 'node:path';
 import type {EvaluationRequest,GeneratedAnswer,GradeResult,HostAdapter,JudgeSnapshot,PromptMessage,ProtocolSet,Question,RunSummary,TechnicalError,Track} from '../contracts.ts';
 import {fingerprintTarget} from '../model/identity.ts';
 import {readRecord,writeRecord} from '../history/atomic.ts';
-import type {AttemptRecord,HistoryStore,ItemInput,ItemRecord} from '../history/store.ts';
+import type {AttemptRecord,HistoryStore,HistoryTransaction,ItemInput,ItemRecord} from '../history/store.ts';
 import {refreshRunSummary} from '../evaluation/aggregate-run.ts';
 import {buildPrompt} from '../evaluation/grade-general.ts';
 import type {ProtocolRegistry,ResolvedProtocolSet} from '../evaluation/tier-contracts.ts';
 import {identityHash} from '../evaluation/protocol-identity.ts';
 import {validateGeneralDefinition} from '../evaluation/definitions.ts';
+import {verifyReadyReuse} from '../history/reuse.ts';
 import {runAttempt,type RetryClock} from './attempts.ts';
 import {summarizeMetrics} from './metrics.ts';
 export interface BatchView {batchId:string;runIds:string[];status:'queued'|'running'|'paused'|'pending'|'completed';createdAt:string;estimate?:EstimateSnapshot;lastError?:TechnicalError;judge?:JudgeSnapshot;execution:EvaluationRequest['execution']}
@@ -20,11 +21,12 @@ export interface GradeServices {
   general(question:Question,answer:GeneratedAnswer,signal:AbortSignal,protocol:ResolvedProtocolSet):Promise<GradeResult>;
   writing?:{build(question:Question,answer:GeneratedAnswer):readonly PromptMessage[];parse(question:Question,answer:GeneratedAnswer,judge:JudgeSnapshot,candidate:GeneratedAnswer):GradeResult;local(question:Question,answer:GeneratedAnswer):GradeResult|undefined};
 }
-export interface EvaluationQueue {saveEstimate(batchId:string,estimate:EstimateSnapshot):Promise<void>;enqueue(request:EvaluationRequest):Promise<BatchView>;pause(batchId:string):Promise<void>;resume(batchId:string,judge?:JudgeSnapshot):Promise<void>;snapshot():QueueView;idle():Promise<void>;dispose():Promise<void>}
+export interface EvaluationQueue {attachImported(batch:BatchView,runId:string,operationId:string):Promise<void>;saveEstimate(batchId:string,estimate:EstimateSnapshot):Promise<void>;enqueue(request:EvaluationRequest):Promise<BatchView>;pause(batchId:string):Promise<void>;resume(batchId:string,judge?:JudgeSnapshot):Promise<void>;snapshot():QueueView;idle():Promise<void>;dispose():Promise<void>}
 const failure=(code:string,phase:TechnicalError['phase']='storage',retryable=false):TechnicalError=>({code,phase,retryable,message:phase==='storage'?'本地记录无法完成保存，已停止派发。':'本轮评测需要处理后继续。'});
 const fail=(code:string):never=>{throw Object.assign(new Error(code),{code});};
 export function createQueue(store:HistoryStore,adapter:HostAdapter,registry:ProtocolRegistry,graders:GradeServices,options:{clock?:RetryClock;onChange?:(runId:string)=>void}={}):EvaluationQueue {
   const batches=new Map<string,BatchView>(),recoveryIssues:NonNullable<QueueView['recoveryIssues']>=[];let active:string|undefined,controller:AbortController|undefined,running:Promise<void>=Promise.resolve(),disposed=false,admitting=false,gradingTail:Promise<unknown>=Promise.resolve();
+  const attaching=new Map<string,{identity:string;promise:Promise<void>}>();
   const metadata=join(store.root,'history','maintenance');
   let admissionDone:Promise<void>=Promise.resolve();
   function reserveAdmission():()=>void{
@@ -37,9 +39,21 @@ export function createQueue(store:HistoryStore,adapter:HostAdapter,registry:Prot
       try{const batch=await readRecord<BatchView>(join(metadata,file));if(!Array.isArray(batch.runIds))continue;batch.status=batch.status==='running'?'paused':batch.status;batches.set(batch.batchId,batch);}catch{/* service diagnostics expose invalid metadata; no automatic calls */}
     }
     if(store.writable)for(const run of await store.listSummaries())if(run.details==='available')try{await refresh(run.runId);}catch{recoveryIssues.push({runId:run.runId,code:'SUMMARY_REBUILD_FAILED'});}
+    // A crash after the import commit but before attach leaves a recoverable paused batch, never an automatic call.
+    if(store.writable)for(const file of await readdir(metadata))if(/^reuse-[a-f0-9-]{36}\.json$/.test(file)){
+      let runId:string|undefined;
+      try{const operation=await readRecord<import('../contracts.ts').ReuseImportOperation>(join(metadata,file));runId=operation.destinationRunId;if(operation.state!=='ready')continue;
+        await store.exclusive(async tx=>{const {manifest,summary}=await tx.getRun(operation.destinationRunId);if(summary.details!=='available')return;await verifyReadyReuse(tx,store.rootId,operation.operationId,manifest.runId);
+          const existing=batches.get(manifest.batchId);if(existing){if(existing.runIds.length!==1||existing.runIds[0]!==manifest.runId)fail('REUSE_IMPORT_MISMATCH');return;}
+          if(!manifest.execution)fail('REUSE_EXECUTION_MISSING');const batch:BatchView={batchId:manifest.batchId,runIds:[manifest.runId],createdAt:manifest.createdAt,execution:manifest.execution!,status:summary.tracks.general?.status==='completed'?'completed':'paused'};
+          await writeRecord(join(tx.maintenanceDirectory,`batch-${batch.batchId}.json`),batch);batches.set(batch.batchId,batch);
+        });
+      }catch{if(runId)recoveryIssues.push({runId,code:'REUSE_IMPORT_NOT_READY'});}
+    }
   })();
   async function persist(batch:BatchView):Promise<void>{await store.exclusive(async tx=>{await writeRecord(join(tx.maintenanceDirectory,`batch-${batch.batchId}.json`),batch);});}
-  async function resolvedRun(manifest:import('../history/store.ts').RunManifest,summary:RunSummary):Promise<ResolvedProtocolSet>{
+  async function resolvedRun(manifest:import('../history/store.ts').RunManifest,summary:RunSummary,transaction?:HistoryTransaction):Promise<ResolvedProtocolSet>{
+    if(manifest.reuseOrigin){if(transaction)await verifyReadyReuse(transaction,store.rootId,manifest.reuseOrigin.operationId,manifest.runId);else await store.exclusive(tx=>verifyReadyReuse(tx,store.rootId,manifest.reuseOrigin!.operationId,manifest.runId));}
     const protocol=await registry.resolve(manifest.protocols),tracks=Object.keys(summary.tracks);
     if(protocol.generalId!==manifest.protocols.generalId||protocol.writingId!==manifest.protocols.writingId||protocol.resourceVersion!==manifest.protocols.resourceVersion)fail('PROTOCOL_CHANGED');
     if(tracks.some(t=>t!=='general'&&t!=='writing'))fail('PROTOCOL_ITEMS_CHANGED');
@@ -124,10 +138,24 @@ export function createQueue(store:HistoryStore,adapter:HostAdapter,registry:Prot
       const summaries=await Promise.all(batch.runIds.map(id=>store.getRun(id)));
       batch.status=summaries.every(x=>Object.values(x.summary.tracks).every(t=>t.status==='completed'))?'completed':batch.lastError?'pending':'paused';
     }catch(error){batch.status='pending';const code=(error as {code?:string;message?:string}).code??(error as Error).message;batch.lastError??=failure(/^[A-Z][A-Z0-9_]{1,70}$/.test(code??'')?code!:'QUEUE_STOPPED');controller?.abort();}
-    finally{active=undefined;await persist(batch).catch(()=>{batch.lastError=failure('STORAGE_FAILED');});}
+    finally{try{await persist(batch).catch(()=>{batch.lastError=failure('STORAGE_FAILED');});}finally{active=undefined;}}
   }
   function start(batch:BatchView):void{if(disposed)fail('QUEUE_DISPOSED');if(active)fail('QUEUE_BUSY');active=batch.batchId;controller=new AbortController();running=execute(batch);}
   const queue:EvaluationQueue={async saveEstimate(id,estimate){const batch=batches.get(id);if(!batch)return;batch.estimate=structuredClone(estimate);await persist(batch);},snapshot(){return {batches:structuredClone([...batches.values()]),recoveryIssues:structuredClone(recoveryIssues),...(active?{activeBatchId:active}:{})};},async idle(){await ready;await admissionDone;await running;},
+    async attachImported(batch,runId,operationId){
+      const identity=identityHash({batch,runId,operationId}),pending=attaching.get(operationId);if(pending){if(pending.identity!==identity)fail('REUSE_IMPORT_MISMATCH');return pending.promise;}
+      const promise=(async()=>{
+      await ready;if(disposed)fail('QUEUE_DISPOSED');if(!store.writable)fail('HISTORY_READ_ONLY');
+      async function validate(tx:HistoryTransaction){
+        const operation=await verifyReadyReuse(tx,store.rootId,operationId,runId),{manifest,summary}=await tx.getRun(runId);
+        if(batch.batchId!==operation.destinationBatchId||batch.runIds.length!==1||batch.runIds[0]!==runId||batch.createdAt!==manifest.createdAt||identityHash(batch.execution)!==identityHash(manifest.execution)||batch.judge||manifest.requiredItems.some(q=>q.track!=='general'))fail('REUSE_IMPORT_MISMATCH');
+        await resolvedRun(manifest,summary,tx);if(disposed)fail('QUEUE_DISPOSED');return {manifest,summary};
+      }
+      const existing=batches.get(batch.batchId);
+      if(existing){await store.exclusive(async tx=>{await validate(tx);if(identityHash(existing.runIds)!==identityHash(batch.runIds)||identityHash(existing.execution)!==identityHash(batch.execution))fail('REUSE_IMPORT_MISMATCH');});return;}
+      const release=reserveAdmission();try{await store.exclusive(async tx=>{await validate(tx);const admitted:BatchView={batchId:batch.batchId,runIds:[runId],createdAt:batch.createdAt,execution:structuredClone(batch.execution),status:'queued'};await writeRecord(join(tx.maintenanceDirectory,`batch-${admitted.batchId}.json`),admitted);batches.set(admitted.batchId,admitted);start(admitted);});}finally{release();}
+      })().finally(()=>attaching.delete(operationId));attaching.set(operationId,{identity,promise});return promise;
+    },
     async enqueue(request){await ready;if(disposed)fail('QUEUE_DISPOSED');if(active||admitting)fail('QUEUE_BUSY');if(!store.writable)fail('HISTORY_READ_ONLY');
       if(!request.targets.length||!request.tracks.length||new Set(request.tracks).size!==request.tracks.length||request.tracks.some(x=>!['general','writing'].includes(x)))fail('INVALID_BATCH');
       if(![1,2,3,4].includes(request.execution.concurrency)||!Number.isInteger(request.execution.callTimeoutMs)||request.execution.callTimeoutMs<1000||request.execution.callTimeoutMs>1800000)fail('INVALID_EXECUTION');
@@ -143,7 +171,7 @@ export function createQueue(store:HistoryStore,adapter:HostAdapter,registry:Prot
     },
     async pause(id){await ready;if(active!==id)fail('BATCH_NOT_ACTIVE');controller?.abort();await running;},
     async resume(id,judge){await ready;if(disposed)fail('QUEUE_DISPOSED');if(active||admitting)fail('QUEUE_BUSY');const batch=batches.get(id);if(!batch)return fail('BATCH_NOT_FOUND');
-      const release=reserveAdmission();try{await store.exclusive(async tx=>{if(active)fail('QUEUE_BUSY');if(disposed)fail('QUEUE_DISPOSED');for(const id of batch.runIds){const {summary,manifest}=await tx.getRun(id);if(!summary.resumeAllowed||summary.details!=='available')fail('RUN_CANNOT_RESUME');await resolvedRun(manifest,summary);if(disposed)fail('QUEUE_DISPOSED');}
+      const release=reserveAdmission();try{await store.exclusive(async tx=>{if(active)fail('QUEUE_BUSY');if(disposed)fail('QUEUE_DISPOSED');for(const id of batch.runIds){const {summary,manifest}=await tx.getRun(id);if(!summary.resumeAllowed||summary.details!=='available')fail('RUN_CANNOT_RESUME');await resolvedRun(manifest,summary,tx);if(disposed)fail('QUEUE_DISPOSED');}
         if(judge){fingerprintTarget(judge.target);if(batch.judge&&(judge.rubricId!==batch.judge.rubricId||judge.promptId!==batch.judge.promptId))fail('JUDGE_PROTOCOL_CHANGED');batch.judge=structuredClone(judge);}start(batch);});}finally{release();}},
     async dispose(){disposed=true;controller?.abort();await ready;await admissionDone;controller?.abort();await running;},
   };return queue;

@@ -1,4 +1,4 @@
-export type ActivityKind='evaluation'|'speed-preview'|'prepare'|'root-change'|'cleanup';
+export type ActivityKind='evaluation'|'speed-preview'|'prepare'|'root-change'|'cleanup'|'upgrade';
 export interface ActivityView {kind:ActivityKind;id:string;state:'running'|'stopping'|'faulted';errorCode?:string}
 export interface ActivityLease {identify(id:string):void;stopping():void;fault(code:string):void;release():void}
 export function createActivityGate(){

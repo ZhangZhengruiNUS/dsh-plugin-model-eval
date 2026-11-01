@@ -42,15 +42,24 @@ export async function assertNoPendingReuse(tx:HistoryTransaction):Promise<void>{
     const journal=await readRecord<Journal>(path);if(!['copying','ready','failed'].includes(journal.state))return fail('REUSE_JOURNAL_CORRUPT');if(journal.state==='copying')return fail('REUSE_RECOVERY_REQUIRED');
   }
 }
+async function verifyCopies(tx:HistoryTransaction,journal:Journal):Promise<void>{
+  const {manifest,summary}=await tx.getRun(journal.destinationRunId);
+  const {schemaVersion,runId,createdAt,...input}=manifest;
+  if(identityHash(input)!==identityHash(journal.manifest)||createdAt!==journal.createdAt)return fail('REUSE_DESTINATION_CHANGED');
+  if(summary.details!=='available')return;
+  for(const pin of journal.items){const item=await durableItem(tx,journal.destinationRunId,pin.id);if(!item||identityHash(payload(item))!==pin.copyHash)return fail('REUSE_COPY_CORRUPT');}
+}
+/** Queue admission must check the durable commit, matching run identity, and every imported copy. */
+export async function verifyReadyReuse(tx:HistoryTransaction,rootId:string,operationId:string,runId:string):Promise<ReuseImportOperation>{
+  const journal=await readJournal(tx,rootId,operationId);
+  if(!journal||journal.state!=='ready'||journal.destinationRunId!==runId)return fail('REUSE_IMPORT_NOT_READY');
+  const {manifest,summary}=await tx.getRun(runId);
+  if(summary.details!=='available'||!summary.resumeAllowed)return fail('REUSE_DETAILS_UNAVAILABLE');
+  if(manifest.reuseOrigin?.sourceRunId!==journal.sourceRunId||identityHash(manifest.protocols)!==identityHash(journal.deepRefs)||reuseTargetBinding(manifest.target)?.hash!==journal.targetBindingHash)return fail('REUSE_IMPORT_MISMATCH');
+  try{await verifyCopies(tx,journal);}catch{return fail('REUSE_COPY_CORRUPT');}return view(journal);
+}
 export function createReuseHistory(store:HistoryStore,options:{checkpoint?:(stage:'journal'|'created'|'copied'|'before-ready',index?:number)=>Promise<void>}={}){
   const persist=(tx:HistoryTransaction,journal:Journal)=>writeRecord(join(tx.maintenanceDirectory,`reuse-${journal.operationId}.json`),journal);
-  async function verifyCopies(tx:HistoryTransaction,journal:Journal):Promise<void>{
-    const {manifest,summary}=await tx.getRun(journal.destinationRunId);
-    const {schemaVersion,runId,createdAt,...input}=manifest;
-    if(identityHash(input)!==identityHash(journal.manifest)||createdAt!==journal.createdAt)return fail('REUSE_DESTINATION_CHANGED');
-    if(summary.details!=='available')return; // A ready child can be deliberately cleaned; never reopen its details.
-    for(const pin of journal.items){const item=await durableItem(tx,journal.destinationRunId,pin.id);if(!item||identityHash(payload(item))!==pin.copyHash)return fail('REUSE_COPY_CORRUPT');}
-  }
   async function apply(tx:HistoryTransaction,journal:Journal):Promise<UpgradeCommit>{
     if(journal.state==='failed')return fail(journal.errorCode??'REUSE_IMPORT_FAILED');
     if(journal.state==='ready'){await verifyCopies(tx,journal);return committed(journal);}

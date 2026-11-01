@@ -3,6 +3,7 @@ import type {TargetSnapshot,RunSummary} from '../../src/contracts.ts';
 import type {RunManifest,ItemRecord,HistoryStore} from '../../src/history/store.ts';
 import {makeTierFixture} from './tier-fixture.ts';
 import {identityHash} from '../../src/evaluation/protocol-identity.ts';
+import {summarizeMetrics} from '../../src/jobs/metrics.ts';
 export const reuseTarget=():TargetSnapshot=>({scopeId:'fixture-profile',providerId:'fixture-provider',modelId:'fixture-model',routeTarget:{state:'known',value:'https://fixture.invalid/v1',source:'adapter'},controls:{temperature:{state:'known',value:.4,source:'adapter'},maxTokens:{state:'unset'}},origin:{adapterInstance:'ephemeral-a',adapterEpoch:0,settingsNs:'fixture-provider-settings',settingsRevision:7}});
 export function reuseFixture(){
   const light=makeTierFixture('light'),deep=makeTierFixture('deep');
@@ -19,7 +20,8 @@ export async function persistReuseSource(store:HistoryStore){
   const run=await store.createRun(input);
   for(const item of fixture.source.items){const {schemaVersion,revision,sequence,updatedAt,answerCommittedAt,gradeCommittedAt,...value}=item;await store.saveItem(run.runId,0,value);}
   const saved=await store.getRun(run.runId);
-  await store.updateSummary(run.runId,saved.summary.revision,s=>{s.tracks.general=fixture.source.summary.tracks.general!;s.completedAt=fixture.source.summary.completedAt!;s.metrics=fixture.source.summary.metrics;});
+  const metrics=summarizeMetrics((await store.listItems(run.runId)).flatMap(x=>x.attempts),fixture.source.summary.metrics.activeIntervals);
+  await store.updateSummary(run.runId,saved.summary.revision,s=>{s.tracks.general=fixture.source.summary.tracks.general!;s.completedAt=fixture.source.summary.completedAt!;s.metrics=metrics;});
   const source={...await store.getRun(run.runId),items:await store.listItems(run.runId),protocol:fixture.source.protocol};
   return {...fixture,source};
 }
