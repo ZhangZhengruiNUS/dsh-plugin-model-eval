@@ -14,6 +14,7 @@ import {readRecord,writeRecord} from './history/atomic.ts';import {openHistory,t
 import {createQueue,type EvaluationQueue} from './jobs/queue.ts';import {gradeGeneral} from './evaluation/grade-general.ts';import {createCodeRunner} from './runtime/runner.ts';import {createRuleGrader} from './runtime/rule-grader.ts';import {createWritingGrader,type WritingRubric} from './writing/judge.ts';
 import type {Action} from './host/api.ts';import {fingerprintTarget} from './model/identity.ts';import {RESOURCE_MANIFEST_SHA256} from './resources/pins.ts';
 import {selfcheckEnvironment} from './resources/selfcheck.ts';
+import {readComparisonMetadata} from './comparison/project.ts';
 const fail=(code:string):never=>{throw Object.assign(new Error(code),{code});};
 export interface ServiceDependencies {adapter:HostAdapter;packageResources:string;scopeId:string;initialRoot?:string;controlRoot?:string;clock?:SpeedClock;prepareEnvironment?:(rootPath:string)=>Promise<PreparedEnvironment>}
 export async function createEvaluationService(deps:ServiceDependencies) {
@@ -21,7 +22,7 @@ export async function createEvaluationService(deps:ServiceDependencies) {
   const control=(await switchRoot(deps.controlRoot??deps.initialRoot??defaultRoot(),{writing:false})).path;
   const preference=join(control,`selection-${createHash('sha256').update(deps.scopeId).digest('hex').slice(0,24)}.json`);
   let selected=deps.initialRoot??control;try{const old=await readRecord<{root:string}>(preference);if(typeof old.root==='string')selected=old.root;}catch(error){if((error as NodeJS.ErrnoException).code!=='ENOENT')fail('SELECTION_CORRUPT');}
-  let store:HistoryStore,queue:EvaluationQueue,cleanup:ReturnType<typeof createCleanup>,environment:PreparedEnvironment|undefined,preparing=false,disposed=false;
+  let store:HistoryStore,queue:EvaluationQueue,cleanup:ReturnType<typeof createCleanup>,environment:PreparedEnvironment|undefined,preparing=false,disposed=false,rootEpoch=0;
   const clock=deps.clock??speedClock,activity=createActivityGate();let evaluationLease:ActivityLease|undefined,speedLease:ActivityLease|undefined,speedHistory:SpeedHistory,speedCleanup:ReturnType<typeof createSpeedCleanup>,speed:ReturnType<typeof createSpeedRunner>,live:ReturnType<typeof createLiveEstimator>|undefined,evaluationDone=Promise.resolve(),speedDone=Promise.resolve();
   async function prepareEnvironment(){if(deps.prepareEnvironment)return deps.prepareEnvironment(store.root);const candidate=await prepareResources(store.root,manifest,deps.packageResources);await selfcheckEnvironment(candidate.resourcesPath);return candidate;}
   let mutations:Promise<unknown>=Promise.resolve();const handles=new Map<string,TargetSnapshot>();
@@ -31,7 +32,7 @@ export async function createEvaluationService(deps:ServiceDependencies) {
     return result;
   }
   async function bind(path:string):Promise<void>{
-    const selection=await switchRoot(path,{writing:false});store=await openHistory(selection.path);live=undefined;
+    const selection=await switchRoot(path,{writing:false});store=await openHistory(selection.path);rootEpoch++;live=undefined;
     try{
       cleanup=createCleanup(store,()=>queue?.snapshot().activeBatchId);speedHistory=createSpeedHistory(store);speedCleanup=createSpeedCleanup(store,speedHistory);
       if(store.writable){await cleanup.recoverCleanup();await store.recover();await speedHistory.recoverInterrupted();await speedCleanup.recover();}
@@ -63,7 +64,13 @@ export async function createEvaluationService(deps:ServiceDependencies) {
   async function operate(action:Action,payload:Record<string,unknown>):Promise<unknown> {
     if(disposed)fail('SERVICE_DISPOSED');
     switch(action){
-      case 'status':return {apiVersion:1,ready:true,prepared:!!environment,preparing,writable:store.writable,rootPath:store.root,resourceVersion:manifest.resourceVersion,generalId:manifest.generalId,writingId:manifest.writingId,packageBytes:manifest.files.reduce((n,x)=>n+x.size,0),hostVerification:'unverified',activeActivity:activity.snapshot()};
+      case 'status':return {apiVersion:1,ready:true,rootId:store.rootId,rootEpoch,prepared:!!environment,preparing,writable:store.writable,rootPath:store.root,resourceVersion:manifest.resourceVersion,generalId:manifest.generalId,writingId:manifest.writingId,packageBytes:manifest.files.reduce((n,x)=>n+x.size,0),hostVerification:'unverified',activeActivity:activity.snapshot()};
+      case 'comparisonMetadata':{
+        const captured=store,epoch=rootEpoch,stale=()=>disposed||store!==captured||rootEpoch!==epoch||activity.snapshot()?.kind==='root-change';
+        if(stale())return fail('COMPARISON_STALE');
+        try{const result=await readComparisonMetadata(captured,epoch);if(stale())return fail('COMPARISON_STALE');return result;}
+        catch(error){if(stale())return fail('COMPARISON_STALE');throw error;}
+      }
       case 'catalog':return deps.adapter.catalog();
       case 'settings':return {rootPath:store.root,writable:store.writable,prepared:!!environment,preparing,bytes:environment?.bytes??0,execution:{concurrency:4,callTimeoutMs:300000},rubricId:rubric.id,judgePromptId:rubric.promptId};
       case 'snapshot':{
