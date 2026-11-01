@@ -9,9 +9,9 @@ export interface ResolvedProtocolSet extends ProtocolSet {descriptor:ProtocolDes
 export interface ProtocolRegistry {list():readonly ProtocolDescriptor[];resolve(refs:ProtocolRefs):Promise<ResolvedProtocolSet>;forNewRun(generalId:string):Promise<ResolvedProtocolSet>}
 export interface ProtocolCatalogItem {descriptor:ProtocolDescriptor;prepared:boolean;errorCode?:string}
 export interface ReuseEvidence {sourceRunId:string;sourceItemId:string;sourceRevision:number;sourceRecordHash:string;compatibility:QuestionCompatibility;sourceAnswerCommittedAt:string;sourceGradeCommittedAt:string;importedAt:string;sourceAttempts:readonly AttemptRecord[]}
-export interface UpgradeCheck {eligible:boolean;reasonCode?:string;sourceRunId:string;sourceRevision:number;sourceEvidenceHash:string;targetBindingHash:string;deepGeneralId:string;reusedItems:number;newItems:number}
+export interface UpgradeCheck {eligible:boolean;reasonCode?:string;sourceRunId:string;sourceRevision:number;sourceEvidenceHash:string;destinationEvidenceHash:string;targetBindingHash:string;deepGeneralId:string;reusedItems:number;newItems:number}
 export interface ReuseImportOperation {operationId:string;token:string;sourceRunId:string;destinationRunId:string;destinationBatchId:string;sourceRevision:number;sourceEvidenceHash:string;deepRefs:ProtocolRefs;targetBindingHash:string;state:'copying'|'ready'|'failed';copiedItemIds:string[];errorCode?:string}
-export interface ReuseOrigin {sourceRunId:string;sourceActivity:{scope:'source-run';tracks:readonly Track[];activeIntervals:RunMetrics['activeIntervals'];incompleteTiming:boolean};sourceCreatedAt?:string;sourceCompletedAt?:string}
+export interface ReuseOrigin {operationId:string;sourceRunId:string;sourceActivity:{scope:'source-run';tracks:readonly Track[];activeIntervals:RunMetrics['activeIntervals'];incompleteTiming:boolean};sourceCreatedAt?:string;sourceCompletedAt?:string}
 export interface ReuseSummary extends ReuseOrigin {reusedItems:number;sourceAnswerMetrics:PhaseMetrics}
 export interface UpgradePreview {token:string;expiresAt:string;check:UpgradeCheck}
 export interface UpgradeCommit {batchId:string;runId:string;operationId:string}

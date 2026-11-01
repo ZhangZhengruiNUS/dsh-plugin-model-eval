@@ -6,10 +6,12 @@ import {validateGeneralDefinition} from './definitions.ts';
 import {reuseTargetBinding} from '../model/reuse-identity.ts';
 export interface UpgradeSource {manifest:RunManifest;summary:RunSummary;items:readonly ItemRecord[];protocol:ResolvedProtocolSet}
 const publicQuestion=(q:Question)=>{const {grading,...value}=q;return value;};
+export const upgradeDestinationIdentity=(protocol:ResolvedProtocolSet)=>identityHash({descriptor:protocol.descriptor,items:protocol.items,compatibility:protocol.compatibility});
+export const upgradeSourceEvidence=(source:Pick<UpgradeSource,'manifest'|'summary'|'items'>)=>identityHash({manifest:source.manifest,revision:source.summary.revision,general:source.summary.tracks.general,items:source.manifest.generalDefinition!.domains.flatMap(d=>d.itemIds).map(id=>source.items.find(x=>x.itemId===id))});
 /** Pure and fail-closed; callers must re-read source records and current host configuration at commit. */
 export function checkUpgrade(source:UpgradeSource,deep:ResolvedProtocolSet,current:TargetSnapshot):UpgradeCheck{
   const {manifest,summary,items,protocol}=source;
-  const result:UpgradeCheck={eligible:false,sourceRunId:manifest.runId,sourceRevision:summary.revision,sourceEvidenceHash:'',targetBindingHash:'',deepGeneralId:deep.generalId,reusedItems:0,newItems:0};
+  const result:UpgradeCheck={eligible:false,sourceRunId:manifest.runId,sourceRevision:summary.revision,sourceEvidenceHash:'',destinationEvidenceHash:'',targetBindingHash:'',deepGeneralId:deep.generalId,reusedItems:0,newItems:0};
   const reject=(reasonCode:string):UpgradeCheck=>({...result,reasonCode});
   try{
     if(protocol.descriptor.general.tier!=='light'||deep.descriptor.general.tier!=='deep'||deep.descriptor.general.parentGeneralId!==protocol.generalId)return reject('UPGRADE_TIER_MISMATCH');
@@ -31,7 +33,7 @@ export function checkUpgrade(source:UpgradeSource,deep:ResolvedProtocolSet,curre
       if(!deepIds.has(id)||!question||!oldQuestion||!protocol.compatibility[id]||!deep.compatibility[id]||identityHash(protocol.compatibility[id])!==identityHash(deep.compatibility[id])||identityHash(oldQuestion)!==identityHash(question))return reject('UPGRADE_PROTOCOL_CHANGED');
       if(!item.answer?.complete||item.answer.error||item.grade?.kind!=='scored'||item.grade.track!=='general'||item.grade.itemId!==id||!item.answerCommittedAt||!item.gradeCommittedAt||!item.question||identityHash(item.question)!==identityHash(publicQuestion(oldQuestion)))return reject('UPGRADE_SOURCE_CORRUPT');
     }
-    result.sourceEvidenceHash=identityHash({manifest,revision:summary.revision,general:track,items:required});
+    result.sourceEvidenceHash=upgradeSourceEvidence(source);result.destinationEvidenceHash=upgradeDestinationIdentity(deep);
     return {...result,eligible:true,reusedItems:ids.length,newItems:deepIds.size-ids.length};
   }catch{return reject('UPGRADE_SOURCE_CORRUPT');}
 }

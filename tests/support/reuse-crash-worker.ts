@@ -1,0 +1,4 @@
+import {randomUUID} from 'node:crypto';import {openHistory} from '../../src/history/store.ts';import {createReuseHistory} from '../../src/history/reuse.ts';import {persistReuseSource} from './reuse-fixture.ts';import {checkUpgrade} from '../../src/evaluation/reuse-eligibility.ts';
+const store=await openHistory(process.argv[2]!),fixture=await persistReuseSource(store),token=randomUUID(),stage=process.argv[3];
+const reuse=createReuseHistory(store,{checkpoint:async(name,index)=>{if(name===stage&&(name!=='copied'||index===10)){process.stdout.write(JSON.stringify({operationId:token,sourceRunId:fixture.source.manifest.runId})+'\n');process.exit(79);}}});
+await reuse.import(checkUpgrade(fixture.source,fixture.deep,fixture.current),{token,target:fixture.current,protocol:fixture.deep,execution:{concurrency:4,callTimeoutMs:300000}});throw Error('CRASH_POINT_NOT_REACHED');

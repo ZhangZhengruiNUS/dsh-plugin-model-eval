@@ -23,6 +23,9 @@ export interface RecoveryReport {recoveredRunIds:string[];diagnostics:RecoveryDi
 interface RunRecord {manifest:RunManifest;summary:RunSummary}
 interface Cache extends RunRecord {items:Map<string,ItemRecord>;loaded:boolean}
 export interface HistoryTransaction {
+  createRun(input:RunManifestInput,identity?:{runId:string;createdAt:string}):Promise<RunSummary>;
+  saveItem(runId:string,expectedRevision:number,item:ItemInput):Promise<void>;
+  getItem(runId:string,itemId:string):Promise<ItemRecord|undefined>;listItems(runId:string):Promise<ItemRecord[]>;
   getRun(runId:string):Promise<RunRecord>;listSummaries():Promise<RunSummary[]>;
   updateSummary(runId:string,expectedRevision:number,change:(summary:RunSummary)=>void):Promise<RunSummary>;
   detailsDirectory(runId:string):Promise<string>;
@@ -108,35 +111,36 @@ export async function openHistory(root:string):Promise<HistoryStore> {
     }
     next.revision=before.revision+1;await persistSummary(run,next);return clone(next);
   }
-  const transaction:HistoryTransaction={async getRun(id){const run=await load(id);return {manifest:clone(run.manifest),summary:clone(run.summary)};},listSummaries:summaries,updateSummary:update,
-    async detailsDirectory(id){const run=await load(id);const path=join(runPath(id),'details');const stat=await lstat(path);if(!stat.isDirectory()||stat.isSymbolicLink()||await realpath(path)!==path)return fail('HISTORY_PATH_REJECTED');return path;},maintenanceDirectory:maintenance};
-  async function exclusive<T>(action:(tx:HistoryTransaction)=>Promise<T>):Promise<T> {
-    assertOpen();if(closing)return fail('HISTORY_CLOSED');if(!lease.writable)return fail('HISTORY_READ_ONLY');if(faulted)return fail('HISTORY_NEEDS_RECOVERY');
-    const result=tail.then(()=>{assertOpen();if(faulted)return fail('HISTORY_NEEDS_RECOVERY');return action(transaction);});tail=result.catch(()=>{});return result;
-  }
-  const store:HistoryStore={writable:lease.writable,root,rootId:inspection.marker.rootId,exclusive,
-    getRun:transaction.getRun,listSummaries:summaries,
-    async getItem(id,itemId){const run=await load(id);if(run.summary.details!=='available')return fail('DETAILS_UNAVAILABLE');const value=await readItem(run,itemId);return value?clone(value):undefined;},
-    async listItems(id){const run=await load(id);if(run.summary.details!=='available')return fail('DETAILS_UNAVAILABLE');return clone(await items(run));},
-    async createRun(input){return exclusive(async()=>{
+  async function getItem(id:string,itemId:string):Promise<ItemRecord|undefined>{const run=await load(id);if(run.summary.details!=='available')return fail('DETAILS_UNAVAILABLE');const value=await readItem(run,itemId);return value?clone(value):undefined;}
+  async function listItems(id:string):Promise<ItemRecord[]>{const run=await load(id);if(run.summary.details!=='available')return fail('DETAILS_UNAVAILABLE');return clone(await items(run));}
+  async function createRun(input:RunManifestInput,identity?:{runId:string;createdAt:string}):Promise<RunSummary>{
       fingerprintTarget(input.target);
       if(!input.requiredItems.length||new Set(input.requiredItems.map(x=>x.id)).size!==input.requiredItems.length)return fail('INVALID_RUN_MANIFEST');
       if(input.generalDefinition)validateGeneralDefinition(input.generalDefinition,input.requiredItems);
-      const id=randomUUID(),createdAt=new Date().toISOString(),path=runPath(id);await mkdir(path);
-      await directory(join(path,'details'));await directory(join(path,'details','items'));await directory(join(path,'details','attempts'));await directory(join(path,'diagnostics'));
+      const id=identity?.runId??randomUUID(),createdAt=identity?.createdAt??new Date().toISOString(),path=runPath(id);
       const manifest:RunManifest={...clone(input),schemaVersion:1,runId:id,createdAt};
+      if(identity){
+        try{const existing=await load(id);if(!isDeepStrictEqual(existing.manifest,manifest))return fail('REUSE_DESTINATION_CHANGED');return clone(existing.summary);}
+        catch(error){if(!missing(error)&&(error as Error).message!=='RUN_CORRUPT')throw error;}
+        await directory(path);
+      }else await mkdir(path);
+      await directory(join(path,'details'));await directory(join(path,'details','items'));await directory(join(path,'details','attempts'));await directory(join(path,'diagnostics'));
       const summary:RunSummary={runId:id,batchId:input.batchId,target:clone(input.target),revision:0,createdAt,tracks:{},details:'available',resumeAllowed:true,protocols:clone(input.protocols),...(input.generalDefinition?{generalDefinition:clone(input.generalDefinition)}:{}),judges:[],metrics:{tracks:{},activeIntervals:[],incompleteTiming:false},...(input.initialEstimation?{estimation:clone(input.initialEstimation)}:{})};
       for(const track of ['general','writing'] as const){const required=input.requiredItems.filter(x=>x.track===track).length;if(required)summary.tracks[track]={status:'queued',required,graded:0,answered:0,measures:{}};}
-      await writeRecord(join(path,'run.json'),manifest);await writeRecord(join(path,'summary.json'),summary);await writeRecord(join(path,'summary.backup.json'),summary);
+      for(const [file,value] of [['run.json',manifest],['summary.json',summary],['summary.backup.json',summary]] as const){
+        if(identity){try{const saved=await readRecord(join(path,file));if(!isDeepStrictEqual(saved,value))return fail('REUSE_DESTINATION_CHANGED');continue;}catch(error){if(!missing(error))throw error;}}
+        await writeRecord(join(path,file),value);
+      }
       cache.set(id,{manifest,summary,items:new Map(),loaded:true});return clone(summary);
-    });},
-    async saveItem(id,expected,input){await exclusive(async()=>{
+  }
+  async function saveItem(id:string,expected:number,input:ItemInput):Promise<void>{
       const run=await load(id);if(run.summary.details!=='available'||!run.summary.resumeAllowed)return fail('DETAILS_UNAVAILABLE');requireItem(run,input.itemId);
       const old=await readItem(run,input.itemId);if((old?.revision??0)!==expected)return fail('REVISION_CONFLICT');
       if(old?.answer?.complete&&!isDeepStrictEqual(old.answer,input.answer))return fail('IMMUTABLE_ANSWER');
       if(old?.grade?.kind==='scored'&&!isDeepStrictEqual(old.grade,input.grade))return fail('IMMUTABLE_GRADE');
       if(old?.grade?.kind==='scored'&&old.gradingObservation&&!isDeepStrictEqual(old.gradingObservation,input.gradingObservation))return fail('IMMUTABLE_GRADE');
       if(old?.question&&!isDeepStrictEqual(old.question,input.question))return fail('IMMUTABLE_QUESTION');
+      if(old?.reuse&&!isDeepStrictEqual(old.reuse,input.reuse))return fail('IMMUTABLE_REUSE');
       if(new Set(input.attempts.map(x=>x.attemptId)).size!==input.attempts.length)return fail('DUPLICATE_ATTEMPT');
       for(const previous of old?.attempts??[]){const next=input.attempts.find(x=>x.attemptId===previous.attemptId);if(!next||next.phase!==previous.phase||next.startedAt!==previous.startedAt||!isDeepStrictEqual(previous.judge,next.judge)||previous.observations&&!isDeepStrictEqual(previous.observations,next.observations)||previous.performance&&!isDeepStrictEqual(previous.performance,next.performance)||previous.performanceKey&&!isDeepStrictEqual(previous.performanceKey,next.performanceKey)||previous.status!=='started'&&next.status!==previous.status)return fail('IMMUTABLE_ATTEMPT');}
       const now=new Date().toISOString(),record:ItemRecord={...clone(input),schemaVersion:1,revision:expected+1,sequence:run.summary.revision+1,updatedAt:now,
@@ -149,7 +153,18 @@ export async function openHistory(root:string):Promise<HistoryStore> {
         for(const track of ['general','writing'] as const){const value=next.tracks[track];if(!value||value.status==='completed')continue;const allowed=new Set(run.manifest.requiredItems.filter(x=>x.track===track).map(x=>x.id));value.answered=current.filter(x=>allowed.has(x.itemId)&&x.answer?.complete).length;value.graded=current.filter(x=>allowed.has(x.itemId)&&x.grade?.kind==='scored').length;}
         await persistSummary(run,next);
       }catch(error){faulted=true;throw error;}
-    });},
+  }
+  const transaction:HistoryTransaction={createRun,saveItem,getItem,listItems,async getRun(id){const run=await load(id);return {manifest:clone(run.manifest),summary:clone(run.summary)};},listSummaries:summaries,updateSummary:update,
+    async detailsDirectory(id){const run=await load(id);const path=join(runPath(id),'details');const stat=await lstat(path);if(!stat.isDirectory()||stat.isSymbolicLink()||await realpath(path)!==path)return fail('HISTORY_PATH_REJECTED');return path;},maintenanceDirectory:maintenance};
+  async function exclusive<T>(action:(tx:HistoryTransaction)=>Promise<T>):Promise<T> {
+    assertOpen();if(closing)return fail('HISTORY_CLOSED');if(!lease.writable)return fail('HISTORY_READ_ONLY');if(faulted)return fail('HISTORY_NEEDS_RECOVERY');
+    const result=tail.then(()=>{assertOpen();if(faulted)return fail('HISTORY_NEEDS_RECOVERY');return action(transaction);});tail=result.catch(()=>{});return result;
+  }
+  const store:HistoryStore={writable:lease.writable,root,rootId:inspection.marker.rootId,exclusive,
+    getRun:transaction.getRun,listSummaries:summaries,
+    getItem,listItems,
+    createRun(input){return exclusive(tx=>tx.createRun(input));},
+    saveItem(id,expected,input){return exclusive(tx=>tx.saveItem(id,expected,input));},
     updateSummary(id,revision,change){return exclusive(()=>update(id,revision,change));},
     async recover(){
       assertOpen();if(!lease.writable)return fail('HISTORY_READ_ONLY');await tail;faulted=false;

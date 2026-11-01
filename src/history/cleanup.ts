@@ -2,6 +2,7 @@ import {createSpeedHistory} from './speed.ts';
 import {randomUUID,createHash} from 'node:crypto';import {readdir,lstat,realpath,readFile,unlink} from 'node:fs/promises';import {join,relative,resolve} from 'node:path';
 import type {HistoryStore,HistoryTransaction} from './store.ts';import {readRecord,writeRecord} from './atomic.ts';
 import {refreshRunSummary} from '../evaluation/aggregate-run.ts';
+import {assertNoPendingReuse} from './reuse.ts';
 export interface RunUsage {runId:string;batchId:string;totalBytes:number;detailBytes:number;summaryBytes:number}
 export interface HistoryUsage {historyBytes:number;resourceBytes:number;sharedBytes:number;runs:RunUsage[];previews?:{previewId:string;totalBytes:number}[];measurement:'file-bytes'}
 interface FileEntry {runId:string;path:string;size:number;sha256:string;state:'planned'|'deleting'|'deleted'|'missing'|'failed';error?:string}
@@ -30,6 +31,7 @@ export function createCleanup(store:HistoryStore,activeBatch:()=>string|undefine
     const previews=await createSpeedHistory(store).measure();return {historyBytes,resourceBytes,sharedBytes:Math.max(0,historyBytes-runs.reduce((n,x)=>n+x.totalBytes,0)-previews.reduce((n,x)=>n+x.totalBytes,0)),runs,previews,measurement:'file-bytes'};
   }
   async function previewCleanup(ids:string[]):Promise<CleanupPreview>{return store.exclusive(async tx=>{
+    await assertNoPendingReuse(tx);
     const batchIds=[...new Set(ids)];if(!batchIds.length)return fail('CLEANUP_EMPTY');if(batchIds.includes(activeBatch()??''))return fail('BATCH_ACTIVE');
     let selected=(await tx.listSummaries()).filter(x=>batchIds.includes(x.batchId));if(batchIds.some(id=>!selected.some(x=>x.batchId===id)))return fail('BATCH_NOT_FOUND');
     for(const run of selected)await refreshRunSummary(store,tx,run.runId);
@@ -56,6 +58,7 @@ export function createCleanup(store:HistoryStore,activeBatch:()=>string|undefine
     await persist(op);return structuredClone(op);
   }
   async function commitCleanup(token:string):Promise<CleanupOperation>{return store.exclusive(async tx=>{
+    await assertNoPendingReuse(tx);
     let op=await loadOperation(token);if(op)return apply(tx,op);
     const entry=previews.get(token);if(!entry)return fail('CLEANUP_TOKEN_INVALID');const {preview,files}=entry;
     if(preview.rootId!==store.rootId||Date.parse(preview.expiresAt)<Date.now())return fail('CLEANUP_PREVIEW_STALE');if(preview.batchIds.includes(activeBatch()??''))return fail('BATCH_ACTIVE');
@@ -70,7 +73,7 @@ export function createCleanup(store:HistoryStore,activeBatch:()=>string|undefine
   async function recoverCleanup():Promise<void>{
     for(const file of await readdir(join(store.root,'history','maintenance')))if(/^cleanup-[a-f0-9-]{36}\.json$/.test(file)){
       const token=file.slice(8,-5),op=await loadOperation(token);if(!op||op.status==='completed')continue;
-      await store.exclusive(async tx=>{for(const entry of op.files)if(entry.state==='deleting'){
+      await store.exclusive(async tx=>{await assertNoPendingReuse(tx);for(const entry of op.files)if(entry.state==='deleting'){
         try{await checkedFile(await tx.detailsDirectory(entry.runId),entry);entry.state='planned';}
         catch(error){if((error as NodeJS.ErrnoException).code==='ENOENT'){entry.state='missing';op.unconfirmedBytes+=entry.size;op.remainingBytes-=entry.size;}else {entry.state='failed';entry.error='RECOVERY_PATH_REJECTED';}}}
         // A process may have stopped between journal creation and summary publication.
