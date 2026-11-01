@@ -24,6 +24,7 @@ test('metadata_is_readonly_and_item_free',async()=>withTempRoot(async parent=>{
     assert.equal(JSON.stringify(result).includes('PRIVATE_QUESTION'),false);assert.equal(JSON.stringify(result).includes(path),false);
     assert.equal(await readFile(recordPath,'utf8'),before);
     const status:any=await service.dispatch('status',{});assert.equal(result.rootId,status.rootId);assert.equal(result.rootEpoch,status.rootEpoch);
+    const report:any=await service.dispatch('report',{runId:old.runId});assert.equal(report.rootId,status.rootId);assert.equal(report.rootEpoch,status.rootEpoch);
     const pendingRead=service.dispatch('comparisonMetadata' as any,{});
     const changing=service.dispatch('setRoot',{path:join(parent,'second')});
     await assert.rejects(service.dispatch('comparisonMetadata' as any,{}),{code:'COMPARISON_STALE'});

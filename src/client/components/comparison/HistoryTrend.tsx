@@ -1,0 +1,13 @@
+import * as React from 'react';import type {RunSummary,Track} from '../../../contracts.ts';import {judgeIdentity} from '../../comparison/model.ts';import {time} from '../../store.ts';
+export function HistoryTrend({runs,track,onReport}:{runs:RunSummary[];track:Track;onReport(runId:string):void}){
+  const width=410,height=160,L=30,R=20,T=17,B=30,valid=runs.filter(r=>Number.isFinite(r.tracks[track]?.score)&&r.tracks[track]!.score!>=0&&r.tracks[track]!.score!<=100),x=(i:number)=>L+i*(width-L-R)/Math.max(1,valid.length-1),y=(v:number)=>T+(100-v)/100*(height-T-B);
+  const changed=track==='writing'&&valid.some((r,i)=>i>0&&(!judgeIdentity(r)||judgeIdentity(r)!==judgeIdentity(valid[i-1]!)));
+  const labels=new Set(Array.from({length:Math.min(5,valid.length)},(_,i)=>Math.round(i*(valid.length-1)/Math.max(1,Math.min(5,valid.length)-1))));
+  return <div className="me-history-trend">{valid.length>=2?<svg className="me-history-svg" viewBox={`0 0 ${width} ${height}`} role="img" aria-label="同配置完整成绩趋势">
+    {[0,50,100].map(v=><g key={v}><line className="me-chart-grid" x1={L} x2={width-R} y1={y(v)} y2={y(v)}/><text className="me-chart-tick" x={L-7} y={y(v)+3} textAnchor="end">{v}</text></g>)}
+    {valid.map((r,i)=>{const value=r.tracks[track]!.score!,previous=valid[i-1],connect=previous&&(track!=='writing'||!!judgeIdentity(r)&&judgeIdentity(r)===judgeIdentity(previous));return <g key={r.runId}>{connect&&<line className="me-history-line" x1={x(i-1)} x2={x(i)} y1={y(previous.tracks[track]!.score!)} y2={y(value)}/>}<circle className="me-history-dot" cx={x(i)} cy={y(value)} r={3}/>{labels.has(i)&&<><text className="me-chart-tick" x={x(i)} y={y(value)+(value>85?17:-10)} textAnchor="middle">{value.toFixed(1)}</text><text className="me-chart-tick" x={x(i)} y={height-7} textAnchor="middle">{r.tracks[track]?.completedAt?new Date(r.tracks[track]!.completedAt!).toLocaleDateString('zh-CN',{month:'2-digit',day:'2-digit'}):'未记录'}</text></>}</g>;})}
+  </svg>:<p className="me-help">{valid.length?'当前只有一次完整成绩，暂不绘制趋势。':'当前没有可绘制的完整成绩。'}</p>}
+    {changed&&<p className="me-help">裁判变化，趋势不跨条件连线</p>}
+    <p className="me-help">同配置、同协议的 {runs.length} 次完整记录；主页显示最近一次完整成绩。</p><div className="me-history-records">{[...runs].reverse().map(r=><button key={r.runId} aria-label={`查看该轮报告 ${time(r.tracks[track]?.completedAt)}`} onClick={()=>onReport(r.runId)}><time>{time(r.tracks[track]?.completedAt)}</time><strong>{r.tracks[track]?.score?.toFixed(1)??'—'}分</strong>{track==='writing'&&<small>{r.judges.filter(j=>j.itemIds.length).map(j=>j.snapshot.target.modelId).join(' / ')||'裁判未记录'}</small>}{r.details!=='available'&&<small>明细已清理或不可用</small>}<span aria-hidden="true">→</span></button>)}</div>
+  </div>;
+}
