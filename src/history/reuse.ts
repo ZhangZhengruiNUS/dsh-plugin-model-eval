@@ -24,6 +24,14 @@ async function durableItem(tx:HistoryTransaction,runId:string,itemId:string):Pro
   const path=join(directory,createHash('sha256').update(itemId).digest('hex')+'.json');
   try{if((await lstat(path)).isSymbolicLink())return fail('HISTORY_PATH_REJECTED');const item=await readRecord<ItemRecord>(path);if(item.schemaVersion!==1||item.itemId!==itemId)return fail('ITEM_CORRUPT');return item;}catch(error){if(missing(error))return undefined;throw error;}
 }
+export async function readUpgradeItems(tx:HistoryTransaction,runId:string):Promise<ItemRecord[]>{
+  const {manifest,summary}=await tx.getRun(runId);if(summary.details!=='available')return [];
+  const items:ItemRecord[]=[];
+  for(const q of manifest.requiredItems.filter(q=>q.track==='general')){
+    let item:ItemRecord|undefined;try{item=await durableItem(tx,runId,q.id);}catch{return fail('UPGRADE_SOURCE_CORRUPT');}
+    if(!item)return fail('UPGRADE_DETAILS_INCOMPLETE');items.push(item);
+  }return items;
+}
 function copiedInput(journal:Journal,pin:CopyPin,source:ItemRecord):ItemInput{
   if(!source.answer?.complete||source.grade?.kind!=='scored'||source.grade.track!=='general'||!source.question||!source.answerCommittedAt||!source.gradeCommittedAt)fail('REUSE_SOURCE_CHANGED');
   return {itemId:pin.id,attempts:[],answer:structuredClone(source.answer!),grade:structuredClone(source.grade!),question:structuredClone(source.question!),reuse:{sourceRunId:journal.sourceRunId,sourceItemId:pin.id,sourceRevision:source.revision,sourceRecordHash:pin.sourceRecordHash,compatibility:structuredClone(pin.compatibility),sourceAnswerCommittedAt:source.answerCommittedAt!,sourceGradeCommittedAt:source.gradeCommittedAt!,importedAt:journal.importedAt,sourceAttempts:structuredClone(source.attempts)}};

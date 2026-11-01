@@ -15,13 +15,14 @@ export function reuseFixture(){
   const summary:RunSummary={runId,batchId,createdAt,completedAt,target,revision:120,protocols:manifest.protocols,generalDefinition:light.descriptor.general,details:'available',resumeAllowed:true,judges:[],metrics:{tracks:{},activeIntervals:[{startedAt:createdAt,endedAt:completedAt}],incompleteTiming:false},tracks:{general:{status:'completed',required:120,graded:120,score:50,completedAt,measures:{}}}};
   return {source:{manifest,summary,items,protocol:light},deep,current:structuredClone(target)};
 }
-export async function persistReuseSource(store:HistoryStore){
-  const fixture=reuseFixture(),{schemaVersion,runId,createdAt,...input}=fixture.source.manifest;
+export async function persistReuseSource(store:HistoryStore,options:{writing?:boolean}={}){
+  const fixture=reuseFixture();if(options.writing)fixture.source.manifest.requiredItems.push(...fixture.source.protocol.items.filter(q=>q.track==='writing').map(({id,track,datasetId})=>({id,track,datasetId})));
+  const {schemaVersion,runId,createdAt,...input}=fixture.source.manifest;
   const run=await store.createRun(input);
   for(const item of fixture.source.items){const {schemaVersion,revision,sequence,updatedAt,answerCommittedAt,gradeCommittedAt,...value}=item;await store.saveItem(run.runId,0,value);}
   const saved=await store.getRun(run.runId);
   const metrics=summarizeMetrics((await store.listItems(run.runId)).flatMap(x=>x.attempts),fixture.source.summary.metrics.activeIntervals);
-  await store.updateSummary(run.runId,saved.summary.revision,s=>{s.tracks.general=fixture.source.summary.tracks.general!;s.completedAt=fixture.source.summary.completedAt!;s.metrics=metrics;});
+  await store.updateSummary(run.runId,saved.summary.revision,s=>{s.tracks.general=fixture.source.summary.tracks.general!;if(!options.writing)s.completedAt=fixture.source.summary.completedAt!;s.metrics=metrics;});
   const source={...await store.getRun(run.runId),items:await store.listItems(run.runId),protocol:fixture.source.protocol};
   return {...fixture,source};
 }
