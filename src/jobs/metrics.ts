@@ -1,5 +1,8 @@
 import type {PhaseMetrics,RunMetrics,Track} from '../contracts.ts';
 import type {AttemptRecord} from '../history/store.ts';
+import type {ItemRecord} from '../history/store.ts';
+import type {ReuseOrigin,ReuseSummary} from '../contracts.ts';
+import {identityHash} from '../evaluation/protocol-identity.ts';
 const percentile=(values:number[],p:number):number|undefined=>{if(!values.length)return undefined;const sorted=[...values].sort((a,b)=>a-b);return p===.5?(sorted[Math.floor((sorted.length-1)/2)]!+sorted[Math.ceil((sorted.length-1)/2)]!)/2:sorted[Math.max(0,Math.ceil(sorted.length*p)-1)];};
 export function summarizeMetrics(attempts:readonly AttemptRecord[],activeIntervals:RunMetrics['activeIntervals'],gradingMs:Partial<Record<Track,number>>={}):RunMetrics {
   function phase(track:Track,phase:'answer'|'judge'):PhaseMetrics {
@@ -18,3 +21,17 @@ export function summarizeMetrics(attempts:readonly AttemptRecord[],activeInterva
   return {tracks,activeIntervals:structuredClone(activeIntervals),incompleteTiming:activeIntervals.some(x=>!x.endedAt)};
 }
 export function activeMilliseconds(metrics:RunMetrics):number {return metrics.activeIntervals.reduce((sum,x)=>sum+(x.endedAt?Math.max(0,Date.parse(x.endedAt)-Date.parse(x.startedAt)):0),0);}
+/** Previously incurred general-answer consumption, reconstructed without reopening the parent. */
+export function summarizeReuse(items:readonly ItemRecord[],origin:ReuseOrigin):ReuseSummary{
+  const reused=items.filter(x=>x.reuse),ids=new Set<string>(),attempts=new Map<string,AttemptRecord>();
+  for(const item of reused){
+    if(item.reuse!.sourceRunId!==origin.sourceRunId||ids.has(item.itemId))throw Error('REUSE_ORIGIN_MISMATCH');ids.add(item.itemId);
+    for(const source of item.reuse!.sourceAttempts){
+      if(source.phase!=='answer'||(source.track??source.observations?.track)==='writing')continue;
+      const record={...structuredClone(source),track:'general' as const},old=attempts.get(source.attemptId);
+      if(old&&identityHash(old)!==identityHash(record))throw Error('REUSE_ATTEMPT_CONFLICT');attempts.set(source.attemptId,record);
+    }
+  }
+  const sourceAnswerMetrics=summarizeMetrics([...attempts.values()],[]).tracks.general?.answer??{calls:0,failures:0,usageCoverage:0,latencySamples:0,ttftSamples:0};
+  return {...structuredClone(origin),reusedItems:reused.length,sourceAnswerMetrics};
+}

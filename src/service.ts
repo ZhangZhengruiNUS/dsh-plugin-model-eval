@@ -32,7 +32,7 @@ export async function createEvaluationService(deps:ServiceDependencies) {
   const control=(await switchRoot(deps.controlRoot??deps.initialRoot??defaultRoot(),{writing:false})).path;
   const preference=join(control,`selection-${createHash('sha256').update(deps.scopeId).digest('hex').slice(0,24)}.json`);
   let selected=deps.initialRoot??control;try{const old=await readRecord<{root:string}>(preference);if(typeof old.root==='string')selected=old.root;}catch(error){if((error as NodeJS.ErrnoException).code!=='ENOENT')fail('SELECTION_CORRUPT');}
-  let store:HistoryStore,queue:EvaluationQueue,cleanup:ReturnType<typeof createCleanup>,environment:PreparedEnvironment|undefined,preparing=false,disposed=false,rootEpoch=0,legacyPreviewProtocol:ResolvedProtocolSet|undefined;
+  let store:HistoryStore,queue:EvaluationQueue,cleanup:ReturnType<typeof createCleanup>,environment:PreparedEnvironment|undefined,preparing=false,disposed=false,rootEpoch=0;
   const clock=deps.clock??speedClock,activity=createActivityGate();let evaluationLease:ActivityLease|undefined,speedLease:ActivityLease|undefined,speedHistory:SpeedHistory,speedCleanup:ReturnType<typeof createSpeedCleanup>,speed:ReturnType<typeof createSpeedRunner>,live:ReturnType<typeof createLiveEstimator>|undefined,evaluationDone=Promise.resolve(),speedDone=Promise.resolve();
   async function prepareEnvironment(){if(deps.prepareEnvironment)return deps.prepareEnvironment(store.root);const candidate=await prepareResources(store.root,manifest,deps.packageResources);await selfcheckEnvironment(candidate.resourcesPath);return candidate;}
   let mutations:Promise<unknown>=Promise.resolve();const handles=new Map<string,TargetSnapshot>();
@@ -42,15 +42,14 @@ export async function createEvaluationService(deps:ServiceDependencies) {
     return result;
   }
   async function bind(path:string):Promise<void>{
-    environments.clear();environment=undefined;legacyPreviewProtocol=undefined;
+    environments.clear();environment=undefined;
     const selection=await switchRoot(path,{writing:false});store=await openHistory(selection.path);rootEpoch++;live=undefined;
     try{
       cleanup=createCleanup(store,()=>queue?.snapshot().activeBatchId);speedHistory=createSpeedHistory(store);speedCleanup=createSpeedCleanup(store,speedHistory);
       if(store.writable){await cleanup.recoverCleanup();await store.recover();await speedHistory.recoverInterrupted();await speedCleanup.recover();}
       const graders={general(q:Parameters<typeof gradeGeneral>[0],a:Parameters<typeof gradeGeneral>[1],signal:AbortSignal,protocol:ResolvedProtocolSet){const prepared=environments.get(refsKey(protocol));if(!prepared||prepared.resourceVersion!==protocol.resourceVersion)return Promise.resolve({kind:'technical-missing' as const,track:'general' as const,itemId:q.id,error:{code:'ENVIRONMENT_NOT_PREPARED',phase:'resource' as const,retryable:false,message:'请准备本轮评测对应的环境。'},evidence:null});return gradeGeneral(q,a,{code:createCodeRunner(join(prepared.resourcesPath,'runtime')),rules:createRuleGrader(join(prepared.resourcesPath,'runtime','rules')),contest:createContestRunner(join(prepared.resourcesPath,'runtime')),signal});},writing:createWritingGrader(rubric)};
       queue=createQueue(store,deps.adapter,registry,graders,{onChange(runId){if(!live)return;const batch=queue.snapshot().batches.find(b=>b.runIds.includes(runId));if(batch)void live.invalidate(batch.batchId,'performance');}});
-      const legacySpeedGraders={...graders,async general(q:Parameters<typeof gradeGeneral>[0],a:Parameters<typeof gradeGeneral>[1],signal:AbortSignal){if(!legacyPreviewProtocol)return fail('PROTOCOL_UNAVAILABLE');return graders.general(q,a,signal,legacyPreviewProtocol);}};
-      await queue.idle();speed=createSpeedRunner({adapter:deps.adapter,protocols,graders:legacySpeedGraders,history:speedHistory,clock});
+      await queue.idle();speed=createSpeedRunner({adapter:deps.adapter,registry,graders,history:speedHistory,clock});
       live=createLiveEstimator({clock,getRuns:getInputs,getActiveBatchIds:()=>{const id=queue.snapshot().activeBatchId;return id?[id]:[];},publish(id,value){void queue.saveEstimate(id,value).catch(()=>{});}});
       for(const batch of queue.snapshot().batches)if(batch.estimate){const {remainingMs,totalMs,...base}=batch.estimate;live.restore(batch.batchId,batch.status==='pending'?{...base,state:'pending'}:batch.status==='completed'?batch.estimate:{...batch.estimate,state:'paused'});}
       for(const summary of await store.listSummaries())if(summary.estimation){const current=summary.estimation.final??summary.estimation.current,batch=queue.snapshot().batches.find(b=>b.batchId===summary.batchId);const {remainingMs,totalMs,...base}=current;live.restoreRun(summary.runId,summary.batchId,batch?.status==='pending'?{...base,state:'pending'}:batch?.status==='completed'?current:{...current,state:'paused'});}
@@ -73,7 +72,7 @@ export async function createEvaluationService(deps:ServiceDependencies) {
   async function finishEvaluation(batchId:string){await queue.idle();await live?.invalidate(batchId,'finish');const inputs=await getInputs(batchId),batch=queue.snapshot().batches.find(b=>b.batchId===batchId)!;
     await store.exclusive(async tx=>{for(let i=0;i<batch.runIds.length;i++){const id=batch.runIds[i]!,{summary}=await tx.getRun(id),input=inputs[i]!,computed=estimateBatch({runs:[input],now:clock.now()}),current=live?.snapshotRun(id)??computed;await tx.updateSummary(id,summary.revision,next=>{next.estimation={...next.estimation,current,...(computed.state==='completed'?{final:computed}:{})};});}});
   }
-  async function finishSpeed(id:string,lease:ActivityLease){try{try{await speed.idle();}catch{/* failed session already holds its safe diagnostic */}const row=await speedHistory.read(id);if(row)await speedHistory.save({...row,estimate:previewEstimate(row,protocols.items,clock.now())},row.revision);lease.release();}catch{lease.fault('SPEED_STORAGE_FAILED');}finally{if(speedLease===lease)speedLease=undefined;}}
+  async function finishSpeed(id:string,lease:ActivityLease){try{try{await speed.idle();}catch{/* failed session already holds its safe diagnostic */}const row=await speedHistory.read(id);if(row)await speedHistory.save({...row,estimate:previewEstimate(row,(await registry.resolve(row.configs[0]!.protocols)).items,clock.now())},row.revision);lease.release();}catch{lease.fault('SPEED_STORAGE_FAILED');}finally{if(speedLease===lease)speedLease=undefined;}}
   async function operate(action:Action,payload:Record<string,unknown>):Promise<unknown> {
     if(disposed)fail('SERVICE_DISPOSED');
     switch(action){
@@ -102,7 +101,7 @@ export async function createEvaluationService(deps:ServiceDependencies) {
       case 'queue':{const view=queue.snapshot();return {...view,estimates:Object.fromEntries(view.batches.flatMap(b=>{const e=live?.snapshot(b.batchId)??b.estimate;return e?[[b.batchId,e]]:[];}))};}
       case 'pause':return mutate(async()=>{if(queue.snapshot().activeBatchId===payload.batchId){evaluationLease?.stopping();await live?.invalidate(String(payload.batchId),'pause');}await queue.pause(String(payload.batchId));await evaluationDone;return queue.snapshot();});
       case 'resume':return mutate(async()=>{writable();if(!environment)fail('ENVIRONMENT_NOT_PREPARED');await queue.resume(String(payload.batchId),payload.judgeHandle?judge(payload.judgeHandle):undefined);await live?.invalidate(String(payload.batchId),'resume');return queue.snapshot();});
-      case 'startSpeedPreview':return mutate(async()=>{writable();if(!environment)fail('ENVIRONMENT_NOT_PREPARED');const request=requestFrom(payload);if(request.generalId&&request.generalId!==legacyRefs.generalId)fail('PROTOCOL_NOT_VERIFIED');legacyPreviewProtocol=await registry.resolve(legacyRefs);return speed.start({...request,budgetMinutes:Number(payload.budgetMinutes)});});
+      case 'startSpeedPreview':return mutate(async()=>{writable();if(!environment)fail('ENVIRONMENT_NOT_PREPARED');const request=requestFrom(payload);if(request.generalId&&request.generalId!==legacyRefs.generalId)fail('PROTOCOL_NOT_VERIFIED');return speed.start({...request,budgetMinutes:Number(payload.budgetMinutes)});});
       case 'speedPreviewStatus':{const row=await speedHistory.read(String(payload.previewId));if(!row)fail('PREVIEW_NOT_FOUND');const current=activity.snapshot();if(current?.kind==='speed-preview'&&current.id===row!.previewId&&current.state==='stopping')row!.status='stopping';return row;}
       case 'cancelSpeedPreview':{writable();const id=String(payload.previewId),current=activity.snapshot();if(current?.kind==='speed-preview'&&current.id===id){speedLease?.stopping();await speed.cancel(id);return {accepted:true,status:'stopping'};}const row=await speedHistory.read(id);if(!row)fail('PREVIEW_NOT_FOUND');return {accepted:true,status:row!.status};}
       case 'speedHistory':return speedHistory.list();

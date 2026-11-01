@@ -1,9 +1,11 @@
 import {rebuildPerformance} from '../estimation/observations.ts';
 import {manifestGeneralDefinition} from './definitions.ts';
+import {summarizeReuse} from '../jobs/metrics.ts';
 import {isDeepStrictEqual} from 'node:util';import type {GradeResult,JudgeSnapshot,Question,RunSummary} from '../contracts.ts';import type {HistoryStore,HistoryTransaction,ItemRecord,RunManifest} from '../history/store.ts';import {fingerprintTarget} from '../model/identity.ts';import {summarizeGeneral} from './aggregate.ts';import {summarizeMetrics} from '../jobs/metrics.ts';
 /** Derive only from committed records. Never calls a model or regrades an answer. */
 export function rebuildRunSummary(manifest:RunManifest,summary:RunSummary,items:readonly ItemRecord[]):RunSummary {
   const next=structuredClone(summary),valid=items.flatMap(x=>x.grade?[x.grade]:[]);
+  if(manifest.reuseOrigin)next.reuse=summarizeReuse(items,manifest.reuseOrigin);
   for(const track of ['general','writing'] as const){const old=next.tracks[track];if(!old||old.status==='completed')continue;
     const selected=manifest.requiredItems.filter(x=>x.track===track),ids=new Set(selected.map(x=>x.id));
     if(track==='general'){

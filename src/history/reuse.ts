@@ -8,6 +8,7 @@ import {identityHash} from '../evaluation/protocol-identity.ts';
 import {upgradeSourceEvidence,upgradeDestinationIdentity} from '../evaluation/reuse-eligibility.ts';
 import {reuseTargetBinding} from '../model/reuse-identity.ts';
 import {validateGeneralDefinition} from '../evaluation/definitions.ts';
+import {refreshRunSummary} from '../evaluation/aggregate-run.ts';
 const fail=(code:string):never=>{throw Object.assign(new Error(code),{code});};
 const validId=(id:string)=>/^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/.test(id);
 const missing=(error:unknown)=>(error as NodeJS.ErrnoException).code==='ENOENT';
@@ -76,7 +77,7 @@ export function createReuseHistory(store:HistoryStore,options:{checkpoint?:(stag
       if(!journal.copiedItemIds.includes(pin.id)){journal.copiedItemIds.push(pin.id);await persist(tx,journal);}
       await options.checkpoint?.('copied',index+1);
     }
-    await verifyCopies(tx,journal);await options.checkpoint?.('before-ready');journal.state='ready';delete journal.errorCode;await persist(tx,journal);return committed(journal);
+    await verifyCopies(tx,journal);await refreshRunSummary(store,tx,journal.destinationRunId);await options.checkpoint?.('before-ready');journal.state='ready';delete journal.errorCode;await persist(tx,journal);return committed(journal);
   }
   return {
     async import(check:UpgradeCheck,input:{token:string;target:TargetSnapshot;protocol:ResolvedProtocolSet;execution:EvaluationRequest['execution']}):Promise<UpgradeCommit>{return store.exclusive(async tx=>{
