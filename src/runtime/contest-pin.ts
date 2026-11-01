@@ -1,2 +1,2 @@
-/** Trusted stdio driver; legacy pins remain unchanged. */
-export const CONTEST_RUNTIME_SHA256 = '604d4b3bf74ec5706fb6baf15972c0d2c242f1c25e14cde9663499d6a07a062a';
+/** Pinned stdio driver with separately verified read-only stdlib cache. */
+export const CONTEST_RUNTIME_SHA256 = "6819d1192b2f2caa2fd40cc6c3338b82b959b68e10a3c79a1bc8529b61371f50";

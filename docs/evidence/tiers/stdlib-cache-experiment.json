@@ -1,0 +1,271 @@
+{
+  "schemaVersion": 1,
+  "status": "local-optimization-verified-not-suite-admission",
+  "historicalTimeoutsRetained": true,
+  "limits": {
+    "wallMs": 30000,
+    "memoryBytes": 536870912,
+    "computeBudget": 200000000000
+  },
+  "runs": [
+    {
+      "tag": "cold",
+      "cached": false,
+      "mode": "reference",
+      "instrumented": true,
+      "originalDriverHash": "e909c081f8ae859ac44dd880b20bf3dd958095fa20947c1ac19399a59681399a",
+      "referenceHash": "ca9dff365af20e7c0ffa671bada3ae465746316ffbc5815c5ff89a06e3902c68",
+      "casesHash": "9ddc7d52c2354c11355bcfeb1ed1218b955cf3b73697573a873e764742b89d2d",
+      "wallMs": 14499,
+      "guestExecutionMs": 12427,
+      "inputWriteMs": 114,
+      "instantiateMs": 170,
+      "compileMs": 759,
+      "fuelUsed": null,
+      "referenceOutputsMatch": true,
+      "controlsAreNotAdmission": false
+    },
+    {
+      "tag": "warm1",
+      "cached": false,
+      "mode": "reference",
+      "instrumented": true,
+      "originalDriverHash": "e909c081f8ae859ac44dd880b20bf3dd958095fa20947c1ac19399a59681399a",
+      "referenceHash": "ca9dff365af20e7c0ffa671bada3ae465746316ffbc5815c5ff89a06e3902c68",
+      "casesHash": "9ddc7d52c2354c11355bcfeb1ed1218b955cf3b73697573a873e764742b89d2d",
+      "wallMs": 16669,
+      "guestExecutionMs": 14594,
+      "inputWriteMs": 115,
+      "instantiateMs": 170,
+      "compileMs": 758,
+      "fuelUsed": 71713380837,
+      "referenceOutputsMatch": true,
+      "controlsAreNotAdmission": false
+    },
+    {
+      "tag": "warm2",
+      "cached": false,
+      "mode": "reference",
+      "instrumented": true,
+      "originalDriverHash": "e909c081f8ae859ac44dd880b20bf3dd958095fa20947c1ac19399a59681399a",
+      "referenceHash": "ca9dff365af20e7c0ffa671bada3ae465746316ffbc5815c5ff89a06e3902c68",
+      "casesHash": "9ddc7d52c2354c11355bcfeb1ed1218b955cf3b73697573a873e764742b89d2d",
+      "wallMs": 15612,
+      "guestExecutionMs": 13315,
+      "inputWriteMs": 142,
+      "instantiateMs": 169,
+      "compileMs": 953,
+      "fuelUsed": 71715719579,
+      "referenceOutputsMatch": true,
+      "controlsAreNotAdmission": false
+    },
+    {
+      "tag": "warm3",
+      "cached": false,
+      "mode": "reference",
+      "instrumented": true,
+      "originalDriverHash": "e909c081f8ae859ac44dd880b20bf3dd958095fa20947c1ac19399a59681399a",
+      "referenceHash": "ca9dff365af20e7c0ffa671bada3ae465746316ffbc5815c5ff89a06e3902c68",
+      "casesHash": "9ddc7d52c2354c11355bcfeb1ed1218b955cf3b73697573a873e764742b89d2d",
+      "wallMs": 14372,
+      "guestExecutionMs": 12447,
+      "inputWriteMs": 90,
+      "instantiateMs": 165,
+      "compileMs": 757,
+      "fuelUsed": 71703657708,
+      "referenceOutputsMatch": true,
+      "controlsAreNotAdmission": false
+    },
+    {
+      "tag": "temp1",
+      "cached": false,
+      "mode": "reference",
+      "instrumented": true,
+      "originalDriverHash": "e909c081f8ae859ac44dd880b20bf3dd958095fa20947c1ac19399a59681399a",
+      "referenceHash": "ca9dff365af20e7c0ffa671bada3ae465746316ffbc5815c5ff89a06e3902c68",
+      "casesHash": "9ddc7d52c2354c11355bcfeb1ed1218b955cf3b73697573a873e764742b89d2d",
+      "wallMs": 14236,
+      "guestExecutionMs": 12181,
+      "inputWriteMs": 130,
+      "instantiateMs": 162,
+      "compileMs": 811,
+      "fuelUsed": 71706470432,
+      "referenceOutputsMatch": true,
+      "controlsAreNotAdmission": false
+    },
+    {
+      "tag": "temp2",
+      "cached": false,
+      "mode": "reference",
+      "instrumented": true,
+      "originalDriverHash": "e909c081f8ae859ac44dd880b20bf3dd958095fa20947c1ac19399a59681399a",
+      "referenceHash": "ca9dff365af20e7c0ffa671bada3ae465746316ffbc5815c5ff89a06e3902c68",
+      "casesHash": "9ddc7d52c2354c11355bcfeb1ed1218b955cf3b73697573a873e764742b89d2d",
+      "wallMs": 13930,
+      "guestExecutionMs": 11983,
+      "inputWriteMs": 146,
+      "instantiateMs": 162,
+      "compileMs": 750,
+      "fuelUsed": 71712254157,
+      "referenceOutputsMatch": true,
+      "controlsAreNotAdmission": false
+    },
+    {
+      "tag": "temp3",
+      "cached": false,
+      "mode": "reference",
+      "instrumented": true,
+      "originalDriverHash": "e909c081f8ae859ac44dd880b20bf3dd958095fa20947c1ac19399a59681399a",
+      "referenceHash": "ca9dff365af20e7c0ffa671bada3ae465746316ffbc5815c5ff89a06e3902c68",
+      "casesHash": "9ddc7d52c2354c11355bcfeb1ed1218b955cf3b73697573a873e764742b89d2d",
+      "wallMs": 14121,
+      "guestExecutionMs": 12137,
+      "inputWriteMs": 126,
+      "instantiateMs": 165,
+      "compileMs": 752,
+      "fuelUsed": 71713726745,
+      "referenceOutputsMatch": true,
+      "controlsAreNotAdmission": false
+    },
+    {
+      "tag": "empty",
+      "cached": false,
+      "mode": "empty",
+      "instrumented": true,
+      "originalDriverHash": "e909c081f8ae859ac44dd880b20bf3dd958095fa20947c1ac19399a59681399a",
+      "referenceHash": "fedce8e8af485c2586f54c43a9b656dc70b41eb9be8c64b69c98391847dd4baf",
+      "casesHash": "9ddc7d52c2354c11355bcfeb1ed1218b955cf3b73697573a873e764742b89d2d",
+      "wallMs": 8484,
+      "guestExecutionMs": 6542,
+      "inputWriteMs": 125,
+      "instantiateMs": 169,
+      "compileMs": 692,
+      "fuelUsed": 26875889556,
+      "referenceOutputsMatch": false,
+      "controlsAreNotAdmission": true
+    },
+    {
+      "tag": "collections",
+      "cached": false,
+      "mode": "collections",
+      "instrumented": true,
+      "originalDriverHash": "e909c081f8ae859ac44dd880b20bf3dd958095fa20947c1ac19399a59681399a",
+      "referenceHash": "33b1961148437b226f4d0dc86dd877930515bbe790c614a6e15bd25c45a5fd12",
+      "casesHash": "9ddc7d52c2354c11355bcfeb1ed1218b955cf3b73697573a873e764742b89d2d",
+      "wallMs": 13082,
+      "guestExecutionMs": 11198,
+      "inputWriteMs": 141,
+      "instantiateMs": 165,
+      "compileMs": 684,
+      "fuelUsed": 67389033792,
+      "referenceOutputsMatch": false,
+      "controlsAreNotAdmission": true
+    },
+    {
+      "tag": "cached-empty",
+      "cached": true,
+      "mode": "empty",
+      "instrumented": true,
+      "originalDriverHash": "e909c081f8ae859ac44dd880b20bf3dd958095fa20947c1ac19399a59681399a",
+      "referenceHash": "fedce8e8af485c2586f54c43a9b656dc70b41eb9be8c64b69c98391847dd4baf",
+      "casesHash": "9ddc7d52c2354c11355bcfeb1ed1218b955cf3b73697573a873e764742b89d2d",
+      "wallMs": 7806,
+      "guestExecutionMs": 5982,
+      "inputWriteMs": 131,
+      "instantiateMs": 174,
+      "compileMs": 653,
+      "fuelUsed": 18884649845,
+      "referenceOutputsMatch": false,
+      "controlsAreNotAdmission": true
+    },
+    {
+      "tag": "cached-collections",
+      "cached": true,
+      "mode": "collections",
+      "instrumented": true,
+      "originalDriverHash": "e909c081f8ae859ac44dd880b20bf3dd958095fa20947c1ac19399a59681399a",
+      "referenceHash": "33b1961148437b226f4d0dc86dd877930515bbe790c614a6e15bd25c45a5fd12",
+      "casesHash": "9ddc7d52c2354c11355bcfeb1ed1218b955cf3b73697573a873e764742b89d2d",
+      "wallMs": 8887,
+      "guestExecutionMs": 7083,
+      "inputWriteMs": 138,
+      "instantiateMs": 168,
+      "compileMs": 674,
+      "fuelUsed": 21614925050,
+      "referenceOutputsMatch": false,
+      "controlsAreNotAdmission": true
+    },
+    {
+      "tag": "cached-reference",
+      "cached": true,
+      "mode": "reference",
+      "instrumented": true,
+      "originalDriverHash": "e909c081f8ae859ac44dd880b20bf3dd958095fa20947c1ac19399a59681399a",
+      "referenceHash": "ca9dff365af20e7c0ffa671bada3ae465746316ffbc5815c5ff89a06e3902c68",
+      "casesHash": "9ddc7d52c2354c11355bcfeb1ed1218b955cf3b73697573a873e764742b89d2d",
+      "wallMs": 9421,
+      "guestExecutionMs": 7633,
+      "inputWriteMs": 129,
+      "instantiateMs": 169,
+      "compileMs": 654,
+      "fuelUsed": 25957926574,
+      "referenceOutputsMatch": true,
+      "controlsAreNotAdmission": false
+    }
+  ],
+  "canonical": [
+    {
+      "runtime": {
+        "driver": "6819d1192b2f2caa2fd40cc6c3338b82b959b68e10a3c79a1bc8529b61371f50",
+        "cache": "9252c42b83e2bd3bdfcfa61942bb8d45b5f9c6689fabe990d38608a34171e929"
+      },
+      "adaptedHash": "9ddc7d52c2354c11355bcfeb1ed1218b955cf3b73697573a873e764742b89d2d",
+      "referenceHash": "ca9dff365af20e7c0ffa671bada3ae465746316ffbc5815c5ff89a06e3902c68",
+      "testCount": 173,
+      "outcome": {
+        "kind": "passed",
+        "elapsedMs": 9613
+      }
+    },
+    {
+      "runtime": {
+        "driver": "6819d1192b2f2caa2fd40cc6c3338b82b959b68e10a3c79a1bc8529b61371f50",
+        "cache": "9252c42b83e2bd3bdfcfa61942bb8d45b5f9c6689fabe990d38608a34171e929"
+      },
+      "adaptedHash": "9ddc7d52c2354c11355bcfeb1ed1218b955cf3b73697573a873e764742b89d2d",
+      "referenceHash": "ca9dff365af20e7c0ffa671bada3ae465746316ffbc5815c5ff89a06e3902c68",
+      "testCount": 173,
+      "outcome": {
+        "kind": "passed",
+        "elapsedMs": 9454
+      }
+    },
+    {
+      "runtime": {
+        "driver": "6819d1192b2f2caa2fd40cc6c3338b82b959b68e10a3c79a1bc8529b61371f50",
+        "cache": "9252c42b83e2bd3bdfcfa61942bb8d45b5f9c6689fabe990d38608a34171e929"
+      },
+      "adaptedHash": "9ddc7d52c2354c11355bcfeb1ed1218b955cf3b73697573a873e764742b89d2d",
+      "referenceHash": "ca9dff365af20e7c0ffa671bada3ae465746316ffbc5815c5ff89a06e3902c68",
+      "testCount": 173,
+      "outcome": {
+        "kind": "passed",
+        "elapsedMs": 9564
+      }
+    }
+  ],
+  "cacheLoadProof": [
+    [
+      "{'compiled': [], 'sources': ['/python/lib/python3.13/collections/__init__.py', '/python/lib/python3.13/keyword.py', '/python/lib/python3.13/operator.py', '/python/lib/python3.13/reprlib.py'], 'cached': '/python/lib/python3.13/collections/__pycache__/__init__.cpython-313.pyc'}\n"
+    ],
+    [
+      "{'compiled': ['collections', 'keyword', 'operator', 'reprlib'], 'sources': [], 'cached': '/bytecode/python/lib/python3.13/collections/__init__.cpython-313.pyc'}\n"
+    ]
+  ],
+  "reproducedManifestSha256": "9252c42b83e2bd3bdfcfa61942bb8d45b5f9c6689fabe990d38608a34171e929",
+  "limitations": [
+    "Instrumented successful runs locate repeated source compilation overhead; historical failed system state cannot be reconstructed.",
+    "New cache changes runtime identity and fuel consumption; full resource admission and old failures remain separate.",
+    "No model answer or reference code is precompiled or repaired; only pinned trusted standard library, compiled by the exact WASI guest."
+  ]
+}

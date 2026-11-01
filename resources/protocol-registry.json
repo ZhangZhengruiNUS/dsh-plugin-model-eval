@@ -6964,6 +6964,2556 @@
           "path": "runtime/rules/winsound.pyd",
           "size": 32088,
           "sha256": "41e099e17de849d82a7871ef6b4738a9eec028d63d2a70d3d18e8a68680f1437"
+        },
+        {
+          "path": "runtime/contest/runtime.json",
+          "size": 200,
+          "sha256": "6819d1192b2f2caa2fd40cc6c3338b82b959b68e10a3c79a1bc8529b61371f50"
+        },
+        {
+          "path": "runtime/contest/execute_contest_wasi.py",
+          "size": 4671,
+          "sha256": "c91959e648c2abcb3decf810edff20d9f7529378805ccb27a9bb4eed2cf05fa9"
+        },
+        {
+          "path": "runtime/contest-cache/runtime.json",
+          "size": 163391,
+          "sha256": "9252c42b83e2bd3bdfcfa61942bb8d45b5f9c6689fabe990d38608a34171e929"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/__future__.cpython-313.pyc",
+          "size": 4725,
+          "sha256": "dd6ed28029a45da0d0279bdabc87b09a01f582bcbf67e4df5f1f269945b6ff36"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/__hello__.cpython-313.pyc",
+          "size": 969,
+          "sha256": "9ded1b5f83c95c794121121e9e7dd72697efd6a936ba8ec8d3d950c9538c9a5c"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/__phello__/__init__.cpython-313.pyc",
+          "size": 374,
+          "sha256": "282cc3af34c41ecbd82378fe2cd15b5ba2460bd50841b0ef339ff95aa5ac0848"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/__phello__/ham/__init__.cpython-313.pyc",
+          "size": 146,
+          "sha256": "71495cd70f431dbc65ea97fb1c6203116ca5fe2adf38318995e879c849b5232c"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/__phello__/ham/eggs.cpython-313.pyc",
+          "size": 142,
+          "sha256": "0fc02ea3aa3a0512d990d184d322f4881d1404d95bed55a846957f6dfcd38e18"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/__phello__/spam.cpython-313.pyc",
+          "size": 370,
+          "sha256": "270d2e4b650a2d67046811b8fad0b87a641bbd13fdbf5e0736b6a226deb42029"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/_aix_support.cpython-313.pyc",
+          "size": 4720,
+          "sha256": "d80e5f77b33beb1030c71e8f826ef54154a6073ead985b1eaac76d1ca6647a57"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/_android_support.cpython-313.pyc",
+          "size": 7824,
+          "sha256": "d5366216c89c7dec8503266b053808c07e02fadf5f98d0faec1cf5292932da83"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/_apple_support.cpython-313.pyc",
+          "size": 3485,
+          "sha256": "7aede46ff103bd8b197abf786fe7fcb969115e90ed8117086e77bfa53fe3810a"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/_collections_abc.cpython-313.pyc",
+          "size": 47040,
+          "sha256": "d61ce0078c1577bd5dc8abae80ef21a2c0e447849227c08a5dc6999d28958754"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/_colorize.cpython-313.pyc",
+          "size": 4105,
+          "sha256": "05c243a4ece086947b64c5ebcc8171365017d66393587bc62b71f327ca50b35c"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/_compat_pickle.cpython-313.pyc",
+          "size": 7195,
+          "sha256": "a1e67cfd6038d322be446e8620a7c46db0e84a3c639de1598eb1a0622e2e007b"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/_compression.cpython-313.pyc",
+          "size": 7808,
+          "sha256": "83ee39e98ea1e0cbc723f1cb1fcbeb9ade919b8ae3b2aed1a659d357925b6a39"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/_ios_support.cpython-313.pyc",
+          "size": 2719,
+          "sha256": "858c38d5470193087c00d229ece4f7de8df455d83b63ed82fd6103d34c357882"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/_markupbase.cpython-313.pyc",
+          "size": 12436,
+          "sha256": "38c90742dca9409bd21a6fc0ea4cf39f80ecbc273ec8e8faaef28c97a51c07fc"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/_opcode_metadata.cpython-313.pyc",
+          "size": 10681,
+          "sha256": "4ad6615c9db961053c38964fc2d8e6ca324e497d6589b6f24342faf6c7ef7c86"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/_osx_support.cpython-313.pyc",
+          "size": 18130,
+          "sha256": "a7d1b71d596a400e945ed4969841005e883ba4d229620bceab60a1c048cb166e"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/_py_abc.cpython-313.pyc",
+          "size": 7195,
+          "sha256": "5fe1935bf7f7e4c5939159fcb4fe119cd51266f97c836bb851835f6d48311f81"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/_pydatetime.cpython-313.pyc",
+          "size": 94628,
+          "sha256": "be1551c26fa23ed7351accb7deeb57a5628b1b68ae2c6e6ea65f2b40e822bee7"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/_pydecimal.cpython-313.pyc",
+          "size": 217235,
+          "sha256": "612fb5ba4d62fc6b5ee2cc0ac0b9d7e55ab34b381f86ff709322f669325f6b08"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/_pyio.cpython-313.pyc",
+          "size": 112031,
+          "sha256": "c1d2193e96a3fba87bc0d8523d126753c24801c86aaa9418c8d8d3fa31796802"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/_pylong.cpython-313.pyc",
+          "size": 11161,
+          "sha256": "e8c8e2222a993e0b0007e822e994a7b525fbb4f3205fa290e678d6b0e2a6cf52"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/_pyrepl/__init__.cpython-313.pyc",
+          "size": 139,
+          "sha256": "5b624b477dc91fe79b51d1c2e3092bd0a3dfce2290eb496b97519f83f4bae882"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/_pyrepl/__main__.cpython-313.pyc",
+          "size": 329,
+          "sha256": "a4f5b0b94fbaf4ae0512bc8e7d0ff1e982353e625d055323cd3cd0b49eaacb6b"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/_pyrepl/_minimal_curses.cpython-313.pyc",
+          "size": 3422,
+          "sha256": "304b90275807b157beb39f8af78cd9d8fb3eb3aaf836a31843b4470d681e38cf"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/_pyrepl/_threading_handler.cpython-313.pyc",
+          "size": 4865,
+          "sha256": "f5978214bc8a7622e66d1b1fb9fae435abf18959114e2597d3e0850b27a20894"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/_pyrepl/base_eventqueue.cpython-313.pyc",
+          "size": 4513,
+          "sha256": "6bb3f83a68d2810dc0e359a0f1a06e5119d8d84f84029c11410835416eea4f2c"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/_pyrepl/commands.cpython-313.pyc",
+          "size": 25823,
+          "sha256": "8023e37933082870b2ded4f5cfce5b527d3c6f3e9d0dc342dd6fe92c78470970"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/_pyrepl/completing_reader.cpython-313.pyc",
+          "size": 10610,
+          "sha256": "32fed57a0666148259b08319fdcab8937c69b749262c7572c00bb8cd9bf82f0d"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/_pyrepl/console.cpython-313.pyc",
+          "size": 9687,
+          "sha256": "44cae42be18440d64a6518e8e04a5ca3ad685d3886256f78e11a7ea7af307133"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/_pyrepl/curses.cpython-313.pyc",
+          "size": 547,
+          "sha256": "d4b2099490609385ce72bf829a387957c58b3c3c31343020695387eef9cb1b59"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/_pyrepl/fancy_termios.cpython-313.pyc",
+          "size": 3991,
+          "sha256": "bd21f29593f350d0824fbca06f31742a13341017e494972af4884cd83ad23d14"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/_pyrepl/historical_reader.cpython-313.pyc",
+          "size": 21635,
+          "sha256": "8357b219686ede2147d37bb60b4cba572d471a11988282223c739d9b6713b666"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/_pyrepl/input.cpython-313.pyc",
+          "size": 3985,
+          "sha256": "0c7bfd069c088eb43b5a998aba0515081a1fb055a97810440967d7ff156778ce"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/_pyrepl/keymap.cpython-313.pyc",
+          "size": 6630,
+          "sha256": "5a1bb9ca3505a2b3aca3113ce5d1cf2b6ef1312acb104bca1c00c272ba34844e"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/_pyrepl/main.cpython-313.pyc",
+          "size": 2815,
+          "sha256": "ca108163fb8d0037c954b9dd732a09a43b0aa4f642429bf52f804f8cb3b74795"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/_pyrepl/pager.cpython-313.pyc",
+          "size": 9851,
+          "sha256": "18e8130ef1b343a95af295c03293cfabd6197e85207fb3b09fe8bef3ed2d1cf0"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/_pyrepl/reader.cpython-313.pyc",
+          "size": 33667,
+          "sha256": "32880e8298de883dceb7682730291040e0ba77dbbf6e570a5ef1b28bea10f5ce"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/_pyrepl/readline.cpython-313.pyc",
+          "size": 26294,
+          "sha256": "b6a217f88672c4b37eaf3f0ce254f37dc96199b6cf7bb63ca5d925540a8e59a9"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/_pyrepl/simple_interact.cpython-313.pyc",
+          "size": 7206,
+          "sha256": "13c173fbd5ca8529e2ffd2c28569b27be8ee3b2ca5b8934b83a74691cf6d3e74"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/_pyrepl/trace.cpython-313.pyc",
+          "size": 893,
+          "sha256": "e095f1e833872cf0adc187b2867acf02f6741c893b8f9428d81556e859f5a6f7"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/_pyrepl/types.cpython-313.pyc",
+          "size": 1464,
+          "sha256": "b233015b1c2164518a24b49beaf9c1927c7013c3eef0d410a1d36bb347f48d7b"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/_pyrepl/unix_console.cpython-313.pyc",
+          "size": 38880,
+          "sha256": "492bdca61166b36ce1c2c6aa15028027c4008ee3d11ad1a879462184cbc6ca30"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/_pyrepl/unix_eventqueue.cpython-313.pyc",
+          "size": 2422,
+          "sha256": "b5a6f9dffbbe2c5d138b3bff9875bb4fc5ff2c82140949ba5a84e3ff8fb5a00d"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/_pyrepl/utils.cpython-313.pyc",
+          "size": 3979,
+          "sha256": "2a0400f6a94867d7e96111be09a3590144a5b3d10feb511e426e2ad7ca40bde5"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/_pyrepl/windows_console.cpython-313.pyc",
+          "size": 27349,
+          "sha256": "fc77897a4c30c498a1d9b8710990f0e67839c6ac64ccecc72a5cf3abba7a4f29"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/_pyrepl/windows_eventqueue.cpython-313.pyc",
+          "size": 1591,
+          "sha256": "90a9a32510b30a57dc041a983298acdbc227817137d13b774279604e9037e42b"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/_sitebuiltins.cpython-313.pyc",
+          "size": 4579,
+          "sha256": "e45e4d94f72d08a34bdad64d1f8601ca170f6570bc58f767a5478cbbc709098a"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/_strptime.cpython-313.pyc",
+          "size": 34488,
+          "sha256": "f971b4267cce943b6e2e7d9675ea3de1ab530a47dfeea3f2bea70e1e50dd96ef"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/_sysconfigdata__wasi_wasm32-wasi.cpython-313.pyc",
+          "size": 60332,
+          "sha256": "58af203ee41a069bb18f73df2f216d4fa68aa1d0709bfe38ab3f06f163b2662b"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/_threading_local.cpython-313.pyc",
+          "size": 5526,
+          "sha256": "541f3881a6b919fe2b530a430b9265b326d0fa8eb3fdb2f23f3c1ad9adc99c71"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/_weakrefset.cpython-313.pyc",
+          "size": 12052,
+          "sha256": "ea22c1fd996d757ab62bcdbe8bc9c26997f963ec371f6561f9c8c8531797b0ad"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/abc.cpython-313.pyc",
+          "size": 7916,
+          "sha256": "e0464913bc97ea3d8bc75d7320f18dec87acbea6ab4768a8cec1c47acd74600f"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/antigravity.cpython-313.pyc",
+          "size": 988,
+          "sha256": "4e260ac10ecb388b9b5988b50a9287fafcbcb6c0c7a2be1b00542542c9fdd16f"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/argparse.cpython-313.pyc",
+          "size": 105308,
+          "sha256": "29affd31aa329ccba8aee7d5089f7f95d013f745501661b9aa88c1054a1bfa21"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/ast.cpython-313.pyc",
+          "size": 103074,
+          "sha256": "a338c27197768b156eefcc72b7b82c3f314f60391a5780ab7e902f04a642bab7"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/asyncio/__init__.cpython-313.pyc",
+          "size": 1462,
+          "sha256": "91c336886a511254eca355c90a12e5ca9b5391d835bc29f471af40e5e44ee9c1"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/asyncio/__main__.cpython-313.pyc",
+          "size": 9263,
+          "sha256": "2b1b9d0066fd23ef85afbc48f3d40750ba9165785f6b9ab28b18da63cc883342"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/asyncio/base_events.cpython-313.pyc",
+          "size": 90279,
+          "sha256": "961730d35c1b7b35699a341a8584ca4b25dff9458d4216ea08daadcd68311c0a"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/asyncio/base_futures.cpython-313.pyc",
+          "size": 3127,
+          "sha256": "d66d7bc9f2b1c30d540b08f0738ecb8c158f08f4e48d494f50d2d11cf0a3e11f"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/asyncio/base_subprocess.cpython-313.pyc",
+          "size": 17069,
+          "sha256": "ce75f0f81df1c34edc85f19300eb3225bcea207870f23da40fd4e74c43efa678"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/asyncio/base_tasks.cpython-313.pyc",
+          "size": 4165,
+          "sha256": "eff9efaf28c6ec8f84b1b4ed72f6092f9f77d38e2e87ffd34b32e8aa991ae71f"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/asyncio/constants.cpython-313.pyc",
+          "size": 1010,
+          "sha256": "421a952b5e2e923600b8a45db78f3a56e368d112ac84bbed9107e4a947b87628"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/asyncio/coroutines.cpython-313.pyc",
+          "size": 4021,
+          "sha256": "8deab6dd975b626dbfb2c1a4c18374e9dc02abbe33bfd901d9891327cfd310f6"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/asyncio/events.cpython-313.pyc",
+          "size": 36948,
+          "sha256": "7153c906d7e00abca9c707938d11f8c67eee66a95ec76d83fc01e36e1e20ce68"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/asyncio/exceptions.cpython-313.pyc",
+          "size": 3215,
+          "sha256": "ecbb94258f51115cfe0d5e9eccdff390d363429a8d39de9e016125e152800f76"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/asyncio/format_helpers.cpython-313.pyc",
+          "size": 4219,
+          "sha256": "e61d57a58a9d8171793c9089b9f9e246bbcec8762c511c2a183fa360ddf8d3ca"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/asyncio/futures.cpython-313.pyc",
+          "size": 17485,
+          "sha256": "b8b2b57bcba56132a39a2a53146076bbb8f9b8922f718cabdb84a68f10751bd7"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/asyncio/locks.cpython-313.pyc",
+          "size": 28133,
+          "sha256": "554a66ecf411bbc7bed1b6cf991d299b783d0dc6c8923e9857caaa3ccffd5287"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/asyncio/log.cpython-313.pyc",
+          "size": 282,
+          "sha256": "653ac5ff8cec50d009eb10952fa52733b4719a88207f558bdd98f8143875c7d4"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/asyncio/mixins.cpython-313.pyc",
+          "size": 1101,
+          "sha256": "b5fbe8ea9ddea72b91f3e4761bb4af142d73240539a13fd370ae034bf893a8d5"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/asyncio/proactor_events.cpython-313.pyc",
+          "size": 45859,
+          "sha256": "69eba4386f9cd63d10ea592db0741857babba62481ae1715a8c037ea128699ad"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/asyncio/protocols.cpython-313.pyc",
+          "size": 8407,
+          "sha256": "84225571153558e19ad369c63a56b8d9d2bd6b924576decd613938b02ac2d1ab"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/asyncio/queues.cpython-313.pyc",
+          "size": 14741,
+          "sha256": "411c0494b93f69b60d3cd5996938d1a1519b0734b35b07d435c5b4f0e01e71e4"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/asyncio/runners.cpython-313.pyc",
+          "size": 10129,
+          "sha256": "48a67cae6f4b96132141f48467e4f28d8b294bbb102007953a6c1e368efd5037"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/asyncio/selector_events.cpython-313.pyc",
+          "size": 65134,
+          "sha256": "510f3b2954360d7e01b9db25b013b224904d4d64605d6ea21be25e6c973b63b0"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/asyncio/sslproto.cpython-313.pyc",
+          "size": 41815,
+          "sha256": "e9ed3ea15cf6bed9d788da64c21880a567a92b5c872fdb2c4fd044541ccb73b8"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/asyncio/staggered.cpython-313.pyc",
+          "size": 6537,
+          "sha256": "7a8af7a7caf85ebd134c0548b8861c55e40c7f576f9959c60668f1db40ea00e8"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/asyncio/streams.cpython-313.pyc",
+          "size": 34173,
+          "sha256": "e6b2e61260a0bcdefc38b36e1b95ec338ca8f95e622d6f24b05631ed14fee1d2"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/asyncio/subprocess.cpython-313.pyc",
+          "size": 12297,
+          "sha256": "49f692207f891f183914c4ced28834e00e923bc50bca1b70b4b0c54bd73a06e1"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/asyncio/taskgroups.cpython-313.pyc",
+          "size": 9214,
+          "sha256": "3196331e00501cdcc945f27ddbf0a69942cc46bbafd5de66f35444be5a7b555e"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/asyncio/tasks.cpython-313.pyc",
+          "size": 43476,
+          "sha256": "c062080c6686fe8770682ee3c980e26049d782530efb140071b61c4153e5c33b"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/asyncio/threads.cpython-313.pyc",
+          "size": 1242,
+          "sha256": "845cb942d0d69cfd9543e03ce9a7581e0ed86fbc53e2d14421057026d4c8a1e3"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/asyncio/timeouts.cpython-313.pyc",
+          "size": 8738,
+          "sha256": "4e1bb0da2a5a519f8f7481b8b05deccdf286d1c10fd9f9ca221a1fa937de560a"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/asyncio/transports.cpython-313.pyc",
+          "size": 13718,
+          "sha256": "3d2c109a66a638470b7a82decf547a7e1ccb023f6b4d008fe483c7d51095a7a7"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/asyncio/trsock.cpython-313.pyc",
+          "size": 5155,
+          "sha256": "4a991de71c4a138b8789dfbd8bb468c9230e831177dc871cd22539c72c126a77"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/asyncio/unix_events.cpython-313.pyc",
+          "size": 70567,
+          "sha256": "f1c9f5b344e06cdcc82a853189aca9fe7fcc18460dd4f63fed803482227cc4ac"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/asyncio/windows_events.cpython-313.pyc",
+          "size": 42254,
+          "sha256": "2a1bba23dbaf7d70775c82a63cb5c8f04fc270e54a7ffe0d0b721467a29f6933"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/asyncio/windows_utils.cpython-313.pyc",
+          "size": 7984,
+          "sha256": "ee6d0107e28cec9403483eda09195a24b09ace28a01d1e36b2e1f7e6a509b012"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/base64.cpython-313.pyc",
+          "size": 26370,
+          "sha256": "baa27df3995d769f4891ce9de220a33176280564eae99137b0263ed933613299"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/bdb.cpython-313.pyc",
+          "size": 41009,
+          "sha256": "a0f6d169a21b28176587fe44196d56ed0e4896303fc570d11caefef19d49bdc1"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/bisect.cpython-313.pyc",
+          "size": 3500,
+          "sha256": "eec7f85c5aca99a79302b8b4bd6db3d0db5dc0e6e6ec45b284d2551fc9f95a6d"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/bz2.cpython-313.pyc",
+          "size": 15168,
+          "sha256": "2510e353763b4a28cccbd22b8fd2c6758388f21476c32c028a4f28ec76d76e0e"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/cProfile.cpython-313.pyc",
+          "size": 8667,
+          "sha256": "ea6dc6af2c451fb23556a39ba4b7220d94dbb32e8f128dfc64b01836b61753fa"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/calendar.cpython-313.pyc",
+          "size": 39696,
+          "sha256": "2e97f3ef07717f54ade67595eb9fc718a519784996750c97e5ad3a0e4d06a1ec"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/cmd.cpython-313.pyc",
+          "size": 18965,
+          "sha256": "4072483398f59d3ba951768f271887d5d518daaa6abd76f240a1da757e7d01c8"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/code.cpython-313.pyc",
+          "size": 15787,
+          "sha256": "05614a8c90e3779c8f529614229b9394026e9149219eaaa5fac61b069152061b"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/codecs.cpython-313.pyc",
+          "size": 40560,
+          "sha256": "511275346b4474a41be89a00495da173d9cf69208a0525f2289d0b4675715e3c"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/codeop.cpython-313.pyc",
+          "size": 6643,
+          "sha256": "47b27543cb0e5f51c03ff7b45bb1919df725f611db426bf03ee862611ff981d9"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/collections/__init__.cpython-313.pyc",
+          "size": 73471,
+          "sha256": "62ec0c348d864059071841a6b21d9385c1cf0db9e77c0dc86cb2faaa5a16707f"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/colorsys.cpython-313.pyc",
+          "size": 4507,
+          "sha256": "4fa2a9ddccaba47817e1527f3f0c7ea3ae89bea25da8dc7016fc37a9b168366d"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/compileall.cpython-313.pyc",
+          "size": 20603,
+          "sha256": "8397cda68270be0f98fc3ffe854786693cfac86d8094ea4a61877ebf64933b53"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/concurrent/__init__.cpython-313.pyc",
+          "size": 142,
+          "sha256": "b55fb27a73b28dd230bd34515f7e31ff0082f37c9727494880b8f71d1b43abc5"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/concurrent/futures/__init__.cpython-313.pyc",
+          "size": 1266,
+          "sha256": "991c3ba0c739b0cd25e86a697567d76fff682b7d5e102bee74e5d34328b1e221"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/concurrent/futures/_base.cpython-313.pyc",
+          "size": 31991,
+          "sha256": "81fd280d05253b4e2152b2a07e32367b95d2983827b06c08f0074890d00211c2"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/concurrent/futures/process.cpython-313.pyc",
+          "size": 36456,
+          "sha256": "345c2de799b220ae31eb1c5ffd4ac77b79c328dc072810b4616fda7b15ebe580"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/concurrent/futures/thread.cpython-313.pyc",
+          "size": 10537,
+          "sha256": "1659fa870ba4364a8696e1b4cd55f8640c2dbc5cbc2880159c0ddb91aa740b15"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/configparser.cpython-313.pyc",
+          "size": 69580,
+          "sha256": "2a87d392750c810aa660a0633cc11f04e640b906405398469b84c39f78deebe2"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/contextlib.cpython-313.pyc",
+          "size": 30497,
+          "sha256": "05df8fcbb664e5bdda70b628db5e154e78ccd3c3c2f636e852549b6714d5c7b4"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/contextvars.cpython-313.pyc",
+          "size": 264,
+          "sha256": "1b0cf30d7f105f1292a992c208b9182353113e5029b5ee475767c994b458658c"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/copy.cpython-313.pyc",
+          "size": 10633,
+          "sha256": "fb01a6d195e6092599ad6fd5b2c60077474e6d16c280a88ba1c09fed3dfee153"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/copyreg.cpython-313.pyc",
+          "size": 7539,
+          "sha256": "62de4fe3b6c62a87a122381ced2e5eec398bac8b83ae4a75aabfd3a029361c01"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/csv.cpython-313.pyc",
+          "size": 21454,
+          "sha256": "68dc82d1f45cc76795d39b217c0f7c0cc5ad9b64522bea3e9a42aaa103a27ca1"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/ctypes/__init__.cpython-313.pyc",
+          "size": 25384,
+          "sha256": "684b1bf3f9cabcc2b0612bd8eeb51eb02ad426180bb93261bb694bb0547b9846"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/ctypes/_aix.cpython-313.pyc",
+          "size": 12289,
+          "sha256": "22ea54a332c5920e7d2d7fe4c02be8746b43d1b07a9ad66b9c827829e8f06c79"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/ctypes/_endian.cpython-313.pyc",
+          "size": 3580,
+          "sha256": "d49bb5767e4905ea2cac129a35057a267885364ed3589565ac6fc90f137782d0"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/ctypes/macholib/__init__.cpython-313.pyc",
+          "size": 319,
+          "sha256": "fcd603dd3e3f2f8be994e8b8b28947367058d20d9e9be4f739f94bae10ee0b40"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/ctypes/macholib/dyld.cpython-313.pyc",
+          "size": 6823,
+          "sha256": "e5c592c400a3af1a9bb2e8001652a502be5842991544294f40d211746cf98d10"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/ctypes/macholib/dylib.cpython-313.pyc",
+          "size": 1226,
+          "sha256": "f1497e22ccf900c73f5eae0ed6986eeb6fc0d7ab1a90b71f44d1dda24013a7ae"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/ctypes/macholib/framework.cpython-313.pyc",
+          "size": 1356,
+          "sha256": "7f3adb6e517dc22a018aaafa52830fa3d206fa68fdb5402ccf15620b26313e6e"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/ctypes/util.cpython-313.pyc",
+          "size": 17212,
+          "sha256": "5f77d833b0d4456e785d9309b87723ac77c11d01bffdd57ea316353146349098"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/ctypes/wintypes.cpython-313.pyc",
+          "size": 8708,
+          "sha256": "756dd43b7e5fe02c61849d4447efaf27b3e1a48dd5935148cf152a83bb910125"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/dataclasses.cpython-313.pyc",
+          "size": 49142,
+          "sha256": "3514734cfe9f12402d3d4a9d3d5a4980b1cfd773263d390782d5bba350470951"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/datetime.cpython-313.pyc",
+          "size": 414,
+          "sha256": "53c3287ea507f5204fa63bc23d2bea9fe41600ac1e5cee658cf334e9e5c53716"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/dbm/__init__.cpython-313.pyc",
+          "size": 6441,
+          "sha256": "3e753c3a263f9a6b823abd4cd76044b8191f161e0e8d6c3ef5639ca4efd02805"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/dbm/dumb.cpython-313.pyc",
+          "size": 13467,
+          "sha256": "b3fadfc70b4a8ce66d7202f245e99347695330f6837bf99132551c39d8880e29"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/dbm/gnu.cpython-313.pyc",
+          "size": 219,
+          "sha256": "fcd1d2ca1b7e848f3e36532d1835973018e8b4e70e6206e878fc246e67691d71"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/dbm/ndbm.cpython-313.pyc",
+          "size": 218,
+          "sha256": "4883913a695d6f0fd5515ed2ecfdf4bcb12d8819963b6879a03b5c2b69e36f38"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/dbm/sqlite3.cpython-313.pyc",
+          "size": 7351,
+          "sha256": "b342f3c13b99e6d231485f8075fc0c265f8dbd2efcdc3f870cba246e1f6625b9"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/decimal.cpython-313.pyc",
+          "size": 3005,
+          "sha256": "ef84b3bdf49c7f5f372cdcccbd88e37803de0b1ab15669bd8989efe5dcb245f1"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/difflib.cpython-313.pyc",
+          "size": 72043,
+          "sha256": "c756fe1886cfe6129ef829a88eba433b270ceaaa1ad9a386b8d41f34fa33c041"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/dis.cpython-313.pyc",
+          "size": 47520,
+          "sha256": "a23b4bce9d101cfd7b8764632c10206ae9c4f0826f9619ca38b41c2936852974"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/doctest.cpython-313.pyc",
+          "size": 107680,
+          "sha256": "4bf93238b20f46efd0ae53e30009de5d2a8e83ad56e7566f3b467be917e5fec6"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/email/__init__.cpython-313.pyc",
+          "size": 1890,
+          "sha256": "7382109b10be733b5c5caee24ed15eaafb4d00a19d0ced707b99ed139fbc5280"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/email/_encoded_words.cpython-313.pyc",
+          "size": 8290,
+          "sha256": "f3b8167a982df13985ac7bbbcc590d6930c622accf95d672bc6927a6cd969d75"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/email/_header_value_parser.cpython-313.pyc",
+          "size": 140093,
+          "sha256": "e216796fccd3e9da76e6306fa16774b03d7241f718053149163272653da448db"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/email/_parseaddr.cpython-313.pyc",
+          "size": 23566,
+          "sha256": "2a6364abbc8ede0979af63ad2297d06e3cc90dc5759faa02b1483cc73b273467"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/email/_policybase.cpython-313.pyc",
+          "size": 17973,
+          "sha256": "f1b3fc8f6a8e70b4cda03159bf4fef64b31cddebc43e12ef181f592d2e23495b"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/email/base64mime.cpython-313.pyc",
+          "size": 3977,
+          "sha256": "019b76e479145d216f31119b3cc5cfa415e5f45961e17686391d678cda4c6a13"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/email/charset.cpython-313.pyc",
+          "size": 14853,
+          "sha256": "21cc1d739b9ada83ec2c35c22d212e60c9051f84e0cb1df442a02d80c40cb12a"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/email/contentmanager.cpython-313.pyc",
+          "size": 12259,
+          "sha256": "0c5850b5c781cf790f175c031e32b2c1b92012e0d04cd301e678dbd42f71936a"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/email/encoders.cpython-313.pyc",
+          "size": 2056,
+          "sha256": "f6e0ca919cac4d24e5d42d9486c20ecfe3598326cec87f521fe930bb2c3b3246"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/email/errors.cpython-313.pyc",
+          "size": 7583,
+          "sha256": "6234c1c6b71a4e4313f1161a2a8f5baea9451af88742d22eb84de474bd2e1199"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/email/feedparser.cpython-313.pyc",
+          "size": 20565,
+          "sha256": "809d4a0a0c01b24a259469ec01ca062bc97a8f515e4db20c7d2422c76a4ac13e"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/email/generator.cpython-313.pyc",
+          "size": 21246,
+          "sha256": "c6d81b14beca62c4606f9e504c958ad43d59c458f4f48adae449b8a47110265f"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/email/header.cpython-313.pyc",
+          "size": 24959,
+          "sha256": "cdb95a05d5298cc68c747146cc1639e23b0f1a88ac9912a8c553c0e4c96641a5"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/email/headerregistry.cpython-313.pyc",
+          "size": 32007,
+          "sha256": "3e39ae2168f5a50b8a75f8d94913db1db3b7815d29d90fb7f16b5afaa91d44e3"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/email/iterators.cpython-313.pyc",
+          "size": 2819,
+          "sha256": "6d5a64fcc063294c180351d4fd26b2408c7772b4617c9e10156e27a0f9ef7acd"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/email/message.cpython-313.pyc",
+          "size": 51801,
+          "sha256": "f2f860ac56d7c6af161980cf6d0b34abcecfbe8345e1985021eebda301b48268"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/email/mime/__init__.cpython-313.pyc",
+          "size": 142,
+          "sha256": "9181dc0411af2b6dfbb97e482d096bebe74102be9ef9a7c5bc69a5b3877143b9"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/email/mime/application.cpython-313.pyc",
+          "size": 1667,
+          "sha256": "0b147bfa56a9cd3039335100a7df2b9cd99efd49b2baaadd491dd93fdd686161"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/email/mime/audio.cpython-313.pyc",
+          "size": 3331,
+          "sha256": "55b80fbe8851c32e3d62e16a20533f0e487ef9f9a7d96aa5e3ff2492b51ee82a"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/email/mime/base.cpython-313.pyc",
+          "size": 1328,
+          "sha256": "ec8ac8c4ae693919f2f918d25c45c4ac5348d8d45f36424a4b4f86a533b1bf7b"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/email/mime/image.cpython-313.pyc",
+          "size": 5819,
+          "sha256": "8983f43c2a13a284b0485d273bb28a8feb9ec75dbc3497b136d6aa2a6e2ff2e5"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/email/mime/message.cpython-313.pyc",
+          "size": 1585,
+          "sha256": "fb55ccc9565f76cf278d124ee775ebb838301e61a55b87146f98489eaeb4980f"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/email/mime/multipart.cpython-313.pyc",
+          "size": 1707,
+          "sha256": "72e859b13838f52f02c04268e3cf5f5bc2165226c0020659363d8d94d2ba9084"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/email/mime/nonmultipart.cpython-313.pyc",
+          "size": 922,
+          "sha256": "e2662ab35264a1bc466be7e7929a974530567c577e1df5c8923cefd97aec7e1e"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/email/mime/text.cpython-313.pyc",
+          "size": 1511,
+          "sha256": "b907a7e949533d195acd8666d3df7a4f7de72e3586b10b8d4aaf100f8a079668"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/email/parser.cpython-313.pyc",
+          "size": 6517,
+          "sha256": "097fb39ed343ae3e363cbea193b981a32dd7d6357075c2d4138f8cbe450496e3"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/email/policy.cpython-313.pyc",
+          "size": 11408,
+          "sha256": "84b082a6c1897c0e77d1acc317d8bf1b657774e71bb5472b65d5bb112540ff8d"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/email/quoprimime.cpython-313.pyc",
+          "size": 9939,
+          "sha256": "85690edde86794aa8b9756b3ee3bb0a5ae77e8f07ba8c0be66f594e79345e6fa"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/email/utils.cpython-313.pyc",
+          "size": 16967,
+          "sha256": "070306bc76e8133c8c6add2a02bf54e8ca11b25abce2b9220911cb8d329e3699"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/__init__.cpython-313.pyc",
+          "size": 6271,
+          "sha256": "b83fb6119e29c91e49df9c6cd50e24a7e85410e1877a79c30fd974f73e18ca92"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/aliases.cpython-313.pyc",
+          "size": 12545,
+          "sha256": "018465fbce4f5ede9438058d4418875c3ca0259875e3cb57479c1c66794628a8"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/ascii.cpython-313.pyc",
+          "size": 2703,
+          "sha256": "42bc49c87baca181c7fde40a82585ba219417af37961a161dbb521703499ecbb"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/base64_codec.cpython-313.pyc",
+          "size": 3164,
+          "sha256": "63be6a4d785cf054f73e532ad56dfc20dee502f7bbbc721bfd0ad1a043f5ff7e"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/big5.cpython-313.pyc",
+          "size": 2127,
+          "sha256": "7e231d1e3507d400211268767105a1c6f8cefdeb81430231601f76b3f67f35af"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/big5hkscs.cpython-313.pyc",
+          "size": 2137,
+          "sha256": "82b0aa9524a5ed9ffa39dfa3cffa6e231bb423d53df5a3ca1825c4201a3ff02f"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/bz2_codec.cpython-313.pyc",
+          "size": 4540,
+          "sha256": "bc122ec0084c10f047a35dabbe19f6e61d80305e266a56b896e75c9cfe383488"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/charmap.cpython-313.pyc",
+          "size": 3993,
+          "sha256": "78b7c493f2b4067d28b120abae30e05b6da6725581c5345d0e941042281f287b"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/cp037.cpython-313.pyc",
+          "size": 3267,
+          "sha256": "cc89e52596fd56432fe61b15cc3d786f0e24fa738f259acbdb6e5d9dbe1734b1"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/cp1006.cpython-313.pyc",
+          "size": 3343,
+          "sha256": "310919ddca7ba99a5cc327325e0ee93365a2f0f5c13e557c7de0a7cd451b819c"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/cp1026.cpython-313.pyc",
+          "size": 3271,
+          "sha256": "9b17e57f101ff722ed2ed8c42d545751b77c10c868409093aa5d69b7cef5ce05"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/cp1125.cpython-313.pyc",
+          "size": 13807,
+          "sha256": "48b29bce664dd77faa44dbe721570307c8ad5af7c1ffbcd78cef6585957c9212"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/cp1140.cpython-313.pyc",
+          "size": 3257,
+          "sha256": "e83b9efaeed8e6c64adc2936d3751e38a5f65888a3f25a871a6f8559fca59407"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/cp1250.cpython-313.pyc",
+          "size": 3294,
+          "sha256": "ccce7964f9273c026afd0721cb9cc143ac7012d7cd0684b77a653629b161386f"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/cp1251.cpython-313.pyc",
+          "size": 3291,
+          "sha256": "ae7e8c6732f160caf0a9761aa5be35eaf94a3559648c4d766fa1566ce118be06"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/cp1252.cpython-313.pyc",
+          "size": 3294,
+          "sha256": "e4f667fd14ce57c11725f745d7a12e359a27ef0390bf003a32150b879c3839b5"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/cp1253.cpython-313.pyc",
+          "size": 3307,
+          "sha256": "cd67deacb042a637bb6d32e0eb14dcb5b1721cb5eef7bf4bcc43aa26da36b31f"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/cp1254.cpython-313.pyc",
+          "size": 3296,
+          "sha256": "5af495851f85b955d2b07ab2fb1ba6d514a8c6e9101ee7459b3d2d4cbeb66bf3"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/cp1255.cpython-313.pyc",
+          "size": 3315,
+          "sha256": "818a2519a12031f41b0bad0153e3f8ac7254d798e8fb9ea44132361312b344c2"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/cp1256.cpython-313.pyc",
+          "size": 3293,
+          "sha256": "ac1fd22bc97fbd0b57ac4c3db391d95e1a9c32f26d5cad6fc97e9ceb070919bb"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/cp1257.cpython-313.pyc",
+          "size": 3301,
+          "sha256": "09af1e27b628811a62017579ec953aad5fa63a202041021261e15f47562b83a4"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/cp1258.cpython-313.pyc",
+          "size": 3299,
+          "sha256": "3fea9fe5ada913471e43e0451a7e2e8831bb1f0f733140c147ada834da5b5c13"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/cp273.cpython-313.pyc",
+          "size": 3253,
+          "sha256": "5272bb1b5f6c8b8f37fc1648cd5f04073c3c70cf0cabfeeff08e80c0c10a9e1b"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/cp424.cpython-313.pyc",
+          "size": 3297,
+          "sha256": "a2900c93a387fd99e2e8fb67270448ef92018b21243d0027bb5a07bf7f470f45"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/cp437.cpython-313.pyc",
+          "size": 13440,
+          "sha256": "38c42cb1fb2693b52889400ffc2c41245e30d84198476d28bcde02e7d5e862a0"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/cp500.cpython-313.pyc",
+          "size": 3267,
+          "sha256": "2a858bdda7890ace655df142a1b732a262e548819472471908cd3c252ad4914e"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/cp720.cpython-313.pyc",
+          "size": 3365,
+          "sha256": "b26a05995dfbb50750cb868501550fbde1548098e7c11a7dabd3e5b8d99c97e7"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/cp737.cpython-313.pyc",
+          "size": 13842,
+          "sha256": "6fe2cd8442af72e1b7bc319cbcb60aa134ec65230ee33508cd34cce6333ac953"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/cp775.cpython-313.pyc",
+          "size": 13480,
+          "sha256": "b0d9a41578fa92b4f83fd152c0de13b157053f0eafaa14e2d3805cdd9bc4a82e"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/cp850.cpython-313.pyc",
+          "size": 13021,
+          "sha256": "6ffceb727b4e41a81ee289941e2a01a4abb72e378255cb9ba6cba85df997e180"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/cp852.cpython-313.pyc",
+          "size": 13496,
+          "sha256": "de3c9cd288664ba79bcfca87fc01978c382e79cb113718a8dcb59c6b3fcb4f28"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/cp855.cpython-313.pyc",
+          "size": 13809,
+          "sha256": "e6b01c60a93ff48ce663516d4a80374eb0f7015e52d8b25eead621c94fb1eb7d"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/cp856.cpython-313.pyc",
+          "size": 3329,
+          "sha256": "c9689792c181b1f56c3e0449e2abd0c5c1fd3fb7f3c6c9a67292f9f361145236"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/cp857.cpython-313.pyc",
+          "size": 12822,
+          "sha256": "0032bbed272769f154ce79bf5f65963f68b5a27bc68f0ce638bb4ff9c391f963"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/cp858.cpython-313.pyc",
+          "size": 12991,
+          "sha256": "ca75aa78c02345c7dc6d10384f11a7f1e01e391d0397ebdfb1bcb2d27fdf6ac2"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/cp860.cpython-313.pyc",
+          "size": 13411,
+          "sha256": "9c36032b601937099c1b89a1f639ca79114d4d375033ceebb13300a34a1ad13d"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/cp861.cpython-313.pyc",
+          "size": 13436,
+          "sha256": "bfca89baa2b48ca08286dbc996d45f9ad4612cca503c4c01d481510687cd2280"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/cp862.cpython-313.pyc",
+          "size": 13669,
+          "sha256": "b42c83122b609cf7fc7e33491c315dbbeb0e2d326e9c81b6ebe52f624208b832"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/cp863.cpython-313.pyc",
+          "size": 13432,
+          "sha256": "15ed704c61fa073621edc15971e1bc29f9de6bd72f7ce32b2886aa6fade2fa4f"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/cp864.cpython-313.pyc",
+          "size": 13477,
+          "sha256": "f7ee2e249cb81dda945feb3de7aa8806064a42b22eb29f0b8956aa41af5d5697"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/cp865.cpython-313.pyc",
+          "size": 13436,
+          "sha256": "c2c17ad3b18b527d42163faf5e6df821ca1365a76769c36c2978d7322d4935b3"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/cp866.cpython-313.pyc",
+          "size": 13849,
+          "sha256": "a9f73042eebae8165f200c580b3fd0d31768549dadf1fdfd321505845bac1307"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/cp869.cpython-313.pyc",
+          "size": 13379,
+          "sha256": "e9048a2f3e29c88a8335a7a9c140909d63e4642a3510b21310d8cc2bd53636cd"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/cp874.cpython-313.pyc",
+          "size": 3395,
+          "sha256": "9ad11b185b824c15c9037510c3ed1b577c402e0b8ede7f3a3b4bd95bdb665685"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/cp875.cpython-313.pyc",
+          "size": 3264,
+          "sha256": "fce86d9bf3068b392e1afc3ea816350a038c3e2d8f1abca571ee82b0e13d4d71"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/cp932.cpython-313.pyc",
+          "size": 2129,
+          "sha256": "a19edfe8f9c4177930e989ecef48adb2f71536acfba4dbfd84f086dc2aa89ef4"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/cp949.cpython-313.pyc",
+          "size": 2129,
+          "sha256": "74117e4a6f2832c19e5fec7b05841efe54d6121022158d321b2db04134210a14"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/cp950.cpython-313.pyc",
+          "size": 2129,
+          "sha256": "7df713c47c95b6c126b61a3602a5ea90d144a3ccce3c93bc3f62dc8d0c84a498"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/euc_jis_2004.cpython-313.pyc",
+          "size": 2143,
+          "sha256": "be2256816edfa3897282c45c963030994a51fb6925a10944bc9591c3b8e19bd3"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/euc_jisx0213.cpython-313.pyc",
+          "size": 2143,
+          "sha256": "208db8cd907271f5b7dc263ee7a8bbd7f8f107f7dd1e29db8b3a1c88a44d754c"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/euc_jp.cpython-313.pyc",
+          "size": 2131,
+          "sha256": "3fecc5213a7afb0da72ca85a261c704fbc51bbdd0cb90245b0a6bd214c581420"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/euc_kr.cpython-313.pyc",
+          "size": 2131,
+          "sha256": "cf6ee0ff734445d80d7e2b7afa5d2dde18b2b31f1d142b460649a12d0df41569"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/gb18030.cpython-313.pyc",
+          "size": 2133,
+          "sha256": "1044e76b0bef6bfc140aaa29080493d67a707e70864547c9278f5ebc51fb9e0b"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/gb2312.cpython-313.pyc",
+          "size": 2131,
+          "sha256": "4a784487d43e0f359e2f772c75f0f678d5892d0ef43b6e6c8098a1d3d7da3123"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/gbk.cpython-313.pyc",
+          "size": 2125,
+          "sha256": "278482db76726b6b5fdf8fa431bf9ad93eb03af52ca328e8c907df2a5cba048d"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/hex_codec.cpython-313.pyc",
+          "size": 3151,
+          "sha256": "3a7c22c44eafbc336c2df754d37493a11aa5c8e513a965d7b1bdd201f8589da8"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/hp_roman8.cpython-313.pyc",
+          "size": 3452,
+          "sha256": "916f4606ac2a8f403925d641c4ea8875317a16225ae877d44ca69b6e1f6c0828"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/hz.cpython-313.pyc",
+          "size": 2123,
+          "sha256": "adbb9ed63c53ff71dae48790926704b25ff3fab9119cd670ad71af93556ee761"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/idna.cpython-313.pyc",
+          "size": 14490,
+          "sha256": "92af99f10b6ebebdbe65f9c3fdd506828d0b2961b26f5a1221d3a229944d5d26"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/iso2022_jp.cpython-313.pyc",
+          "size": 2144,
+          "sha256": "3006829bfb86ea16974ac0de8be111c7b0acbd99b9de8db85a129bc8526dfdb3"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/iso2022_jp_1.cpython-313.pyc",
+          "size": 2148,
+          "sha256": "7a6316302b6e10a296a35f56987108d0ad23e4e7147912119085c7defa385d10"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/iso2022_jp_2.cpython-313.pyc",
+          "size": 2148,
+          "sha256": "3aa2f904915ef2e01a16e9cbd20d37058f66bf117e9a7a3563cd2b7d24cddadc"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/iso2022_jp_2004.cpython-313.pyc",
+          "size": 2155,
+          "sha256": "6a12ae6581b86d48c2ae782706684e5ea03b1c2fcefe232c593d2af70ed9ee4c"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/iso2022_jp_3.cpython-313.pyc",
+          "size": 2148,
+          "sha256": "4c860edc989e06ede03f091b3d82b1e853853eede3a1bfc56eadc983ee543d32"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/iso2022_jp_ext.cpython-313.pyc",
+          "size": 2153,
+          "sha256": "ebb695044d3bd0e7a0891ffcff8f9a1d6c7ea9b535e41a6f5590c03d2d9df5ef"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/iso2022_kr.cpython-313.pyc",
+          "size": 2144,
+          "sha256": "1e1f3928cc443df0b823b8ac9b50dd67571f9c2ea950c390fba96a0dcf405aa8"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/iso8859_1.cpython-313.pyc",
+          "size": 3266,
+          "sha256": "a73e791a37ac065f5b9363959896624c9bcd9d324078a1607dfae48aa6381076"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/iso8859_10.cpython-313.pyc",
+          "size": 3271,
+          "sha256": "ac0a94e18b771cce009e83a966a872ae777340c7e89cdd96bef2d6d4b7b5a510"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/iso8859_11.cpython-313.pyc",
+          "size": 3365,
+          "sha256": "bd24b889116b6c7b665cc217fb220e00ebedbea5249f37cf51de21d3f17ef86d"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/iso8859_13.cpython-313.pyc",
+          "size": 3274,
+          "sha256": "5064d6e4a04cd463f429236789270b02dec95e632513360b3e7c618c7285496a"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/iso8859_14.cpython-313.pyc",
+          "size": 3292,
+          "sha256": "fd5448d4074a3cf431bf58cf65838462b7d2710e5a2dd9982fa30a31ae12cee3"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/iso8859_15.cpython-313.pyc",
+          "size": 3271,
+          "sha256": "4aaf426aa0efb0b19251f98278e05e9926dfe82a243467452992e119a01fa342"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/iso8859_16.cpython-313.pyc",
+          "size": 3273,
+          "sha256": "fd0c7bd02dde9bf072b5bd0208fd86629bf55def370c8cc215f444049a2e5aa1"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/iso8859_2.cpython-313.pyc",
+          "size": 3266,
+          "sha256": "b354a776c1773729e9645dd7040e90d81bdbc230408bf62fedf097ec4a35b231"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/iso8859_3.cpython-313.pyc",
+          "size": 3273,
+          "sha256": "3e0a520abb8d03913d54b1f0d9fe938033a583fae315b1c1de79e7bd3cdcd720"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/iso8859_4.cpython-313.pyc",
+          "size": 3266,
+          "sha256": "2b2cdc87c47b69b61fc3fd6fa65d528f908edb9ff61ae0b95b6a524b659bfe80"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/iso8859_5.cpython-313.pyc",
+          "size": 3267,
+          "sha256": "5f8456176f9fc9d0f321767760c3c5e2daf06f0c956282521335a2a31f73c72d"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/iso8859_6.cpython-313.pyc",
+          "size": 3311,
+          "sha256": "8729612bcce914c56535f2c385cac744e0e9adc9c330045450b986f23e13929d"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/iso8859_7.cpython-313.pyc",
+          "size": 3274,
+          "sha256": "a87a0c83e747f6e28c1db2f3e2f025559d2e70d1a25c85854a35c6110b9e27b3"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/iso8859_8.cpython-313.pyc",
+          "size": 3305,
+          "sha256": "d967fe6b6b339b7ea72f56833383c88ad05024df1a89c0e8dbee1c35b96008a4"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/iso8859_9.cpython-313.pyc",
+          "size": 3266,
+          "sha256": "4bad254692e7a57fc3de532b3395ef5f290b3a99fa497fbf55919ebfed105e7b"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/johab.cpython-313.pyc",
+          "size": 2129,
+          "sha256": "414359732d66dbb54b2190bc120371ed13b1d5a5905fea8c84ccac42a83c7902"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/koi8_r.cpython-313.pyc",
+          "size": 3318,
+          "sha256": "a871c603a0a9eb49ff4d32d2f4a84691373a765f60d0a8a311b806b2d3a4bd7d"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/koi8_t.cpython-313.pyc",
+          "size": 3229,
+          "sha256": "ada551ec26d97d1ffb7067f081e967e20d6884706e5960b24530b0e83a37e26d"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/koi8_u.cpython-313.pyc",
+          "size": 3304,
+          "sha256": "a5a7d5cce4c4a1bca1bd792bfce34de9f482738739ff00ac8b6c7c2a6572d0b8"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/kz1048.cpython-313.pyc",
+          "size": 3281,
+          "sha256": "c615f05f94923c8ba57d22b30a0b835900952dccddb2e479237dd854c4d682de"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/latin_1.cpython-313.pyc",
+          "size": 2715,
+          "sha256": "0cb34ef86ea2cebb387fedf1cd0e20d108937f9c7eba068cc4492d28777322ba"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/mac_arabic.cpython-313.pyc",
+          "size": 13326,
+          "sha256": "540fe51386cd28507b5efa2d3d3e002f11fa49173511dd80a5d0cca193ed18e5"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/mac_croatian.cpython-313.pyc",
+          "size": 3313,
+          "sha256": "740f66133926f060ea50230832abab1181ecfd83c38c5486d641fc8cc528abfb"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/mac_cyrillic.cpython-313.pyc",
+          "size": 3303,
+          "sha256": "b4c1a6438f84ef73d87789e6f3c10e545f4e14411080e565577d7bb7772201df"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/mac_farsi.cpython-313.pyc",
+          "size": 3247,
+          "sha256": "09c0008431c7fd01430ca4a6c5d14aa19a473c3d40d618f4c30b509d566dde22"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/mac_greek.cpython-313.pyc",
+          "size": 3287,
+          "sha256": "4e85b60cb780eb3ab7f136859191a2e8eb990461b6e6cf2f661e5a1db6e01d4a"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/mac_iceland.cpython-313.pyc",
+          "size": 3306,
+          "sha256": "130c548e5cc638c4df2e1e899105a55e8d377047e8005a4f8c5e426e0e28dfc5"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/mac_latin2.cpython-313.pyc",
+          "size": 3447,
+          "sha256": "024f6a0f3d03f9e6b24e349d9b89ba64003e50ffbd4fddae94b489ff3b23627f"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/mac_roman.cpython-313.pyc",
+          "size": 3304,
+          "sha256": "5f542704a5817ce603b08095877c1aecbfd5b348297b3b8c2bd6a6904ca34f9b"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/mac_romanian.cpython-313.pyc",
+          "size": 3314,
+          "sha256": "7297cbd211b5496cf1b53dbbc824702638b10e10508b13959f971d6cf0d04d16"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/mac_turkish.cpython-313.pyc",
+          "size": 3307,
+          "sha256": "801296ef9d999b910021047fd69f5c23989679248e28ef493bb33d0fd9dc9fda"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/mbcs.cpython-313.pyc",
+          "size": 2227,
+          "sha256": "f1a01311b611ba5d25f3b643ecf540c7670135dea77b12e040bfbe1bfbcb4ba0"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/oem.cpython-313.pyc",
+          "size": 2040,
+          "sha256": "3fdc91f1d83f65242ba73d27887ed2aa5f2474215751eb9edde91cd3c8c1364f"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/palmos.cpython-313.pyc",
+          "size": 3295,
+          "sha256": "0d3a49973d984d511208679ffddbff9ebf7a5b84c2ec9c6c73369ad72fef90d2"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/ptcp154.cpython-313.pyc",
+          "size": 3388,
+          "sha256": "1966cfdc2b4a4c13b2a0b6d86364d55bed3e79a72da7fb7ded39865a5bd9c478"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/punycode.cpython-313.pyc",
+          "size": 10105,
+          "sha256": "a3fc713393b5f332f23ce02d9d7691b6f4e7b3ea167e1a957b646c6bdf714e35"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/quopri_codec.cpython-313.pyc",
+          "size": 3308,
+          "sha256": "c28e972560e8d48364bbf356cd2cdfa6c064689131e921cd625dc55c5c7fd746"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/raw_unicode_escape.cpython-313.pyc",
+          "size": 2750,
+          "sha256": "3195a7cf39d612356e7b2aa8e5a240f4c8a6a742f6cf9bfe26f5084926ace215"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/rot_13.cpython-313.pyc",
+          "size": 4570,
+          "sha256": "d38c3ea6431a037a499b20589602fde723ef78546091c3877800219baa00c8af"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/shift_jis.cpython-313.pyc",
+          "size": 2137,
+          "sha256": "7c3c4745a22d5466a72db910766a46ef941e288cf5926f7aab17392a8d5c1484"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/shift_jis_2004.cpython-313.pyc",
+          "size": 2148,
+          "sha256": "3857691d255768beb7986b6a9702ea56a068fbe429e90223e1fcdf625467e336"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/shift_jisx0213.cpython-313.pyc",
+          "size": 2148,
+          "sha256": "117ca9f0cc84ab3053c6b590d50755e759c6e5a359e574bbf35a20c148711eae"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/tis_620.cpython-313.pyc",
+          "size": 3356,
+          "sha256": "d494db587fee4f05dca78682a3ae0fdb6a7ebf93d0ef380391e62160dbf4ec2b"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/undefined.cpython-313.pyc",
+          "size": 2690,
+          "sha256": "dff8da5cbad61f7fcfc93a4ec83629c40719e39c3956df32fa053cd336f9646e"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/unicode_escape.cpython-313.pyc",
+          "size": 2730,
+          "sha256": "61006d4f1c5b6be41648d9b944bfcdc2099abcdbc8482132480c0172830b3add"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/utf_16.cpython-313.pyc",
+          "size": 7923,
+          "sha256": "1d56f41ded66f571bc709c533c62b38adb4a64685a0adacbdf26352b5de74b22"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/utf_16_be.cpython-313.pyc",
+          "size": 2307,
+          "sha256": "c54decfd4e916f17532e0b07f26eddc39c9b3c0bd8d6a8235db473e21aa738ae"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/utf_16_le.cpython-313.pyc",
+          "size": 2307,
+          "sha256": "dd90ddacdb1ba0fe19774fc57641a9f816060cdd59bac6ab4738c1b33c0538bf"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/utf_32.cpython-313.pyc",
+          "size": 7817,
+          "sha256": "f52f5d7db65747b13c456dc0b22a86fd5f2e48f54c2c5427e4cce68177a881f9"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/utf_32_be.cpython-313.pyc",
+          "size": 2201,
+          "sha256": "a432fd90922cd6ec08efd19be7c5c13a055b28b0078451fc377588ab4b71e9a5"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/utf_32_le.cpython-313.pyc",
+          "size": 2201,
+          "sha256": "13ae810e85f07c189554ef9e3456660e1cd59993a311b1d8961050130e0eca23"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/utf_7.cpython-313.pyc",
+          "size": 2228,
+          "sha256": "1386d4901039919655c197480978fbe5af883334f41dfbbae815439f14118e3b"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/utf_8.cpython-313.pyc",
+          "size": 2287,
+          "sha256": "919e603e4d15df77b5a6b3a9adcfd6d5b18d344d1c6889d2238ed8aed44be475"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/utf_8_sig.cpython-313.pyc",
+          "size": 6916,
+          "sha256": "b2314e5eaa7a41fa0cdd0f3f5a2387b2e1e25fc10cce38c65b1171403c3c8fc2"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/uu_codec.cpython-313.pyc",
+          "size": 4854,
+          "sha256": "cb37c521afb6bcbdc35df311d90c42fea116b19167671e7d16e4f3d4793bfb6a"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/encodings/zlib_codec.cpython-313.pyc",
+          "size": 4460,
+          "sha256": "7b2e0d5ab3271fab48d217a0376ec8ee8ffbc9eb89c84363682e08894e65df6d"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/enum.cpython-313.pyc",
+          "size": 85908,
+          "sha256": "b489c586d3429a585adb3224374bea09645fdbd2c7bf61ab76fc7fb053ecb27e"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/filecmp.cpython-313.pyc",
+          "size": 15030,
+          "sha256": "3b6ef7ae65e470c80c83caa53a725503c6db0de7dbf89b7143a66086ffeb2701"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/fileinput.cpython-313.pyc",
+          "size": 20636,
+          "sha256": "3949976019ff785784a77649d4d0841965cd623fa5c279882f923f53c16e09f4"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/fnmatch.cpython-313.pyc",
+          "size": 6807,
+          "sha256": "20618c9df969fcb2a2cd460c527e1c6f387626261d4e535c3bb5b33a9b86ae0e"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/fractions.cpython-313.pyc",
+          "size": 38372,
+          "sha256": "ea03f1827e5081fdb55e67f118b7acb3c09301d74ea2655a4badf42cbdbff6c5"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/ftplib.cpython-313.pyc",
+          "size": 42497,
+          "sha256": "f9395d2d74b61d1ed2feb4e083d8f9673a9e7d52cde5a8688e72604d19833d31"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/functools.cpython-313.pyc",
+          "size": 42202,
+          "sha256": "c8b01fe51fe377ef38eb7912e91574302386f1279d7d2f8a3108e255308bfb4b"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/genericpath.cpython-313.pyc",
+          "size": 7814,
+          "sha256": "2bda86aa21c1cf56ca467791abf6e569782cfae0decef19bed2f961facedd3a7"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/getopt.cpython-313.pyc",
+          "size": 8467,
+          "sha256": "760d979b7181dce04f02d38638ea7ca975b309ee743e0f101334bd93363e088d"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/getpass.cpython-313.pyc",
+          "size": 7314,
+          "sha256": "2f9a8c4a0b49c613689e088f27148bcae816c0d6f8dbab12d940960b0017a9bd"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/gettext.cpython-313.pyc",
+          "size": 22564,
+          "sha256": "d26b86213e7ae360359cb80edf7708acfc5776c06ac1d2ab88f154870e97a3a4"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/glob.cpython-313.pyc",
+          "size": 24798,
+          "sha256": "0b328e205122131611de7dfccd79882e9d1481f0b7ea595211a4ff170dfcfa6d"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/graphlib.cpython-313.pyc",
+          "size": 10200,
+          "sha256": "6483bd33c783a389088c12c99ec468cf7060a5d9c6c765367e33c7d0960a0d2f"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/gzip.cpython-313.pyc",
+          "size": 31916,
+          "sha256": "497b718b1ef018ff445c2c88eecd6c32f70b9dc05ac31f444c48f166138bb15c"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/hashlib.cpython-313.pyc",
+          "size": 8279,
+          "sha256": "fe32fb5a1cb7a856b926983eacee33caf927b18061145c2849285b858f805462"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/heapq.cpython-313.pyc",
+          "size": 17773,
+          "sha256": "db4436ab5f514214208af60f5ce3644d789cf4aceffcdabd9604c3c46950d11e"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/hmac.cpython-313.pyc",
+          "size": 10714,
+          "sha256": "e21180526a91ad3517fd9fac9a88f747df918540e5721d42e3381c67a5e64057"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/html/__init__.cpython-313.pyc",
+          "size": 4382,
+          "sha256": "8d3df0f19a514456a20a7ee93c1e06e2dd657be5433072a03967e5c041c84a11"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/html/entities.cpython-313.pyc",
+          "size": 97672,
+          "sha256": "913b2426767724b85b8da0654bb66db0aa127aa9d661110b0dd49af79f1ee8df"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/html/parser.cpython-313.pyc",
+          "size": 23539,
+          "sha256": "52ee35ac4fdb28cdd3f1812ad6fa65ba796ddc09f58895d805effb8b85949aaf"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/http/__init__.cpython-313.pyc",
+          "size": 9622,
+          "sha256": "016529f50b8d079c6d4b690f4da72e24843b891a6b50a472e92d400814834408"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/http/client.cpython-313.pyc",
+          "size": 59727,
+          "sha256": "d195826f00fc7444e0e76601feb956b7ad492e9bde7f53fafa8e2f56dafadf99"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/http/cookiejar.cpython-313.pyc",
+          "size": 82781,
+          "sha256": "0e3cb4d7343d910d24e7591cea4ac642aa4166248f37dedef26c58868cccb738"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/http/cookies.cpython-313.pyc",
+          "size": 22916,
+          "sha256": "ad17275f0af5129bfbb7cb5395483879f0c7fcfd2d0997f0df64033ff1644c59"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/http/server.cpython-313.pyc",
+          "size": 56612,
+          "sha256": "18a3bc0b4e616d4a1577995a0e9456cf0908fa2614a47a4cc9c0918ad8c0f507"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/imaplib.cpython-313.pyc",
+          "size": 69352,
+          "sha256": "b23daf4733e0b16adab4b0c35f1c3c8a02756b2a89c162a55420fa119910fbcc"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/importlib/__init__.cpython-313.pyc",
+          "size": 4547,
+          "sha256": "56b126e69c14201478a363ffca3b3859fbd2353fd45a5087d2eb1aa13e51fb84"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/importlib/_abc.cpython-313.pyc",
+          "size": 1621,
+          "sha256": "cdc53da6e5947a811c0716ef811499ed00136d796ac52df76abee4cd179a67c7"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/importlib/_bootstrap.cpython-313.pyc",
+          "size": 57069,
+          "sha256": "7ea63939ff75715827c23a36b1493d8bd12e2f06546d8a74431e8aaf00ab9568"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/importlib/_bootstrap_external.cpython-313.pyc",
+          "size": 64978,
+          "sha256": "48b4312d0dd2a1cf536ede08ca83dc9db19ac12f483dce355f342885a67300de"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/importlib/abc.cpython-313.pyc",
+          "size": 10324,
+          "sha256": "479d36586c43cc7e73f78d253b0ff7b8cbda05499cee0a8acfcf6204a48c7a1c"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/importlib/machinery.cpython-313.pyc",
+          "size": 1102,
+          "sha256": "8aac3849bd70d446bb05c757297d10a23cc6829dd51a20e49473e2320b1dd38f"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/importlib/metadata/__init__.cpython-313.pyc",
+          "size": 52812,
+          "sha256": "875ca5f5ef53e40053958a7be775ce872cbd34ec9b48ad0dca0f77a9b7762607"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/importlib/metadata/_adapters.cpython-313.pyc",
+          "size": 3888,
+          "sha256": "0d06e6c081d7b6b5cd0cf466e7e779a12b1ac96904f5514d7b8620f2864cdaa0"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/importlib/metadata/_collections.cpython-313.pyc",
+          "size": 1927,
+          "sha256": "6f96a0298aede3c7e3a6256051de4c908d41e421e609ef7dcd6181faedd755be"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/importlib/metadata/_functools.cpython-313.pyc",
+          "size": 3242,
+          "sha256": "932722b3aaf1da7c9e4a5afe33f515bfa7ae2154e71aeda282800c29b510c0d7"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/importlib/metadata/_itertools.cpython-313.pyc",
+          "size": 2277,
+          "sha256": "f299e682291753d76e5d9aacdfb0a5a38db7d5bd82a576ac3a841498fe03c20a"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/importlib/metadata/_meta.cpython-313.pyc",
+          "size": 3658,
+          "sha256": "63cb91e9f188063d620af68c9d190561e796df93920bb47e3cac9d6e3ca6fb1f"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/importlib/metadata/_text.cpython-313.pyc",
+          "size": 3760,
+          "sha256": "fb9b9c58166a2749281edb4b4000d80cd41e0c602ee7e95d50f4a4365c4bf69f"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/importlib/metadata/diagnose.cpython-313.pyc",
+          "size": 1156,
+          "sha256": "6214797c0e9470b338d771984fc78e99b79ec27cac05afbe419d1c3a1987acda"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/importlib/readers.cpython-313.pyc",
+          "size": 465,
+          "sha256": "404894d79ca973cf2d589d1ceee329b4caf89f0ca96029c48dbc5d5a5ab70825"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/importlib/resources/__init__.cpython-313.pyc",
+          "size": 819,
+          "sha256": "b41dea53ed5fd9724cf74a691ecc70a5224a4da0cb2b3b140f719416f809b000"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/importlib/resources/_adapters.cpython-313.pyc",
+          "size": 9734,
+          "sha256": "fa6a15f9a85e1db0958fb6a0eae36cdf4cdc14097272d70eaa68ea2974c9082c"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/importlib/resources/_common.cpython-313.pyc",
+          "size": 8763,
+          "sha256": "eebb7ede72505d64bcade0624945b325719071496bc17353950916bfa416b768"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/importlib/resources/_functional.cpython-313.pyc",
+          "size": 3445,
+          "sha256": "3ca1abaf6fb1dbccc8a38b005238c83fd7b13770d839c7b912582da8b9d69adc"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/importlib/resources/_itertools.cpython-313.pyc",
+          "size": 1468,
+          "sha256": "fac6dad2f5d35d7bf0cd33d77ee66744ba36c199bcc9e08a70feb1d704fab303"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/importlib/resources/abc.cpython-313.pyc",
+          "size": 8783,
+          "sha256": "d2e184999dd356274059f747716fa4b7c003caaaa0a0981cb8de1f4ff60fa1a0"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/importlib/resources/readers.cpython-313.pyc",
+          "size": 12190,
+          "sha256": "b54a6201adbb13e2531c89e989526ba9854eafa9116dced862605d79a3269f71"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/importlib/resources/simple.cpython-313.pyc",
+          "size": 5519,
+          "sha256": "772d399fa269612994552235e4e1fb149ae07d52667c7e887c990410a53a72fd"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/importlib/simple.cpython-313.pyc",
+          "size": 472,
+          "sha256": "2944a26a0f7efb2a9eb8735eeddadc19e3439ba701e48022672ef6eeb69e7ef6"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/importlib/util.cpython-313.pyc",
+          "size": 11873,
+          "sha256": "28dbb53830ec4c4aefb46402d61acc9bcee4a9622bc813f2f6e59edce40fcd09"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/inspect.cpython-313.pyc",
+          "size": 137032,
+          "sha256": "f0b8ddfeb77dacefa7a02b2e0a8351c7c31b90751ad4437b7dda16f6d282d6bf"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/io.cpython-313.pyc",
+          "size": 4278,
+          "sha256": "2c2a63586fd1cb6b9354aa194798b3e5ced94c3addb95e08df2d566077dc2b90"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/ipaddress.cpython-313.pyc",
+          "size": 92020,
+          "sha256": "c923921b47eee237bcc8c4eef47aa71b50924961059155c0f89421ae7be87881"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/json/__init__.cpython-313.pyc",
+          "size": 13616,
+          "sha256": "c5a66a217260c65eea873a1168bb2df5991f53157f617ab31321bc58cd1ab3f6"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/json/decoder.cpython-313.pyc",
+          "size": 13836,
+          "sha256": "7d001900843f2be8db85b9f1ab27a0503f8bfe3dbebd33a3fa591eb101e5447c"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/json/encoder.cpython-313.pyc",
+          "size": 15202,
+          "sha256": "5fee40dc91c9bad70626bd4f4c67d6fddc02662eb7182252cfe4854466e11c64"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/json/scanner.cpython-313.pyc",
+          "size": 3366,
+          "sha256": "e29c98fc4cdb6c5cd341854dfbe057d27172b40126bfdad6bcd731a031a8754c"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/json/tool.cpython-313.pyc",
+          "size": 4433,
+          "sha256": "1ca4254af95fde88f3648c525317ac1290b835bf185a0714526cd0a8b96d6c15"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/keyword.cpython-313.pyc",
+          "size": 1044,
+          "sha256": "a43b9a501aa7d1c4e1dd7605e4153cb957cc27264378dabacf8c67f6a53efa55"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/linecache.cpython-313.pyc",
+          "size": 8743,
+          "sha256": "b3729420bd17821bc64ff11b64e642e5fcea2da4f8b0c2457357e7e46669d3d0"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/locale.cpython-313.pyc",
+          "size": 65454,
+          "sha256": "72240771962b31aab1c310dda341e51d6564cfa94a47581c661030c9ffa7c910"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/logging/__init__.cpython-313.pyc",
+          "size": 94455,
+          "sha256": "99e963f3ae141eddfb70e82616973364b3fff58cbf50dae0c2ea0fade8d35d55"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/logging/config.cpython-313.pyc",
+          "size": 45304,
+          "sha256": "9e4b31f70feb859e693225fcc3ff64ff3e7e981553e60ae61940ba5ba57387e2"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/logging/handlers.cpython-313.pyc",
+          "size": 65587,
+          "sha256": "b6079a2852f6af706b3a2f21e81c6bbae61f5b263d2a191489caf6a376598e87"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/lzma.cpython-313.pyc",
+          "size": 15721,
+          "sha256": "49f2c117407f3988f62f1482324a5118557a6ff6401bd10bfdd2f3b34a649efa"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/mailbox.cpython-313.pyc",
+          "size": 118375,
+          "sha256": "924060f3dbead289b0d1aebf1b17c7e0d173c027826a3789d28eb8a2ebef6b31"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/mimetypes.cpython-313.pyc",
+          "size": 24942,
+          "sha256": "ccc9701d0442cbe66dab2aadca0ed70ff9ecd7c60726a710ca45f25bb4f4bfb7"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/modulefinder.cpython-313.pyc",
+          "size": 28395,
+          "sha256": "18487962b165a4d7cf2275c53ee4eed13b243461b1052f66a3ffb74e95fd7107"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/netrc.cpython-313.pyc",
+          "size": 9329,
+          "sha256": "1d387af352224e27e51b8480989ec3290da9dc2b40ec9eac871c6a14e5fe6bb5"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/ntpath.cpython-313.pyc",
+          "size": 27218,
+          "sha256": "5fafd72c59f5d909601b0dc7e152892bec820d4453fcb63578f43637f00e9d77"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/nturl2path.cpython-313.pyc",
+          "size": 2740,
+          "sha256": "dd8010e32c70514ad6073598eac33590aeaec7cb35d163615fd43a2e74eb47d6"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/numbers.cpython-313.pyc",
+          "size": 14035,
+          "sha256": "1a72de0da6b57f468bdce36c3b8c939a0decac6a21b1275c1fb256116c4c9439"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/opcode.cpython-313.pyc",
+          "size": 4065,
+          "sha256": "de4c85dadab72604e0147506aaed79efad59f854a85bbad28899ac343be295b9"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/operator.cpython-313.pyc",
+          "size": 17368,
+          "sha256": "e9087b8b17d954b5a7f2e4b803e3e829e63eb61f9dfcb2e58558904526b7b430"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/optparse.cpython-313.pyc",
+          "size": 67582,
+          "sha256": "2ba4b6bdf866ad7d8a83550d046d3e053357f395d6428ad9f7cbf78704c47946"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/os.cpython-313.pyc",
+          "size": 45851,
+          "sha256": "66f85db9e584e371a186c09ca1d22a2f9c1879073e2dc42b379ffdd4104cefb4"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/pathlib/__init__.cpython-313.pyc",
+          "size": 480,
+          "sha256": "5659e103a9a4686bb01e149dda126aad1df99c3707b6b3e61014bec3cbff8816"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/pathlib/_abc.cpython-313.pyc",
+          "size": 40001,
+          "sha256": "7c59545c292b8dc887188a61016adef7c073e702044b6014c8a23f6024a3e365"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/pathlib/_local.cpython-313.pyc",
+          "size": 40872,
+          "sha256": "ef24635b7ac1d92bf186544903909c0d2a742d9032bf512f48e86326975bb3ff"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/pdb.cpython-313.pyc",
+          "size": 107863,
+          "sha256": "f4b6de28bed1f2a1c7c945cf19c5bc0aa44453342c8ae82304335e5c54874c6d"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/pickle.cpython-313.pyc",
+          "size": 78229,
+          "sha256": "e4f0dd2a7a41d1882f59c0dc224f07e57eb17a05d8e732fe188b54946003dc17"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/pickletools.cpython-313.pyc",
+          "size": 80430,
+          "sha256": "9acd0372c571b3ff53f72522fa34a0ae0907a28d42e71e21bc9cbb78c884023c"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/pkgutil.cpython-313.pyc",
+          "size": 19962,
+          "sha256": "31d630cab82159beb043cdb09622270499e4cd9f3705387c601908afbb1cd442"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/platform.cpython-313.pyc",
+          "size": 44678,
+          "sha256": "89a73eb41de131848295ad705fb3bef8acf58a9836e90b6d19bc6a349a029d3d"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/plistlib.cpython-313.pyc",
+          "size": 43271,
+          "sha256": "00a70584ba9904f843b9617173a20546e8be5c0b68d118c9c8b3e8950c44bc80"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/poplib.cpython-313.pyc",
+          "size": 18428,
+          "sha256": "9377a978666f85af441741fdbeaaf7ea3fc878341f9c242c4bffe7c9129a2ba7"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/posixpath.cpython-313.pyc",
+          "size": 18123,
+          "sha256": "e09d1050951bbec9293e05963f1472d330460154a452216949a45f243ccf5e83"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/pprint.cpython-313.pyc",
+          "size": 29701,
+          "sha256": "1c9a55c9b735886b92e7369255c0da64a5de1b1feb64b210563eab2b009490fb"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/profile.cpython-313.pyc",
+          "size": 22566,
+          "sha256": "d030d46c9710e2409364f6106116d685dcecd63946d1583c8d306fd2ff0c1267"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/pstats.cpython-313.pyc",
+          "size": 37860,
+          "sha256": "cad94b254159b0cd9db4252cc6e83f0bb2310ef9063eaa75ce2493c48b4a93b3"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/pty.cpython-313.pyc",
+          "size": 7408,
+          "sha256": "c83c1f8abb8dad4e982b721e10d4f0ce5d2668c83efe3149604ed6002238ad1d"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/py_compile.cpython-313.pyc",
+          "size": 10072,
+          "sha256": "84459ad8fad4b0ee0f2130c177be4e99d6ad0a26dde28e65e9671d23e5403734"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/pyclbr.cpython-313.pyc",
+          "size": 15147,
+          "sha256": "e98ef2f235076492699296a74f465e300b1479eec894024e0e14427c350da934"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/pydoc.cpython-313.pyc",
+          "size": 140093,
+          "sha256": "e97028ec1b64967f3cc62d076cb9683113638e47cdf9f4ee76f919a50dae97ea"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/pydoc_data/__init__.cpython-313.pyc",
+          "size": 142,
+          "sha256": "eb3bf9302778fc81168682f68b36fc5348fbc65b98fa42dd93c350a993556f2c"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/pydoc_data/module_docs.cpython-313.pyc",
+          "size": 19879,
+          "sha256": "8140b682d2ba431df3e386d064d0edcd0c4c289b15a4ed16bb86711703e1bdbd"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/pydoc_data/topics.cpython-313.pyc",
+          "size": 564097,
+          "sha256": "ccdb8ac1b812b298580ee16f13bcba1a98363351e526a75f4a9de0d7ac6e82fe"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/queue.cpython-313.pyc",
+          "size": 17336,
+          "sha256": "87a5ef0afcc3d33426395b9747a4e1d6ed62c4eacc2c0c1939f66250780ef677"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/quopri.cpython-313.pyc",
+          "size": 9563,
+          "sha256": "869f91f2b91ea13385827a22b7ffa7a8a8c37bf16cb12f1a99f7959fa1d2be64"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/random.cpython-313.pyc",
+          "size": 35429,
+          "sha256": "b637473798c8e22cdded961662b34d50f174d6b10aa4a4be2f1463b601779f10"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/re/__init__.cpython-313.pyc",
+          "size": 19371,
+          "sha256": "d7458022e77a89b438bed6b10d7654b3024f3e6adbc85bb0a92e08cfc45d8f58"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/re/_casefix.cpython-313.pyc",
+          "size": 1819,
+          "sha256": "c99c26b5b7861e1230ffdc9ece83a7b06dc5c52e9e8728f60163f79af9a63346"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/re/_compiler.cpython-313.pyc",
+          "size": 26869,
+          "sha256": "7ea840790a0672be0a6cb8c0d8a6b456312f66b83f9d660c7c40e6d03290ddf2"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/re/_constants.cpython-313.pyc",
+          "size": 5382,
+          "sha256": "f95e44dc4ca1d8edd5868986964722a08f149766ac7a983bf4ecac082fdcbf45"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/re/_parser.cpython-313.pyc",
+          "size": 43567,
+          "sha256": "e0d96b36ac5e8b4795e5df7067dd2b3ea398072a9c0f1714efba83448de0750b"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/reprlib.cpython-313.pyc",
+          "size": 11163,
+          "sha256": "121b157055033e6ec3e757a95151916ca33749cbc0f5ee42cd735b308ab81d82"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/rlcompleter.cpython-313.pyc",
+          "size": 8853,
+          "sha256": "624c0020876cb11fb4ae8523cc60ecfe20a49ee690d74ab2969a0410a2f5f08b"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/runpy.cpython-313.pyc",
+          "size": 14660,
+          "sha256": "d5ee85c692e01db32c9b25c4717306a0b9f7b23b1067e371d52efd906b01cb16"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/sched.cpython-313.pyc",
+          "size": 7600,
+          "sha256": "9c1d59c1393069ef1dc7e5f6d2a0b317e33713c3e51d8044414901d7fd93b366"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/secrets.cpython-313.pyc",
+          "size": 2507,
+          "sha256": "93ff2c9b99c504ef63ce869180aa2f11cdee9ef3063bff17c587ea5d0653ea3d"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/selectors.cpython-313.pyc",
+          "size": 26358,
+          "sha256": "1395c61e1da613aa28e6a45aa71013544ca3a106ef2e46205e1e93d1793c3f5c"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/shelve.cpython-313.pyc",
+          "size": 13294,
+          "sha256": "f0c74fcd19df1912e072bf3c82377ed0a1c603f7bc7132aec080b72bc3ebed7b"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/shlex.cpython-313.pyc",
+          "size": 14855,
+          "sha256": "4fe5f31a0b29d10f7d4f187706b759dcd7697617b1be3f3afed8c6d32819c9ce"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/shutil.cpython-313.pyc",
+          "size": 66880,
+          "sha256": "8b393f2768296ba32f94911a9addc5922595265eda67169001f1f458e2e66462"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/signal.cpython-313.pyc",
+          "size": 4547,
+          "sha256": "38e3ed7f526e3796d175e41edc17d8651900c624ea4474b14b80ef7370c50787"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/site.cpython-313.pyc",
+          "size": 31638,
+          "sha256": "b9d2eb8535e53adbac123f9a6c01c035850cd1f2652d97b78e2cac724a959d29"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/smtplib.cpython-313.pyc",
+          "size": 47748,
+          "sha256": "02c4162c55200fb2dec46b1c2f99fb9459991997934fafd3841c66e420f85a72"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/socket.cpython-313.pyc",
+          "size": 42391,
+          "sha256": "aebb53e1ada9467c6b2d6af59b2e4fe0469e088197f56afd70765ff69ff1c89c"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/socketserver.cpython-313.pyc",
+          "size": 34655,
+          "sha256": "2e93d52e22b24e9ae2dd0d456a2025d4e460715c128094059831b74172785c22"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/sqlite3/__init__.cpython-313.pyc",
+          "size": 1832,
+          "sha256": "a1266bdd6ab29ea04322424ac90f60dc286d7e6cd83871003f5558ce44a52bc4"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/sqlite3/__main__.cpython-313.pyc",
+          "size": 6119,
+          "sha256": "c42cb0f3a3b43d6e92c59ea64ed48806489a20a865ba14393314cad9e4e90b6e"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/sqlite3/dbapi2.cpython-313.pyc",
+          "size": 5007,
+          "sha256": "0bdeeb825c2fef0b742c3950c0fcf7a710336957bf1d4e63afccd3d829f70489"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/sqlite3/dump.cpython-313.pyc",
+          "size": 4661,
+          "sha256": "1e06a13b2df1903843f5eeb3697cd8a5c71a7451d62e3277a6d4d0120b1632ce"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/sre_compile.cpython-313.pyc",
+          "size": 630,
+          "sha256": "d965284bdb2e9889221603c3e725f459f76b972f944cfeae0e260c45dc596560"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/sre_constants.cpython-313.pyc",
+          "size": 633,
+          "sha256": "76f8634da9d1499e1e6a4174421e429506c7c1156eb7dd8c18af3f99e05284ee"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/sre_parse.cpython-313.pyc",
+          "size": 626,
+          "sha256": "db7be41786207d34c3d2315dd8c72995c6733d0f2cec7eb414c6a2b95f83f2eb"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/ssl.cpython-313.pyc",
+          "size": 65207,
+          "sha256": "88b855c6afe5c36e28a9dbdd2592ff78960d17aa366ded82e9596821a405c152"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/stat.cpython-313.pyc",
+          "size": 5658,
+          "sha256": "c5b1be3c82addac78e0d232c7f37117e66320b67ab7453cb5e35d54a66350ff2"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/statistics.cpython-313.pyc",
+          "size": 71316,
+          "sha256": "5932ce8e84674d634da1800dea12cb1908ec10b8d18ba0645e102a1fc0612964"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/string.cpython-313.pyc",
+          "size": 11761,
+          "sha256": "65b78679176beb50d94bdb5a7c960c32181ae8940c6c390771cc7e60c477242d"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/stringprep.cpython-313.pyc",
+          "size": 25263,
+          "sha256": "2424fe5383653b5cb99af316aca957b86e493bcb40a66760ae6ba41ab0c9210b"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/struct.cpython-313.pyc",
+          "size": 328,
+          "sha256": "183a98dcb5b1e134cc2f482d533270c8f9760ec683fd627c34271bb5d5e7c1fe"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/subprocess.cpython-313.pyc",
+          "size": 83050,
+          "sha256": "aa737858dd73c5f6ecc9fd0c2a2591a2a6532a64607fe42b0b1c0d8703f9d5d3"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/symtable.cpython-313.pyc",
+          "size": 23199,
+          "sha256": "1e721a6a6726c6f6f69d3a93c958fcbf44f17c0a9eec8527d7cb9ba082945479"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/sysconfig/__init__.cpython-313.pyc",
+          "size": 25181,
+          "sha256": "4ec2b6d1a8ea98bd00f09f36cb8bb7232b9a4d47c943dc27cf0247a00cab09ee"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/sysconfig/__main__.cpython-313.pyc",
+          "size": 8549,
+          "sha256": "9cc143e441120043be7633792a7c6b01f7d860f1a107a324fd390bfafa64378a"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/tabnanny.cpython-313.pyc",
+          "size": 12420,
+          "sha256": "fa362c131d86b83ef18cd9f1084443c027068475040e4086f4976b816e7b4711"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/tarfile.cpython-313.pyc",
+          "size": 128032,
+          "sha256": "2350af8bad5017c83dfa290634c68a4648f4cee8747769825c8a06cd4c5f0017"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/tempfile.cpython-313.pyc",
+          "size": 40672,
+          "sha256": "e0077a37270e5a856aefe66e81cd863a487c191c6c52a629a06e85ee40169d51"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/textwrap.cpython-313.pyc",
+          "size": 17955,
+          "sha256": "fc0467ca8fb0ca7e02f660efd3e9a5bd702478c30ad1d412a13553a5d153f057"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/this.cpython-313.pyc",
+          "size": 1415,
+          "sha256": "145c6bfe0dc9bdb64c5107a8a424805a06cc82767d2eee44b767115325e9ad3e"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/threading.cpython-313.pyc",
+          "size": 63335,
+          "sha256": "1f09aa745e679bfbd99d31233dce4412219bbecc5952b2b29b941b364e8da32c"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/timeit.cpython-313.pyc",
+          "size": 14640,
+          "sha256": "d4145af44a9d58bb14a5bf1d5016a3d4c64fd048ff9cb357c2f55d0c87ee7d0f"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/token.cpython-313.pyc",
+          "size": 3576,
+          "sha256": "f7d85c926c8129d3d4d55b289d6531a484340c5b82f1a5da6ec50cb2f2f174f2"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/tokenize.cpython-313.pyc",
+          "size": 25437,
+          "sha256": "d6b6127203a786763299ab9b802a18121c47186a2b926ed7f2daf5d1bc75284f"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/tomllib/__init__.cpython-313.pyc",
+          "size": 306,
+          "sha256": "5c293e7ac89343996cfad9b030592f0536d8f138b251397e379a9ae1324c8ee7"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/tomllib/_parser.cpython-313.pyc",
+          "size": 27394,
+          "sha256": "780b7f103be2d3bf5fbe9f7a39f552d0e8b93edc950492cecb29ca82c92f642f"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/tomllib/_re.cpython-313.pyc",
+          "size": 3852,
+          "sha256": "7ea3fd473f9d8b0802a8c6ca3ecc31c30e33caf4f0df362cbbe2ee92345fd206"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/tomllib/_types.cpython-313.pyc",
+          "size": 317,
+          "sha256": "29f80867f47523a1f525bc537c4fc3c04286f0cb2f0e02c42ea9b73c96109f3a"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/trace.cpython-313.pyc",
+          "size": 33966,
+          "sha256": "3751b655be57f259bde86d6f30af34e56445950448e3c3aed17959a735e02213"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/traceback.cpython-313.pyc",
+          "size": 71944,
+          "sha256": "73fd5f045178179fce37ba905ef2591ca6589a38f561ab6e8f03f23fb996d9dc"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/tracemalloc.cpython-313.pyc",
+          "size": 27416,
+          "sha256": "72d38882f45b220dce1ae0fa8adffce949ae80b3a3a9e9b773e6f703abf4365b"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/tty.cpython-313.pyc",
+          "size": 2667,
+          "sha256": "d11e37948069bd98407ff08e3cf55b6b6c8db5ec027565bc3614152117a5875a"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/turtle.cpython-313.pyc",
+          "size": 176385,
+          "sha256": "bab5037376df4f8cd927e1fbd04f4c76c7e8ba2681ce3ca047488db88c2eea04"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/types.cpython-313.pyc",
+          "size": 15776,
+          "sha256": "867e708f699728d5076b4303f250249a2754039ec0e0a73fcfa669032ed57269"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/typing.cpython-313.pyc",
+          "size": 157808,
+          "sha256": "1fdfc1abebc0a37eb5d983e360581608a2fd41a68dc19b498b078d3abb7a4c70"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/unittest/__init__.cpython-313.pyc",
+          "size": 3278,
+          "sha256": "6200aace6d8df2134d7131e3a3a5d0a4d1efd65811c57d8b0e2830cafeca18c6"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/unittest/__main__.cpython-313.pyc",
+          "size": 626,
+          "sha256": "ca148060057cbfed1655989ce4e6e92e4d934d449eedb2aac360bd1904ef3ab9"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/unittest/_log.cpython-313.pyc",
+          "size": 4832,
+          "sha256": "dea5651791201461449d7515ce2e362621a35a4a2cb0e4ac5ed475e7fee29349"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/unittest/async_case.cpython-313.pyc",
+          "size": 6530,
+          "sha256": "8e05d93ee7f10ada2a147f6010a7c1704b9688ca2ce15e232a7ee9909e77851c"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/unittest/case.cpython-313.pyc",
+          "size": 70431,
+          "sha256": "60e1c32f89394be4c3db2cca8ae309a7c9d96129cc8660bcb8c833f95df524b3"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/unittest/loader.cpython-313.pyc",
+          "size": 22701,
+          "sha256": "4086c3b13d5d4bfaededd4a3d113752a8445a6bdb32326b5acbda8a50bb39654"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/unittest/main.cpython-313.pyc",
+          "size": 13259,
+          "sha256": "9df87d3a369d92fde68675ec570ccd497f0fe0eb9459695fac0202fb253b1742"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/unittest/mock.cpython-313.pyc",
+          "size": 126842,
+          "sha256": "646545718973850195c3337abf25dc7e3f54b6ffc39b774b843fa9b14eccb0a3"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/unittest/result.cpython-313.pyc",
+          "size": 13014,
+          "sha256": "e3e31924f6639ee46a37044c8982c92d4d448b9ca2c77275043c57f19989680e"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/unittest/runner.cpython-313.pyc",
+          "size": 17022,
+          "sha256": "82da0bc645f5042c9996c2cd20139e2f1e6cb984d2798d35506e015b5a86d18e"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/unittest/signals.cpython-313.pyc",
+          "size": 3666,
+          "sha256": "503f19d9d41a5e8bdd20056c578ada718bc2339b1464fa6a87e03cb92f88d40b"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/unittest/suite.cpython-313.pyc",
+          "size": 15944,
+          "sha256": "1eb07f52a6bb1f858d13aac8682bdc556a3f768fc2e7bff1557f843cf3ed00dd"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/unittest/util.cpython-313.pyc",
+          "size": 7164,
+          "sha256": "8368aef9e9500c0e2ec532ac085101738db3cfdc79411784f04df6f7122565d7"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/urllib/__init__.cpython-313.pyc",
+          "size": 138,
+          "sha256": "000f946c9bf30b6710b8b1220dfbf588f02c1eb1a01eebe10404504f1a21adc7"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/urllib/error.cpython-313.pyc",
+          "size": 3755,
+          "sha256": "1495f39b2080ee695a6539957504ff6e886e17d86448b8ea62e46af9b5213ea8"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/urllib/parse.cpython-313.pyc",
+          "size": 50949,
+          "sha256": "34597d965e404116d65e0f88b7c5a7f21442a49b2204f37032c56b865da38b17"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/urllib/request.cpython-313.pyc",
+          "size": 116259,
+          "sha256": "f65e53a6b771209357c1faeb96db480fe76a28f2e36dbf527a8fa10fb55085f8"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/urllib/response.cpython-313.pyc",
+          "size": 4594,
+          "sha256": "2cd480022be728ce3bcc691490605ed70bcbf8c15141aef71931dcd614133c24"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/urllib/robotparser.cpython-313.pyc",
+          "size": 16924,
+          "sha256": "1b2a590db9fca85cb5c3b3cf184dd3781b908c48dc80ead7b07e1f66624fac88"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/uuid.cpython-313.pyc",
+          "size": 32385,
+          "sha256": "69ed027d6b0041bd3c4aecd9f5706faa278dc6b736325bf2454468610c007770"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/warnings.cpython-313.pyc",
+          "size": 29673,
+          "sha256": "581168da99a6d088e2a23920a7f630ea4d9bea154e9b88c8301ad9f15cff43e8"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/wave.cpython-313.pyc",
+          "size": 33240,
+          "sha256": "2cd60c1646589202ca1ff49c6e4a85f4763f5a7cc25cb25df372b4746b474597"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/weakref.cpython-313.pyc",
+          "size": 31806,
+          "sha256": "91f9460cab5f3f46650da1cfc68a39cf3bbb4aac207b4b3d4fed07074aebf9a4"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/webbrowser.cpython-313.pyc",
+          "size": 27786,
+          "sha256": "2e03acf4a01eb43d9eb1cfd8e8e14f9052395a700ee13e9bfb2780a56da67eb2"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/wsgiref/__init__.cpython-313.pyc",
+          "size": 809,
+          "sha256": "9bd155bb36fa7961a0e88c7683cf3bec9ca4258af5709ead6615a7902b72377f"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/wsgiref/handlers.cpython-313.pyc",
+          "size": 23894,
+          "sha256": "82bc788bcf23fe6d3e08cb0baa98f443e6cd6fadb3b53819c58267e2562cedee"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/wsgiref/headers.cpython-313.pyc",
+          "size": 9929,
+          "sha256": "0a0a0fdbbe6ce9f28663af7b9770044fc91571be1819da4d9ac64c4a075e428b"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/wsgiref/simple_server.cpython-313.pyc",
+          "size": 8142,
+          "sha256": "7568b2d61e92d0c1d2088a38c949579afa2926b3b7fccbcda2c84e82929b3487"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/wsgiref/types.cpython-313.pyc",
+          "size": 3903,
+          "sha256": "050d2fd00f7cf21d086540958993d8d274a125122403126f10bfdbc5189b12c0"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/wsgiref/util.cpython-313.pyc",
+          "size": 6959,
+          "sha256": "86c4bf6d95f40f51c990ff203afadfa10c5850f9989f485438860218cf73c855"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/wsgiref/validate.cpython-313.pyc",
+          "size": 20603,
+          "sha256": "35eb2c82197c466e98412af17eed808a118c1ea36f013bed3674c7f628f30070"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/xml/__init__.cpython-313.pyc",
+          "size": 710,
+          "sha256": "e3c285cb527f8f115d1f2097566eec2ed6df44aee1453aeb2600d0e785a3c6f7"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/xml/dom/NodeFilter.cpython-313.pyc",
+          "size": 1110,
+          "sha256": "86b172fc05137a98c0211192a4024abd0d78efa08f211e871eb5e7dadedcc6f4"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/xml/dom/__init__.cpython-313.pyc",
+          "size": 6752,
+          "sha256": "fc76bd96ee111ecadfba6dce1f09a8723716849ad5787c781e3683d9e07ac109"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/xml/dom/domreg.cpython-313.pyc",
+          "size": 3838,
+          "sha256": "5bbdc561d18ea359628a242af6cc2fe9571b467cc0a483f7163fb5b07a148dd7"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/xml/dom/expatbuilder.cpython-313.pyc",
+          "size": 46300,
+          "sha256": "e663cc3332f4b436558f9685c8d8bad61c54d1f8fc19cf9baed980310829cff6"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/xml/dom/minicompat.cpython-313.pyc",
+          "size": 3449,
+          "sha256": "6a07382ed4e827cf7f48f413b704332de1e700dc34d123490814f610724743ab"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/xml/dom/minidom.cpython-313.pyc",
+          "size": 94046,
+          "sha256": "0e2ea3d1ac95dc2642b433fd66eecc391dbba216f99ecca22ed79c5f8c1a007c"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/xml/dom/pulldom.cpython-313.pyc",
+          "size": 17745,
+          "sha256": "9b98086502ba2739ef3b106304a6c3a97b2d124142da104bf67bcb13145fb6d3"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/xml/dom/xmlbuilder.cpython-313.pyc",
+          "size": 17215,
+          "sha256": "480d9d3d0125cf5bf11346d23b0afbd70f63ca293e1c7b1ef92a15516feb1c07"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/xml/etree/ElementInclude.cpython-313.pyc",
+          "size": 4171,
+          "sha256": "5d989933985eb0d80dee03d34947834df894a05e75ab3840af86d4857b4494a8"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/xml/etree/ElementPath.cpython-313.pyc",
+          "size": 15173,
+          "sha256": "c09c8223f97cd3fcb413add9cc145c6dacfb51f93e2f24f40177ab30f582e43f"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/xml/etree/ElementTree.cpython-313.pyc",
+          "size": 83476,
+          "sha256": "0cf8f596c140fb60ab32db4580db0e23fbe4afcb8cf000fb466b8e906d5eeaf2"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/xml/etree/__init__.cpython-313.pyc",
+          "size": 141,
+          "sha256": "f2d2bd302b8f308efbb9ba14f3fa87b96db3a78d0f040de8022ede00698fb011"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/xml/etree/cElementTree.cpython-313.pyc",
+          "size": 190,
+          "sha256": "9e2c7c397b38322fdc0b246b04ed3d816fb9d46d05f5111330b3acfd87e27857"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/xml/parsers/__init__.cpython-313.pyc",
+          "size": 320,
+          "sha256": "fd96f3a69b379f364f0bdb9f01c711e0e01386b41c25ab40333286b2c37da048"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/xml/parsers/expat.cpython-313.pyc",
+          "size": 419,
+          "sha256": "40bda423bf2fd095fdfcb4c74c7e0dd2a6ac1a7197207f5c23ba2e8a0aea6d48"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/xml/sax/__init__.cpython-313.pyc",
+          "size": 3827,
+          "sha256": "000d8a7d9be0a7bd7252a9ccadfbfd9d9c4ac91ba46cb21504770322a5db916c"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/xml/sax/_exceptions.cpython-313.pyc",
+          "size": 6259,
+          "sha256": "d2dc43892138faa7a0ebfbdbeee4279e007b58d96b156a80fd17f8bf50933419"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/xml/sax/expatreader.cpython-313.pyc",
+          "size": 21918,
+          "sha256": "020d1c47b94f9469883e2fdb1c32b2c15b6537e805d25f0026f4e8a7f34363a2"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/xml/sax/handler.cpython-313.pyc",
+          "size": 14147,
+          "sha256": "9847bbb037ca9a3a853f0095502ee01957524f3ce4534a3c12b014b72f63b693"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/xml/sax/saxutils.cpython-313.pyc",
+          "size": 19866,
+          "sha256": "4309ec2cd593d4cad077d3b4d3d72535a089936f820a4a6ee86d1811997641af"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/xml/sax/xmlreader.cpython-313.pyc",
+          "size": 19343,
+          "sha256": "4d404eba4a4fd77c61da2cdf8b8328b70bedc00ec440ce1d39f813eba98a8e6c"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/xmlrpc/__init__.cpython-313.pyc",
+          "size": 138,
+          "sha256": "6eb13455634723eb02cb45f5a90aa7436342e3f6fa563c99e829023c6fd889fb"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/xmlrpc/client.cpython-313.pyc",
+          "size": 52005,
+          "sha256": "9840bd05e98f597e65da2f6564625b871d3c172fe027d99aa690f1d64a179ea4"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/xmlrpc/server.cpython-313.pyc",
+          "size": 42757,
+          "sha256": "592005d3a50bb6f69cbbef9ffd4a829526c1643bcfb66721ea3afd782f2f4820"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/zipapp.cpython-313.pyc",
+          "size": 10397,
+          "sha256": "2286924c3f71c5893843810711f35bf7146df23d80401d428688c2f30b705d5f"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/zipfile/__init__.cpython-313.pyc",
+          "size": 105415,
+          "sha256": "37ddf696c0b775c236e8ce5da0340da3e07e51efed0382dda34767caf4a1c945"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/zipfile/__main__.cpython-313.pyc",
+          "size": 237,
+          "sha256": "3b8ed7c02f4d393a2f3c87434ee1508fc7bfa7f23af2ebef511edca2df815463"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/zipfile/_path/__init__.cpython-313.pyc",
+          "size": 20208,
+          "sha256": "4912c93294c0ef1bb0cdfb4d2906851346429c26ded09057775fb19dadc34a20"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/zipfile/_path/glob.cpython-313.pyc",
+          "size": 5368,
+          "sha256": "3143ad377b5d6ffb1c743856b4a5f8bc07e0fcc77216498fcffd1ddc30733f6b"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/zipimport.cpython-313.pyc",
+          "size": 26510,
+          "sha256": "d84bc1eeab197cd7ab4d6ddf212ca77f1072531a03865960abbe319b0ada5370"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/zoneinfo/__init__.cpython-313.pyc",
+          "size": 1129,
+          "sha256": "a29e8dd6f3240e4c3418e64a4660b049b40c4adcef877f647b7dc81787e56ee3"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/zoneinfo/_common.cpython-313.pyc",
+          "size": 5807,
+          "sha256": "ad7204bf9d14e368dd34a6c5d5b86f4781c183409267408e75dfea7f6299dcc2"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/zoneinfo/_tzpath.cpython-313.pyc",
+          "size": 7893,
+          "sha256": "47b7af00832818ea527b37d7323b7d1242adee01f961a31084e9e809e444117b"
+        },
+        {
+          "path": "runtime/contest-cache/python/lib/python3.13/zoneinfo/_zoneinfo.cpython-313.pyc",
+          "size": 27505,
+          "sha256": "a447ea4bfe017bd26ab99fd5d4097f84310e7b8489ba0b3b9c7eb767564cbd65"
         }
       ],
       "questionPath": "suites/two-tier-v1/questions.json",
@@ -6985,7 +9535,9 @@
           "wasi": "6324ce07e648de95b8e2eb214af6b01bcaf2b1f2a09fb7aa8cab095968bc8e62",
           "trusted-ifeval": "9b06ff09f6f4cd1c7d8cf0dd94b6389899e7fa28c2e05d3dc5a37092250f9f0a"
         },
-        "contest": "pending"
+        "contest": "6819d1192b2f2caa2fd40cc6c3338b82b959b68e10a3c79a1bc8529b61371f50",
+        "stdlibCache": "9252c42b83e2bd3bdfcfa61942bb8d45b5f9c6689fabe990d38608a34171e929",
+        "mode": "checked-stdlib-bytecode-v1"
       }
     }
   ],

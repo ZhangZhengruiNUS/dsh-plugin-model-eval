@@ -5,6 +5,9 @@ import {join} from 'node:path';
 import {loadProtocolSet} from '../src/evaluation/protocols.ts';
 import {identityHash} from '../src/evaluation/protocol-identity.ts';
 import {RUNTIME_PINS} from '../src/runtime/pins.ts';
+import {CONTEST_RUNTIME_SHA256} from '../src/runtime/contest-pin.ts';
+import {CONTEST_CACHE_SHA256} from '../src/runtime/contest-cache-pin.ts';
+import {verifyRuntime} from '../src/runtime/integrity.ts';
 const sha=b=>createHash('sha256').update(b).digest('hex'),root='resources',dir='suites/two-tier-v1';
 const admission=JSON.parse(await readFile('docs/evidence/tiers/admission.json','utf8'));
 if(admission.status!=='passed'||admission.deepIds.length!==400)throw Error('ADMISSION_REQUIRED');
@@ -34,12 +37,18 @@ function definition(tier,label,items,parentGeneralId){
 await mkdir(join(root,dir),{recursive:true});
 await writeFile(join(root,dir,'questions.json'),JSON.stringify(questions)+'\n');
 const files=[];
-for(const path of [dir+'/questions.json',...JSON.parse(await readFile(root+'/manifest.json','utf8')).files.filter(f=>f.kind==='runtime').map(f=>f.path)]){
+const additional=[];
+for(const [kind,pin] of [['contest',CONTEST_RUNTIME_SHA256],['contest-cache',CONTEST_CACHE_SHA256]]){
+ await verifyRuntime(join(root,'runtime',kind),kind,pin);
+ const manifest=JSON.parse(await readFile(join(root,'runtime',kind,'runtime.json'),'utf8'));
+ additional.push('runtime/'+kind+'/runtime.json',...manifest.files.map(f=>'runtime/'+kind+'/'+f.path));
+}
+for(const path of [dir+'/questions.json',...JSON.parse(await readFile(root+'/manifest.json','utf8')).files.filter(f=>f.kind==='runtime').map(f=>f.path),...additional]){
  const bytes=await readFile(join(root,path));files.push({path,size:bytes.length,sha256:sha(bytes)});
 }
 const newRefs=generalId=>({generalId,writingId:legacy.writingId,resourceVersion:'two-tier-v1'}),deepId='general-two-tier-v1-deep',lightId='general-two-tier-v1-light';
 const catalog={schemaVersion:1,legacyRefs,bundles:[{id:'two-tier-v1',resourceVersion:'two-tier-v1',files,questionPath:dir+'/questions.json',runtimePassed:false,
- grading:{choice:'last-letter-v1',numeric:'exact-final-number-v1',instructions:'ifeval-rule-adaptation-v1',coding:'all-tests-whitespace-tokens-v1'},runtime:{limits,pins:RUNTIME_PINS,contest:'pending'}}],
+ grading:{choice:'last-letter-v1',numeric:'exact-final-number-v1',instructions:'ifeval-rule-adaptation-v1',coding:'all-tests-whitespace-tokens-v1'},runtime:{limits,pins:RUNTIME_PINS,contest:CONTEST_RUNTIME_SHA256,stdlibCache:CONTEST_CACHE_SHA256,mode:'checked-stdlib-bytecode-v1'}}],
  entries:[
  {refs:legacyRefs,general:definition('legacy','旧版基线',legacy.items),questionCount:905,allowNewRuns:true,bundleId:'legacy'},
  {refs:newRefs(lightId),general:definition('light','轻量',questions.filter(q=>admission.lightIds.includes(q.id))),questionCount:120,allowNewRuns:false,bundleId:'two-tier-v1'},

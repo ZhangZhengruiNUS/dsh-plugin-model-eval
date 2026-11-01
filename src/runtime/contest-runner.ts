@@ -1,10 +1,11 @@
 import {spawn} from 'node:child_process';
-import {mkdtemp,writeFile,rm} from 'node:fs/promises';
+import {mkdtemp,writeFile,readFile,rm} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
 import {join,resolve} from 'node:path';
 import {verifyRuntime} from './integrity.ts';
 import {RUNTIME_PINS} from './pins.ts';
 import {CONTEST_RUNTIME_SHA256} from './contest-pin.ts';
+import {CONTEST_CACHE_SHA256} from './contest-cache-pin.ts';
 import type {CodeLimits,CodeOutcome} from './runner.ts';
 export interface ContestTest {id:string;cases:readonly {stdin:string;expected:string}[];limits:CodeLimits}
 export interface ContestRunner {runContest(test:ContestTest,solution:string,signal:AbortSignal):Promise<CodeOutcome>}
@@ -20,7 +21,12 @@ export function createContestRunner(runtimeRoot:string,options:{now?:()=>number}
     if(!limits||!Number.isSafeInteger(limits.wallMs)||limits.wallMs<100||limits.wallMs>300000||!Number.isSafeInteger(limits.memoryBytes)||limits.memoryBytes<67108864||limits.memoryBytes>1073741824||!Number.isSafeInteger(limits.computeBudget)||limits.computeBudget<1||!test.cases.length||test.cases.length>3000||solution.length>1024*1024||test.cases.some(c=>typeof c.stdin!=='string'||typeof c.expected!=='string'||Buffer.byteLength(c.stdin)>2*1024*1024||Buffer.byteLength(c.expected)>2*1024*1024)||test.cases.reduce((n,c)=>n+Buffer.byteLength(c.stdin),0)>32*1024*1024)return {kind:'environment-error',code:'INVALID_CONTEST_REQUEST',elapsedMs:elapsedMs()};
     let sandbox:string|undefined;
     const outcome=await (async():Promise<CodeOutcome>=>{try{
-      const host=join(root,'code-host'),guest=join(root,'wasi'),driver=join(root,'contest');
+      const host=join(root,'code-host'),guest=join(root,'wasi'),driver=join(root,'contest'),cacheRoot=join(root,'contest-cache');
+      try{
+        await verifyRuntime(cacheRoot,'contest-cache',CONTEST_CACHE_SHA256);
+        const metadata=JSON.parse(await readFile(join(cacheRoot,'runtime.json'),'utf8')).generation;
+        if(metadata?.baseWasiManifestSha256!==RUNTIME_PINS.wasi||metadata?.compiler?.magic!=='f30d0d0a'||metadata?.compiler?.cacheTag!=='cpython-313'||metadata?.compiler?.optimization!==0||metadata?.compiler?.hashMode!=='checked-hash')throw Error('BASE_IDENTITY_MISMATCH');
+      }catch(error){throw Error('CONTEST_CACHE_'+((error as NodeJS.ErrnoException).code??(error as Error).message));}
       await verifyRuntime(host,'code-host',RUNTIME_PINS['code-host']);await verifyRuntime(guest,'wasi',RUNTIME_PINS.wasi);await verifyRuntime(driver,'contest',CONTEST_RUNTIME_SHA256);
       sandbox=await mkdtemp(join(tmpdir(),'dsh-eval-contest-'));const inputPath=join(sandbox,'input.json');
       await writeFile(inputPath,JSON.stringify({solution,inputs:test.cases.map(c=>c.stdin)}),{flag:'wx'});
@@ -34,7 +40,7 @@ export function createContestRunner(runtimeRoot:string,options:{now?:()=>number}
         child.stdout.on('data',(chunk:Buffer)=>{bytes+=chunk.length;if(bytes>24*1024*1024)stop('resource');else output+=chunk.toString('utf8');});
         child.stderr.on('data',()=>{});child.stdin.on('error',()=>{});child.on('error',()=>{spawnFailed=true;});
         child.on('close',code=>{clearTimeout(timer);signal.removeEventListener('abort',cancel);done({code,output,spawnFailed,...(stopped?{stopped}:{})});});
-        child.stdin.end(JSON.stringify({runtimeRoot:guest,inputPath,...limits,wallMs:remainingMs}));
+        child.stdin.end(JSON.stringify({runtimeRoot:guest,cacheRoot,inputPath,...limits,wallMs:remainingMs}));
       });
       if(result.spawnFailed)return {kind:'environment-error',code:'SPAWN_FAILED',elapsedMs:elapsedMs()};
       if(result.stopped==='cancelled')return {kind:'cancelled',elapsedMs:elapsedMs()};

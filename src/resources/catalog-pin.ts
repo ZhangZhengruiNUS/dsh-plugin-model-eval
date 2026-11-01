@@ -1,2 +1,2 @@
 /** Candidate catalog; runtime release remains disabled until verification. */
-export const RESOURCE_CATALOG_SHA256 = '405c507fc983ab9dfbef2e2dfd04f20b86f7c128170ad4616b6304c88f7b1b01';
+export const RESOURCE_CATALOG_SHA256 = '737b65e6b6fbdc4c52bfcdc72d46cac7b3dcfdbb285b18fb3e2056f2d14ca56a';

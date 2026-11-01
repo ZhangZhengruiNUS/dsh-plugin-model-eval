@@ -61,8 +61,9 @@ def main():
             store.set_epoch_deadline(1)
             wasi = wasmtime.WasiConfig()
             wasi.argv = ['python', '-B', '-c', GUEST, inputs['solution'], str(len(stdin.encode('utf-8')))]
-            wasi.env = [('PYTHONHOME', '/python'), ('PYTHONUTF8', '1')]
+            wasi.env = [('PYTHONHOME', '/python'), ('PYTHONUTF8', '1'), ('PYTHONPYCACHEPREFIX', '/bytecode')]
             wasi.preopen_dir(request['runtimeRoot'], '/python', fs_mutable=False)
+            wasi.preopen_dir(request['cacheRoot'], '/bytecode', fs_mutable=False)
             wasi.stdin_file = str(stdin_path)
             chunks = []
             case_total = 0
