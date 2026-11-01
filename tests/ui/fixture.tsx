@@ -15,6 +15,7 @@ function run(model:string,scores:number[],writing:number,temp=.7,deployment='INT
     metrics:{tracks:{general:{answer:{calls:905,failures:0,latencyMedianMs:12500,latencyP95Ms:34300,inputTokens:1863250,outputTokens:451840,usageCoverage:1,ttftMedianMs:400},judge:{calls:0,failures:0,usageCoverage:0},gradingMs:14500},writing:{answer:{calls:12,failures:0,latencyMedianMs:18300,latencyP95Ms:37200,inputTokens:23410,outputTokens:19490,usageCoverage:1},judge:{calls:12,failures:0,latencyMedianMs:12000,inputTokens:21200,outputTokens:3200,usageCoverage:1},gradingMs:5}},activeIntervals:[{startedAt:createdAt,endedAt:'2026-10-31T03:05:00.000Z'}],incompleteTiming:false}};
 }
 let runs:RunSummary[]=(params.has('empty')||params.has('speedOnly'))?[]:[run(models[0]!.modelId,[82,79,76,85],81.3),run(models[0]!.modelId,[80,74,75,83],77.5,.7,'Q4-v2'),run(models[1]!.modelId,[74,68,81,69],79.2,.4,'微调-v3'),run(models[2]!.modelId,[62,59,68,57],66.7,.7,'Q4')];
+if(params.has('providerPair')){runs=[run('Shared-model',[80,80,80,80],80),run('Shared-model',[78,78,78,78],78)];runs[1]!.target.providerId='second-lab';runs[1]!.metrics.tracks.general!.answer.latencyMedianMs=20000;}
 if(params.has('overlap')&&runs[1])runs[1].tracks.general!.score=runs[0]!.tracks.general!.score;
 if(params.has('manyResults'))runs.push(...[0,1,2].map(i=>run('Additional-result-'+i,[86+i,75+i,85-i,87-i],80+i,.2+i/10,'v'+i)));
 if(params.has('nearScores'))for(const [i,r] of runs.entries()){r.tracks.general!.score=95.5+i*.2;for(const m of Object.values(r.tracks.general!.measures))m.score=95.5+i*.2;}

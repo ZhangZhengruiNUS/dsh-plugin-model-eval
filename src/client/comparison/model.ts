@@ -41,4 +41,5 @@ export function buildComparison(metadata:ComparisonMetadata,track:Track):Compari
   return [...groups.values()].sort((a,b)=>a.key.localeCompare(b.key));
 }
 export function selectHistory(runs:readonly RunSummary[],target:TargetSnapshot,scopeKey:string,track:Track):RunSummary[]{return runs.filter(r=>targetKey(r.target)===targetKey(target)&&scopeKeyFor(r,track)===scopeKey&&r.tracks[track]?.status==='completed').sort((a,b)=>(a.tracks[track]?.completedAt??'').localeCompare(b.tracks[track]?.completedAt??'')||a.runId.localeCompare(b.runId));}
-export const rowName=(r:ComparisonRow)=>r.target.modelId+(r.target.deployment?.value?' · '+r.target.deployment.value:'');
+export const modelName=(r:ComparisonRow)=>r.target.modelId+(r.target.deployment?.value?' · '+r.target.deployment.value:'');
+export const rowName=(r:ComparisonRow)=>r.target.providerId+' / '+modelName(r);
