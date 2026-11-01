@@ -16,6 +16,9 @@ function run(model:string,scores:number[],writing:number,temp=.7,deployment='INT
 }
 let runs:RunSummary[]=(params.has('empty')||params.has('speedOnly'))?[]:[run(models[0]!.modelId,[82,79,76,85],81.3),run(models[0]!.modelId,[80,74,75,83],77.5,.7,'Q4-v2'),run(models[1]!.modelId,[74,68,81,69],79.2,.4,'微调-v3'),run(models[2]!.modelId,[62,59,68,57],66.7,.7,'Q4')];
 if(params.has('overlap')&&runs[1])runs[1].tracks.general!.score=runs[0]!.tracks.general!.score;
+if(params.has('manyResults'))runs.push(...[0,1,2].map(i=>run('Additional-result-'+i,[86+i,75+i,85-i,87-i],80+i,.2+i/10,'v'+i)));
+if(params.has('nearScores'))for(const [i,r] of runs.entries()){r.tracks.general!.score=95.5+i*.2;for(const m of Object.values(r.tracks.general!.measures))m.score=95.5+i*.2;}
+if(params.has('unknownProtocol')&&runs[0]){runs[0].protocols={...protocols,generalId:'archived-unknown'};runs[0].tracks.general!.measures={};}
 if(runs[3])runs[3].metrics.tracks.general!.answer={calls:905,failures:0,usageCoverage:0};
 if(params.has('history')&&runs[0]){const old=structuredClone(runs[0]);old.runId=crypto.randomUUID();old.details='cleared';old.tracks.general!.score=72;old.tracks.general!.completedAt='2026-10-27T02:10:00.000Z';old.tracks.writing!.completedAt='2026-10-27T02:10:00.000Z';old.judges=[{snapshot:judge('Previous-Judge'),itemIds:['writing/1']}];runs.push(old);}
 let batches:BatchView[]=runs.map(x=>({batchId:x.batchId,runIds:[x.runId],status:'completed',createdAt:x.createdAt!,execution:{concurrency:4,callTimeoutMs:300000}})),active:string|undefined,prepared=!params.has('empty'),root='C:\\Users\\demo\\.dsh-model-eval';

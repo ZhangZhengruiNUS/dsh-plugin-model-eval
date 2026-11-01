@@ -20,9 +20,9 @@ for(const theme of ['light','dark'] as const)for(const width of [1440,390])test(
   await page.setViewportSize({width,height:width===1440?900:844});await page.emulateMedia({colorScheme:theme});await page.goto('/');await expect(page.getByRole('table')).toBeVisible();
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
   const input=page.getByRole('searchbox');await expect(input).toBeInViewport();
-  const row=page.getByRole('button',{name:'查看报告 Atlas-32B-Instruct',exact:true}).first();await expect(row).toBeInViewport();await row.focus();await page.keyboard.press('Enter');await expect(page.getByRole('dialog')).toBeVisible();await page.keyboard.press('Escape');
-  await page.screenshot({path:`docs/evidence/ui/alpha.7/compare-${width}-${theme}.png`,fullPage:true});
-  await page.getByRole('tab',{name:'中文写作',exact:true}).click();await expect(page.getByText('混合裁判',{exact:true}).first()).toBeVisible();await page.screenshot({path:`docs/evidence/ui/alpha.7/writing-${width}-${theme}.png`,fullPage:true});
+  const row=page.getByRole('button',{name:'查看报告 Atlas-32B-Instruct',exact:true}).first();await row.scrollIntoViewIfNeeded();await expect(row).toBeInViewport();await row.focus();await page.keyboard.press('Enter');await expect(page.getByRole('dialog')).toBeVisible();await page.keyboard.press('Escape');
+  await page.screenshot({path:`.local/comparison-visual/legacy-compare-${width}-${theme}.png`,fullPage:true});
+  await page.getByRole('tab',{name:'中文写作',exact:true}).click();await expect(page.getByText('混合裁判',{exact:true}).first()).toBeVisible();await page.screenshot({path:`.local/comparison-visual/legacy-writing-${width}-${theme}.png`,fullPage:true});
 });
 
 test('writing without complete scores directs existing incomplete work to jobs',async({page})=>{
