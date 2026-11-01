@@ -1,5 +1,9 @@
 # 项目记忆
 
+2026-11-01两档alpha.14交付：Task1—11完成，源码6aea4f4，已安装Desktop0.2.1-rc.5/desktop，三档905/120/400已准备且独立Computer Use非调用验收通过。新轻量120/深入400、四类25%、独立写作12、120副本复用/仅280新增、按完整协议比较和计量分离已接入。100正确参考/177负例/25语义、300非编程路径及legacy164/541证据保持，22评分文件与冻结题字节未改。92 UI通过；Node全量225/226，唯一test-only unhandledRejection修复后相关12服务及最终7项复验通过，不能写成一次全量全绿。实包离线120/280/卸载0通过，54,943,404字节/1954文件/零runtime依赖，SHA670bf9226ca4c108baa3ecd99e951aca608615e44d94d5b44634b7c1312608c2；交付Host/client与离线夹具逐字节一致。备份1869文件，重启后1850原文件完全一致、2摘要仅revision，历史库存和其他profile/lock未变。零真实模型调用、未发npm/tag/市场；Task12等待具体模型/预算，真实区分度/时长/真实补测未验。交接docs/handoffs/2026-11-01-two-tier-integration.md；下方为此前快照。
+
+2026-11-01两档接入Task10检查点：Task4—10已完成（ccdc283/2014e6f/43aee23/1f42fef/4f5dc2f/9cbe905/e7170df），120/400、完整协议执行、独立副本补测、仅280新增、计量分列、受保护预览和界面已接入。92项UI、22评分文件/冻结题字节lineage通过；最终复核发现legacy快照维度/标签问题已RED→GREEN修复。Task11全套Node及实包验收进行中；新档仅allowNewRuns两处已放行，原冻结证据保持。Desktop仍alpha.13，1869文件精确备份已完成，零真实模型调用；尚未升版/安装/发布。Task12须具体模型与调用预算。详见docs/handoffs/2026-11-01-two-tier-integration.md；下方均为此前快照。
+
 2026-11-01资源门槛正式通过，源码f002664：V4全100编程正参考/177已知负例拒绝/25语义assertion、300非编程评分路径、legacy164/541全部通过；100题输入审计及35缺参考补齐。采用用户已批准统一60秒/512MiB/800B，固定保留14079原测试、6700已证非法generated排除、1264 public/private全留，增补69固定输入。独立复核的执行身份/多文件冻结恢复两项Important已RED→GREEN，无剩余阻断；69单元、11运行器/数值/审计、5安全、6资源注册检查与类型/构建通过。独立适配题文件及catalog已冻结runtimePassed=true，allowNewRuns仍false待队列/服务/UI接入。实际资源tgz54918724字节/1954文件、507缓存及共享兼容性核验通过（资源检查，未安装/发布）；旧文件/源失败保留。Task3已complete，下一步Task4；Desktop alpha.13及真实历史未动、零模型调用，前沿区分度/时长未校准。见docs/evidence/tiers/adapted-runtime-gate-v4.json、resource-package-v4-final.json。
 
 2026-11-01最新预算续订已获用户明确确认：新编程统一60秒/512MiB/800B整题共享fuel，旧协议/成绩不改。V4全部100正式正反参考正在重验，69固定增补、16类25程序canonical语义绑定；source119新增搬砖图反例把先前resource掩盖的错答明确变成assertion证据。legacy164编程已全过、541规则进行中，300非编程路径已过。冻结工具默认只读/部分报告拒绝，计划新增adapted-questions.json保留原questions.json，资源通过后仍待消费端接入才开放新run。Task3未完成、Task4+未开始，无Desktop/历史/模型调用变更；下条检查点中的“待选择预算”是此前快照，已被本条批准替代。
