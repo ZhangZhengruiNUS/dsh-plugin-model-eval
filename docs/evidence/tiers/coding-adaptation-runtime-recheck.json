@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "status": "failed",
+  "releaseAllowed": false,
+  "scope": "Reference execution on audited staged inputs only; incomplete suite remains disabled.",
+  "startedAt": "2026-11-01T04:40:17.115Z",
+  "stagingHash": "58369db503a12080af95deb0744dd73025bb4c96f970ebb36671d93241f239dc",
+  "validatorSha256": "17c8f30cc0b8ab4afebdedcd63265b13e336a93808f7ab6b92f8213c26b22463",
+  "contestRuntimeManifest": "604d4b3bf74ec5706fb6baf15972c0d2c242f1c25e14cde9663499d6a07a062a",
+  "limits": {
+    "wallMs": 30000,
+    "memoryBytes": 536870912,
+    "computeBudget": 200000000000
+  },
+  "selectedIds": [
+    "8"
+  ],
+  "items": [
+    {
+      "id": "coding/code-contests-test/8",
+      "sourceId": "8",
+      "status": "failed",
+      "inputAudit": "audited",
+      "testCount": 173,
+      "testBytes": 19454,
+      "adaptedHash": "9ddc7d52c2354c11355bcfeb1ed1218b955cf3b73697573a873e764742b89d2d",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-python3",
+          "codeHash": "ca9dff365af20e7c0ffa671bada3ae465746316ffbc5815c5ff89a06e3902c68",
+          "outcome": {
+            "kind": "failed",
+            "reason": "timeout",
+            "elapsedMs": 30071
+          }
+        }
+      ],
+      "negatives": [
+        {
+          "referenceIndex": 0,
+          "origin": "independent-known-logic-error",
+          "proof": "Published legal example requires39,32,0; ignoring the update gives39,39,0.",
+          "codeHash": "55866ec392452c3b84344dcbdcd4ab6d66e47d85418355a485514096e4e66fdf",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 18775
+          }
+        }
+      ],
+      "reason": "CORRECT_REFERENCE_NOT_PASSED"
+    }
+  ],
+  "counts": {
+    "passed": 0,
+    "failed": 1,
+    "pending": 0
+  },
+  "remainingGates": [
+    "Complete statement-specific input audits for all selected questions.",
+    "All100 correct references and known incorrect/invalid outputs must satisfy the unchanged runtime limits.",
+    "Full400 reference paths, legacy164/541 selfchecks, attribution, compatibility hashes and package validation."
+  ],
+  "endedAt": "2026-11-01T04:41:05.971Z"
+}

@@ -1,0 +1,1354 @@
+{
+  "schemaVersion": 1,
+  "status": "failed",
+  "releaseAllowed": false,
+  "scope": "Reference execution on audited staged inputs only; incomplete suite remains disabled.",
+  "startedAt": "2026-11-01T04:37:40.477Z",
+  "stagingHash": "58369db503a12080af95deb0744dd73025bb4c96f970ebb36671d93241f239dc",
+  "validatorSha256": "17c8f30cc0b8ab4afebdedcd63265b13e336a93808f7ab6b92f8213c26b22463",
+  "contestRuntimeManifest": "604d4b3bf74ec5706fb6baf15972c0d2c242f1c25e14cde9663499d6a07a062a",
+  "limits": {
+    "wallMs": 30000,
+    "memoryBytes": 536870912,
+    "computeBudget": 200000000000
+  },
+  "selectedIds": null,
+  "items": [
+    {
+      "id": "coding/code-contests-test/0",
+      "sourceId": "0",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 14,
+      "testBytes": 832,
+      "adaptedHash": "671c41837d8ea04ad80c6e08295d545685ce0e42c7fe91cc80230965c0525ae1",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-python3",
+          "codeHash": "7a6874b0c9f0d6ca79ac6cc0cbc7bbcb7af5e753a5ecef7942ae96d85a3fb384",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 2369
+          }
+        }
+      ],
+      "negatives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "18688ecbf30889eddfe33d686fc29fd0873378311d52cb602842fc52da5706f4",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 2282
+          }
+        },
+        {
+          "referenceIndex": 1,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "6a44e5674d0bef6ea50668e0d5eee08af924cbaad41dcfe003d4138b06abd48b",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 2999
+          }
+        },
+        {
+          "referenceIndex": 2,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "87b6129b1814b47369c8c226f2e93dd07adb04c062fc325cf3ed8fd8256a5f72",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 1664
+          }
+        }
+      ]
+    },
+    {
+      "id": "coding/code-contests-test/100",
+      "sourceId": "100",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 201,
+      "testBytes": 27183,
+      "adaptedHash": "a1d08900d57122c7888c174f611c5850e77baf1abc3a2c18b55eb99a9dfa3164",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/108",
+      "sourceId": "108",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 202,
+      "testBytes": 44573,
+      "adaptedHash": "86fab441e41101c47a3c6eb4283afbe0572d941a5376336be8e97c42e92cfe0d",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/109",
+      "sourceId": "109",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 207,
+      "testBytes": 84843,
+      "adaptedHash": "8ae6908a5b6e25647f110921933d4ed5a8600d2a7a4fd095cbcb321c471c7cae",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/11",
+      "sourceId": "11",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 204,
+      "testBytes": 7832,
+      "adaptedHash": "aea5a115b715505ae10bd21dd871515c8bd2c2d1b0bb5fff481a468abced1174",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/110",
+      "sourceId": "110",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 213,
+      "testBytes": 91868,
+      "adaptedHash": "56db897486a99816db4243df6e85514da84e3b592c0873ca5e18b3a9d9ed0cb1",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/111",
+      "sourceId": "111",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 212,
+      "testBytes": 48383,
+      "adaptedHash": "027f6264c3e1b4991aee795d3a39761bc886e9f436f27bea593ec0edd3b30be9",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/112",
+      "sourceId": "112",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 202,
+      "testBytes": 37552,
+      "adaptedHash": "4213f8e264dee4ebbd689dc4a5c6cbe4953e9977c96601847e2e1335ca1709d2",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/113",
+      "sourceId": "113",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 228,
+      "testBytes": 32876,
+      "adaptedHash": "6d68bd87b71358aa781e5710322d4cf83b56e1e3aaf28c98c7fda4e7c5f0be1a",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/115",
+      "sourceId": "115",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 205,
+      "testBytes": 19372,
+      "adaptedHash": "3619f951becb687ef6c04f80e10d0c37c6c15a419b6286f37339bcc540cc0ab2",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/116",
+      "sourceId": "116",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 202,
+      "testBytes": 21045,
+      "adaptedHash": "25901a159a9b9fe0b6e3055a390f8301163e39866e8cf319aa044bb3cf7f2065",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/118",
+      "sourceId": "118",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 212,
+      "testBytes": 21956,
+      "adaptedHash": "9c9773759d42f670429351c9b656f323c11e8812d17afa84a6b3ac683c2cdaaf",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/119",
+      "sourceId": "119",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 201,
+      "testBytes": 15494,
+      "adaptedHash": "924727a90db7b28cd1a242520beac630c447a740931cbd8528ca4d5728b33f04",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/12",
+      "sourceId": "12",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 204,
+      "testBytes": 23787,
+      "adaptedHash": "3ab7c578f4a43dfdb3ce5e8290377864f4fedef2d9f17a4482b61d64954ff960",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/120",
+      "sourceId": "120",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 201,
+      "testBytes": 16929,
+      "adaptedHash": "1f7bda034f7b59272532609dd9c9293092d4871b3fcc6cca23e77416a44c3e6c",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/121",
+      "sourceId": "121",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 201,
+      "testBytes": 27762,
+      "adaptedHash": "76d49ce5aa62bd104190387dfe40432fb4c82cb00657f040e2271e100e8ea23a",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/123",
+      "sourceId": "123",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 213,
+      "testBytes": 25864,
+      "adaptedHash": "9f27229c3d3c9147dba3019fd2b6a5b32ecb5b13c38da71a1aafdf11ca93a43a",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/124",
+      "sourceId": "124",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 202,
+      "testBytes": 22336,
+      "adaptedHash": "87ebe5a670a560dbe922bd43d2103687f9bb202fc13e4e0d2161ef00088a0589",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/127",
+      "sourceId": "127",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 201,
+      "testBytes": 36784,
+      "adaptedHash": "f16e0ddbcc8e93b9a496a024bc556d798a157b93d47c2ccd00ab97cc541a98e4",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/129",
+      "sourceId": "129",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 202,
+      "testBytes": 25293,
+      "adaptedHash": "6c009a28a39f263eed022ecc2446aeaa85891ddd1356ae32b198107b2c481fd4",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/135",
+      "sourceId": "135",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 237,
+      "testBytes": 51378,
+      "adaptedHash": "88780ee9d2fcb715488fc21ad84b21430fc2b2a21ca4384f1ff0c8bba67493f8",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/138",
+      "sourceId": "138",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 202,
+      "testBytes": 17517,
+      "adaptedHash": "53fb4a04c7bbb678925d010ad4d81c213d615e99b6f18519240721072008db84",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/140",
+      "sourceId": "140",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 338,
+      "testBytes": 35578,
+      "adaptedHash": "420fdea4338dcc5d95125659b37beab7205e9035b81bb0c93437d87fc08a3617",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/142",
+      "sourceId": "142",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 201,
+      "testBytes": 34703,
+      "adaptedHash": "62241ff1334ede15221742403c482b01cb3ebacc1fbc11e552cbad9ddf60f01a",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/143",
+      "sourceId": "143",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 201,
+      "testBytes": 35941,
+      "adaptedHash": "0c7a84b93bbad1e8d4af81f10fb14b172f8fb3c5ba17b2e61eebca093808ab07",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/145",
+      "sourceId": "145",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 201,
+      "testBytes": 35563,
+      "adaptedHash": "4f410dec0f78c61136bffed28e7dd15996e670b2a4f164043e3279e60d59ba57",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/146",
+      "sourceId": "146",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 205,
+      "testBytes": 31165,
+      "adaptedHash": "6ce855c262e78eb3b98a3545afa35bcab66881cfe1b516cfa4c54e2a8cde8c08",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/147",
+      "sourceId": "147",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 205,
+      "testBytes": 15345,
+      "adaptedHash": "5c7d6bc2ee46900516f82c8cd4b06872460d538b60bd4ea708ace06c36f06be9",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/148",
+      "sourceId": "148",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 202,
+      "testBytes": 31443,
+      "adaptedHash": "e1624ec3443c519730c7952742df739a931a5741e9e7bc203b89129d38abfbe6",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/149",
+      "sourceId": "149",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 202,
+      "testBytes": 149702,
+      "adaptedHash": "d0e9313bc6bf2c02452b12e068fd16ee6bee8e35c5664532bd8bef690d440559",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/150",
+      "sourceId": "150",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 202,
+      "testBytes": 13271,
+      "adaptedHash": "e6cc5ab9ebd8139769b372bedec85fb575dfd207742e9b9a64553b15bf89ba62",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/151",
+      "sourceId": "151",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 207,
+      "testBytes": 8801,
+      "adaptedHash": "6403c1d704987ab833d05d9fe5cc5c7ea3bfefbf783355a69a4f9803b7d2cf95",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/153",
+      "sourceId": "153",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 226,
+      "testBytes": 16578,
+      "adaptedHash": "2c6bcbb332041a2cc951ea1fd260a46f356345e0558b1396831481c05d221cd6",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/156",
+      "sourceId": "156",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 209,
+      "testBytes": 71703,
+      "adaptedHash": "1f51884365269fd022659c78da55e13a57b3322f39d9f835e140235efccbb231",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/157",
+      "sourceId": "157",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 213,
+      "testBytes": 42973,
+      "adaptedHash": "21d04ae365077234dbef6fa618bc9ca33856b8940087cb56c767e2aae3c17c09",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/160",
+      "sourceId": "160",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 201,
+      "testBytes": 23411,
+      "adaptedHash": "87bb76f63c43b1866ba061227e2994b3284af140fa673b62f17ed358543817d6",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/162",
+      "sourceId": "162",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 201,
+      "testBytes": 21174,
+      "adaptedHash": "554ecd292f59459a8927cd83911ae671b110f276d5000826f5bd2c10dd4667d3",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/163",
+      "sourceId": "163",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 278,
+      "testBytes": 106099,
+      "adaptedHash": "ac631a4096e61828027d5668306690854ca04528fb75b11ddd0395af284854ba",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/164",
+      "sourceId": "164",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 195,
+      "testBytes": 12898,
+      "adaptedHash": "494c1b557a311859ccec3c754a85330a0b57c3433572d89b2042c4e77b3475b7",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/17",
+      "sourceId": "17",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 203,
+      "testBytes": 21601,
+      "adaptedHash": "ea4a704df095e6ee3f2219e0b684ab177327eceb0430210ecaed43c736a83820",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/18",
+      "sourceId": "18",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 201,
+      "testBytes": 21281,
+      "adaptedHash": "39df3782a8400ca796af1dfdadcba44ba9615b6d5b36b87397463428a761456a",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/19",
+      "sourceId": "19",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 53,
+      "testBytes": 14544,
+      "adaptedHash": "1fb57f256fd07eedccffe30185ad5714a81372f12bbddd10cd075e87d2f8dfd2",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-python3",
+          "codeHash": "59d78f925b987ef6f37b5c404ad27f42603eee5d3cbcfd2c27823c6c455f9e0b",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 11723
+          }
+        }
+      ],
+      "negatives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "ece90da2b6901586563be39ee8df44b24312c1450c73db981c7121e6498212c4",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 3638
+          }
+        },
+        {
+          "referenceIndex": 1,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "792018e458635e6e8c98c73eedbbf0b2426e303da960341e1fcb06a39c455896",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 4286
+          }
+        },
+        {
+          "referenceIndex": 2,
+          "origin": "upstream-incorrect-python3",
+          "codeHash": "79a47dbcc4592222d714702d603524f3e1cfe98634a8ef67e39c45db16c0eef6",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 18541
+          }
+        }
+      ]
+    },
+    {
+      "id": "coding/code-contests-test/2",
+      "sourceId": "2",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 206,
+      "testBytes": 24563,
+      "adaptedHash": "ec3a01606d97b16d3d6d93d7e7d53b08d505a9c853c1b211c4ec0f717e6155f1",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/20",
+      "sourceId": "20",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 202,
+      "testBytes": 18299,
+      "adaptedHash": "04aa5d26bbc2c681744cdf21070b02eed72a907c5b6e2604ff2d91043f0a3f0b",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/21",
+      "sourceId": "21",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 246,
+      "testBytes": 12885,
+      "adaptedHash": "a708af3a8401d5f0a19aaa643b91b3321f817fbbaa0f429dab02ec3ace115632",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/22",
+      "sourceId": "22",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 204,
+      "testBytes": 32081,
+      "adaptedHash": "9fd403576dcec9cc4b39de390ce909e022ed2f6ce7ec386701fd0888ea5904a6",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/23",
+      "sourceId": "23",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 209,
+      "testBytes": 16016,
+      "adaptedHash": "0aed7e299c1850ac5dd7ee06d822541a95be80b8177264400de3d42daa10b058",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/24",
+      "sourceId": "24",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 203,
+      "testBytes": 50478,
+      "adaptedHash": "b2020aae53ec2e2840da9d06226265871c124fab2feb0de9e9bc6c6f7c42fbac",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/25",
+      "sourceId": "25",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 245,
+      "testBytes": 12215,
+      "adaptedHash": "59473ef5b18783fe89ef9773eddb4612dcc7b06055c5d3c7295eea316337a59e",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/26",
+      "sourceId": "26",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 209,
+      "testBytes": 47961,
+      "adaptedHash": "cc9d31a6f5b3a0234d63ef95f3ad7abc042901b4bfa166d3bf7aa3ffd5739bde",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/28",
+      "sourceId": "28",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 201,
+      "testBytes": 14089,
+      "adaptedHash": "082e605de6bb511972ce3997e015cd8bb00c69347dce9b1ed6951fbdcc5e6bdb",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/29",
+      "sourceId": "29",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 201,
+      "testBytes": 21990,
+      "adaptedHash": "a8b7193ed1a7c17e4aa0e72b2b4260298976b89e255e09ce59ebd55ebf421ed0",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/3",
+      "sourceId": "3",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 274,
+      "testBytes": 10743,
+      "adaptedHash": "695fc6d5c47ee7ed809bac39b1e39df9e95483676c67ccbbcb8c2c65aed9c70e",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/30",
+      "sourceId": "30",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 201,
+      "testBytes": 21966,
+      "adaptedHash": "2148706fe1d0e6ceaaa9fce4cbbf81edafabdf1a8a3ba33af06b4cae638a4de0",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/32",
+      "sourceId": "32",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 203,
+      "testBytes": 81538,
+      "adaptedHash": "d9178b2d7d239bda1a2774b0059046ba716a3269fa85bae261c63c1641ffa3da",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/33",
+      "sourceId": "33",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 212,
+      "testBytes": 184011,
+      "adaptedHash": "bbd4225a2c6f84a17964debe0ccf64c44127ebaf209b731a73e73d21b2d1c221",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/34",
+      "sourceId": "34",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 218,
+      "testBytes": 753852,
+      "adaptedHash": "3bda990ea8d4b02fcd927a097a64fa45de79fff2213aa0c40dd5640c45f27257",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/35",
+      "sourceId": "35",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 208,
+      "testBytes": 71420,
+      "adaptedHash": "bd17dd9b81240e1dab1de6338d588af3cad499b04c4e27d1ad0fc9fd580e9bdd",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/4",
+      "sourceId": "4",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 204,
+      "testBytes": 13125,
+      "adaptedHash": "65c9a370d80bd71065e88acf38bfdeb07c5df2a98ccd2135abdf04a891466459",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/42",
+      "sourceId": "42",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 94,
+      "testBytes": 17189,
+      "adaptedHash": "b4d67d333228326b17e02b61f8f5bd78852e7258585ef338dab962443bc83c8f",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/43",
+      "sourceId": "43",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 206,
+      "testBytes": 23595,
+      "adaptedHash": "538e01e32237450b081ec087132b1afaef8e5373729eb5c6f3c957484f5ce229",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/44",
+      "sourceId": "44",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 230,
+      "testBytes": 30186,
+      "adaptedHash": "9167b078aeddea79778143b38d2df29c44da6ef0577a284568915b080b7e1df7",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/45",
+      "sourceId": "45",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 202,
+      "testBytes": 14650,
+      "adaptedHash": "eec90257d910c075a0576b56e5c9a3b8ece6dcb96168dc1561a2c536f870acd6",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/47",
+      "sourceId": "47",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 201,
+      "testBytes": 33084,
+      "adaptedHash": "ec5c78b32b884b34c3c58da2ae1a5c74a0cad6d8227df864c7485a47b64b90f8",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/5",
+      "sourceId": "5",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 229,
+      "testBytes": 10944,
+      "adaptedHash": "69e8579afb0d12cbbca4e2add08b00c8e7ad5b6831a6b48677e91143c3008fd6",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/50",
+      "sourceId": "50",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 206,
+      "testBytes": 60088,
+      "adaptedHash": "de522108ea906e4200ab9dd9a9cf853c61004c1ecf1523540b6b7d3cd2e26e0d",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/54",
+      "sourceId": "54",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 201,
+      "testBytes": 50938,
+      "adaptedHash": "b2300179e19306fa6ccbf9b8145dbda9ab40576b51df37dde0a931687fff3e6f",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/55",
+      "sourceId": "55",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 63,
+      "testBytes": 2607,
+      "adaptedHash": "bd3155ae0ff2e2acb13812c0150864a4dbe140fc28fd34f16f499f0189196910",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/56",
+      "sourceId": "56",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 208,
+      "testBytes": 14969,
+      "adaptedHash": "e2405c933ca6cbc41c0e5c959aa65a4f5e7eb0de94807e81a8beffc1ae18b7db",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/59",
+      "sourceId": "59",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 201,
+      "testBytes": 22386,
+      "adaptedHash": "be05cc6ea9d19e1542f3bea51af5727b0cac78e758dae73c9c2a6d77d3108c91",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/6",
+      "sourceId": "6",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 203,
+      "testBytes": 12609,
+      "adaptedHash": "5902dd605a4a6061705ec965b2eba62a7549a1f8267f3742358e2cbe7224c5c7",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/60",
+      "sourceId": "60",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 202,
+      "testBytes": 18818,
+      "adaptedHash": "d4ca5170ba7eb4ef6aba09b54a57421ffb91c9f48439446cfbdc47f63c96d21e",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/61",
+      "sourceId": "61",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 201,
+      "testBytes": 17619,
+      "adaptedHash": "8d41d036cb833d4456b753b1a96d40c59f5ae395c6b966ead3ab6c3ca24fba02",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/62",
+      "sourceId": "62",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 207,
+      "testBytes": 40125,
+      "adaptedHash": "f35f04f830f4c5467286b17c2bc5df576f4e67e1da15728bad19fd6bc520a1f5",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/63",
+      "sourceId": "63",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 226,
+      "testBytes": 21547,
+      "adaptedHash": "a6f1c1256c8d3c40ee66d1624348e9d5532a1622945898fcb8211a6fd7afedfa",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/66",
+      "sourceId": "66",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 202,
+      "testBytes": 64982,
+      "adaptedHash": "f4a5996cf1c61b87301e107b3fc2357c867dc70a646ee6a67c4d4b0645856975",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/68",
+      "sourceId": "68",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 206,
+      "testBytes": 87975,
+      "adaptedHash": "9f2737de5b37330ee8821cea6b1425c9cb2b0193ab201a964d2a4065bcd293e0",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/69",
+      "sourceId": "69",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 204,
+      "testBytes": 25489,
+      "adaptedHash": "73bd7c543cfe5445d5f50e40347eccc4517815735183b0381b64926f3fd091f6",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/7",
+      "sourceId": "7",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 228,
+      "testBytes": 244482,
+      "adaptedHash": "a392906ca1cf9754fead5727f746efe9e377efc555ad23ae89ac360fbafad8eb",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/70",
+      "sourceId": "70",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 203,
+      "testBytes": 22391,
+      "adaptedHash": "673d1904c34c50f65e92125e2597e447917534e55bfd70c4a4d78ca55dfabee4",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/73",
+      "sourceId": "73",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 210,
+      "testBytes": 16124,
+      "adaptedHash": "b29eb32cc0250bda3be3fe7214dfd78052e8bf786501c1d76d718dd0a800f809",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/75",
+      "sourceId": "75",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 205,
+      "testBytes": 9404,
+      "adaptedHash": "98d093a3cf55635693d074f4dbb9b83b5aa8073422b5789aa15c3d92d050e1cc",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/77",
+      "sourceId": "77",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 9,
+      "testBytes": 835,
+      "adaptedHash": "571eba51781188994852384500d827868b6444d4480e1896bbf9bfbd4c6bf160",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/78",
+      "sourceId": "78",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 201,
+      "testBytes": 23155,
+      "adaptedHash": "5cf93f62853008e7a0a3b7f2361122e6e2ecd89db65f5c5e3184e355f3443ea7",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/8",
+      "sourceId": "8",
+      "status": "failed",
+      "inputAudit": "audited",
+      "testCount": 173,
+      "testBytes": 19454,
+      "adaptedHash": "9ddc7d52c2354c11355bcfeb1ed1218b955cf3b73697573a873e764742b89d2d",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "upstream-python3",
+          "codeHash": "ca9dff365af20e7c0ffa671bada3ae465746316ffbc5815c5ff89a06e3902c68",
+          "outcome": {
+            "kind": "failed",
+            "reason": "timeout",
+            "elapsedMs": 30040
+          }
+        }
+      ],
+      "negatives": [
+        {
+          "referenceIndex": 0,
+          "origin": "independent-known-logic-error",
+          "proof": "Published legal example requires39,32,0; ignoring the update gives39,39,0.",
+          "codeHash": "55866ec392452c3b84344dcbdcd4ab6d66e47d85418355a485514096e4e66fdf",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 18803
+          }
+        }
+      ],
+      "reason": "CORRECT_REFERENCE_NOT_PASSED"
+    },
+    {
+      "id": "coding/code-contests-test/80",
+      "sourceId": "80",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 201,
+      "testBytes": 21087,
+      "adaptedHash": "f59eb9c9d1eb6f77162870900bcc29e58ee46ebec9fe6b122d1104ac40b7c1ff",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/81",
+      "sourceId": "81",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 215,
+      "testBytes": 20420,
+      "adaptedHash": "8a51d2a7d4947144b91e3b08c28d07aafe762f06145e4ef852124e466d36a369",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/82",
+      "sourceId": "82",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 204,
+      "testBytes": 27927,
+      "adaptedHash": "399c65070dc583369c6d6b10fb23fcea9cff6083189b5e68264600e33bf9b4e4",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/83",
+      "sourceId": "83",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 321,
+      "testBytes": 15295,
+      "adaptedHash": "89c1ddb01b7a77d70d22e03afa94e6ab1eb8a172dfbd4e36a09a1201daa1c23c",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/84",
+      "sourceId": "84",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 201,
+      "testBytes": 12966,
+      "adaptedHash": "5825d6638eba08cbd6a8379c4c4d2c41ae7189af6c2a8e48eda9a88e7d241af5",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/85",
+      "sourceId": "85",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 252,
+      "testBytes": 12476,
+      "adaptedHash": "04c517401258697fd9125447aa9be39d75b6b7725d1c8c9e411f11fe75a32924",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/86",
+      "sourceId": "86",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 207,
+      "testBytes": 34954,
+      "adaptedHash": "c172822ec49d20fa6d7e967e805712c4b02386fbd3ab82578e3915bccc6a64da",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/87",
+      "sourceId": "87",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 202,
+      "testBytes": 82816,
+      "adaptedHash": "4ea4f5b876612f959267d2656cf0a4131f3089cabcc4e602b1b01459d109f030",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/9",
+      "sourceId": "9",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 202,
+      "testBytes": 20709,
+      "adaptedHash": "118773fe0a90b5eb5beb7469c6f5af1d8dc4037f86cac7004223dcf323190bfe",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/91",
+      "sourceId": "91",
+      "status": "passed",
+      "inputAudit": "audited",
+      "testCount": 143,
+      "testBytes": 17710,
+      "adaptedHash": "3a25d7f32e97490604b3c9988d262c82d5fcce4b73ae6d83733daea212a549b2",
+      "positives": [
+        {
+          "referenceIndex": 0,
+          "origin": "independent-reference",
+          "proof": "Greedy balanced-split invariant, independently checked against every positive composition for84 small arrays and retained tests; tests/integration/extreme-reference.test.ts.",
+          "codeHash": "56b1e4a9b06e3150df0bf0fe847eabf5f235cc36b39b838bce00a5dd68701fbd",
+          "outcome": {
+            "kind": "passed",
+            "elapsedMs": 15716
+          }
+        }
+      ],
+      "negatives": [
+        {
+          "referenceIndex": 0,
+          "origin": "independent-known-logic-error",
+          "proof": "Published legal array[5,4,3] has total5; whole-array-only extreme is3.",
+          "codeHash": "b4de306cacea6e1ec27b14ca17d60d5949963360c584672e952094bd555406d1",
+          "outcome": {
+            "kind": "failed",
+            "reason": "assertion",
+            "elapsedMs": 15056
+          }
+        }
+      ]
+    },
+    {
+      "id": "coding/code-contests-test/93",
+      "sourceId": "93",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 241,
+      "testBytes": 32419,
+      "adaptedHash": "07ecde673acaeae6b6628267a59eefb23f7bbfc58741bc685237702baf738227",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/94",
+      "sourceId": "94",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 201,
+      "testBytes": 28308,
+      "adaptedHash": "96a8a21e9856ee6c80530df6a416e2b1190afd9c179baca5c4cf3276a0bdbe6c",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/96",
+      "sourceId": "96",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 286,
+      "testBytes": 12599,
+      "adaptedHash": "6b6c0d05019b8a38e6cf65417717dc8cc7b2f1294f89c1b84859d2eca4374c8c",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/97",
+      "sourceId": "97",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 201,
+      "testBytes": 24132,
+      "adaptedHash": "9c3e77c0933477cb3fa9209661a85a2a91bc0c31bf73ae9b31f9af32e47fddde",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    },
+    {
+      "id": "coding/code-contests-test/99",
+      "sourceId": "99",
+      "status": "pending",
+      "inputAudit": "pending",
+      "testCount": 202,
+      "testBytes": 23722,
+      "adaptedHash": "4d0f2a166049fd0224d2c9807354b96331b1962c3f15e65c14676916f357b80e",
+      "positives": [],
+      "negatives": [],
+      "reason": "INPUT_AUDIT_PENDING"
+    }
+  ],
+  "counts": {
+    "passed": 3,
+    "failed": 1,
+    "pending": 96
+  },
+  "remainingGates": [
+    "Complete statement-specific input audits for all selected questions.",
+    "All100 correct references and known incorrect/invalid outputs must satisfy the unchanged runtime limits.",
+    "Full400 reference paths, legacy164/541 selfchecks, attribution, compatibility hashes and package validation."
+  ],
+  "endedAt": "2026-11-01T04:39:47.962Z"
+}

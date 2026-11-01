@@ -1,0 +1,297 @@
+{
+  "schemaVersion": 1,
+  "scope": "Read-only filename sampling during unchanged canonical WASI reference execution; no grading protocol modification or release.",
+  "questionId": "coding/code-contests-test/8",
+  "testCount": 173,
+  "adaptedHash": "9ddc7d52c2354c11355bcfeb1ed1218b955cf3b73697573a873e764742b89d2d",
+  "referenceHash": "ca9dff365af20e7c0ffa671bada3ae465746316ffbc5815c5ff89a06e3902c68",
+  "limits": {
+    "wallMs": 30000,
+    "memoryBytes": 536870912,
+    "computeBudget": 200000000000
+  },
+  "outcome": {
+    "kind": "passed",
+    "elapsedMs": 14227
+  },
+  "samples": [
+    {
+      "elapsedMs": 259,
+      "inputReady": true,
+      "lastStartedCase": null
+    },
+    {
+      "elapsedMs": 510,
+      "inputReady": true,
+      "lastStartedCase": null
+    },
+    {
+      "elapsedMs": 762,
+      "inputReady": true,
+      "lastStartedCase": null
+    },
+    {
+      "elapsedMs": 1012,
+      "inputReady": true,
+      "lastStartedCase": null
+    },
+    {
+      "elapsedMs": 1277,
+      "inputReady": true,
+      "lastStartedCase": 2
+    },
+    {
+      "elapsedMs": 1540,
+      "inputReady": true,
+      "lastStartedCase": 5
+    },
+    {
+      "elapsedMs": 1805,
+      "inputReady": true,
+      "lastStartedCase": 9
+    },
+    {
+      "elapsedMs": 2057,
+      "inputReady": true,
+      "lastStartedCase": 12
+    },
+    {
+      "elapsedMs": 2321,
+      "inputReady": true,
+      "lastStartedCase": 16
+    },
+    {
+      "elapsedMs": 2573,
+      "inputReady": true,
+      "lastStartedCase": 20
+    },
+    {
+      "elapsedMs": 2824,
+      "inputReady": true,
+      "lastStartedCase": 23
+    },
+    {
+      "elapsedMs": 3075,
+      "inputReady": true,
+      "lastStartedCase": 26
+    },
+    {
+      "elapsedMs": 3325,
+      "inputReady": true,
+      "lastStartedCase": 30
+    },
+    {
+      "elapsedMs": 3577,
+      "inputReady": true,
+      "lastStartedCase": 33
+    },
+    {
+      "elapsedMs": 3827,
+      "inputReady": true,
+      "lastStartedCase": 37
+    },
+    {
+      "elapsedMs": 4078,
+      "inputReady": true,
+      "lastStartedCase": 40
+    },
+    {
+      "elapsedMs": 4330,
+      "inputReady": true,
+      "lastStartedCase": 43
+    },
+    {
+      "elapsedMs": 4579,
+      "inputReady": true,
+      "lastStartedCase": 47
+    },
+    {
+      "elapsedMs": 4829,
+      "inputReady": true,
+      "lastStartedCase": 50
+    },
+    {
+      "elapsedMs": 5082,
+      "inputReady": true,
+      "lastStartedCase": 53
+    },
+    {
+      "elapsedMs": 5332,
+      "inputReady": true,
+      "lastStartedCase": 57
+    },
+    {
+      "elapsedMs": 5598,
+      "inputReady": true,
+      "lastStartedCase": 60
+    },
+    {
+      "elapsedMs": 5862,
+      "inputReady": true,
+      "lastStartedCase": 64
+    },
+    {
+      "elapsedMs": 6124,
+      "inputReady": true,
+      "lastStartedCase": 67
+    },
+    {
+      "elapsedMs": 6375,
+      "inputReady": true,
+      "lastStartedCase": 70
+    },
+    {
+      "elapsedMs": 6639,
+      "inputReady": true,
+      "lastStartedCase": 73
+    },
+    {
+      "elapsedMs": 6890,
+      "inputReady": true,
+      "lastStartedCase": 76
+    },
+    {
+      "elapsedMs": 7155,
+      "inputReady": true,
+      "lastStartedCase": 80
+    },
+    {
+      "elapsedMs": 7406,
+      "inputReady": true,
+      "lastStartedCase": 83
+    },
+    {
+      "elapsedMs": 7657,
+      "inputReady": true,
+      "lastStartedCase": 87
+    },
+    {
+      "elapsedMs": 7909,
+      "inputReady": true,
+      "lastStartedCase": 90
+    },
+    {
+      "elapsedMs": 8161,
+      "inputReady": true,
+      "lastStartedCase": 94
+    },
+    {
+      "elapsedMs": 8427,
+      "inputReady": true,
+      "lastStartedCase": 97
+    },
+    {
+      "elapsedMs": 8691,
+      "inputReady": true,
+      "lastStartedCase": 101
+    },
+    {
+      "elapsedMs": 8942,
+      "inputReady": true,
+      "lastStartedCase": 104
+    },
+    {
+      "elapsedMs": 9194,
+      "inputReady": true,
+      "lastStartedCase": 107
+    },
+    {
+      "elapsedMs": 9447,
+      "inputReady": true,
+      "lastStartedCase": 110
+    },
+    {
+      "elapsedMs": 9711,
+      "inputReady": true,
+      "lastStartedCase": 114
+    },
+    {
+      "elapsedMs": 9961,
+      "inputReady": true,
+      "lastStartedCase": 117
+    },
+    {
+      "elapsedMs": 10213,
+      "inputReady": true,
+      "lastStartedCase": 120
+    },
+    {
+      "elapsedMs": 10479,
+      "inputReady": true,
+      "lastStartedCase": 124
+    },
+    {
+      "elapsedMs": 10730,
+      "inputReady": true,
+      "lastStartedCase": 127
+    },
+    {
+      "elapsedMs": 10980,
+      "inputReady": true,
+      "lastStartedCase": 131
+    },
+    {
+      "elapsedMs": 11232,
+      "inputReady": true,
+      "lastStartedCase": 134
+    },
+    {
+      "elapsedMs": 11484,
+      "inputReady": true,
+      "lastStartedCase": 138
+    },
+    {
+      "elapsedMs": 11737,
+      "inputReady": true,
+      "lastStartedCase": 140
+    },
+    {
+      "elapsedMs": 11990,
+      "inputReady": true,
+      "lastStartedCase": 144
+    },
+    {
+      "elapsedMs": 12240,
+      "inputReady": true,
+      "lastStartedCase": 147
+    },
+    {
+      "elapsedMs": 12492,
+      "inputReady": true,
+      "lastStartedCase": 150
+    },
+    {
+      "elapsedMs": 12756,
+      "inputReady": true,
+      "lastStartedCase": 154
+    },
+    {
+      "elapsedMs": 13008,
+      "inputReady": true,
+      "lastStartedCase": 157
+    },
+    {
+      "elapsedMs": 13260,
+      "inputReady": true,
+      "lastStartedCase": 161
+    },
+    {
+      "elapsedMs": 13511,
+      "inputReady": true,
+      "lastStartedCase": 164
+    },
+    {
+      "elapsedMs": 13763,
+      "inputReady": true,
+      "lastStartedCase": 168
+    },
+    {
+      "elapsedMs": 14015,
+      "inputReady": true,
+      "lastStartedCase": 171
+    }
+  ],
+  "status": "diagnostic-only",
+  "releaseAllowed": false,
+  "limitations": "Passing sampled execution cannot erase two prior 30-second timeouts. Filename sampling does not measure CPU, exact per-case time or the load during failed runs."
+}
