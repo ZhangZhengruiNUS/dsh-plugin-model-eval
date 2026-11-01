@@ -1,3 +1,6 @@
+import {buildComparison} from '../comparison/model.ts';
+import {reconcileSelection,toggleSelection,type ComparisonSelection} from '../comparison/state.ts';
+import {FocusBar} from '../components/comparison/FocusBar.tsx';
 import {SelectionBar} from '../components/SelectionBar.tsx';
 import * as React from 'react';
 import type {Track} from '../../contracts.ts';
@@ -7,37 +10,41 @@ import {latestCompleted,targetKey,time} from '../store.ts';
 import {Button,Empty,Icon,ModelLabel,Params,Score,type PageProps} from '../ui.tsx';
 
 export function Compare(props:PageProps){
-  const {data}=props;
+  const {data}=props;const savedRuns=data.comparison?.summaries??[];
   const [track,setTrack]=React.useState<Track>('general');
-  const [protocol,setProtocol]=React.useState(data.status.resourceVersion);
+  const [protocol,setProtocol]=React.useState('');const [selection,setSelection]=React.useState<ComparisonSelection>();
   const [method,setMethod]=React.useState(false),[query,setQuery]=React.useState('');
   const methodId=React.useId();
-  const completed=latestCompleted(data.runs,track,protocol);
+  const groups=data.comparison?buildComparison(data.comparison,track):[],group=groups.find(g=>g.key===protocol)??groups[0],allRows=group?.rows??[];
+  const scope=[data.status.rootId,data.status.rootEpoch,group?.key??track].join('|'),chosen=reconcileSelection(selection,scope,allRows),completed=allRows.map(r=>r.source);
+  const colors=React.useRef({scope:'',map:new Map<string,string>()});if(colors.current.scope!==scope)colors.current={scope,map:new Map()};for(const r of [...allRows].sort((a,b)=>a.configKey.localeCompare(b.configKey)))if(!colors.current.map.has(r.configKey))colors.current.map.set(r.configKey,'var(--comparison-'+colors.current.map.size%7+')');const color=(key:string)=>colors.current.map.get(key)??'var(--me-accent)';
   const needle=query.trim().toLocaleLowerCase();
   const rows=completed.filter(run=>[run.target.modelId,run.target.providerId,run.target.deployment?.value??''].some(value=>value.toLocaleLowerCase().includes(needle)));
-  const incomplete=data.runs.some(run=>run.protocols.resourceVersion===protocol&&run.tracks[track]&&run.tracks[track]?.status!=='completed');
-  const versions=[...new Set([data.status.resourceVersion,...data.runs.map(x=>x.protocols.resourceVersion)])];
-  if(!data.status.prepared&&!data.runs.length)return <Empty title={t.firstTitle} body={t.firstBody}><Button kind="primary" icon="arrow" onClick={()=>props.navigate('settings')}>{t.prepare}</Button><small>{t.firstHint}</small></Empty>;
+  const incomplete=(data.comparison?.summaries??[]).some(run=>(!group||run.protocols.resourceVersion===group.rows[0]?.source.protocols.resourceVersion)&&run.tracks[track]&&run.tracks[track]?.status!=='completed');
+  const versions=groups;
+  if(!data.status.prepared&&!savedRuns.length)return <Empty title={t.firstTitle} body={t.firstBody}><Button kind="primary" icon="arrow" onClick={()=>props.navigate('settings')}>{t.prepare}</Button><small>{t.firstHint}</small></Empty>;
   const metrics=[
-    {label:t.models,value:new Set(data.runs.map(x=>targetKey(x.target))).size},
-    {label:t.completeRuns,value:data.runs.filter(x=>Object.values(x.tracks).every(v=>v.status==='completed')).length},
-    {label:t.pendingRuns,value:data.runs.filter(x=>Object.values(x.tracks).some(v=>v.status!=='completed')).length}
+    {label:t.models,value:new Set(savedRuns.map(x=>targetKey(x.target))).size},
+    {label:t.completeRuns,value:savedRuns.filter(x=>Object.values(x.tracks).every(v=>v.status==='completed')).length},
+    {label:t.pendingRuns,value:savedRuns.filter(x=>Object.values(x.tracks).some(v=>v.status!=='completed')).length}
   ];
+  if(!data.comparison)return <Empty title="暂时无法加载比较数据" body={data.comparisonError??t.loading}><Button icon="refresh" onClick={()=>void props.act(async()=>{})}>{t.retry}</Button></Empty>;
   return <div className="me-compare-view">
-    <section className="me-overview" aria-label="评测概览">
+    <details className="me-comparison-counts"><summary aria-label="统计口径">统计口径</summary><p>{t.wholeRunHint}</p><section className="me-overview" aria-label="评测概览">
       <dl>{metrics.map(metric=><div key={metric.label}><dt>{metric.label}</dt><dd>{metric.value}</dd></div>)}</dl>
-      <details className="me-count-definition"><summary aria-label="统计口径" title="统计口径"><Icon name="info" size={14}/><span className="me-definition-label">统计口径</span></summary><p>{t.wholeRunHint}</p></details>
-    </section>
+      
+    </section></details>
     <section className="me-card me-results">
       <div className="me-results-heading"><div><h2>{t.latest}</h2><span role="status" aria-live="polite">{rows.length===completed.length?`${rows.length} 个配置`:`${rows.length} / ${completed.length} 个配置`}</span></div>
         <SelectionBar label={t.tracks} value={track}>{(['general','writing'] as const).map(value=><button key={value} role="tab" aria-selected={track===value} onClick={()=>setTrack(value)}>{value==='general'?t.general:t.writing}</button>)}</SelectionBar>
       </div>
       <div className="me-results-toolbar">
         <div className="me-result-search"><Icon name="search" size={16}/><input type="search" aria-label="搜索模型、供应商或部署" placeholder="搜索模型、供应商或部署" value={query} onChange={e=>setQuery(e.target.value)}/>{query&&<Button kind="icon" icon="close" aria-label="清空搜索" onClick={()=>setQuery('')}/>}</div>
-        <label className="me-result-protocol"><span>{t.protocol}</span><select aria-label={t.protocol} value={protocol} onChange={e=>setProtocol(e.target.value)}>{versions.map(v=><option key={v} value={v}>{v}</option>)}</select></label>
+        <label className="me-result-protocol"><span>{t.protocol}</span><select aria-label={t.protocol} value={group?.key??protocol} onChange={e=>{setProtocol(e.target.value);setSelection(undefined);}}>{versions.map(v=><option key={v.key} value={v.key}>{v.label}</option>)}</select></label>
         <Button kind="text" icon="info" aria-expanded={method} aria-controls={methodId} onClick={()=>setMethod(!method)}>{t.method}</Button>
       </div>
       {method&&<div className="me-method" id={methodId}><strong>{t.methodTitle}</strong><p>{track==='general'?t.generalNote:t.writingNote}。{t.latestNote}</p><p>{t.methodBody}</p><p>{t.adaptation}</p><p>{t.judgeLimit}</p></div>}
+      <FocusBar rows={allRows} candidates={allRows.filter(r=>rows.some(run=>run.runId===r.runId))} selection={chosen} onToggle={key=>setSelection(toggleSelection(chosen,key))} onBaseline={key=>setSelection({...chosen,baseline:key})} color={color}/>
       {!completed.length?<Empty title={track==='general'?t.noScores:t.noWriting} body={incomplete?`已有未完成的${track==='general'?t.general:t.writing}评测，可前往评测页查看。`:track==='general'?t.noScoresBody:t.noWritingBody}>{incomplete?<Button onClick={()=>props.navigate('jobs')} icon="arrow">查看评测任务</Button>:<Button onClick={props.newRun} icon="plus" disabled={!data.status.prepared||!data.status.writable||!!data.queue.activeBatchId||!!data.status.activeActivity}>{t.newRun}</Button>}</Empty>:!rows.length?<div className="me-search-empty"><Icon name="search" size={24}/><h3>没有匹配的模型配置</h3><Button onClick={()=>setQuery('')}>清空搜索</Button></div>:
         <ComparisonTable><table className="me-comparison"><thead><tr><th scope="col">{t.model}</th><th scope="col" className="me-primary-score">{track==='general'?t.overall:t.writingScore}</th>{track==='general'?Object.entries(t.domains).map(([key,label])=><th scope="col" key={key}>{label}</th>):<th scope="col">{t.judgeConditions}</th>}<th scope="col" title={t.duration}>{t.latency}<small>中位 / P95 · 秒</small></th><th scope="col" title={t.usagePartial}>{t.usage}<small>Token</small></th></tr></thead>
           <tbody>{rows.map(run=>{const metrics=run.metrics.tracks[track]?.answer;return <tr key={run.runId}>
