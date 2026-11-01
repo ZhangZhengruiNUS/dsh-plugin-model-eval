@@ -1,3 +1,5 @@
+import {PerformanceScatter} from '../components/comparison/PerformanceScatter.tsx';
+import type {ResponseMetric} from '../comparison/geometry.ts';
 import {buildComparison} from '../comparison/model.ts';
 import {reconcileSelection,toggleSelection,type ComparisonSelection} from '../comparison/state.ts';
 import {FocusBar} from '../components/comparison/FocusBar.tsx';
@@ -11,7 +13,7 @@ import {Button,Empty,Icon,ModelLabel,Params,Score,type PageProps} from '../ui.ts
 
 export function Compare(props:PageProps){
   const {data}=props;const savedRuns=data.comparison?.summaries??[];
-  const [track,setTrack]=React.useState<Track>('general');
+  const [track,setTrack]=React.useState<Track>('general');const [metric,setMetric]=React.useState<ResponseMetric>('latencyMs'),[highlighted,setHighlight]=React.useState<string|null>(null);
   const [protocol,setProtocol]=React.useState('');const [selection,setSelection]=React.useState<ComparisonSelection>();
   const [method,setMethod]=React.useState(false),[query,setQuery]=React.useState('');
   const methodId=React.useId();
@@ -45,6 +47,7 @@ export function Compare(props:PageProps){
       </div>
       {method&&<div className="me-method" id={methodId}><strong>{t.methodTitle}</strong><p>{track==='general'?t.generalNote:t.writingNote}。{t.latestNote}</p><p>{t.methodBody}</p><p>{t.adaptation}</p><p>{t.judgeLimit}</p></div>}
       <FocusBar rows={allRows} candidates={allRows.filter(r=>rows.some(run=>run.runId===r.runId))} selection={chosen} onToggle={key=>setSelection(toggleSelection(chosen,key))} onBaseline={key=>setSelection({...chosen,baseline:key})} color={color}/>
+      {!!completed.length&&<div className="me-analysis-grid"><PerformanceScatter rows={allRows.filter(r=>rows.some(run=>run.runId===r.runId))} selected={chosen.selected} metric={metric} onMetric={setMetric} onToggle={key=>setSelection(toggleSelection(chosen,key))} onReport={props.report} onHighlight={setHighlight} highlighted={highlighted} color={color}/></div>}
       {!completed.length?<Empty title={track==='general'?t.noScores:t.noWriting} body={incomplete?`已有未完成的${track==='general'?t.general:t.writing}评测，可前往评测页查看。`:track==='general'?t.noScoresBody:t.noWritingBody}>{incomplete?<Button onClick={()=>props.navigate('jobs')} icon="arrow">查看评测任务</Button>:<Button onClick={props.newRun} icon="plus" disabled={!data.status.prepared||!data.status.writable||!!data.queue.activeBatchId||!!data.status.activeActivity}>{t.newRun}</Button>}</Empty>:!rows.length?<div className="me-search-empty"><Icon name="search" size={24}/><h3>没有匹配的模型配置</h3><Button onClick={()=>setQuery('')}>清空搜索</Button></div>:
         <ComparisonTable><table className="me-comparison"><thead><tr><th scope="col">{t.model}</th><th scope="col" className="me-primary-score">{track==='general'?t.overall:t.writingScore}</th>{track==='general'?Object.entries(t.domains).map(([key,label])=><th scope="col" key={key}>{label}</th>):<th scope="col">{t.judgeConditions}</th>}<th scope="col" title={t.duration}>{t.latency}<small>中位 / P95 · 秒</small></th><th scope="col" title={t.usagePartial}>{t.usage}<small>Token</small></th></tr></thead>
           <tbody>{rows.map(run=>{const metrics=run.metrics.tracks[track]?.answer;return <tr key={run.runId}>
