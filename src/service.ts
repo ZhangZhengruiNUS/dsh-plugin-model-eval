@@ -97,15 +97,21 @@ export async function createEvaluationService(deps:ServiceDependencies) {
       case 'commitSpeedCleanup':return mutate(async()=>{const op=await speedCleanup.commit(String(payload.token));const {files,...safe}=op;return {...safe,failedFiles:files.filter(f=>f.state==='failed').length};});
       case 'speedCleanupStatus':{const op=await speedCleanup.status(String(payload.token));if(!op)return null;const {files,...safe}=op;return {...safe,failedFiles:files.filter(f=>f.state==='failed').length};}
       case 'history':return store.listSummaries();
-      case 'report':{const captured=store,epoch=rootEpoch,stale=()=>disposed||store!==captured||rootEpoch!==epoch||activity.snapshot()?.kind==='root-change';if(stale())return fail('COMPARISON_STALE');
+      case 'report':return readBound(async captured=>{
         const run=await captured.getRun(String(payload.runId));const records=run.summary.details==='available'?await captured.listItems(run.summary.runId):[];
-        if(stale())return fail('COMPARISON_STALE');const current=live?.snapshotRun(run.summary.runId);if(current)run.summary.estimation={...run.summary.estimation,current};return {rootId:captured.rootId,rootEpoch:epoch,summary:run.summary,questions:run.manifest.requiredItems.map(q=>{const item=records.find(x=>x.itemId===q.id);return {...q,answered:!!item?.answer?.complete,grade:item?.grade??null};})};}
-      case 'item':{const runId=String(payload.runId),id=String(payload.itemId),{manifest:runManifest}=await store.getRun(runId);if(!runManifest.requiredItems.some(x=>x.id===id))return fail('ITEM_NOT_IN_PROTOCOL');const item=await store.getItem(runId,id);const question=item?.question??(runManifest.protocols.resourceVersion===protocols.resourceVersion?protocols.items.find(x=>x.id===id):undefined);return {question:question?{id:question.id,track:question.track,datasetId:question.datasetId,sourceId:question.sourceId,sourceHash:question.sourceHash,prompt:question.prompt}:null,item:item??null};}
+        const current=live?.snapshotRun(run.summary.runId);if(current)run.summary.estimation={...run.summary.estimation,current};return {summary:run.summary,questions:run.manifest.requiredItems.map(q=>{const item=records.find(x=>x.itemId===q.id);return {...q,answered:!!item?.answer?.complete,grade:item?.grade??null};})};});
+      case 'item':return readBound(async captured=>{const runId=String(payload.runId),id=String(payload.itemId),{manifest:runManifest}=await captured.getRun(runId);if(!runManifest.requiredItems.some(x=>x.id===id))return fail('ITEM_NOT_IN_PROTOCOL');const item=await captured.getItem(runId,id);const question=item?.question??(runManifest.protocols.resourceVersion===protocols.resourceVersion?protocols.items.find(x=>x.id===id):undefined);return {question:question?{id:question.id,track:question.track,datasetId:question.datasetId,sourceId:question.sourceId,sourceHash:question.sourceHash,prompt:question.prompt}:null,item:item??null};});
       case 'usage':return cleanup.measureHistory();
       case 'previewCleanup':return mutate(()=>cleanup.previewCleanup(payload.batchIds as string[]));
       case 'commitCleanup':return mutate(async()=>compactOperation(await cleanup.commitCleanup(String(payload.token))));
       case 'cleanupStatus':return compactOperation(cleanup.operation(String(payload.token)));
     }
+  }
+  async function readBound<T extends object>(read:(captured:HistoryStore)=>Promise<T>){
+    const captured=store,epoch=rootEpoch,stale=()=>disposed||store!==captured||rootEpoch!==epoch||activity.snapshot()?.kind==='root-change';
+    if(stale())return fail('COMPARISON_STALE');
+    try{const value=await read(captured);if(stale())return fail('COMPARISON_STALE');return {...value,rootId:captured.rootId,rootEpoch:epoch};}
+    catch(error){if(stale())return fail('COMPARISON_STALE');throw error;}
   }
   const activityKinds:Partial<Record<Action,ActivityKind>>={prepare:'prepare',setRoot:'root-change',createBatch:'evaluation',resume:'evaluation',previewCleanup:'cleanup',commitCleanup:'cleanup',startSpeedPreview:'speed-preview',previewSpeedCleanup:'cleanup',commitSpeedCleanup:'cleanup'};
   async function dispatch(action:Action,payload:Record<string,unknown>):Promise<unknown>{

@@ -1,4 +1,8 @@
 import {test,expect} from '@playwright/test';
+
+test('item from a different root is rejected even before the next status refresh',async({page})=>{
+  await page.goto('/?wrongItemRoot=1');await page.getByRole('button',{name:'查看报告 Atlas-32B-Instruct',exact:true}).first().click();const dialog=page.getByRole('dialog');await dialog.getByRole('tab',{name:'逐题明细',exact:true}).click();await dialog.getByRole('button',{name:/tiny-mmlu/}).first().click();await expect(dialog.getByText('题目目录已变化，请刷新后重试。',{exact:true})).toBeVisible();await expect(dialog.getByText('MISMATCH_ROOT_ANSWER',{exact:true})).toHaveCount(0);
+});
 test('history uses retained summaries on demand and leaves original report navigation intact',async({page})=>{
   await page.goto('/?history=1');await page.getByRole('button',{name:'查看报告 Atlas-32B-Instruct',exact:true}).first().click();const dialog=page.getByRole('dialog',{name:'查看报告'});
   const before=await page.evaluate(()=>(window as any).fixtureActions.filter((x:string)=>x==='report'||x==='item').length);
