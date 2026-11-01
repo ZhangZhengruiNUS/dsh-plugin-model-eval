@@ -69,9 +69,10 @@ test('wrong values, syntax, forged pass text, early exit and cancellation cannot
     assert.equal((await runner.runCode(fixture('wrong'), solution, limits, signal)).kind, 'failed');
   }
   const controller = new AbortController();
-  const running = runner.runCode(fixture('cancel'), 'def f():\n while True: pass', { ...limits, wallMs: 10_000 }, controller.signal);
-  setTimeout(() => controller.abort(), 1800);
-  assert.equal((await running).kind, 'cancelled');
+  // Leave enough fuel to isolate cancellation from legitimate early fuel exhaustion.
+  const running = runner.runCode(fixture('cancel'), 'def f():\n while True: pass', { ...limits, wallMs: 10_000, computeBudget: 200_000_000_000 }, controller.signal);
+  const timer=setTimeout(() => controller.abort(), 1800);
+  try{const result=await running;assert.equal(result.kind,'cancelled',JSON.stringify(result));}finally{clearTimeout(timer);}
 });
 
 test('model cannot disable the grader by replacing builtins.exec', async () => {
