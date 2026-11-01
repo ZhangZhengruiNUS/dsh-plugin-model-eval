@@ -1,4 +1,8 @@
 import {test,expect} from '@playwright/test';
+
+test('popover fallback stays interactive and restores owned DOM on close and unmount',async({page})=>{
+  await page.addInitScript(()=>Object.defineProperty(HTMLElement.prototype,'showPopover',{value:undefined,configurable:true}));const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.goto('/?overlap=1');const first=page.getByRole('group',{name:'能力与响应散点图'}).getByRole('button').first();await first.focus();await page.keyboard.press('Enter');const detail=page.getByRole('region',{name:'配置观测详情'});await expect(detail).toBeVisible();expect(await detail.evaluate(e=>e.parentElement?.classList.contains("model-eval"))).toBe(true);await detail.getByRole('button',{name:/查看配置/}).last().click();await expect(detail).toBeVisible();await page.keyboard.press('Escape');await expect(detail).not.toBeVisible();await first.focus();await page.keyboard.press('Enter');await page.getByRole('button',{name:'设置',exact:true}).click();await expect(detail).not.toBeVisible();expect(errors).toEqual([]);
+});
 test('scatter handles overlap missing metrics and preserves conditions',async({page})=>{
   await page.goto('/');const chart=page.getByRole('group',{name:'能力与响应散点图'});await expect(chart).toBeVisible();
   await expect(chart.getByRole('button')).toHaveCount(3); // Four score rows, one has no response observation.
