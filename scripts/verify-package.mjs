@@ -1,4 +1,5 @@
 import {readFileSync} from 'node:fs';import {gunzipSync} from 'node:zlib';import {createHash} from 'node:crypto';import {fileURLToPath} from 'node:url';import {resolve} from 'node:path';
+import {assertFiveAdmission} from './support/five-lineage.mjs';
 const hash=bytes=>createHash('sha256').update(bytes).digest('hex');
 function text(buffer,start,size){return buffer.subarray(start,start+size).toString('utf8').replace(/\0.*$/s,'');}
 export function unpackTar(bytes){
@@ -28,9 +29,13 @@ export function verifyPackage(path){
 export function verifyTierResources(get,host,manifest){
   const raw=get('resources/protocol-registry.json'),catalog=JSON.parse(raw),catalogSha256=hash(raw);
   if(!host.includes(catalogSha256))throw Error('CATALOG_PIN');
-  if(catalog.schemaVersion!==1||catalog.entries.length!==3||catalog.legacyRefs.generalId!==manifest.generalId||catalog.legacyRefs.writingId!==manifest.writingId||catalog.legacyRefs.resourceVersion!==manifest.resourceVersion)throw Error('TIER_CATALOG_CONTRACT');
-  for(const [tier,count] of [['legacy',905],['light',120],['deep',400]]){const row=catalog.entries.find(e=>e.general.tier===tier);if(!row?.allowNewRuns||row.questionCount!==count||row.general.domains.length!==4||row.general.domains.some(d=>d.weight!==.25)||row.general.domains.reduce((n,d)=>n+d.itemIds.length,0)!==count)throw Error('TIER_ADMISSION_CONTRACT');}
-  for(const bundle of catalog.bundles){if(!bundle.runtimePassed)throw Error('TIER_RUNTIME_PENDING');for(const file of bundle.files){const bytes=get('resources/'+file.path);if(bytes.length!==file.size||hash(bytes)!==file.sha256)throw Error('TIER_RESOURCE_PACKAGE_MISMATCH: '+file.path);}}
+  if(catalog.schemaVersion!==1||catalog.entries.length!==5||catalog.legacyRefs.generalId!==manifest.generalId||catalog.legacyRefs.writingId!==manifest.writingId||catalog.legacyRefs.resourceVersion!==manifest.resourceVersion)throw Error('TIER_CATALOG_CONTRACT');
+  for(const [tier,count] of [['legacy',905],['light',120],['deep',400]]){const row=catalog.entries.find(e=>e.refs.resourceVersion!=='task-five-v1'&&e.general.tier===tier);if(!row?.allowNewRuns||row.questionCount!==count||row.general.domains.length!==4||row.general.domains.some(d=>d.weight!==.25)||row.general.domains.reduce((n,d)=>n+d.itemIds.length,0)!==count)throw Error('TIER_ADMISSION_CONTRACT');}
+  const five=catalog.entries.filter(e=>e.refs.resourceVersion==='task-five-v1'),bundleFive=catalog.bundles.find(b=>b.id==='task-five-v1');
+  if(five.length!==2||!bundleFive||five.some(e=>e.allowNewRuns!==bundleFive.runtimePassed))throw Error('TIER_ADMISSION_CONTRACT');
+  if(bundleFive.runtimePassed)assertFiveAdmission(catalog,JSON.parse(get('resources/task-five-admission.json')));
+  for(const [tier,count] of [['light',100],['deep',350]]){const row=five.find(e=>e.general.tier===tier);if(!row||row.refs.generalId!=='general-task-five-v1-'+tier||row.general.schema!=='task-five-v1'||row.questionCount!==count||row.general.domains.length!==5||new Set(row.general.domains.map(d=>d.id)).size!==5||row.general.domains.some(d=>!['knowledge','reading','instructions','coding','tools'].includes(d.id)||d.weight!==.2)||row.general.domains.reduce((n,d)=>n+d.itemIds.length,0)!==count)throw Error('FIVE_CAPABILITY_CONTRACT');}
+  for(const bundle of catalog.bundles){if(!bundle.runtimePassed&&bundle.id!=='task-five-v1')throw Error('TIER_RUNTIME_PENDING');for(const file of bundle.files){const bytes=get('resources/'+file.path);if(bytes.length!==file.size||hash(bytes)!==file.sha256)throw Error('TIER_RESOURCE_PACKAGE_MISMATCH: '+file.path);}}
   return {catalogSha256,legacyManifestUnchanged:true,protocols:catalog.entries.map(e=>({refs:e.refs,tier:e.general.tier,count:e.questionCount})),bundles:catalog.bundles.map(b=>({id:b.id,files:b.files.length,questionSha256:hash(get('resources/'+b.questionPath))}))};
 }
 if(process.argv[1]&&resolve(process.argv[1])===fileURLToPath(import.meta.url)){try{process.stdout.write(JSON.stringify(verifyPackage(process.argv[2]).report,null,2)+'\n');}catch(error){process.stderr.write(error.message+'\n');process.exitCode=1;}}

@@ -1,0 +1,100 @@
+{
+  "schemaVersion": 1,
+  "status": "passed",
+  "name": "@aico/dsh-plugin-model-eval",
+  "version": "0.1.0-alpha.15",
+  "sha256": "178fe3586c89ead13a2bf9d96a4680d23af05391c52d76c5162c7f892351f54c",
+  "compressedBytes": 56835481,
+  "unpackedBytes": 186913398,
+  "resourceBytes": 157878838,
+  "files": 1984,
+  "resourceManifestSha256": "8b510ec7a2f04543c2fad279d44ee562186de99e92a74f4a1d8fba937f1be16b",
+  "runtimeDependencies": 0,
+  "tiers": {
+    "catalogSha256": "c108fe349edf68ae382252c8b07b16e89bdbe44f837e951eb585d5179d14ffca",
+    "legacyManifestUnchanged": true,
+    "protocols": [
+      {
+        "refs": {
+          "generalId": "general-chat-root-stable-rule-tokenizer-v3",
+          "writingId": "work-writing-12-v1",
+          "resourceVersion": "suite-2026-10-31-v3"
+        },
+        "tier": "legacy",
+        "count": 905
+      },
+      {
+        "refs": {
+          "generalId": "general-two-tier-v1-light",
+          "writingId": "work-writing-12-v1",
+          "resourceVersion": "two-tier-v1"
+        },
+        "tier": "light",
+        "count": 120
+      },
+      {
+        "refs": {
+          "generalId": "general-two-tier-v1-deep",
+          "writingId": "work-writing-12-v1",
+          "resourceVersion": "two-tier-v1"
+        },
+        "tier": "deep",
+        "count": 400
+      },
+      {
+        "refs": {
+          "generalId": "general-task-five-v1-light",
+          "writingId": "work-writing-12-v1",
+          "resourceVersion": "task-five-v1"
+        },
+        "tier": "light",
+        "count": 100
+      },
+      {
+        "refs": {
+          "generalId": "general-task-five-v1-deep",
+          "writingId": "work-writing-12-v1",
+          "resourceVersion": "task-five-v1"
+        },
+        "tier": "deep",
+        "count": 350
+      }
+    ],
+    "bundles": [
+      {
+        "id": "two-tier-v1",
+        "files": 1902,
+        "questionSha256": "fc90520efa418c901a28eed710c24f60b7139c61e7cd7978bd146b3326c3ddfd"
+      },
+      {
+        "id": "task-five-v1",
+        "files": 1928,
+        "questionSha256": "1b01e331fb91a129d49977fde496627545895ff0f6f3f0e8ce76a84d810d6b2b"
+      }
+    ]
+  },
+  "offlineFiveFixture": {
+    "status": "passed",
+    "scope": "actual npm package with synthetic host, not real DSH/model",
+    "preparedProtocols": 5,
+    "light": 100,
+    "reused": 100,
+    "newItems": 250,
+    "newAttempts": 306,
+    "deep": 350,
+    "toolTasks": 30,
+    "actions": 1,
+    "toolResults": 1,
+    "interruptedAttemptsRetained": 0,
+    "sourceCleanupChildResume": "passed",
+    "routesAfterDispose": 0,
+    "listenersAfterDispose": 0,
+    "networkAttempts": 0,
+    "realModelCalls": 0,
+    "syntheticCalls": 438
+  },
+  "hostBundleSha256": "03f7c6161ac332a610730ebce905cfda2b652384a73cd2fa16c31ac029848cee",
+  "clientBundleSha256": "c75e45dc602ddf161f4aa931c3df23c8556de8ddb449ae6a3a09b55ab85fbcc1",
+  "realModel": "not-performed",
+  "desktop": "separate verification"
+}

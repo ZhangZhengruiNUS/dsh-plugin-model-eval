@@ -1,0 +1,24 @@
+{
+  "status": "passed",
+  "fullSuite": {
+    "tests": 98,
+    "passed": 98,
+    "logSha256": "eda4f07fcae9cb54c5246d26472850875c41adc613e8b3283ae8d820d7afce91"
+  },
+  "finalFiveCapabilityChecks": {
+    "tests": 6,
+    "passed": 6,
+    "logSha256": "9e555710e49e06a774a47bcd03f16b3b2e293331e1dfcea3680eff84d78d4667"
+  },
+  "viewports": [
+    1440,
+    390
+  ],
+  "themes": [
+    "light",
+    "dark"
+  ],
+  "independentTrial": "Terra read-only synthetic UI trial; two findings fixed: old tier labels and deployment in delta summary",
+  "desktopPreflight": "old batch pending, no visible active operation; fresh disk preflight/backup required before update",
+  "realModelCalls": 0
+}

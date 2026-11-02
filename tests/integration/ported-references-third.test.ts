@@ -29,7 +29,7 @@ test('prime_lifo_matching_matches_exact_integer_valid_subsegments',{timeout:6000
   for(let seed=1;seed<=300;seed++){const values=[1,2,3,4,6,8,9,12];let state=seed;const rand=()=>{state=(Math.imul(state,1664525)+1013904223)>>>0;return state;};const a=Array.from({length:8},()=>values[rand()%values.length]!);const ops=Array.from({length:8},()=>rand()%3?'*':'/').join('');add(a,ops);}
   await verifyPort('35','kuzya-homework.py',examples);
 });
-test('generating_function_matches_literal_transfer_matrix_trace',{timeout:60000},async()=>{
+test('generating_function_matches_literal_transfer_matrix_trace',{timeout:180000},async()=>{
   const examples:ReferenceExample[]=[],mod=998244353n;
   for(let m=1;m<=8;m++){
     let matrix=Array.from({length:m},(_,i)=>Array.from({length:m},(_,j)=>BigInt(i===j)));

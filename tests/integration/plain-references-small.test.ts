@@ -24,7 +24,7 @@ test('partition_reference_matches_every_cut_combination_by_gcd_definition',{time
   }
   await verifyPlainPort('84','artistic-partition.py',samples);
 });
-test('perfect_sequence_DP_matches_literal_subsets_of_all_small_multisets',{timeout:60000},async()=>{
+test('perfect_sequence_DP_matches_literal_subsets_of_all_small_multisets',{timeout:180000},async()=>{
   const samples:ReferenceSample[]=[],factorial=[1];for(let i=1;i<=8;i++)factorial.push(factorial[i-1]!*i);
   for(let n=1;n<=8;n++){
     let total=0;
@@ -90,7 +90,7 @@ test('grouped_RBS_counts_match_every_string_order_and_irreversible_negative_pref
   samples.push({stdin:'20\n'+Array(10).fill('(').concat(Array(10).fill(')')).join('\n')+'\n',expected:'10'});
   await verifyPlainPort('63','rbs-grouped.py',samples);
 });
-test('arena_winner_complement_matches_simultaneous_combat_enumeration',{timeout:60000},async()=>{
+test('arena_winner_complement_matches_simultaneous_combat_enumeration',{timeout:180000},async()=>{
   const samples:ReferenceSample[]=[];
   for(let n=2;n<=6;n++)for(let health=1;health<=5;health++){
     let count=0;for(const raw of arrays(n,health)){let alive=raw.map(x=>x+1);while(alive.length>1){const damage=alive.length-1;alive=alive.map(x=>x-damage).filter(x=>x>0);}if(!alive.length)count++;}

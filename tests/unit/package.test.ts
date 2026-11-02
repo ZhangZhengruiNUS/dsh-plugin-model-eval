@@ -26,7 +26,7 @@ test('package_identity_and_entries', async () => {
 
 test('packaged_tier_catalog_and_runtime_bytes_are_bound_to_the_host',()=>{
   const get=(path:string)=>readFileSync(path),raw=get('resources/protocol-registry.json'),manifest=JSON.parse(get('resources/manifest.json').toString()),sha=(b:Buffer)=>createHash('sha256').update(b).digest('hex');
-  const checked=verifyTierResources(get,sha(raw),manifest);assert.equal(checked.protocols.length,3);
+  const checked=verifyTierResources(get,sha(raw),manifest);assert.equal(checked.protocols.length,5);
   assert.throws(()=>verifyTierResources(get,'wrong pin',manifest),/CATALOG_PIN/);
   const catalog=JSON.parse(raw.toString());catalog.entries.find((e:any)=>e.general.tier==='light').allowNewRuns=false;const altered=Buffer.from(JSON.stringify(catalog));
   assert.throws(()=>verifyTierResources((p:string)=>p==='resources/protocol-registry.json'?altered:get(p),sha(altered),manifest),/TIER_ADMISSION_CONTRACT/);

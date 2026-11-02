@@ -9644,7 +9644,7 @@
       "sha256": "a447ea4bfe017bd26ab99fd5d4097f84310e7b8489ba0b3b9c7eb767564cbd65"
     }
   ],
-  "runtimePassed": false,
+  "runtimePassed": true,
   "grading": {
     "choice": "last-letter-v1",
     "numeric": "exact-final-number-v1",
@@ -10136,7 +10136,7 @@
       "tools/multi_turn_base_150"
     ]
   },
-  "allowNewRuns": false,
+  "allowNewRuns": true,
   "provenance": {
     "readingRevision": "ac35867b9c9436dc81c4c7535fe640ba7cf47877",
     "bfclRevision": "6ea57973c7a6097fd7c5915698c54c17c5b1b6c8",

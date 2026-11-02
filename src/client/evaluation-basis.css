@@ -5,4 +5,9 @@
 .model-eval .me-evaluation-basis dl>div{padding:10px 0;gap:20px;font-size:12px;border-bottom:1px solid var(--me-border)}
 .me-evaluation-basis dl>div:last-child{border-bottom:0}
 .me-evaluation-basis dd{color:var(--me-text)}
+.me-evaluation-basis details{margin-top:16px;font-size:12px;line-height:1.7}
+.me-source-links{padding-left:18px;margin:12px 0;overflow-wrap:anywhere}
+.me-source-links li+li{margin-top:10px}
+.me-source-links a{color:var(--me-accent);text-decoration:underline;text-underline-offset:3px}
+.me-source-links a:focus-visible{outline:2px solid var(--me-accent);outline-offset:3px;border-radius:2px}
 @media(max-width:600px){.model-eval .me-evaluation-basis dl>div{display:block}.me-evaluation-basis dd{margin-top:4px;text-align:left}}

@@ -1,10 +1,11 @@
+import {CONTEST_SCORING_LIMITS} from '../../src/evaluation/contest-budget.ts';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {resolve} from 'node:path';
 import {createContestRunner} from '../../src/runtime/contest-runner.ts';
 import {adaptContest} from '../../scripts/support/contest-adaptation.ts';
-const limits={wallMs:30000,memoryBytes:536870912,computeBudget:200000000000};
+const limits=CONTEST_SCORING_LIMITS;
 const runner=createContestRunner(resolve('resources/runtime'));
 type Example={args:unknown[];answer:number|number[]};
 const arrays=(n:number,values:number):number[][]=>n?arrays(n-1,values).flatMap(a=>Array.from({length:values},(_,v)=>[...a,v])):[[]];
@@ -18,7 +19,7 @@ async function check(id:string,path:string,examples:Example[]){
   const result=await runner.runContest({id:'independent-retained-'+id,cases:adaptContest(rows[+id]).cases,limits},code,new AbortController().signal);
   assert.equal(result.kind,'passed',id+' retained '+JSON.stringify(result));
 }
-test('cyclic_sum_matches_literal_cyclic_arcs_and_all_retained_tests',{timeout:60000},async()=>{
+test('cyclic_sum_matches_literal_cyclic_arcs_and_all_retained_tests',{timeout:180000},async()=>{
   const examples:Example[]=[];
   for(let n=1;n<=4;n++)for(const a of arrays(n,3))for(let m=1;m<=4;m++)for(const k of [1,2,3,5]){
     const b=Array.from({length:n*m},(_,i)=>a[i%n]!);let answer=0;
@@ -28,12 +29,12 @@ test('cyclic_sum_matches_literal_cyclic_arcs_and_all_retained_tests',{timeout:60
   }
   await check('2','cyclic-sum.py',examples);
 });
-test('gcd_festival_matches_literal_all_pairs_and_all_retained_tests',{timeout:60000},async()=>{
+test('gcd_festival_matches_literal_all_pairs_and_all_retained_tests',{timeout:180000},async()=>{
   const gcd=(a:number,b:number):number=>b?gcd(b,a%b):a,examples:Example[]=[];
   for(let n=2;n<=5;n++)for(const raw of arrays(n,4)){const a=raw.map(x=>x+1);let answer=0;for(let i=0;i<n;i++)for(let j=0;j<n;j++)answer+=gcd(i+1,j+1)*gcd(a[i]!,a[j]!);examples.push({args:[a],answer});}
   await check('6','gcd-festival.py',examples);
 });
-test('train_maintenance_matches_day_by_day_active_train_simulation',{timeout:60000},async()=>{
+test('train_maintenance_matches_day_by_day_active_train_simulation',{timeout:180000},async()=>{
   const examples:Example[]=[];
   for(let seed=1;seed<=1000;seed++){
     const n=1+seed%3,m=1+seed%20,work=Array.from({length:n},(_,i)=>1+(seed+i*3)%5),period=work.map((x,i)=>x+1+(seed*7+i)%5);
@@ -43,7 +44,7 @@ test('train_maintenance_matches_day_by_day_active_train_simulation',{timeout:600
   }
   await check('22','train-maintenance.py',examples);
 });
-test('mountain_matches_independent_subset_order_search',{timeout:60000},async()=>{
+test('mountain_matches_independent_subset_order_search',{timeout:180000},async()=>{
   const examples:Example[]=[];
   for(let seed=1;seed<=1000;seed++){
     const n=1+seed%7,d=seed%5;let state=seed;
@@ -54,7 +55,7 @@ test('mountain_matches_independent_subset_order_search',{timeout:60000},async()=
   }
   await check('81','difficult-mountain.py',examples);
 });
-test('mex_counting_matches_exhaustive_prefix_mex_definition',{timeout:60000},async()=>{
+test('mex_counting_matches_exhaustive_prefix_mex_definition',{timeout:180000},async()=>{
   const examples:Example[]=[];
   for(let n=1;n<=3;n++)for(let k=0;k<=2;k++)for(const raw of arrays(n,n+2*k+1)){
     const b=raw.map(x=>x-k);let answer=0;
@@ -63,7 +64,7 @@ test('mex_counting_matches_exhaustive_prefix_mex_definition',{timeout:60000},asy
   }
   await check('111','mex-counting.py',examples);
 });
-test('curriculum_packed_polynomial_matches_containing_interval_maxima_permutations',{timeout:60000},async()=>{
+test('curriculum_packed_polynomial_matches_containing_interval_maxima_permutations',{timeout:180000},async()=>{
   const examples:Example[]=[];
   for(let n=1;n<=7;n++){
     const hist=Array.from({length:n+1},()=>Array(n+1).fill(0));

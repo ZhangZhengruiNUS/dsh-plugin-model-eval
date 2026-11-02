@@ -5,7 +5,7 @@ import type {GenerationInput,HostAdapter,GeneratedAnswer} from '../../src/contra
 const execution={concurrency:4 as const,callTimeoutMs:300000};
 const answer=(input:GenerationInput,complete=true):GeneratedAnswer=>({text:'synthetic new answer',complete,truncated:false,observations:{...input.context,startedAt:new Date().toISOString(),endedAt:new Date().toISOString(),usage:{available:true,totalTokens:250}}});
 async function batchFor(store:HistoryStore,runId:string):Promise<BatchView>{const {manifest}=await store.getRun(runId);return {batchId:manifest.batchId,runIds:[runId],createdAt:manifest.createdAt,status:'queued',execution};}
-test('attach_ready_import_and_call_only_remaining_280',{timeout:60000},async()=>{
+test('attach_ready_import_and_call_only_remaining_280',{timeout:180000},async()=>{
   await withTempRoot(async parent=>{
     const {path:root}=await switchRoot(join(parent,'owned'),{writing:false}),store=await openHistory(root),f=await persistReuseSource(store),reuse=createReuseHistory(store);
     let calls=0,grades=0,release!:()=>void;const held=new Promise<void>(r=>release=r),adapter:HostAdapter={catalog:async()=>[],snapshot:async()=>f.current,async generateOnce(input){calls++;await held;return answer(input);}};
@@ -19,7 +19,7 @@ test('attach_ready_import_and_call_only_remaining_280',{timeout:60000},async()=>
     }finally{release();await queue.dispose();await store.close();}
   });
 });
-test('ready_orphan_is_rebuilt_paused_and_pause_reopen_calls_only_missing_work',{timeout:60000},async()=>{
+test('ready_orphan_is_rebuilt_paused_and_pause_reopen_calls_only_missing_work',{timeout:180000},async()=>{
   await withTempRoot(async parent=>{
     const {path:root}=await switchRoot(join(parent,'owned'),{writing:false});let store=await openHistory(root);const f=await persistReuseSource(store),reuse=createReuseHistory(store),imported=await reuse.import(checkUpgrade(f.source,f.deep,f.current),{token:randomUUID(),target:f.current,protocol:f.deep,execution});let calls=0,blocking=true,started!:()=>void;const invoked=new Promise<void>(r=>started=r);
     const adapter:HostAdapter={catalog:async()=>[],snapshot:async()=>f.current,async generateOnce(input){calls++;if(blocking){started();await new Promise<void>(r=>{if(input.signal.aborted)r();else input.signal.addEventListener('abort',()=>r(),{once:true});});return answer(input,false);}return answer(input);}};

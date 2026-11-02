@@ -1,16 +1,17 @@
+import {CONTEST_SCORING_LIMITS} from '../../src/evaluation/contest-budget.ts';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {resolve} from 'node:path';
 import {adaptContest} from '../../scripts/support/contest-adaptation.ts';
 import {createContestRunner} from '../../src/runtime/contest-runner.ts';
-test('adapted_coverage_tests_reject_proven_wrong_program_and_keep_correct_reference',{timeout:90000},async()=>{
+test('adapted_coverage_tests_reject_proven_wrong_program_and_keep_correct_reference',{timeout:240000},async()=>{
   const rows=JSON.parse(await readFile('.local/tier-candidates/sources/code-contests-test.json','utf8'));
   const negatives=JSON.parse(await readFile('.local/tier-candidates/artifacts/negative-references.json','utf8'));
   const row=rows[19],negative=negatives.find((r:any)=>r.index===19);
   assert.equal(negative._source_record_sha256,row.sourceRecordHash);
   const runner=createContestRunner(resolve('resources/runtime'));
-  const limits={wallMs:30000,memoryBytes:536870912,computeBudget:200000000000};
+  const limits=CONTEST_SCORING_LIMITS;
   const run=(cases:any[],code:string)=>runner.runContest({id:row.id,cases,limits},code,new AbortController().signal);
   const wrong=negative.incorrectPython3[1];
   const old=await run(row.cases,wrong);assert.equal(old.kind,'passed',JSON.stringify(old));

@@ -1,0 +1,25 @@
+{
+  "status": "passed",
+  "scope": "required regression coverage after targeted fixture correction; not a single all-green full run",
+  "fullRun": {
+    "tests": 258,
+    "passed": 257,
+    "failed": 1,
+    "cancelled": 0,
+    "skipped": 0,
+    "durationMs": 1696689.7891,
+    "logSha256": "f85853b565652da9c0137d314c2e026d87ba18c4a02ea6e794b01867d576848b"
+  },
+  "correction": {
+    "file": "tests/integration/activity-service.test.ts",
+    "reason": "Only admitted protocols must prepare; two new protocols were intentionally disabled",
+    "tests": 3,
+    "passed": 3,
+    "failed": 0,
+    "logSha256": "ac165e304bb298c006e7193becb4bd05c527a17105e923e6e20c97297b243767"
+  },
+  "unresolvedFailures": 0,
+  "formalScoringLimitsChanged": false,
+  "toolDispatcherReferenceTasks": 30,
+  "realModelCalls": 0
+}

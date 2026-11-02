@@ -1,2 +1,2 @@
-/** Frozen catalog; new five-capability protocols stay disabled until runtime acceptance. */
-export const RESOURCE_CATALOG_SHA256 = 'c9e817312053b4e539c9918484b73868afef991c0f1c8682ae432acf74899500';
+/** Frozen catalog; five-capability runtime acceptance is separately recorded. */
+export const RESOURCE_CATALOG_SHA256 = 'c108fe349edf68ae382252c8b07b16e89bdbe44f837e951eb585d5179d14ffca';

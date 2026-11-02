@@ -19193,7 +19193,7 @@
           "sha256": "a447ea4bfe017bd26ab99fd5d4097f84310e7b8489ba0b3b9c7eb767564cbd65"
         }
       ],
-      "runtimePassed": false,
+      "runtimePassed": true,
       "grading": {
         "choice": "last-letter-v1",
         "numeric": "exact-final-number-v1",
@@ -20926,7 +20926,7 @@
         "definitionHash": "684896275d1ebe2f3b3b722217e934e34d11b891c1c64b6ff48565765423740a"
       },
       "questionCount": 100,
-      "allowNewRuns": false,
+      "allowNewRuns": true,
       "bundleId": "task-five-v1"
     },
     {
@@ -21325,7 +21325,7 @@
         "definitionHash": "86e128abb419ab3bfb0209ccba0f50d465bca10512731d2a354f5dbe1d2e925d"
       },
       "questionCount": 350,
-      "allowNewRuns": false,
+      "allowNewRuns": true,
       "bundleId": "task-five-v1"
     }
   ]

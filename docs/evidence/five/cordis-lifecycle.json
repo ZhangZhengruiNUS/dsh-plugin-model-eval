@@ -1,0 +1,16 @@
+{
+  "status": "passed",
+  "scope": "installed Cordis Context and LlmRuntime with memory settings/connection, isolated profile and synthetic provider",
+  "dispatches": 2,
+  "prepares": 4,
+  "routesAfterDispose": 0,
+  "adaptersAfterDispose": 0,
+  "networkAttempts": 0,
+  "realModelCalls": 0,
+  "limits": "Not profile Loader, owner-auth transport, real model or OS firewall validation",
+  "evidenceBoundary": [
+    "Compiled plugin mounted/routes/catalog/snapshot/disposed by real Cordis",
+    "Source adapter native tool message round trip on real LlmRuntime; not mounted createBatch full chain",
+    "No profile Loader or owner-auth transport assertion"
+  ]
+}

@@ -18,12 +18,12 @@ test('new definition rejects changed hash, duplicate IDs, incorrect domains, cou
   const d=structuredClone(original);mutation(d);if(d.definitionHash!=='0'.repeat(64)){const {definitionHash,...value}=d;d.definitionHash=identityHash(value);}assert.throws(()=>validateGeneralDefinition(d),/INVALID_GENERAL_DEFINITION/);
  }
 });
-test('registry resolves old and new independently and refuses unverified new admissions',async()=>{
+test('registry resolves old and new independently and respects explicit runtime admission',async()=>{
  const registry=await createProtocolRegistry(process.cwd());
  for(const tier of ['light','deep'] as const){
-  const d=registry.list().find(p=>p.refs.generalId==='general-task-five-v1-'+tier);assert.ok(d);assert.equal(d.allowNewRuns,false);
+  const d=registry.list().find(p=>p.refs.generalId==='general-task-five-v1-'+tier);assert.ok(d);const admitted=await readFile('resources/task-five-admission.json','utf8').then(()=>true).catch((e:any)=>{if(e.code==='ENOENT')return false;throw e;});assert.equal(d.allowNewRuns,admitted);
   const p=await registry.resolve(d.refs);assert.equal(p.items.filter(q=>q.track==='general').length,tier==='light'?100:350);assert.deepEqual(p.descriptor.general.domains.map(d=>d.weight),[.2,.2,.2,.2,.2]);
-  await assert.rejects(()=>registry.forNewRun(d.refs.generalId),/PROTOCOL_NOT_VERIFIED/);
+  if(d.allowNewRuns)assert.equal((await registry.forNewRun(d.refs.generalId)).generalId,d.refs.generalId);else await assert.rejects(()=>registry.forNewRun(d.refs.generalId),/PROTOCOL_NOT_VERIFIED/);
  }
  for(const d of registry.list().filter(p=>p.refs.resourceVersion!=='task-five-v1')){validateGeneralDefinition(d.general);assert.equal(d.general.domains.length,4);assert.ok(d.general.domains.every(d=>d.weight===.25));}
  await assert.rejects(()=>registry.forNewRun('unknown'),/UNKNOWN_PROTOCOL/);

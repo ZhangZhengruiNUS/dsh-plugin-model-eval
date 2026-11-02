@@ -1,0 +1,13 @@
+{
+  "status": "passed",
+  "scope": "installed Cordis Context and LlmRuntime with memory settings/connection, isolated profile and synthetic provider",
+  "dispatches": 2,
+  "prepares": 4,
+  "routesAfterDispose": 0,
+  "adaptersAfterDispose": 0,
+  "networkAttempts": 0,
+  "realModelCalls": 0,
+  "limits": "Not profile Loader, owner-auth transport, real model or OS firewall validation",
+  "candidateVersion": "0.1.0-alpha.15",
+  "hostBundleSha256": "03f7c6161ac332a610730ebce905cfda2b652384a73cd2fa16c31ac029848cee"
+}

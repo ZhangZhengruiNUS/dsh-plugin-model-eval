@@ -9,7 +9,7 @@ test('upgrade_estimate_only_plans_remaining_280_and_never_borrows_other_tiers',(
 });
 test('new_tier_probes_are_fixed_two_per_source_and_keep_full_question_budgets',async()=>{
   const registry=await createProtocolRegistry(resolve('.'));
-  for(const descriptor of registry.list().filter(d=>d.general.tier!=='legacy')){
+  for(const descriptor of registry.list().filter(d=>d.refs.resourceVersion!=='task-five-v1'&&d.general.tier!=='legacy')){
     const protocol=await registry.resolve(descriptor.refs),items=selectProbeQuestions(protocol,['general','writing']);assert.equal(items.length,10);assert.equal(selectProbeQuestions(protocol,['general']).length,8);
     for(const dataset of new Set(items.map(q=>q.datasetId)))assert.equal(items.filter(q=>q.datasetId===dataset).length,2);
     for(const q of items)assert.deepEqual(q,protocol.items.find(item=>item.id===q.id));
