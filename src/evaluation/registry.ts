@@ -5,6 +5,7 @@ import {readProtocolCatalog,readCatalogFile,verifyBundle} from '../resources/cat
 import {loadProtocolSet} from './protocols.ts';
 import {protocolKey,questionCompatibility} from './protocol-identity.ts';
 import {RUNTIME_PINS} from '../runtime/pins.ts';
+import {validateGeneralDefinition} from './definitions.ts';
 export async function createProtocolRegistry(packageRoot:string):Promise<ProtocolRegistry> {
   packageRoot=resolve(packageRoot);
   const catalog=await readProtocolCatalog(packageRoot);
@@ -29,6 +30,7 @@ export async function createProtocolRegistry(packageRoot:string):Promise<Protoco
       items=[...all.filter(q=>required.has(q.id)),...legacy.items.filter(q=>q.track==='writing')];grading=bundle.grading;runtime=bundle.runtime;
     }
     if(items.filter(q=>q.track==='general').length!==entry.questionCount||items.filter(q=>q.track==='writing').length!==12)throw Error('PROTOCOL_QUESTION_MISMATCH');
+    validateGeneralDefinition(entry.general,items);
     return {...refs,items,descriptor:descriptor(entry),compatibility:Object.fromEntries(items.map(q=>[q.id,questionCompatibility(q,grading,runtime)]))};
   },async forNewRun(generalId){
     const entry=catalog.entries.find(e=>e.refs.generalId===generalId);if(!entry)throw Error('UNKNOWN_PROTOCOL');

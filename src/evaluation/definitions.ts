@@ -2,7 +2,7 @@ import type {ProtocolRefs,Track} from '../contracts.ts';
 import type {GeneralDefinition,Ability} from './tier-contracts.ts';
 import {identityHash,protocolKey} from './protocol-identity.ts';
 export const LEGACY_PROTOCOL_REFS:ProtocolRefs=Object.freeze({generalId:'general-chat-root-stable-rule-tokenizer-v3',writingId:'work-writing-12-v1',resourceVersion:'suite-2026-10-31-v3'});
-export const ABILITY_DATASETS:Record<Ability,string>=Object.freeze({knowledge:'tiny-mmlu',math:'tiny-gsm8k',instructions:'ifeval',coding:'humaneval-plus'});
+export const ABILITY_DATASETS:Partial<Record<Ability,string>>=Object.freeze({knowledge:'tiny-mmlu',math:'tiny-gsm8k',instructions:'ifeval',coding:'humaneval-plus'});
 const abilities=Object.keys(ABILITY_DATASETS) as Ability[];
 type Item={id:string;track:Track;datasetId:string};
 export function legacyGeneralDefinition(items:readonly Item[]):GeneralDefinition{
@@ -11,11 +11,20 @@ export function legacyGeneralDefinition(items:readonly Item[]):GeneralDefinition
 }
 export function validateGeneralDefinition(definition:GeneralDefinition,required?:readonly Item[]):void{
   const invalid=()=>{throw Error('INVALID_GENERAL_DEFINITION');};
-  if(!definition||!['legacy','light','deep'].includes(definition.tier)||!Array.isArray(definition.domains)||definition.domains.length!==4)return invalid();
+  if(!definition||!['legacy','light','deep'].includes(definition.tier)||!Array.isArray(definition.domains))return invalid();
+  const five=definition.schema==='task-five-v1',expected=five?['knowledge','reading','instructions','coding','tools']:abilities;
+  if(definition.schema!==undefined&&!five||five&&definition.tier==='legacy'||definition.domains.length!==expected.length)return invalid();
   const {definitionHash,...value}=definition;
-  if(identityHash(value)!==definitionHash||new Set(definition.domains.map(d=>d.id)).size!==4||definition.domains.some(d=>!abilities.includes(d.id)||d.weight!==.25||!Array.isArray(d.itemIds)||d.itemIds.some((id:unknown)=>typeof id!=='string'||!id)))return invalid();
+  if(identityHash(value)!==definitionHash||new Set(definition.domains.map(d=>d.id)).size!==expected.length||definition.domains.some(d=>!expected.includes(d.id)||d.weight!==(five?.2:.25)||!Array.isArray(d.itemIds)||d.itemIds.some((id:unknown)=>typeof id!=='string'||!id)))return invalid();
   const ids=definition.domains.flatMap(d=>d.itemIds);
-  if(new Set(ids).size!==ids.length||definition.tier!=='legacy'&&definition.domains.some(d=>d.itemIds.length!==(definition.tier==='light'?30:100)))return invalid();
+  const counts:Record<string,number>=definition.tier==='light'?{knowledge:30,reading:10,instructions:30,coding:20,tools:10}:{knowledge:100,reading:50,instructions:100,coding:70,tools:30};
+  if(new Set(ids).size!==ids.length||definition.tier!=='legacy'&&definition.domains.some(d=>d.itemIds.length!==(five?counts[d.id]:definition.tier==='light'?30:100)))return invalid();
+  if(five){
+    for(const d of definition.domains)if(d.itemIds.some((id:string)=>d.id==='knowledge'?!id.startsWith('knowledge/mmlu-pro/')&&!id.startsWith('math/olympiad-text-math/'):!id.startsWith(d.id+'/')))return invalid();
+    const knowledge=definition.domains.find(d=>d.id==='knowledge')!;
+    if(knowledge.itemIds.filter((id:string)=>id.startsWith('knowledge/')).length!==(definition.tier==='light'?24:80))return invalid();
+    if(required){const datasets:Record<string,string[]>={knowledge:['mmlu-pro-selected','olympiad-text-selected'],reading:['longbench-v2-selected'],instructions:['ifeval'],coding:['code-contests-selected'],tools:['bfcl-v4-multi-turn-selected']};for(const d of definition.domains)if(d.itemIds.some((id:string)=>!datasets[d.id]!.includes(required.find(q=>q.id===id)?.datasetId??'')))return invalid();}
+  }
   if(required){const expected=required.filter(q=>q.track==='general').map(q=>q.id);if(new Set(expected).size!==expected.length||expected.length!==ids.length||expected.some(id=>!ids.includes(id)))return invalid();}
 }
 /** Old manifests are recognized by their complete frozen refs. Unknown versions stay readable without inventing a score. */

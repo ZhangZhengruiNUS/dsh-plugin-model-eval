@@ -2,6 +2,7 @@
 import {readFile,writeFile,mkdir,copyFile} from 'node:fs/promises';
 import {join,resolve,basename} from 'node:path';
 import {createHash} from 'node:crypto';
+import {assertFrozenCatalog,legacyExecutionBytes} from './support/five-lineage.mjs';
 const sha=b=>createHash('sha256').update(b).digest('hex');
 const args=process.argv.slice(2),research=args[args.indexOf('--research')+1];
 if(!args.includes('--research')||!research)throw Error('REVIEWED_RESEARCH_PATH_REQUIRED');
@@ -13,6 +14,10 @@ const rm=await pinned(join(reading,'formal-reading-manifest.json'),manifest.read
 const oldBytes=await readFile('resources/suites/two-tier-v1/adapted-questions.json');
 if(sha(oldBytes)!==manifest.questionFileSha256)throw Error('EXISTING_QUESTIONS_CHANGED');
 const old=JSON.parse(oldBytes),catalog=JSON.parse(await readFile('resources/protocol-registry.json','utf8'));
+assertFrozenCatalog(catalog,JSON.parse(await readFile('docs/evidence/tiers/adapted-runtime-gate-v4.json','utf8')).catalogSha256);
+const execution=await pinned('docs/evidence/tiers/runtime-execution-identities-v4.json','be1d62215b9d175e92e7cb41a62e66087dfb08e8341d98d878232b30ff3f6719');
+if(execution.files.length!==22)throw Error('EXECUTION_LINEAGE_INCOMPLETE');
+for(const file of execution.files)if(sha(legacyExecutionBytes(file.path,await readFile(file.path)))!==file.sha256)throw Error('EXECUTION_LINEAGE_CHANGED: '+file.path);
 const oldBundle=catalog.bundles.find(b=>b.id==='two-tier-v1');
 if(oldBundle.files.length!==manifest.resourceFilesVerified)throw Error('OLD_RESOURCE_COUNT_CHANGED');
 for(const f of oldBundle.files){const b=await readFile(join('resources',f.path));if(b.length!==f.size||sha(b)!==f.sha256)throw Error('OLD_RESOURCE_HASH_MISMATCH: '+f.path);}
@@ -58,7 +63,7 @@ const notice='LongBench v2 selected dataset: zai-org/LongBench-v2, revision ac35
 await writeFile(join(out,'NOTICE.txt'),notice);newPaths.push(dir+'/NOTICE.txt');
 const files=[];for(const path of newPaths){const b=await readFile(join('resources',path));files.push({path,size:b.length,sha256:sha(b)});}
 const bundle={id:'task-five-v1',resourceVersion:'task-five-v1',questionPath:dir+'/questions.json',files:[...files,...oldBundle.files.filter(f=>!f.path.startsWith('suites/'))],runtimePassed:false,
- grading:{...oldBundle.grading,reading:{version:'explicit-final-choice-v1',implementationSha256:sha(await readFile('src/evaluation/reading-answer.ts'))},tools:'bfcl-state-and-response-v1'},runtime:{...oldBundle.runtime,tools:{logicalRounds:24,actions:32,mode:'sealed-simulation-v1'}},
+ grading:{...oldBundle.grading,reading:{version:'explicit-final-choice-v1',implementationSha256:sha(await readFile('src/evaluation/reading-answer.ts')),gradeSha256:sha(await readFile('src/evaluation/grade-reading.ts'))},tools:'bfcl-state-and-response-v1'},runtime:{...oldBundle.runtime,tools:{logicalRounds:24,actions:32,mode:'sealed-simulation-v1'}},
  selection:{light,deep},allowNewRuns:false,provenance:{readingRevision:'ac35867b9c9436dc81c4c7535fe640ba7cf47877',bfclRevision:sources.revision,formalManifestSha256:'b3dd923b5e160669cbce3596698c5c59dd1cacd9a1806bd74024c1899edca249'}};
 await writeFile(join(out,'bundle.json'),JSON.stringify(bundle,null,2)+'\n');
 console.log(JSON.stringify({questions:questions.length,light:light.length,deep:deep.length,files:files.length,allowNewRuns:false}));

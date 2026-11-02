@@ -1,2 +1,2 @@
-/** Verified resource catalog; only product admission flags promoted after integration. */
-export const RESOURCE_CATALOG_SHA256 = '904f99ab928c77fb31db5726c1b3b9b5e1cbf24d838d98d8c7a3bf6c84333f22';
+/** Frozen catalog; new five-capability protocols stay disabled until runtime acceptance. */
+export const RESOURCE_CATALOG_SHA256 = 'f3fbd32e38c0af0f539bc4d675fc9b7b53e5b8f109bcf66df7598478b7b4cc10';

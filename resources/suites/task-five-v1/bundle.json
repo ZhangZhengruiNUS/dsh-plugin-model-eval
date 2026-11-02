@@ -9608,7 +9608,8 @@
     "inputAdaptation": "code-contests-input-audit-v4",
     "reading": {
       "version": "explicit-final-choice-v1",
-      "implementationSha256": "2df528117cb6d8b6e7ecaaf778717c7525628683750f12b750b7f742804d888f"
+      "implementationSha256": "0c682cbda438aa0d028c7d635f4812c6c0f87df31f3752193d71abf7a0933849",
+      "gradeSha256": "83b50f540c3e04a9ef4166bb3d23d6aa97859e83f778d18ec0246e5c45707f13"
     },
     "tools": "bfcl-state-and-response-v1"
   },

@@ -5,6 +5,7 @@ import type {ProtocolRefs} from '../contracts.ts';
 import type {ProtocolBundle,ProtocolDescriptor} from '../evaluation/tier-contracts.ts';
 import {identityHash,protocolKey} from '../evaluation/protocol-identity.ts';
 import {RESOURCE_CATALOG_SHA256} from './catalog-pin.ts';
+import {validateGeneralDefinition} from '../evaluation/definitions.ts';
 export interface CatalogEntry extends ProtocolDescriptor {bundleId:string}
 export interface ResourceCatalog {schemaVersion:1;legacyRefs:ProtocolRefs;bundles:ProtocolBundle[];entries:CatalogEntry[]}
 export const bytesHash=(data:Buffer|string)=>createHash('sha256').update(data).digest('hex');
@@ -32,7 +33,8 @@ export async function readProtocolCatalog(packageRoot:string):Promise<ResourceCa
   }
   for(const entry of catalog.entries){
     const key=protocolKey(entry.refs),{definitionHash,...definition}=entry.general;
-    if(refs.has(key)||identityHash(definition)!==definitionHash||entry.general.domains.length!==4||new Set(entry.general.domains.map(d=>d.id)).size!==4||entry.general.domains.some(d=>d.weight!==.25)||entry.general.domains.reduce((n,d)=>n+d.itemIds.length,0)!==entry.questionCount)throw Error('INVALID_PROTOCOL_DEFINITION');
+    validateGeneralDefinition(entry.general);
+    if(refs.has(key)||identityHash(definition)!==definitionHash||entry.general.domains.reduce((n,d)=>n+d.itemIds.length,0)!==entry.questionCount||(entry.general.schema==='task-five-v1')!==(entry.refs.resourceVersion==='task-five-v1'))throw Error('INVALID_PROTOCOL_DEFINITION');
     refs.add(key);
     if(entry.bundleId!=='legacy'&&!bundles.has(entry.bundleId))throw Error('INVALID_PROTOCOL_CATALOG');
   }

@@ -1,9 +1,9 @@
 import type {JsonValue,PhaseMetrics,ProtocolRefs,ProtocolSet,RunMetrics,Track} from '../contracts.ts';
 import type {AttemptRecord} from '../history/store.ts';
 export type GeneralTier='legacy'|'light'|'deep';
-export type Ability='knowledge'|'math'|'instructions'|'coding';
+export type Ability='knowledge'|'math'|'instructions'|'coding'|'reading'|'tools';
 export interface QuestionCompatibility {contentHash:string;promptHash:string;gradingHash:string;runtimeHash:string;combinedHash:string}
-export interface GeneralDefinition {tier:GeneralTier;label:string;definitionHash:string;domains:readonly {id:Ability;weight:number;itemIds:readonly string[]}[];parentGeneralId?:string}
+export interface GeneralDefinition {schema?:'task-five-v1';tier:GeneralTier;label:string;definitionHash:string;domains:readonly {id:Ability;weight:number;itemIds:readonly string[]}[];parentGeneralId?:string}
 export interface ProtocolDescriptor {refs:ProtocolRefs;general:GeneralDefinition;questionCount:number;allowNewRuns:boolean}
 export interface ResolvedProtocolSet extends ProtocolSet {descriptor:ProtocolDescriptor;compatibility:Readonly<Record<string,QuestionCompatibility>>}
 export interface ProtocolRegistry {list():readonly ProtocolDescriptor[];resolve(refs:ProtocolRefs):Promise<ResolvedProtocolSet>;forNewRun(generalId:string):Promise<ResolvedProtocolSet>}

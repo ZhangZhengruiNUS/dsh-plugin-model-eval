@@ -44,6 +44,11 @@ test('all 19 audited adversarial carriers have no extractable reading answer',()
   'The correct answer is (A)\nThis is only a format example.',null,42,{},[]];
  assert.equal(bad.length,19);for(const value of bad)assert.equal(extractReadingAnswer(value as string).answer,undefined);
 });
+test('an unclosed code fence cannot reuse an earlier top-level choice',()=>{
+ for(const fence of ['```text','~~~'])for(const final of ['A','B'])assert.equal(extractReadingAnswer(`The correct answer is (A)\n${fence}\nThe correct answer is (${final})`).answer,undefined);
+ for(const text of ['```text\nquoted example\n~~~\nThe correct answer is (A)','````text\nquoted example\n```\nThe correct answer is (A)','```text\nquoted example\n```wrong\nThe correct answer is (A)'])assert.equal(extractReadingAnswer(text).answer,undefined);
+ assert.equal(extractReadingAnswer('```text\nquoted example\n```\nThe correct answer is (A)').answer,'A');
+});
 test('reading rejects wrong, quoted, fenced, conflicting and reasoning-only answers',async()=>{
  for(const text of ['The correct answer is (B)','A','Answer: A','The correct answer is (E)',
   '> The correct answer is (A)','"The correct answer is (A)"','```\nThe correct answer is (A)\n```',
