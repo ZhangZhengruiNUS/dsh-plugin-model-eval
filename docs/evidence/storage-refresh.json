@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-11-02",
+  "version": "0.1.0-alpha.16",
+  "scope": "Settings storage refresh after preparation; synthetic browser regression and actual package checks",
+  "regression": {"beforeFixFailed": 4, "afterFixPassed": 4, "scenarios": ["already-ready preparation", "partial preparation failure", "older response arrives last", "leave and return during preparation"]},
+  "ui": {"passed": 102, "failed": 0, "synthetic": true},
+  "typecheck": "passed",
+  "build": "passed",
+  "legacyExecutionLineage": {"files": 22, "status": "passed", "freshRegrading": false},
+  "package": {"files": 1984, "compressedBytes": 56835595, "sha256": "06427412a69c5878fe71d20e5d5d768e5ded6959a56eea8c7a89e676e0a65df0", "runtimeDependencies": 0, "changedSinceAlpha15": ["README.md", "lib/client.js", "package.json"], "hostAndAllResourcesByteIdentical": true},
+  "installedDesktopVersion": "0.1.0-alpha.15",
+  "candidateDesktopUiVerified": false,
+  "realModelCalls": 0,
+  "realHistoryModified": false,
+  "npmPublished": false
+}
