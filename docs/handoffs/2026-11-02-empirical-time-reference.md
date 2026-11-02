@@ -17,4 +17,4 @@
 
 ## Git与状态
 
-分支codex/model-eval-mvp，正常提交/推送；最终提交见总控交接。未npm/tag/市场发布。当前Desktop停在测速历史页，未展开配置、未勾选清理或启动调用。
+分支codex/model-eval-mvp，正常提交/推送；源码提交eb71a10；最终文档提交见Git记录。未npm/tag/市场发布。当前Desktop停在测速历史页，未展开配置、未勾选清理或启动调用。
