@@ -24,6 +24,7 @@ import {createReuseHistory,readUpgradeItems} from './history/reuse.ts';
 import {checkUpgrade} from './evaluation/reuse-eligibility.ts';
 import {reuseTargetBinding} from './model/reuse-identity.ts';
 import {readProtocolCatalog} from './resources/catalog.ts';
+import {createToolDispatcher} from './runtime/tool-dispatcher.ts';import {createToolSessionRunner,type ToolSessionInput} from './host/tool-session.ts';
 const fail=(code:string):never=>{throw Object.assign(new Error(code),{code});};
 export interface ServiceDependencies {adapter:HostAdapter;packageResources:string;scopeId:string;initialRoot?:string;controlRoot?:string;clock?:SpeedClock;registry?:ProtocolRegistry;prepareEnvironment?:(rootPath:string,descriptor?:ProtocolDescriptor)=>Promise<PreparedEnvironment>}
 export async function createEvaluationService(deps:ServiceDependencies) {
@@ -75,8 +76,15 @@ export async function createEvaluationService(deps:ServiceDependencies) {
       cleanup=createCleanup(store,()=>queue?.snapshot().activeBatchId);speedHistory=createSpeedHistory(store);speedCleanup=createSpeedCleanup(store,speedHistory);
       if(store.writable){await store.recover();await createReuseHistory(store).recover();await cleanup.recoverCleanup();await speedHistory.recoverInterrupted();await speedCleanup.recover();}
       const graders={general(q:Parameters<typeof gradeGeneral>[0],a:Parameters<typeof gradeGeneral>[1],signal:AbortSignal,protocol:ResolvedProtocolSet){const prepared=environments.get(refsKey(protocol));if(!prepared||prepared.resourceVersion!==protocol.resourceVersion)return Promise.resolve({kind:'technical-missing' as const,track:'general' as const,itemId:q.id,error:{code:'ENVIRONMENT_NOT_PREPARED',phase:'resource' as const,retryable:false,message:'请准备本轮评测对应的环境。'},evidence:null});return gradeGeneral(q,a,{code:createCodeRunner(join(prepared.resourcesPath,'runtime')),rules:createRuleGrader(join(prepared.resourcesPath,'runtime','rules')),contest:createContestRunner(join(prepared.resourcesPath,'runtime')),signal});},writing:createWritingGrader(rubric)};
-      queue=createQueue(store,deps.adapter,registry,graders,{onChange(runId){if(!live)return;const batch=queue.snapshot().batches.find(b=>b.runIds.includes(runId));if(batch)void live.invalidate(batch.batchId,'performance').catch(()=>{});}});
-      await queue.idle();speed=createSpeedRunner({adapter:deps.adapter,registry,graders,history:speedHistory,clock});
+      const tools=async(q:import('./contracts.ts').Question,input:ToolSessionInput,protocol:ResolvedProtocolSet,execution:EvaluationRequest['execution'])=>{
+        const prepared=environments.get(refsKey(protocol));
+        const missing=(code:string):import('./contracts.ts').GradeResult=>({kind:'technical-missing',track:'general',itemId:q.id,error:{code,phase:'resource',retryable:false,message:'工具任务环境或原生调用不可用。'},evidence:null});
+        if(!prepared)return missing('ENVIRONMENT_NOT_PREPARED');if(!deps.adapter.generateTurn)return missing('TOOLS_NOT_SUPPORTED');
+        try{const dispatcher=await createToolDispatcher(prepared.resourcesPath,q);return await createToolSessionRunner({generateTurn:deps.adapter.generateTurn.bind(deps.adapter)},q,dispatcher,{callTimeoutMs:execution.callTimeoutMs})(input);}catch{return missing('TOOL_ENVIRONMENT_UNAVAILABLE');}
+      };
+      const services={...graders,tools};
+      queue=createQueue(store,deps.adapter,registry,services,{onChange(runId){if(!live)return;const batch=queue.snapshot().batches.find(b=>b.runIds.includes(runId));if(batch)void live.invalidate(batch.batchId,'performance').catch(()=>{});}});
+      await queue.idle();speed=createSpeedRunner({adapter:deps.adapter,registry,graders:services,history:speedHistory,clock});
       live=createLiveEstimator({clock,getRuns:getInputs,getActiveBatchIds:()=>{const id=queue.snapshot().activeBatchId;return id?[id]:[];},publish(id,value){void queue.saveEstimate(id,value).catch(()=>{});}});
       for(const batch of queue.snapshot().batches)if(batch.estimate){const {remainingMs,totalMs,...base}=batch.estimate;live.restore(batch.batchId,batch.status==='pending'?{...base,state:'pending'}:batch.status==='completed'?batch.estimate:{...batch.estimate,state:'paused'});}
       for(const summary of await store.listSummaries())if(summary.estimation){const current=summary.estimation.final??summary.estimation.current,batch=queue.snapshot().batches.find(b=>b.batchId===summary.batchId);const {remainingMs,totalMs,...base}=current;live.restoreRun(summary.runId,summary.batchId,batch?.status==='pending'?{...base,state:'pending'}:batch?.status==='completed'?current:{...current,state:'paused'});}

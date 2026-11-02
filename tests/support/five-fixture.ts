@@ -1,0 +1,8 @@
+import type {Question,ResolvedProtocolSet} from '../../src/contracts.ts';import {identityHash,questionCompatibility} from '../../src/evaluation/protocol-identity.ts';
+export function fiveFixture(tier:'light'|'deep'='light'):ResolvedProtocolSet{
+ const counts=tier==='light'?[24,6,10,30,20,10]:[80,20,50,100,70,30],sources=['knowledge/mmlu-pro','math/olympiad-text-math','reading/fixture','instructions/fixture','coding/fixture','tools/fixture'],datasets=['mmlu-pro-selected','olympiad-text-selected','longbench-v2-selected','ifeval','code-contests-selected','bfcl-v4-multi-turn-selected'];
+ const items:Question[]=counts.flatMap((count,index)=>Array.from({length:count},(_,i)=>({id:sources[index]+'/'+i,track:'general' as const,datasetId:datasets[index]!,sourceId:String(i),sourceHash:'fixture',prompt:[{role:'user' as const,content:'Synthetic fixture only'}],grading:{}})));
+ const domains=['knowledge','reading','instructions','coding','tools'].map(id=>({id,weight:.2,itemIds:items.filter(q=>id==='knowledge'?q.id.startsWith('knowledge/')||q.id.startsWith('math/'):q.id.startsWith(id+'/')).map(q=>q.id)}));
+ const value={schema:'task-five-v1' as const,tier,label:tier,domains,...(tier==='deep'?{parentGeneralId:'general-task-five-v1-light'}:{})},refs={generalId:'general-task-five-v1-'+tier,writingId:'fixture-writing',resourceVersion:'task-five-v1'};
+ return {...refs,items,descriptor:{refs,general:{...value,domains:domains as any,definitionHash:identityHash(value)},questionCount:items.length,allowNewRuns:true},compatibility:Object.fromEntries(items.map(q=>[q.id,questionCompatibility(q,{fixture:'five'},{fixture:'five'})]))};
+}

@@ -59,7 +59,7 @@ export function createToolSessionRunner(adapter:HostToolAdapter,question:Questio
     const turn=outcome.value;
     const ids=turn.calls.map(c=>c.callId);
     if(new Set(ids).size!==ids.length||ids.some(id=>!id||state.committedCallIds.includes(id)))return missing('DUPLICATE_TOOL_CALL_ID');
-    state.roundReserved=false;state.messages.push(turn.assistant);
+    state.roundReserved=false;state.lastCompletedAttemptId=turn.observation.attemptId;state.messages.push(turn.assistant);
     if(turn.finish==='max-tokens')return await finish(false,'output-budget');
     if(turn.calls.length){state.pendingCalls=structuredClone(turn.calls);state.stage='actions';await save();continue;}
     state.userTurn++;

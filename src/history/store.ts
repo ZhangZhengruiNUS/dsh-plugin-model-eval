@@ -4,7 +4,7 @@ import { randomUUID, createHash } from 'node:crypto';
 import { mkdir, lstat, realpath, readdir, rename } from 'node:fs/promises';
 import { join } from 'node:path';
 import { isDeepStrictEqual } from 'node:util';
-import type { GeneratedAnswer, GradeResult, JudgeSnapshot, ProtocolRefs, RunSummary, TargetSnapshot, Track, TechnicalError,Question } from '../contracts.ts';
+import type { GeneratedAnswer, GradeResult, JudgeSnapshot, ProtocolRefs, RunSummary, TargetSnapshot, Track, TechnicalError,Question,ToolSessionCheckpoint } from '../contracts.ts';
 import { fingerprintTarget } from '../model/identity.ts';
 import {validateGeneralDefinition} from '../evaluation/definitions.ts';
 import { inspectRoot } from '../resources/prepare.ts';
@@ -16,7 +16,7 @@ export interface RunManifestInput {batchId:string;target:TargetSnapshot;protocol
 export interface RunManifest extends RunManifestInput {schemaVersion:1;runId:string;createdAt:string}
 export interface AttemptRecord {attemptId:string;phase:'answer'|'judge';status:'started'|'completed'|'failed'|'interrupted';startedAt:string;endedAt?:string;judge?:JudgeSnapshot;itemId?:string;track?:Track;
   observations?:GeneratedAnswer['observations'];error?:TechnicalError;rawText?:string;validationError?:TechnicalError;interruptedDetectedAt?:string;performance?:PerformanceSample;performanceKey?:StageKey;retryIndex?:number}
-export interface ItemInput {gradingActive?:ActiveStage;gradingObservation?:PerformanceSample;itemId:string;attempts:AttemptRecord[];answer?:GeneratedAnswer;grade?:GradeResult;question?:Omit<Question,'grading'>;reuse?:ReuseEvidence}
+export interface ItemInput {toolCheckpoint?:ToolSessionCheckpoint;toolActiveMs?:number;toolObservation?:PerformanceSample;gradingActive?:ActiveStage;gradingObservation?:PerformanceSample;itemId:string;attempts:AttemptRecord[];answer?:GeneratedAnswer;grade?:GradeResult;question?:Omit<Question,'grading'>;reuse?:ReuseEvidence}
 export interface ItemRecord extends ItemInput {schemaVersion:1;revision:number;sequence:number;updatedAt:string;answerCommittedAt?:string;gradeCommittedAt?:string}
 export interface RecoveryDiagnostic {runId:string;itemId?:string;code:string}
 export interface RecoveryReport {recoveredRunIds:string[];diagnostics:RecoveryDiagnostic[];temporaryFiles:number}
@@ -141,6 +141,10 @@ export async function openHistory(root:string):Promise<HistoryStore> {
       if(old?.grade?.kind==='scored'&&old.gradingObservation&&!isDeepStrictEqual(old.gradingObservation,input.gradingObservation))return fail('IMMUTABLE_GRADE');
       if(old?.question&&!isDeepStrictEqual(old.question,input.question))return fail('IMMUTABLE_QUESTION');
       if(old?.reuse&&!isDeepStrictEqual(old.reuse,input.reuse))return fail('IMMUTABLE_REUSE');
+      if(input.toolCheckpoint){const cp=input.toolCheckpoint,previous=old?.toolCheckpoint;
+        if(run.manifest.requiredItems.find(q=>q.id===input.itemId)?.datasetId!=='bfcl-v4-multi-turn-selected'||cp.actions!==cp.committedCallIds.length||cp.callsByTurn.flat().length!==cp.actions||cp.actions<0||cp.actions>32||cp.logicalRounds<0||cp.logicalRounds>24||new Set(cp.committedCallIds).size!==cp.actions)return fail('INVALID_TOOL_CHECKPOINT');
+        if(previous&&(cp.scenarioHash!==previous.scenarioHash||cp.targetHash!==previous.targetHash||cp.scenarioId!==previous.scenarioId||cp.userTurn<previous.userTurn||cp.actions<previous.actions||cp.actions>previous.actions+1||cp.logicalRounds<previous.logicalRounds||!isDeepStrictEqual(cp.committedCallIds.slice(0,previous.actions),previous.committedCallIds)||!isDeepStrictEqual(cp.callsByTurn.flat().slice(0,previous.actions),previous.callsByTurn.flat())||cp.actions===previous.actions&&!isDeepStrictEqual(cp.stateSnapshot,previous.stateSnapshot)||previous.stage==='done'&&!isDeepStrictEqual(cp,previous)))return fail('IMMUTABLE_TOOL_CHECKPOINT');
+      }else if(old?.toolCheckpoint)return fail('IMMUTABLE_TOOL_CHECKPOINT');
       if(new Set(input.attempts.map(x=>x.attemptId)).size!==input.attempts.length)return fail('DUPLICATE_ATTEMPT');
       for(const previous of old?.attempts??[]){const next=input.attempts.find(x=>x.attemptId===previous.attemptId);if(!next||next.phase!==previous.phase||next.startedAt!==previous.startedAt||!isDeepStrictEqual(previous.judge,next.judge)||previous.observations&&!isDeepStrictEqual(previous.observations,next.observations)||previous.performance&&!isDeepStrictEqual(previous.performance,next.performance)||previous.performanceKey&&!isDeepStrictEqual(previous.performanceKey,next.performanceKey)||previous.status!=='started'&&next.status!==previous.status)return fail('IMMUTABLE_ATTEMPT');}
       const now=new Date().toISOString(),record:ItemRecord={...clone(input),schemaVersion:1,revision:expected+1,sequence:run.summary.revision+1,updatedAt:now,

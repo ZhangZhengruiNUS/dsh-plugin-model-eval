@@ -15,10 +15,12 @@ import {validateGeneralDefinition} from '../evaluation/definitions.ts';
 import {verifyReadyReuse} from '../history/reuse.ts';
 import {runAttempt,type RetryClock} from './attempts.ts';
 import {summarizeMetrics} from './metrics.ts';
+import type {ToolSessionInput} from '../host/tool-session.ts';
 export interface BatchView {batchId:string;runIds:string[];status:'queued'|'running'|'paused'|'pending'|'completed';createdAt:string;estimate?:EstimateSnapshot;lastError?:TechnicalError;judge?:JudgeSnapshot;execution:EvaluationRequest['execution']}
 export interface QueueView {activeBatchId?:string;batches:BatchView[];recoveryIssues?:{runId:string;code:string}[]}
 export interface GradeServices {
   general(question:Question,answer:GeneratedAnswer,signal:AbortSignal,protocol:ResolvedProtocolSet):Promise<GradeResult>;
+  tools?(question:Question,input:ToolSessionInput,protocol:ResolvedProtocolSet,execution:EvaluationRequest['execution']):Promise<GradeResult>;
   writing?:{build(question:Question,answer:GeneratedAnswer):readonly PromptMessage[];parse(question:Question,answer:GeneratedAnswer,judge:JudgeSnapshot,candidate:GeneratedAnswer):GradeResult;local(question:Question,answer:GeneratedAnswer):GradeResult|undefined};
 }
 export interface EvaluationQueue {attachImported(batch:BatchView,runId:string,operationId:string):Promise<void>;saveEstimate(batchId:string,estimate:EstimateSnapshot):Promise<void>;enqueue(request:EvaluationRequest):Promise<BatchView>;pause(batchId:string):Promise<void>;resume(batchId:string,judge?:JudgeSnapshot):Promise<void>;snapshot():QueueView;idle():Promise<void>;dispose():Promise<void>}
@@ -104,6 +106,23 @@ export function createQueue(store:HistoryStore,adapter:HostAdapter,registry:Prot
   }
   async function processItem(runId:string,q:Question,batch:BatchView,signal:AbortSignal,protocol:ResolvedProtocolSet):Promise<void> {
     let item=await store.getItem(runId,q.id);if(item?.grade?.kind==='scored')return;
+    if(q.datasetId==='bfcl-v4-multi-turn-selected'){
+      if(!graders.tools){batch.lastError=failure('TOOLS_NOT_SUPPORTED','config');controller?.abort();return;}
+      const {manifest}=await store.getRun(runId),{grading:privateGrading,...publicQuestion}=q;
+      let grade=await graders.tools(q,{target:manifest.target,scenarioId:q.sourceId,signal,...(item?.toolCheckpoint?{checkpoint:item.toolCheckpoint}:{}),
+        async commit(checkpoint){const current=await store.getItem(runId,q.id);await store.saveItem(runId,current?.revision??0,{...current,itemId:q.id,question:current?.question??publicQuestion,attempts:current?.attempts??[],toolCheckpoint:checkpoint});await refresh(runId);},
+        async onAttempt(observation,error){const current=await store.getItem(runId,q.id),previous=current?.attempts.find(a=>a.attemptId===observation.attemptId),key={conditionKey:performanceConditionKey(manifest.target,manifest.protocols,batch.execution),datasetId:q.datasetId+':turn',phase:'answer' as const};
+          const attempt:AttemptRecord=previous?structuredClone(previous):{attemptId:observation.attemptId,itemId:q.id,track:'general',phase:'answer',status:'started',startedAt:observation.startedAt,performanceKey:key};
+          if(observation.endedAt){attempt.status=error?signal.aborted?'interrupted':'failed':'completed';attempt.endedAt=observation.endedAt;attempt.observations=observation;if(error)attempt.error=error;
+            attempt.performance=normalizeObservation({...key,sampleId:attempt.attemptId,itemId:q.id,startedAt:observation.startedAt,endedAt:observation.endedAt,durationMs:observation.timing?.totalMs??Math.max(0,Date.parse(observation.endedAt)-Date.parse(observation.startedAt)),outcome:error?signal.aborted?'cancelled':isTimeoutFailure(error)?'timeout':'failed':'completed',...(observation.timing?{timing:observation.timing}:{}),usage:observation.usage});}
+          await store.saveItem(runId,current?.revision??0,{...current,itemId:q.id,question:current?.question??publicQuestion,attempts:[...(current?.attempts??[]).filter(a=>a.attemptId!==attempt.attemptId),attempt]});await refresh(runId);
+        }},protocol,batch.execution);
+      item=await store.getItem(runId,q.id);
+      if(item){const completed=item.attempts.filter(a=>a.status==='completed'&&a.observations).sort((a,b)=>(b.endedAt??'').localeCompare(a.endedAt??''));const last=(item.toolCheckpoint?.lastCompletedAttemptId?completed.find(a=>a.attemptId===item!.toolCheckpoint!.lastCompletedAttemptId):completed[0])?.observations;const answer:GeneratedAnswer|undefined=item.toolCheckpoint?.stage==='done'&&last?{text:JSON.stringify(item.toolCheckpoint.messages),complete:true,truncated:false,observations:last}:undefined;
+        if(grade.kind==='scored'&&!answer&&!item.answer)grade={kind:'technical-missing',track:'general',itemId:q.id,error:failure('TOOL_OBSERVATION_MISSING','storage'),evidence:null};
+        await store.saveItem(runId,item.revision,{...item,grade,...(answer&&!item.answer?{answer}:{})});}
+      if(grade.kind==='technical-missing'&&!signal.aborted){batch.lastError=grade.error;controller?.abort();}await refresh(runId);return;
+    }
     const answer=item?.answer?.complete?item.answer:await call(runId,q,'answer',buildPrompt(q),signal,batch);if(!answer||signal.aborted)return;
     let grade:GradeResult|undefined,gradingObservation:PerformanceSample|undefined;
     if(q.track==='writing'){

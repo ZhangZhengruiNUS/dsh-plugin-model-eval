@@ -33,7 +33,7 @@ export interface ToolMessage {id:string;role:'user'|'assistant'|'tool';content:T
 export interface ToolTurnInput {target:TargetSnapshot;messages:readonly ToolMessage[];tools:readonly NativeTool[];signal:AbortSignal;context?:GenerationInput['context']}
 export type ToolTurnResult={kind:'completed';assistant:ToolMessage;calls:ToolCall[];finish:'stop'|'tool-calls'|'max-tokens';observation:AttemptObservation}|{kind:'technical-missing';error:TechnicalError;observation:AttemptObservation};
 export interface HostToolAdapter {generateTurn(input:ToolTurnInput):Promise<ToolTurnResult>}
-export interface ToolSessionCheckpoint {version:1;scenarioId:string;scenarioHash:string;targetHash:string;userTurn:number;messages:ToolMessage[];logicalRounds:number;roundReserved:boolean;actions:number;committedCallIds:string[];stateSnapshot:JsonValue;callsByTurn:ToolCall[][];pendingCalls:ToolCall[];stage:'model'|'actions'|'judge'|'done';passed?:boolean;finalReason?:string}
+export interface ToolSessionCheckpoint {version:1;scenarioId:string;scenarioHash:string;targetHash:string;userTurn:number;messages:ToolMessage[];logicalRounds:number;roundReserved:boolean;actions:number;committedCallIds:string[];stateSnapshot:JsonValue;callsByTurn:ToolCall[][];pendingCalls:ToolCall[];stage:'model'|'actions'|'judge'|'done';passed?:boolean;finalReason?:string;lastCompletedAttemptId?:string}
 export interface ProtocolSet { generalId: string; writingId: string; items: readonly Question[]; resourceVersion: string }
 export interface Question {
   id: string; track: Track; datasetId: string; sourceId: string; sourceHash: string;
