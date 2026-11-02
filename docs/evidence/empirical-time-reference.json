@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "status": "installed-verified",
+  "version": "0.1.0-alpha.20",
+  "package": {
+    "sha256": "5f81fcf721d3a3e0c06c4a7b4c3c230507bc5dfb36175f659588201d00cd3338",
+    "bytes": 56836798,
+    "files": 1984,
+    "runtimeDependencies": 0
+  },
+  "method": {
+    "algorithm": "estimate-v2",
+    "reference": "weighted medians of complete matching stages simulated with concurrency and serial grading",
+    "missing": "measured-stage subtotal only; missing workload explicitly excluded",
+    "budgetImputation": false,
+    "legacyApproximationMainDisplay": false,
+    "terminalPreviewRefresh": "derived read-only; no revision or byte changes"
+  },
+  "validation": {
+    "coreNodeTests": 30,
+    "serviceNodeTests": 6,
+    "fullUiTests": 115,
+    "frozenExecutionFilesLineage": 22,
+    "independentReview": "no important or blocking finding",
+    "independentVisualReview": "four updated desktop/mobile light/dark screenshots; inline pending suffix removes prominence ambiguity",
+    "exactFinalArchiveHostFixture": {
+      "status": "passed",
+      "version": "0.1.0-alpha.20",
+      "artifactSha256": "5f81fcf721d3a3e0c06c4a7b4c3c230507bc5dfb36175f659588201d00cd3338",
+      "scope": "exact final archive Host in isolated synthetic profile; Node network blocked; no model requests",
+      "readOnlyReestimate": true,
+      "oldWideRangeWithdrawn": true,
+      "unchangedRecordBytes": true,
+      "disposedRoutes": 0,
+      "modelCalls": 0
+    },
+    "nativeDesktop": {
+      "version": "0.2.1-rc.5",
+      "coldRestart": true,
+      "existingPreviewReadOnlyRefresh": true,
+      "partialReferenceAndMissingStagesVisible": true,
+      "installedFilesMatched": 1984,
+      "dataFilesUnchanged": 6,
+      "preparedResourceAndProtectedFilesUnchanged": 5271,
+      "realModelRequestsInitiated": 0
+    }
+  },
+  "limits": [
+    "No new real preview or evaluation was started",
+    "No prediction-error calibration claim",
+    "No complete-suite reference regrading this turn; known separate reference153 timeout unchanged"
+  ]
+}
