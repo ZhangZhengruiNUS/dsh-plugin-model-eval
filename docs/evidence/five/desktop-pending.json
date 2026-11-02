@@ -7,7 +7,7 @@
   "backupHashesVerified": true,
   "unchangedOriginalFiles": 3811,
   "activeHistory": false,
-  "oldHistory": "912/917 pending; general score95.5 retained",
+  "oldHistory": "pre-existing incomplete batch retained; no automatic resume",
   "launcher": "official DSH CLI refuses desktop profile as managed exclusively by Electron application",
   "computerUse": "click failed: coordinate input geometry is unavailable; activation and Raise did not restore app capture",
   "realModelCalls": 0,
