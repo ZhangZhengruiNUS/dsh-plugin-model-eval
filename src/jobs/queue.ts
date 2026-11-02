@@ -109,6 +109,8 @@ export function createQueue(store:HistoryStore,adapter:HostAdapter,registry:Prot
     if(q.datasetId==='bfcl-v4-multi-turn-selected'){
       if(!graders.tools){batch.lastError=failure('TOOLS_NOT_SUPPORTED','config');controller?.abort();return;}
       const {manifest}=await store.getRun(runId),{grading:privateGrading,...publicQuestion}=q;
+      const toolStarted=performance.now(),toolStage={conditionKey:performanceConditionKey(manifest.target,manifest.protocols,batch.execution),datasetId:q.datasetId,phase:'tool-scenario' as const,sampleId:randomUUID(),itemId:q.id,startedAt:new Date().toISOString()};
+      await store.saveItem(runId,item?.revision??0,{...item,itemId:q.id,question:item?.question??publicQuestion,attempts:item?.attempts??[],toolActiveStage:toolStage});
       let grade=await graders.tools(q,{target:manifest.target,scenarioId:q.sourceId,signal,...(item?.toolCheckpoint?{checkpoint:item.toolCheckpoint}:{}),
         async commit(checkpoint){const current=await store.getItem(runId,q.id);await store.saveItem(runId,current?.revision??0,{...current,itemId:q.id,question:current?.question??publicQuestion,attempts:current?.attempts??[],toolCheckpoint:checkpoint});await refresh(runId);},
         async onAttempt(observation,error){const current=await store.getItem(runId,q.id),previous=current?.attempts.find(a=>a.attemptId===observation.attemptId),key={conditionKey:performanceConditionKey(manifest.target,manifest.protocols,batch.execution),datasetId:q.datasetId+':turn',phase:'answer' as const};
@@ -120,7 +122,9 @@ export function createQueue(store:HistoryStore,adapter:HostAdapter,registry:Prot
       item=await store.getItem(runId,q.id);
       if(item){const completed=item.attempts.filter(a=>a.status==='completed'&&a.observations).sort((a,b)=>(b.endedAt??'').localeCompare(a.endedAt??''));const last=(item.toolCheckpoint?.lastCompletedAttemptId?completed.find(a=>a.attemptId===item!.toolCheckpoint!.lastCompletedAttemptId):completed[0])?.observations;const answer:GeneratedAnswer|undefined=item.toolCheckpoint?.stage==='done'&&last?{text:JSON.stringify(item.toolCheckpoint.messages),complete:true,truncated:false,observations:last}:undefined;
         if(grade.kind==='scored'&&!answer&&!item.answer)grade={kind:'technical-missing',track:'general',itemId:q.id,error:failure('TOOL_OBSERVATION_MISSING','storage'),evidence:null};
-        await store.saveItem(runId,item.revision,{...item,grade,...(answer&&!item.answer?{answer}:{})});}
+        const {toolActiveStage:finishedToolStage,...rest}=item,activeMs=(item.toolActiveMs??0)+performance.now()-toolStarted;
+        const toolObservation:PerformanceSample={...toolStage,endedAt:new Date().toISOString(),durationMs:activeMs,outcome:grade.kind==='scored'?'completed':signal.aborted?'cancelled':'failed',automaticRetry:false};
+        await store.saveItem(runId,item.revision,{...rest,grade,toolActiveMs:activeMs,...(!item.toolTimingIncomplete?{toolObservation}:{}),...(answer&&!item.answer?{answer}:{})});}
       if(grade.kind==='technical-missing'&&!signal.aborted){batch.lastError=grade.error;controller?.abort();}await refresh(runId);return;
     }
     const answer=item?.answer?.complete?item.answer:await call(runId,q,'answer',buildPrompt(q),signal,batch);if(!answer||signal.aborted)return;

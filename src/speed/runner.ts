@@ -12,13 +12,14 @@ export function createSpeedRunner(deps:{adapter:HostAdapter;registry:ProtocolReg
  function update(change:(s:SpeedSession)=>void):Promise<void>{const next=writeTail.then(async()=>{const value=structuredClone(session!);change(value);session=await deps.history.save(value,session!.revision);});writeTail=next.catch(e=>{failed=e;controller.abort();});return next;}
  async function execute(request:EvaluationRequest,protocols:ResolvedProtocolSet){
   for(let index=0;index<request.targets.length&&!controller.signal.aborted;index++){
-   const config=session!.configs[index]!,abort=new AbortController(),start=clock.monotonicMs(),deadline=start+session!.budgetMinutes*60000;let expired=false,gradingTail:Promise<unknown>=Promise.resolve();
+   const config=session!.configs[index]!,abort=new AbortController(),start=clock.monotonicMs(),deadline=start+session!.budgetMinutes*60000;let expired=false,gradingTail:Promise<unknown>=Promise.resolve(),callsUsed=0,callLimitReached=false;
+   const reserve=()=>{if(abort.signal.aborted||clock.monotonicMs()>=deadline)return false;if(callsUsed>=12){callLimitReached=true;return false;}callsUsed++;return true;};
    const stop=()=>abort.abort();controller.signal.addEventListener('abort',stop,{once:true});if(controller.signal.aborted)abort.abort();
    const cancelBudget=clock.schedule(Math.max(0,deadline-clock.monotonicMs()),()=>{expired=true;abort.abort();void update(s=>{if(s.configs[index]!.status==='running')s.configs[index]!.status='stopping';}).catch(()=>{});});
    const record=(sample:PerformanceSample)=>update(s=>{s.configs[index]!.performance=appendPerformanceSample(s.configs[index]!.performance,sample);});
-   const key=(q:Question,phase:'answer'|'judge'|'local-grade'):StageKey=>({conditionKey:performanceConditionKey(config.target,config.protocols,config.execution,phase==='judge'?config.judge:undefined),datasetId:q.datasetId,phase});
+   const key=(q:Question,phase:StageKey['phase']):StageKey=>({conditionKey:performanceConditionKey(config.target,config.protocols,config.execution,phase==='judge'?config.judge:undefined),datasetId:q.datasetId,phase});
    async function generate(q:Question,phase:'answer'|'judge',messages:readonly PromptMessage[]):Promise<GeneratedAnswer|undefined>{
-    if(abort.signal.aborted||clock.monotonicMs()>=deadline)return;const sampleId=randomUUID(),startedAt=clock.now(),stage=key(q,phase);
+    if(!reserve())return;const sampleId=randomUUID(),startedAt=clock.now(),stage=key(q,phase);
     await update(s=>{s.configs[index]!.performance.activeStages.push({...stage,sampleId,itemId:q.id,startedAt});});if(abort.signal.aborted)return;
     const child=new AbortController(),parentAbort=()=>child.abort();abort.signal.addEventListener('abort',parentAbort,{once:true});if(abort.signal.aborted)child.abort();
     let timeout=false;const cancelTimer=clock.schedule(Math.max(0,Math.min(config.execution.callTimeoutMs,deadline-clock.monotonicMs())),()=>{timeout=true;child.abort();});const invoked=clock.monotonicMs();let answer:GeneratedAnswer;
@@ -29,14 +30,26 @@ export function createSpeedRunner(deps:{adapter:HostAdapter;registry:ProtocolReg
     if(!cancelled&&answer.error?.phase==='config'){await update(s=>{s.configs[index]!.errorCode=answer.error!.code;s.configs[index]!.status='failed';s.status='failed';});controller.abort();}
     return answer.complete&&!cancelled?answer:undefined;
    }
+   async function toolPreview(q:Question){
+    if(!deps.graders.tools)speedFail('TOOLS_NOT_SUPPORTED');
+    const sampleId=randomUUID(),startedAt=clock.now(),started=clock.monotonicMs(),stage=key(q,'tool-scenario');
+    await update(s=>s.configs[index]!.performance.activeStages.push({...stage,sampleId,itemId:q.id,startedAt}));
+    const result=await deps.graders.tools!(q,{target:config.target,scenarioId:q.sourceId,signal:abort.signal,automaticRetry:false,dispatchAllowed:reserve,commit:async()=>{},async onAttempt(observation,error){
+      const turnKey={...key(q,'answer'),datasetId:q.datasetId+':turn'};
+      if(!observation.endedAt){await update(s=>s.configs[index]!.performance.activeStages.push({...turnKey,sampleId:observation.attemptId,itemId:q.id,startedAt:observation.startedAt}));return;}
+      await record({...turnKey,sampleId:observation.attemptId,itemId:q.id,startedAt:observation.startedAt,endedAt:observation.endedAt,durationMs:observation.timing?.totalMs??Math.max(0,Date.parse(observation.endedAt)-Date.parse(observation.startedAt)),outcome:abort.signal.aborted?expired?'timeout':'cancelled':error?isTimeoutFailure(error)?'timeout':'failed':'completed',automaticRetry:false,...(observation.timing?{timing:observation.timing}:{}),usage:observation.usage});
+    }},protocols,config.execution);
+    await record({...stage,sampleId,itemId:q.id,startedAt,endedAt:clock.now(),durationMs:Math.max(0,clock.monotonicMs()-started),outcome:abort.signal.aborted?expired?'timeout':'cancelled':result.kind==='scored'?'completed':'failed',automaticRetry:false});
+    if(!abort.signal.aborted&&result.kind==='technical-missing'&&['resource','config','storage'].includes(result.error.phase))speedFail(result.error.code);
+   }
    try{
     await update(s=>{s.configs[index]!.status='running';s.configs[index]!.startedAt=clock.now();});const questions=selectProbeQuestions(protocols,config.tracks);let next=0;
-    const outcomes=await Promise.allSettled(Array.from({length:config.execution.concurrency},async()=>{try{while(!abort.signal.aborted&&clock.monotonicMs()<deadline){const q=questions[next++];if(!q)break;const answer=await generate(q,'answer',buildPrompt(q));if(!answer||abort.signal.aborted)continue;
+    const outcomes=await Promise.allSettled(Array.from({length:config.execution.concurrency},async()=>{try{while(!abort.signal.aborted&&clock.monotonicMs()<deadline){const q=questions[next++];if(!q)break;if(q.datasetId==='bfcl-v4-multi-turn-selected'){await toolPreview(q);continue;}const answer=await generate(q,'answer',buildPrompt(q));if(!answer||abort.signal.aborted)continue;
      if(q.track==='writing'){if(!deps.graders.writing)speedFail('WRITING_GRADER_UNAVAILABLE');if(!deps.graders.writing!.local(q,answer))await generate(q,'judge',deps.graders.writing!.build(q,answer));}
      else{const queued=clock.monotonicMs();const work=gradingTail.then(async()=>{if(abort.signal.aborted||clock.monotonicMs()>=deadline)return;const sampleId=randomUUID(),startedAt=clock.now(),started=clock.monotonicMs(),stage=key(q,'local-grade');await update(s=>{s.configs[index]!.performance.activeStages.push({...stage,sampleId,itemId:q.id,startedAt});});if(abort.signal.aborted)return;const result=await deps.graders.general(q,answer,abort.signal,protocols);await record({...stage,sampleId,itemId:q.id,startedAt,endedAt:clock.now(),durationMs:Math.max(0,clock.monotonicMs()-started),queueWaitMs:Math.max(0,started-queued),outcome:abort.signal.aborted?(expired?'timeout':'cancelled'):result.kind==='scored'?'completed':'failed'});if(result.kind==='technical-missing'&&['resource','config','storage'].includes(result.error.phase))speedFail(result.error.code);});gradingTail=work.catch(()=>{});await work;}
     }}catch(e){controller.abort();throw e;}}));
     const rejection=outcomes.find(x=>x.status==='rejected');if(rejection?.status==='rejected')throw rejection.reason;
-    await update(s=>{const c=s.configs[index]!;c.endedAt=clock.now();if(c.status!=='failed')c.status=abort.signal.aborted?'stopped':'completed';if(expired)c.errorCode='SPEED_BUDGET_REACHED';c.performance.activeStages=[];});
+    await update(s=>{const c=s.configs[index]!;c.endedAt=clock.now();if(c.status!=='failed')c.status=abort.signal.aborted?'stopped':'completed';if(expired)c.errorCode='SPEED_BUDGET_REACHED';else if(callLimitReached)c.errorCode='SPEED_CALL_LIMIT';c.performance.activeStages=[];});
    }finally{cancelBudget();controller.signal.removeEventListener('abort',stop);}
   }
   await update(s=>{if(s.status!=='failed')s.status=controller.signal.aborted?'stopped':'completed';});

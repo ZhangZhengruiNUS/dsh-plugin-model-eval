@@ -16,7 +16,7 @@ export interface RunManifestInput {batchId:string;target:TargetSnapshot;protocol
 export interface RunManifest extends RunManifestInput {schemaVersion:1;runId:string;createdAt:string}
 export interface AttemptRecord {attemptId:string;phase:'answer'|'judge';status:'started'|'completed'|'failed'|'interrupted';startedAt:string;endedAt?:string;judge?:JudgeSnapshot;itemId?:string;track?:Track;
   observations?:GeneratedAnswer['observations'];error?:TechnicalError;rawText?:string;validationError?:TechnicalError;interruptedDetectedAt?:string;performance?:PerformanceSample;performanceKey?:StageKey;retryIndex?:number}
-export interface ItemInput {toolCheckpoint?:ToolSessionCheckpoint;toolActiveMs?:number;toolObservation?:PerformanceSample;gradingActive?:ActiveStage;gradingObservation?:PerformanceSample;itemId:string;attempts:AttemptRecord[];answer?:GeneratedAnswer;grade?:GradeResult;question?:Omit<Question,'grading'>;reuse?:ReuseEvidence}
+export interface ItemInput {toolCheckpoint?:ToolSessionCheckpoint;toolActiveMs?:number;toolActiveStage?:ActiveStage;toolTimingIncomplete?:boolean;toolObservation?:PerformanceSample;gradingActive?:ActiveStage;gradingObservation?:PerformanceSample;itemId:string;attempts:AttemptRecord[];answer?:GeneratedAnswer;grade?:GradeResult;question?:Omit<Question,'grading'>;reuse?:ReuseEvidence}
 export interface ItemRecord extends ItemInput {schemaVersion:1;revision:number;sequence:number;updatedAt:string;answerCommittedAt?:string;gradeCommittedAt?:string}
 export interface RecoveryDiagnostic {runId:string;itemId?:string;code:string}
 export interface RecoveryReport {recoveredRunIds:string[];diagnostics:RecoveryDiagnostic[];temporaryFiles:number}
@@ -192,7 +192,7 @@ export async function openHistory(root:string):Promise<HistoryStore> {
             if(item)durableTimes.push(item.updatedAt);
             const attempts=journal.get(required.id)??item?.attempts??[];
             for(const attempt of attempts)if(attempt.status==='started'){attempt.status='interrupted';attempt.interruptedDetectedAt=new Date().toISOString();await writeRecord(join(runPath(name),'details','attempts',hash(attempt.attemptId)+'.json'),{itemId:required.id,attempt});}
-            if((item||attempts.length)&&(!item||!isDeepStrictEqual(item.attempts,attempts))){const record:ItemRecord={...(item??{itemId:required.id}),attempts,schemaVersion:1,revision:(item?.revision??0)+1,sequence:Math.max(run.summary.revision,item?.sequence??0)+1,updatedAt:new Date().toISOString()};await writeRecord(join(runPath(name),'details','items',hash(required.id)+'.json'),record);run.items.set(required.id,record);}
+            if((item||attempts.length)&&(!item||item.toolActiveStage||!isDeepStrictEqual(item.attempts,attempts))){const record:ItemRecord={...(item??{itemId:required.id}),attempts,schemaVersion:1,revision:(item?.revision??0)+1,sequence:Math.max(run.summary.revision,item?.sequence??0)+1,updatedAt:new Date().toISOString()};if(record.toolActiveStage){delete record.toolActiveStage;record.toolTimingIncomplete=true;}await writeRecord(join(runPath(name),'details','items',hash(required.id)+'.json'),record);run.items.set(required.id,record);}
           }
           report.temporaryFiles+=(await readdir(join(runPath(name),'details','items'))).filter(x=>x.endsWith('.tmp')).length;
           run.loaded=true;const next=clone(run.summary);next.revision=Math.max(next.revision,...[...run.items.values()].map(x=>x.sequence))+1;

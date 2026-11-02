@@ -1,5 +1,5 @@
 import type {AttemptObservation,EvaluationRequest,JudgeSnapshot,ProtocolRefs,TargetSnapshot,Track} from '../contracts.ts';
-export type StagePhase='answer'|'judge'|'local-grade';
+export type StagePhase='answer'|'judge'|'local-grade'|'tool-scenario';
 export interface StageKey {conditionKey:string;datasetId:string;phase:StagePhase}
 export interface GenerationTiming {prepareMs:number;streamMs:number;totalMs:number;firstOutputMs?:number;firstTextMs?:number;lastOutputMs?:number;sawReasoning:boolean;outputTokenScope:'observable-generated'|'unknown'}
 export interface PerformanceSample extends StageKey {sampleId:string;itemId:string;startedAt:string;endedAt:string;durationMs:number;outcome:'completed'|'failed'|'timeout'|'cancelled';truncated?:boolean;queueWaitMs?:number;retryWaitMs?:number;automaticRetry?:boolean;timing?:GenerationTiming;usage?:AttemptObservation['usage'];tpotMs?:number}

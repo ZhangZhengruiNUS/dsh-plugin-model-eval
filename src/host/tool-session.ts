@@ -3,7 +3,7 @@ import type {AttemptObservation,GradeResult,HostToolAdapter,Question,TargetSnaps
 import type {ToolDispatcher} from '../runtime/tool-dispatcher.ts';
 import {identityHash} from '../evaluation/protocol-identity.ts';import {fingerprintTarget} from '../model/identity.ts';
 import {runAttempt,type RetryClock} from '../jobs/attempts.ts';
-export interface ToolSessionInput {target:TargetSnapshot;scenarioId:string;checkpoint?:ToolSessionCheckpoint;signal:AbortSignal;commit:(checkpoint:ToolSessionCheckpoint)=>Promise<void>;onAttempt:(observation:AttemptObservation,error?:import('../contracts.ts').TechnicalError)=>Promise<void>}
+export interface ToolSessionInput {target:TargetSnapshot;scenarioId:string;checkpoint?:ToolSessionCheckpoint;signal:AbortSignal;automaticRetry?:false;dispatchAllowed?:()=>boolean;commit:(checkpoint:ToolSessionCheckpoint)=>Promise<void>;onAttempt:(observation:AttemptObservation,error?:import('../contracts.ts').TechnicalError)=>Promise<void>}
 /** An assistant turn and its pending calls commit before any pure simulator action. */
 export function createToolSessionRunner(adapter:HostToolAdapter,question:Question,dispatcher:ToolDispatcher,options:{clock?:RetryClock;callTimeoutMs?:number}={}){
  return async function runToolSession(input:ToolSessionInput):Promise<GradeResult>{
@@ -41,7 +41,8 @@ export function createToolSessionRunner(adapter:HostToolAdapter,question:Questio
      const verdict=await dispatcher.grade(state.callsByTurn,input.signal);return await finish(verdict.passed,verdict.reason);
     }
     if(!state.roundReserved){if(state.logicalRounds>=24)return await finish(false,'logical-round-budget');state.logicalRounds++;state.roundReserved=true;await save();}
-    const outcome=await runAttempt(async()=>{
+    const invoke=async()=>{
+     if(input.dispatchAllowed&&!input.dispatchAllowed())return {ok:false as const,error:{code:'PROBE_CALL_LIMIT',phase:'answer' as const,retryable:false,message:'本次测速调用预算已用完。'}};
      const context={attemptId:randomUUID(),itemId:question.id,track:'general' as const,phase:'answer' as const};
      const report:ToolSessionInput['onAttempt']=async(...args)=>{try{await input.onAttempt(...args);}catch{throw Error('CHECKPOINT_SAVE_FAILED');}};
      const startedAt=new Date().toISOString();await report({...context,startedAt,endedAt:'',usage:{available:false}});
@@ -54,7 +55,8 @@ export function createToolSessionRunner(adapter:HostToolAdapter,question:Questio
      if(timedOut||input.signal.aborted)result={kind:'technical-missing',error:{code:timedOut?'CALL_TIMEOUT':'ABORTED',phase:'answer',retryable:timedOut&&!input.signal.aborted,message:'工具模型调用已中断。'},observation:result.observation};
      await report(result.observation,result.kind==='technical-missing'?result.error:undefined);
      return result.kind==='completed'?{ok:true as const,value:result}:{ok:false as const,error:result.error};
-    },input.signal,options.clock);
+    };
+    const outcome=input.automaticRetry===false?await invoke():await runAttempt(invoke,input.signal,options.clock);
     if(!outcome.ok)return {kind:'technical-missing',track:'general',itemId:question.id,error:outcome.error,evidence:null};
     const turn=outcome.value;
     const ids=turn.calls.map(c=>c.callId);
