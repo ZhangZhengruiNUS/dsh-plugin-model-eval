@@ -1,3 +1,4 @@
+import {validSpeedBudget} from '../speed/budget.ts';
 import type {JsonValue} from '../contracts.ts';
 export interface ApiEnvelope {schemaVersion:1;requestId:string;action:Action;payload:Record<string,JsonValue>}
 const fields={status:[],protocolCatalog:[],previewUpgrade:['sourceRunId','deepGeneralId','handle','execution'],commitUpgrade:['token'],catalog:[],settings:[],prepare:[],setRoot:['path'],snapshot:['providerId','modelId','overrides','deployment'],createBatch:['generalId','handles','tracks','judgeHandle','execution','previewId'],startSpeedPreview:['generalId','handles','tracks','judgeHandle','execution','budgetMinutes'],speedPreviewStatus:['previewId'],cancelSpeedPreview:['previewId'],speedHistory:[],previewSpeedCleanup:['previewIds'],commitSpeedCleanup:['token'],speedCleanupStatus:['token'],queue:[],pause:['batchId'],resume:['batchId','judgeHandle'],history:[],comparisonMetadata:[],report:['runId'],item:['runId','itemId'],usage:[],previewCleanup:['batchIds'],commitCleanup:['token'],cleanupStatus:['token']} as const;
@@ -19,7 +20,7 @@ export function validateEnvelope(value:unknown):ApiEnvelope {
   if(['report','item'].includes(body.action)&&!body.payload.runId||['pause','resume'].includes(body.action)&&!body.payload.batchId||['commitUpgrade','commitCleanup','cleanupStatus','commitSpeedCleanup','speedCleanupStatus'].includes(body.action)&&!body.payload.token)return reject();
   if(['speedPreviewStatus','cancelSpeedPreview'].includes(body.action)&&!body.payload.previewId)return reject();
   if(body.action==='previewSpeedCleanup'&&(!Array.isArray(body.payload.previewIds)||!body.payload.previewIds.length||body.payload.previewIds.some(x=>typeof x!=='string'||!/^[a-f0-9-]{36}$/.test(x))))return reject();
-  if(body.action==='startSpeedPreview'&&(!Number.isInteger(body.payload.budgetMinutes)||Number(body.payload.budgetMinutes)<1||Number(body.payload.budgetMinutes)>5))return reject();
+  if(body.action==='startSpeedPreview'&&!validSpeedBudget(body.payload.budgetMinutes))return reject();
   if(body.action==='item'&&(typeof body.payload.itemId!=='string'||body.payload.itemId.length>300))return reject();
   if(body.action==='setRoot'&&(typeof body.payload.path!=='string'||!body.payload.path||body.payload.path.length>1000))return reject();
   if(body.action==='snapshot'&&(typeof body.payload.providerId!=='string'||typeof body.payload.modelId!=='string'))return reject();

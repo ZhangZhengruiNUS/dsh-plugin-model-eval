@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "status": "installed-focused-validation-passed",
+  "version": "0.1.0-alpha.19",
+  "package": {
+    "sha256": "a352dc1148235658f696793b7a6d184c90bffa2bc18df6e8e3afbe1515f56d5d",
+    "bytes": 56836139,
+    "files": 1984,
+    "runtimeDependencies": 0
+  },
+  "changes": [
+    "Default optional preview budget 30 seconds; retain integer 1-5 minute choices",
+    "Label evidence-based incomplete-stage ranges as approximate; keep real coverage",
+    "Keep activity reserved until cancelled calls and writes settle",
+    "Replace approximation with actual observations during formal work"
+  ],
+  "validation": {
+    "focusedEstimationTests": 18,
+    "uiTests": 113,
+    "fullNodeSuite": "not completed; intentionally stopped after old reference-test failures",
+    "frozenExecutionLineageFiles": 22,
+    "resourceBytesUnchangedFromAlpha17": true,
+    "independentReview": "important tool retry gap fixed RED-to-GREEN",
+    "syntheticScreenshots": [
+      "1280x753 light/dark",
+      "390x844 light/dark"
+    ],
+    "realModelRequests": 0,
+    "finalRelatedUiTests": 21,
+    "nativeDesktop": {
+      "version": "0.2.1-rc.5",
+      "default30SecondBudget": true,
+      "alpha18ColdRestart": true,
+      "alpha19SameHostBundle": true,
+      "installedFilesMatched": 1984
+    },
+    "dataFilesUnchanged": 5,
+    "preparedResourceFilesUnchanged": 5271,
+    "referenceObservations": {
+      "failed": [
+        "sqrt_XOR_avoidance_matches_all_sequences_and_independent_rank_DP",
+        "packed_subsequence_union_matches_literal_sets_and_large_subset_parity"
+      ],
+      "cause": "Isolated recheck: sqrt_XOR passed in44.645s; reference153 all-retained test timed out at60065ms under unchanged60s budget; hardware/load cause unknown",
+      "offlineInitialLaunch": "failed because npm_execpath was absent; rerunning via npm",
+      "isolatedRecheck": {
+        "passed": 1,
+        "failed": 1,
+        "failedTest": "packed_subsequence_union_matches_literal_sets_and_large_subset_parity",
+        "phase": "153 all retained",
+        "reason": "timeout",
+        "elapsedMs": 60065
+      },
+      "followup": "Track reference153 execution budget separately; no scoring/resource edits and no further retries in this task"
+    },
+    "focusedNodeTests": 43,
+    "offlineHostFixture": {
+      "status": "passed",
+      "packageSha256": "5845c3b975cc8fb001c4733f2d5a5d5277dc925e945e359f3492dfa4c4a8b74b",
+      "version": "0.1.0-alpha.19",
+      "importedItems": 120,
+      "newAnswerCalls": 280,
+      "scope": "Intermediate alpha19 archive before final client-only settling fix; final archive separately verified, Host/resources unchanged",
+      "finalArchiveClaim": "not claiming the final archive was separately rerun through the full offline fixture"
+    }
+  },
+  "limitations": [
+    "No real 30-second preview was started",
+    "Heuristic ranges are neither confidence intervals nor hard bounds",
+    "An uncooperative provider can extend settling beyond the sampling budget"
+  ]
+}

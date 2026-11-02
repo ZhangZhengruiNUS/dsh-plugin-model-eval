@@ -1,3 +1,4 @@
+import {validSpeedBudget} from './budget.ts';
 import {randomUUID} from 'node:crypto';
 import type {EvaluationRequest,GeneratedAnswer,HostAdapter,PromptMessage,ProtocolRegistry,ResolvedProtocolSet,Question} from '../contracts.ts';
 import type {SpeedConfigRecord,SpeedSession,PerformanceSample,StageKey} from '../estimation/contracts.ts';
@@ -57,7 +58,7 @@ export function createSpeedRunner(deps:{adapter:HostAdapter;registry:ProtocolReg
  return {
   async start(request:EvaluationRequest&{budgetMinutes:number}){
    if(disposed)speedFail('SERVICE_DISPOSED');if(executing)speedFail('ACTIVITY_BUSY');
-   if(!Number.isInteger(request.budgetMinutes)||request.budgetMinutes<1||request.budgetMinutes>5||!request.targets.length||request.targets.length>20||!request.tracks.length||new Set(request.tracks).size!==request.tracks.length||request.tracks.some(t=>!['general','writing'].includes(t))||![1,2,3,4].includes(request.execution.concurrency)||!Number.isInteger(request.execution.callTimeoutMs)||request.execution.callTimeoutMs<1000||request.execution.callTimeoutMs>1800000)speedFail('INVALID_BATCH');
+   if(!validSpeedBudget(request.budgetMinutes)||!request.targets.length||request.targets.length>20||!request.tracks.length||new Set(request.tracks).size!==request.tracks.length||request.tracks.some(t=>!['general','writing'].includes(t))||![1,2,3,4].includes(request.execution.concurrency)||!Number.isInteger(request.execution.callTimeoutMs)||request.execution.callTimeoutMs<1000||request.execution.callTimeoutMs>1800000)speedFail('INVALID_BATCH');
    const targets=request.targets.map(fingerprintTarget);if(new Set(targets).size!==targets.length)speedFail('DUPLICATE_TARGET');if(request.tracks.includes('writing')&&!request.judge)speedFail('JUDGE_REQUIRED');if(request.judge)fingerprintTarget(request.judge.target);
    const input=structuredClone(request);executing=true;let release!:()=>void;admissionDone=new Promise<void>(r=>release=r);
    try{
