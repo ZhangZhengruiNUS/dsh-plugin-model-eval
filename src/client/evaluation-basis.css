@@ -1,0 +1,8 @@
+.me-evaluation-basis{margin:16px 0 24px;padding:16px 18px;border:1px solid var(--me-border);border-radius:14px;background:var(--me-panel)}
+.me-evaluation-basis>summary{cursor:pointer;font-weight:600;color:var(--me-text)}
+.me-evaluation-basis>summary::marker{color:var(--me-accent)}
+.me-evaluation-basis>p,.me-evaluation-basis>dl{margin-top:14px}
+.model-eval .me-evaluation-basis dl>div{padding:10px 0;gap:20px;font-size:12px;border-bottom:1px solid var(--me-border)}
+.me-evaluation-basis dl>div:last-child{border-bottom:0}
+.me-evaluation-basis dd{color:var(--me-text)}
+@media(max-width:600px){.model-eval .me-evaluation-basis dl>div{display:block}.me-evaluation-basis dd{margin-top:4px;text-align:left}}

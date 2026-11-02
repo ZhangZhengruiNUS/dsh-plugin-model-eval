@@ -1,7 +1,7 @@
 import {test,expect} from '@playwright/test';import {chooseModel} from './helpers.ts';
 test('tiers_and_upgrade_preview_are_accessible_and_explicit',async({page})=>{
   await page.goto('/?tiers=1');await page.getByRole('button',{name:'新建评测',exact:true}).click();const form=page.getByRole('dialog',{name:'新建评测'});
-  await expect(form.getByRole('radio',{name:/轻量/})).toBeChecked();await expect(form.getByRole('radio',{name:/深入/})).toBeVisible();await expect(form.getByText(/约 30 分钟/)).toBeVisible();await expect(form.getByText(/2—3 小时/)).toBeVisible();await chooseModel(form);
+  await expect(form.getByRole('radio',{name:/轻量/})).toBeChecked();await expect(form.getByRole('radio',{name:/深入/})).toBeVisible();await expect(form.getByText('四项能力 · 仅与同版成绩比较')).toHaveCount(2);await chooseModel(form);
   await form.getByRole('button',{name:'测速并预估',exact:true}).click();await expect(form.getByTestId('speed-estimate')).toBeVisible();await form.getByRole('radio',{name:/深入/}).check();await expect(form.getByText('配置已变更，请重新测速或跳过。')).toBeVisible();await page.keyboard.press('Escape');
   expect(await page.evaluate(()=>(window as any).fixtureActions.filter((x:string)=>x==='createBatch').length)).toBe(0);
   await page.getByRole('button',{name:/查看.*Atlas-32B/}).first().click();const report=page.getByRole('dialog',{name:'查看报告'});await expect(report.getByRole('button',{name:'补测为深入',exact:true})).toBeVisible();await report.getByRole('button',{name:'补测为深入',exact:true}).click();const upgrade=page.getByRole('dialog',{name:'补测为深入'});
@@ -15,7 +15,7 @@ test('tier_scopes_keep_general_separate_and_writing_shared',async({page})=>{
   await page.getByRole('tab',{name:'中文写作',exact:true}).click();await expect(scope.locator('option')).toHaveCount(1);
 });
 test('unprepared_tier_and_nonreusable_source_do_not_silently_start',async({page})=>{
-  await page.goto('/?tiers=1&tierUnprepared=1');await page.getByRole('button',{name:'新建评测',exact:true}).click();const form=page.getByRole('dialog');await expect(form.getByRole('radio',{name:/轻量/})).toBeDisabled();await expect(form.getByRole('button',{name:'开始评测',exact:true})).toBeDisabled();await page.keyboard.press('Escape');
+  await page.goto('/?tiers=1&tierUnprepared=1');await page.getByRole('button',{name:'新建评测',exact:true}).click();const form=page.getByRole('dialog');await expect(form.getByRole('radio')).toHaveCount(0);await expect(form.getByRole('button',{name:'准备评测环境',exact:true})).toBeVisible();await expect(form.getByRole('button',{name:'开始评测',exact:true})).toBeDisabled();await page.keyboard.press('Escape');
   await page.goto('/?tiers=1&upgradeUnavailable=1');await page.getByRole('button',{name:/查看.*Atlas-32B/}).first().click();await page.getByRole('dialog').getByRole('button',{name:'补测为深入',exact:true}).click();await page.getByRole('dialog').getByRole('button',{name:'预览补测',exact:true}).click();await expect(page.getByRole('dialog').getByText(/明细已清理/)).toBeVisible();await expect(page.getByRole('dialog').getByRole('button',{name:'开始补测',exact:true})).toBeDisabled();
   expect(await page.evaluate(()=>(window as any).fixtureActions.filter((x:string)=>['createBatch','commitUpgrade'].includes(x)).length)).toBe(0);
 });
