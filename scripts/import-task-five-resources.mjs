@@ -54,6 +54,9 @@ await writeFile(join(out,'questions.json'),JSON.stringify(questions)+'\n');
 await writeFile(join(out,'selection.json'),JSON.stringify({light,deep,reading:rm,weights:manifest.weights,mmluCategories:manifest.mmluCategories},null,2)+'\n');
 const newPaths=[dir+'/questions.json',dir+'/selection.json'];
 for(const f of verified){await copyFile(join(bfcl,f.local),join(out,'bfcl',f.local));newPaths.push(dir+'/bfcl/'+f.local);}
+const toolManifest=JSON.parse(await readFile(join(out,'bfcl','runtime.json'),'utf8'));
+for(const f of toolManifest.files){const path=dir+'/bfcl/'+f.path,b=await readFile(join('resources',path));if(sha(b)!==f.sha256)throw Error('TOOL_RUNTIME_CHANGED');if(!newPaths.includes(path))newPaths.push(path);}
+newPaths.push(dir+'/bfcl/runtime.json');
 // Keep source terms and attribution beside the selected text; do not ship the full corpus.
 const card=await readFile(join(reading,'dataset-card.md'));
 if(sha(card)!=='4bcf87ecfbbb8e07a01b21415a970c8b53a5283bf6872b657040d3f45c9241f7'||!card.toString().includes('license: apache-2.0'))throw Error('DATASET_LICENSE_CHANGED');
@@ -63,7 +66,7 @@ const notice='LongBench v2 selected dataset: zai-org/LongBench-v2, revision ac35
 await writeFile(join(out,'NOTICE.txt'),notice);newPaths.push(dir+'/NOTICE.txt');
 const files=[];for(const path of newPaths){const b=await readFile(join('resources',path));files.push({path,size:b.length,sha256:sha(b)});}
 const bundle={id:'task-five-v1',resourceVersion:'task-five-v1',questionPath:dir+'/questions.json',files:[...files,...oldBundle.files.filter(f=>!f.path.startsWith('suites/'))],runtimePassed:false,
- grading:{...oldBundle.grading,reading:{version:'explicit-final-choice-v1',implementationSha256:sha(await readFile('src/evaluation/reading-answer.ts')),gradeSha256:sha(await readFile('src/evaluation/grade-reading.ts'))},tools:'bfcl-state-and-response-v1'},runtime:{...oldBundle.runtime,tools:{logicalRounds:24,actions:32,mode:'sealed-simulation-v1'}},
+ grading:{...oldBundle.grading,reading:{version:'explicit-final-choice-v1',implementationSha256:sha(await readFile('src/evaluation/reading-answer.ts')),gradeSha256:sha(await readFile('src/evaluation/grade-reading.ts'))},tools:'bfcl-state-and-response-v1'},runtime:{...oldBundle.runtime,tools:{logicalRounds:24,actions:32,mode:'sealed-simulation-v1',manifestSha256:sha(await readFile(join(out,'bfcl','runtime.json')))}},
  selection:{light,deep},allowNewRuns:false,provenance:{readingRevision:'ac35867b9c9436dc81c4c7535fe640ba7cf47877',bfclRevision:sources.revision,formalManifestSha256:'b3dd923b5e160669cbce3596698c5c59dd1cacd9a1806bd74024c1899edca249'}};
 await writeFile(join(out,'bundle.json'),JSON.stringify(bundle,null,2)+'\n');
 console.log(JSON.stringify({questions:questions.length,light:light.length,deep:deep.length,files:files.length,allowNewRuns:false}));

@@ -84,6 +84,51 @@
       "sha256": "5c9a5710115609c779e5b2ccb43f6ad58271ed96f2ea7a797edb0d65c385aa38"
     },
     {
+      "path": "suites/task-five-v1/bfcl/doc__gorilla_file_system.json",
+      "size": 13953,
+      "sha256": "c4c1b741c71e2a17c97a5dc9c4a91d89978c4eaece56494d14272d5df6c650e9"
+    },
+    {
+      "path": "suites/task-five-v1/bfcl/doc__message_api.json",
+      "size": 6027,
+      "sha256": "4d58ea933a5d2b280d7a52366617fb47fecd333d7b0e08e724db6fa12fb5f847"
+    },
+    {
+      "path": "suites/task-five-v1/bfcl/doc__posting_api.json",
+      "size": 10573,
+      "sha256": "87f9fc404a06e4107d7c366f1399c596440e84c16cb119faf374b2f532d86e8b"
+    },
+    {
+      "path": "suites/task-five-v1/bfcl/doc__ticket_api.json",
+      "size": 6648,
+      "sha256": "31324e0380782664fe82ba05bd23517808ad55692b45a5fe7c3d4d395fe4f0f8"
+    },
+    {
+      "path": "suites/task-five-v1/bfcl/doc__trading_bot.json",
+      "size": 12608,
+      "sha256": "1a7933fd8f0cb8fbec38aeae05cb8c24132747cad4904fe1c13ac3d01fc22c2d"
+    },
+    {
+      "path": "suites/task-five-v1/bfcl/doc__travel_booking.json",
+      "size": 16979,
+      "sha256": "f17b950c13adddf41d0848077df58788252e4c2e7cad5cfa71c8c4bf04f57b26"
+    },
+    {
+      "path": "suites/task-five-v1/bfcl/doc__vehicle_control.json",
+      "size": 17545,
+      "sha256": "0c8a66292844874ef7b168f343bc394d8615d2d9e1f4387999a9ee23011eac78"
+    },
+    {
+      "path": "suites/task-five-v1/bfcl/tool_worker.py",
+      "size": 9766,
+      "sha256": "941ddb1ec582f4b26fc7928bfebb3e67f434e53852e32cef1046512737594f62"
+    },
+    {
+      "path": "suites/task-five-v1/bfcl/runtime.json",
+      "size": 3523,
+      "sha256": "fa23945c5ee07cf2c196d7759f82313718320d6379bef3fe3e00003aa17cfaa3"
+    },
+    {
       "path": "suites/task-five-v1/LongBench-v2-dataset-card.md",
       "size": 31,
       "sha256": "4bcf87ecfbbb8e07a01b21415a970c8b53a5283bf6872b657040d3f45c9241f7"
@@ -9631,7 +9676,8 @@
     "tools": {
       "logicalRounds": 24,
       "actions": 32,
-      "mode": "sealed-simulation-v1"
+      "mode": "sealed-simulation-v1",
+      "manifestSha256": "fa23945c5ee07cf2c196d7759f82313718320d6379bef3fe3e00003aa17cfaa3"
     }
   },
   "selection": {

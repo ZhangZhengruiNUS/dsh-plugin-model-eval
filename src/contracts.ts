@@ -24,7 +24,16 @@ export interface HostAdapter {
   catalog(): Promise<ModelChoice[]>;
   snapshot(choice: ModelChoice, overrides: Record<string, ParamValue>): Promise<TargetSnapshot>;
   generateOnce(input: GenerationInput): Promise<GeneratedAnswer>;
+  generateTurn?:HostToolAdapter['generateTurn'];
 }
+export interface NativeTool {name:string;description:string;parameters:JsonValue}
+export interface ToolCall {callId:string;name:string;argumentsJson:string}
+export type ToolBlock={type:'text';text:string}|{type:'tool-call';id:string;name:string;arguments:string};
+export interface ToolMessage {id:string;role:'user'|'assistant'|'tool';content:ToolBlock[];source:{kind:string;provider?:string;model?:string;callId?:string};toolCallId?:string;isError?:boolean}
+export interface ToolTurnInput {target:TargetSnapshot;messages:readonly ToolMessage[];tools:readonly NativeTool[];signal:AbortSignal;context?:GenerationInput['context']}
+export type ToolTurnResult={kind:'completed';assistant:ToolMessage;calls:ToolCall[];finish:'stop'|'tool-calls'|'max-tokens';observation:AttemptObservation}|{kind:'technical-missing';error:TechnicalError;observation:AttemptObservation};
+export interface HostToolAdapter {generateTurn(input:ToolTurnInput):Promise<ToolTurnResult>}
+export interface ToolSessionCheckpoint {version:1;scenarioId:string;scenarioHash:string;targetHash:string;userTurn:number;messages:ToolMessage[];logicalRounds:number;roundReserved:boolean;actions:number;committedCallIds:string[];stateSnapshot:JsonValue;callsByTurn:ToolCall[][];pendingCalls:ToolCall[];stage:'model'|'actions'|'judge'|'done';passed?:boolean;finalReason?:string}
 export interface ProtocolSet { generalId: string; writingId: string; items: readonly Question[]; resourceVersion: string }
 export interface Question {
   id: string; track: Track; datasetId: string; sourceId: string; sourceHash: string;

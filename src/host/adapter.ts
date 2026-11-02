@@ -1,17 +1,19 @@
 import { randomUUID } from 'node:crypto';
 import type { GeneratedAnswer, GenerationInput, HostAdapter, JsonValue, ModelChoice, ParamValue, TargetSnapshot, TechnicalError } from '../contracts.ts';
 import { fingerprintTarget } from '../model/identity.ts';
+import {nativeToolTurn} from './tool-turn.ts';
 
 export interface DshCallConfig { provider:string;model:string;temperature?:number;maxTokens?:number;reasoningEffort?:string;stop?:string[] }
 export interface DshGenerateOptions extends DshCallConfig {
-  messages:{role:'user';content:{type:'text';text:string}[]}[];system?:string;signal:AbortSignal;purpose?:string;
+  messages:({role:'user';content:{type:'text';text:string}[]}|import('../contracts.ts').ToolMessage)[];system?:string;signal:AbortSignal;purpose?:string;tools?:readonly import('../contracts.ts').NativeTool[];
 }
 interface Failure {code?:string;status?:number;providerRetryAfterMs?:number;message?:string}
 export type DshChunk = {type:'text-delta';index:number;text:string}
   | {type:'block-end';index:number;block:{type:string;text?:string}}
   | {type:'usage';usage:{inputTokens:number;outputTokens:number;reasoningTokens?:number;cacheReadTokens?:number;cacheWriteTokens?:number;totalTokens?:number}}
   | {type:'finish';reason:{kind:string;failure?:Failure}}
-  | {type:'block-start'|'reasoning-delta'|'tool-call-delta';index:number};
+  | {type:'tool-call-delta';index:number;id?:string;name?:string;argumentsDelta?:string}
+  | {type:'block-start'|'reasoning-delta';index:number};
 interface ProviderDirectory {provider:string;settingsNs:string;settingsPath:readonly string[];defaultBaseURL?:string;baseURLEnv?:readonly string[]}
 export interface AdapterContext {
   scopeId:string;
@@ -32,7 +34,7 @@ function assign(config:DshCallConfig,field:Field,value:JsonValue):void {
   else {if (!Array.isArray(value)||!value.every(x=>typeof x==='string'&&x.length>0))fault('INVALID_PARAMETER');config.stop=value as string[];}
 }
 function safeFailure(failure:Failure|undefined,phase:'answer'|'judge'):TechnicalError {
-  const configCodes=['UNSUPPORTED_OPTION','UNSUPPORTED_REASONING_EFFORT','INVALID_CONFIG','INVALID_PREPARED_CALL','MISSING_CREDENTIAL','NO_ADAPTER','UNKNOWN_MODEL','REGISTRATION_DISPOSED','INVALID_MODEL_MAX_TOKENS','AUTHENTICATION_ERROR','AUTHENTICATION_FAILED','PERMISSION_DENIED','INVALID_REQUEST','MODEL_NOT_FOUND'];
+  const configCodes=['TOOLS_NOT_SUPPORTED','UNSUPPORTED_TOOLS','CONTEXT_LENGTH_EXCEEDED','UNSUPPORTED_OPTION','UNSUPPORTED_REASONING_EFFORT','INVALID_CONFIG','INVALID_PREPARED_CALL','MISSING_CREDENTIAL','NO_ADAPTER','UNKNOWN_MODEL','REGISTRATION_DISPOSED','INVALID_MODEL_MAX_TOKENS','AUTHENTICATION_ERROR','AUTHENTICATION_FAILED','PERMISSION_DENIED','INVALID_REQUEST','MODEL_NOT_FOUND'];
   const allowed=new Set([...configCodes,'NETWORK_ERROR','TIMEOUT','LLM_STREAM_IDLE_TIMEOUT','RATE_LIMIT','RATE_LIMITED','OVERLOADED','SERVICE_UNAVAILABLE','AUTHENTICATION_ERROR','AUTHENTICATION_FAILED','PERMISSION_DENIED','INVALID_REQUEST','MODEL_NOT_FOUND','ABORTED','INCOMPLETE_STREAM']);
   const code=allowed.has(failure?.code??'')?failure!.code!:'UPSTREAM_ERROR';
   const status=failure?.status, retryAfterMs=failure?.providerRetryAfterMs;
@@ -99,7 +101,13 @@ export function createHostAdapter(ctx:AdapterContext):HostAdapter {
     fingerprintTarget(target);
     return {prepared,target,revision:after.revision,capturedEpoch};
   }
-  return {catalog,async snapshot(choice,overrides){return (await prepare(choice,overrides)).target;},
+  const generateTurn=nativeToolTurn(async input=>{
+    const choice:ModelChoice={scopeId:input.target.scopeId,providerId:input.target.providerId,modelId:input.target.modelId,displayName:input.target.modelId,capabilities:{}};
+    const origin=input.target.origin,before=route(choice.providerId);if(origin?.adapterInstance===instance&&(origin.adapterEpoch!==epoch||origin.settingsRevision!==before.revision))fault('TARGET_CHANGED');
+    const current=await prepare(choice,input.target.controls,input.signal);if(input.target.deployment)current.target.deployment=structuredClone(input.target.deployment);
+    if(fingerprintTarget(input.target)!==fingerprintTarget(current.target))fault('TARGET_CHANGED');return {config:current.prepared.config,stream:options=>current.prepared.stream(options),unchanged:()=>current.capturedEpoch===epoch&&current.revision===route(choice.providerId).revision};
+  },error=>safeFailure(error as Failure,'answer'));
+  return {catalog,generateTurn,async snapshot(choice,overrides){return (await prepare(choice,overrides)).target;},
     async generateOnce(input:GenerationInput):Promise<GeneratedAnswer> {
       const invocationStarted=performance.now();
       const choice:ModelChoice={scopeId:input.target.scopeId,providerId:input.target.providerId,modelId:input.target.modelId,displayName:input.target.modelId,capabilities:{}};
