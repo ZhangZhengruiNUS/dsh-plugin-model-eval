@@ -1,0 +1,16 @@
+import test from 'node:test';import assert from 'node:assert/strict';import {randomUUID} from 'node:crypto';import {join} from 'node:path';import {withTempRoot} from '../support/temp.ts';import {switchRoot} from '../../src/resources/prepare.ts';import {openHistory} from '../../src/history/store.ts';import {persistFiveSource} from '../support/five-reuse-fixture.ts';import {checkUpgrade} from '../../src/evaluation/reuse-eligibility.ts';import {createReuseHistory} from '../../src/history/reuse.ts';import {createCleanup} from '../../src/history/cleanup.ts';import {identityHash} from '../../src/evaluation/protocol-identity.ts';
+test('new light copies100 complete results including wrong answers and tool snapshots;250 remain',{timeout:120000},async()=>withTempRoot(async parent=>{
+ const {path}=await switchRoot(join(parent,'root'),{writing:false}),store=await openHistory(path);
+ try{const f=await persistFiveSource(store),check=checkUpgrade(f.source,f.deep,f.current);assert.equal(check.eligible,true,check.reasonCode);assert.equal(check.reusedItems,100);assert.equal(check.newItems,250);assert.equal(f.source.summary.tracks.general!.score,50);
+  const child=await createReuseHistory(store).import(check,{token:randomUUID(),target:f.current,protocol:f.deep,execution:{concurrency:1,callTimeoutMs:1000}}),items=await store.listItems(child.runId);assert.equal(items.length,100);assert.ok(items.some(i=>i.grade?.kind==='scored'&&i.grade.track==='general'&&!i.grade.passed));assert.ok(items.every(i=>i.attempts.length===0&&i.reuse?.sourceAttempts.length===1));
+  for(const item of items.filter(i=>i.toolCheckpoint))assert.deepEqual(item.toolCheckpoint,f.source.items.find(i=>i.itemId===item.itemId)!.toolCheckpoint);
+  assert.equal(items.filter(i=>i.toolCheckpoint).length,10);assert.ok(items.some(i=>i.toolCheckpoint?.finalReason==='action-budget'&&i.toolCheckpoint.pendingCalls.length===1));const cleanup=createCleanup(store,()=>undefined),preview=await cleanup.previewCleanup([f.source.summary.batchId]);await cleanup.commitCleanup(preview.token);assert.deepEqual(await store.listItems(child.runId),items);await createReuseHistory(store).recover();assert.equal((await createReuseHistory(store).operation(child.operationId))!.state,'ready');
+ }finally{await store.close();}
+}));
+test('upgrade refuses another resource protocol and incomplete tool task despite matching item IDs',async()=>withTempRoot(async parent=>{
+ const {path}=await switchRoot(join(parent,'root'),{writing:false}),store=await openHistory(path);
+ try{const f=await persistFiveSource(store),other=structuredClone(f.deep);other.resourceVersion='two-tier-v1';other.descriptor.refs.resourceVersion='two-tier-v1';assert.equal(checkUpgrade(f.source,other,f.current).eligible,false);
+  const source=structuredClone(f.source),tool=source.items.find(i=>i.toolCheckpoint)!;tool.toolCheckpoint!.stage='actions';assert.equal(checkUpgrade(source,f.deep,f.current).eligible,false);
+  const changed=structuredClone(f.source);changed.summary.revision++;const check=checkUpgrade(changed,f.deep,f.current);if(check.eligible)await assert.rejects(createReuseHistory(store).import(check,{token:randomUUID(),target:f.current,protocol:f.deep,execution:{concurrency:1,callTimeoutMs:1000}}),/UPGRADE_PREVIEW_STALE/);
+ }finally{await store.close();}
+}));

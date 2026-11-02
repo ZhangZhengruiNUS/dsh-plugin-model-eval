@@ -14,12 +14,12 @@ export function checkUpgrade(source:UpgradeSource,deep:ResolvedProtocolSet,curre
   const result:UpgradeCheck={eligible:false,sourceRunId:manifest.runId,sourceRevision:summary.revision,sourceEvidenceHash:'',destinationEvidenceHash:'',targetBindingHash:'',deepGeneralId:deep.generalId,reusedItems:0,newItems:0};
   const reject=(reasonCode:string):UpgradeCheck=>({...result,reasonCode});
   try{
-    if(protocol.descriptor.general.tier!=='light'||deep.descriptor.general.tier!=='deep'||deep.descriptor.general.parentGeneralId!==protocol.generalId)return reject('UPGRADE_TIER_MISMATCH');
+    if(protocol.descriptor.general.tier!=='light'||deep.descriptor.general.tier!=='deep'||deep.descriptor.general.parentGeneralId!==protocol.generalId||protocol.resourceVersion!==deep.resourceVersion||protocol.writingId!==deep.writingId||protocol.descriptor.general.schema!==deep.descriptor.general.schema)return reject('UPGRADE_TIER_MISMATCH');
     if(protocolKey(manifest.protocols)!==protocolKey(protocol.descriptor.refs)||identityHash(manifest.generalDefinition)!==identityHash(protocol.descriptor.general)||identityHash(summary.generalDefinition)!==identityHash(manifest.generalDefinition)||manifest.runId!==summary.runId||manifest.batchId!==summary.batchId||identityHash(manifest.target)!==identityHash(summary.target))return reject('UPGRADE_SOURCE_CORRUPT');
     validateGeneralDefinition(protocol.descriptor.general,manifest.requiredItems);validateGeneralDefinition(deep.descriptor.general,deep.items);
     if(summary.details!=='available')return reject('UPGRADE_DETAILS_UNAVAILABLE');
     const track=summary.tracks.general;
-    if(track?.status!=='completed'||track.required!==120||track.graded!==120||track.score===undefined||!track.completedAt)return reject('UPGRADE_SOURCE_INCOMPLETE');
+    if(track?.status!=='completed'||track.required!==protocol.descriptor.questionCount||track.graded!==protocol.descriptor.questionCount||track.score===undefined||!track.completedAt)return reject('UPGRADE_SOURCE_INCOMPLETE');
     const previous=reuseTargetBinding(manifest.target),next=reuseTargetBinding(current);
     if(!previous||!next)return reject('UPGRADE_IDENTITY_UNVERIFIED');
     if(previous.hash!==next.hash)return reject('UPGRADE_TARGET_CHANGED');
@@ -32,6 +32,7 @@ export function checkUpgrade(source:UpgradeSource,deep:ResolvedProtocolSet,curre
       const item=required[index]!,oldQuestion=protocol.items.find(q=>q.id===id),question=deep.items.find(q=>q.id===id);
       if(!deepIds.has(id)||!question||!oldQuestion||!protocol.compatibility[id]||!deep.compatibility[id]||identityHash(protocol.compatibility[id])!==identityHash(deep.compatibility[id])||identityHash(oldQuestion)!==identityHash(question))return reject('UPGRADE_PROTOCOL_CHANGED');
       if(!item.answer?.complete||item.answer.error||item.grade?.kind!=='scored'||item.grade.track!=='general'||item.grade.itemId!==id||!item.answerCommittedAt||!item.gradeCommittedAt||!item.question||identityHash(item.question)!==identityHash(publicQuestion(oldQuestion)))return reject('UPGRADE_SOURCE_CORRUPT');
+      if(oldQuestion.datasetId==='bfcl-v4-multi-turn-selected'&&(!item.toolCheckpoint||item.toolCheckpoint.stage!=='done'||item.toolCheckpoint.scenarioHash!==identityHash(oldQuestion)||item.toolCheckpoint.passed!==item.grade.passed||item.toolCheckpoint.passed&&item.toolCheckpoint.pendingCalls.length))return reject('UPGRADE_SOURCE_CORRUPT');
     }
     result.sourceEvidenceHash=upgradeSourceEvidence(source);result.destinationEvidenceHash=upgradeDestinationIdentity(deep);
     return {...result,eligible:true,reusedItems:ids.length,newItems:deepIds.size-ids.length};
