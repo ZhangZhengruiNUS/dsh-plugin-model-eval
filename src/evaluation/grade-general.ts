@@ -3,6 +3,7 @@ import type {CodeRunner,CodeTest} from '../runtime/runner.ts';
 import type {RuleGrader,RuleGradeInput} from '../runtime/rule-grader.ts';
 import type {ContestRunner,ContestTest} from '../runtime/contest-runner.ts';
 import {numericAnswerMatches} from './numeric-answer.ts';
+import {extractReadingAnswer} from './reading-answer.ts';
 export interface PreparedEnvironment {code:CodeRunner;rules:RuleGrader;signal:AbortSignal;contest?:ContestRunner}
 export function buildPrompt(question:Question):readonly PromptMessage[] {
   const suffix:Record<string,string>={
@@ -39,6 +40,12 @@ export async function gradeGeneral(question:Question,answer:GeneratedAnswer,env:
   const scored=(passed:boolean,evidence:GradeResult['evidence']=null):GradeResult=>({kind:'scored',track:'general',itemId:question.id,passed,evidence});
   if(!answer.complete)return missing('ANSWER_INCOMPLETE');
   const raw=question.grading as Record<string,any>;
+  if(question.datasetId==='longbench-v2-selected'){
+    if(typeof answer.text!=='string')return missing('INVALID_ANSWER_CARRIER');
+    if(!raw||typeof raw.answer!=='string'||!['A','B','C','D'].includes(raw.answer))return missing('INVALID_READING_GOLD');
+    const result=extractReadingAnswer(answer.text);
+    return scored(result.answer===raw.answer,{metric:'explicit-final-choice-v1',extracted:result.answer??null,reason:result.reason});
+  }
   if(question.datasetId==='mmlu-pro-selected')return scored(extractFinalLetter(answer.text)===raw.answer,{metric:'selected-choice-exact',extracted:extractFinalLetter(answer.text)??null});
   if(question.datasetId==='olympiad-text-selected')return scored(numericAnswerMatches(answer.text,String(raw.answer)),{metric:'selected-numeric-exact'});
   if(question.datasetId==='code-contests-selected'){

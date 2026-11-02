@@ -1,0 +1,3 @@
+LongBench v2 selected dataset: zai-org/LongBench-v2, revision ac35867b9c9436dc81c4c7535fe640ba7cf47877, Apache-2.0 dataset declaration. Original text and attribution retained. 50 questions / 49 materials; fixed subset with explicit-final-line adaptation, not official full benchmark scores.
+BFCL v4: ShishirPatil/gorilla, revision 6ea57973c7a6097fd7c5915698c54c17c5b1b6c8, Apache-2.0 (repository LICENSE); fixed 30 multi-turn base scenarios. Simulator only; bundled account-like strings are upstream fictional scenario data.
+Other 270 items retain their existing two-tier-v1 source attribution and adapted grading. See resources/licenses and docs/evidence/tiers.
