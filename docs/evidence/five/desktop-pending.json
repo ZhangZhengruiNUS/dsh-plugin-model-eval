@@ -1,7 +1,7 @@
 {
-  "status": "pending-window-and-ui-install-confirmation",
+  "status": "resolved-by-confirmed-gui-install",
   "candidateVersion": "0.1.0-alpha.15",
-  "installedVersion": "0.1.0-alpha.14",
+  "installedVersion": "0.1.0-alpha.15",
   "candidateSha256": "178fe3586c89ead13a2bf9d96a4680d23af05391c52d76c5162c7f892351f54c",
   "backupFiles": 3824,
   "backupHashesVerified": true,
@@ -9,8 +9,11 @@
   "activeHistory": false,
   "oldHistory": "pre-existing incomplete batch retained; no automatic resume",
   "launcher": "official DSH CLI refuses desktop profile as managed exclusively by Electron application",
-  "computerUse": "click failed: coordinate input geometry is unavailable; activation and Raise did not restore app capture",
+  "computerUse": "user restored visible window; official GUI installation/enable and independent read-only trial passed",
   "realModelCalls": 0,
   "npmPublished": false,
-  "tagPublished": false
+  "tagPublished": false,
+  "previousInstalledVersion": "0.1.0-alpha.14",
+  "initialComputerUseFailure": "click failed: coordinate input geometry is unavailable; activation and Raise did not restore app capture",
+  "desktopEvidence": "desktop.json"
 }

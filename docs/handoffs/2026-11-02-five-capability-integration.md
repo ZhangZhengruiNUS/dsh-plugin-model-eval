@@ -10,6 +10,8 @@
 
 真实installed Cordis Context/LlmRuntime的隔离测试4prepare/2dispatch，路由/adapter卸载0。编译插件生命周期与源adapter在真实runtime的工具往返分开；实包全链为synthetic host，不声称Profile Loader/owner-auth/真实模型已验。当前准入证明绑定新增定义/资源、原执行proof和本轮Host源码，保留旧报告原字节。
 
-Desktop尚未更新，仍alpha.14。官方launcher明确拒绝desktop（Electron专管），Computer Use点击失败coordinate input geometry is unavailable，截图只有动态壁纸，激活和Raise均未恢复可点击几何。只读树能读到旧待补测任务，无可见活动。当前等待用户恢复可见窗口并按指定computer-use技能的GUI安装当次规则确认；不绕过launcher guard，不重复CLI安装。升级前3824文件已备份并核对hash，3811非锁安装/profile/历史原文件一致，具体私有备份和原始日志只在总控.local保存。
+Desktop交付已完成。此前launcher拒绝desktop及窗口geometry不可用问题保留为过程记录；用户恢复窗口并明确确认后，通过官方第三方插件GUI输入同SHA本地alpha.15包、安装并立即启用，无卸载、无绕过launcher guard。3824文件备份哈希预检通过。实际1984安装文件匹配，准备出的1928文件/133940158字节和新bundle哈希匹配，全部5协议已就绪。
 
-下一步：读取用户回复；若确认GUI安装，fresh窗口/活动/原文件检查后经Desktop官方插件入口导入同SHA的alpha.15，准备本地环境，再Terra独立只读检查，不启动付费评测/测速/续测/清理。若暂不更新则保留候选，记录明确选择。当前Task8的Desktop验收项未完成，不把全部计划标完成。真实区分度、重复稳定性和目标时长仍须单独配置/预算授权。
+独立原生Desktop试用在1280×753深色下无阻断：默认100/可切350、旧档标识、五项等权与来源/采用入口、独立写作、模型下拉和Esc顺序/视觉焦点、旧四项报告/未完成写作均可用。未选定模型快照、未展开该状态参数、未测原生浅色/窄屏或真实新五轴成绩；先前98UI及6项最终展示为合成测试，二者范围分开。真实待测模型、测速、补测、续测和清理均未启动。
+
+更新及试用后1850历史文件相同，2份摘要仅revision变化，历史库存、其他profile及无关锁条目保持。非阻断观察：环境准备后旧停留设置页占用总量暂旧，重新进入后407.3MB与历史一致；记录后续刷新体验，不影响评分/数据，不追加本轮未授权新版本。Task1—8已完成，当前待办仅为后续有具体预算的真实模型区分度/稳定性/耗时验证，无自动调用或发布。详见子仓docs/evidence/five/desktop.json。

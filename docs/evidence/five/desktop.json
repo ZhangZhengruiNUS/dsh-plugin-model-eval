@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 1,
+  "status": "passed",
+  "version": "0.1.0-alpha.15",
+  "desktopVersion": "0.2.1-rc.5",
+  "profile": "desktop",
+  "installation": "official Desktop third-party plugin UI with local tgz, then Enable",
+  "userConfirmedGuiInstall": true,
+  "packageSha256": "178fe3586c89ead13a2bf9d96a4680d23af05391c52d76c5162c7f892351f54c",
+  "installedFilesMatched": 1984,
+  "backupFiles": 3824,
+  "backupHashesVerified": true,
+  "history": {
+    "unchangedFiles": 1850,
+    "revisionOnlySummaryFiles": 2,
+    "inventory": "unchanged",
+    "automaticResume": false
+  },
+  "unrelatedProfile": "unchanged",
+  "unrelatedLockEntries": "unchanged",
+  "preparedResources": {
+    "scope": "real Desktop prepared five-capability resource bytes; no model calls",
+    "status": "passed",
+    "files": 1928,
+    "bytes": 133940158,
+    "readyMetadataPresent": true,
+    "resourceVersion": "task-five-v1",
+    "manifestHash": "0cda147037e4f8954488dc85869f5393322e9f3266b9fbf231c28c24c17ad024"
+  },
+  "preparedProtocols": [
+    905,
+    120,
+    400,
+    100,
+    350
+  ],
+  "independentTrial": {
+    "role": "screen_operator",
+    "viewport": {
+      "width": 1280,
+      "height": 753
+    },
+    "theme": "dark",
+    "status": "no blocking issue observed",
+    "checks": [
+      "default100 and switch350",
+      "old120/400 explicitly labelled",
+      "writing12 separate",
+      "five20% and source/adoption links expand",
+      "provider/model dropdown",
+      "Esc closes dropdown before modal and restores visual focus",
+      "old four-domain report and incomplete writing remain readable"
+    ],
+    "notTested": [
+      "native light/narrow layout",
+      "parameter expansion after snapshot",
+      "new five-axis real scores",
+      "real model calls/speed/resume/upgrade"
+    ]
+  },
+  "observation": {
+    "storageUsage": "after preparation Settings retained old resource total until re-entered; then matched History407.3MB",
+    "impact": "non-blocking display refresh observation; no score or history change"
+  },
+  "realModelCalls": 0,
+  "npmPublished": false,
+  "tagPublished": false,
+  "marketPublished": false
+}
