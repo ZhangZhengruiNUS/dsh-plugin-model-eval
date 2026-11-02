@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-11-02",
+  "version": "0.1.0-alpha.17",
+  "scope": "Model and judge dropdown density; synthetic browser UI only",
+  "measurements": {"desktopViewport": [1280,753], "popupWidth": 773, "beforeRowPx": 64, "afterRowPx": 44, "rowHeightReductionPercent": 31.25, "beforeFullyVisibleOptions": 4, "afterFullyVisibleOptions": 6, "beforePopupHeightPx": 324, "afterPopupHeightPx": 278, "narrowViewport": [390,844], "narrowRowPx": 51.578125, "fontSizesUnchangedPx": [13,11]},
+  "regression": {"beforeFixFailed": 4, "focusedDropdownPassed": 15, "finalDensityAndLongSelectionPassed": 6},
+  "ui": {"finalFullPassed": 108, "finalFullFailed": 0, "earlierFullPassed": 105, "earlierFullFailed": 1, "earlierFailure": "Existing estimation preview-history test timed out waiting for Pause; isolated repeat passed twice and final full run passed without changing that flow; cause not reproduced"},
+  "visualReview": {"independent": true, "desktopAndNarrowLightDark": true, "selectedLongIdentityDark": [1280,390], "overlapOrHorizontalOverflowObserved": false, "scope": "PNG review only; synthetic data; scrolling and keyboard covered by browser tests"},
+  "typecheck": "passed",
+  "build": "passed",
+  "legacyExecutionLineage": {"files": 22, "status": "passed", "freshRegrading": false},
+  "package": {"files": 1984, "compressedBytes": 56835622, "sha256": "0ef32d15f24a35e779db16608ab895619d221bafb0dbb491b5e71c66d8bd8392", "runtimeDependencies": 0, "changedSinceAlpha16": ["README.md", "lib/client.js", "package.json"], "hostAndAllResourcesByteIdentical": true},
+  "installedDesktopVersion": "0.1.0-alpha.16",
+  "candidateDesktopUiVerified": false,
+  "realModelCalls": 0,
+  "realHistoryModified": false,
+  "npmPublished": false
+}

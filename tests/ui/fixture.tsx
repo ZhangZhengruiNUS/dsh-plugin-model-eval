@@ -16,6 +16,15 @@ const fixtureDefinition=(tier:'light'|'deep')=>({tier,label:tier==='light'?'è½»é
 function applyTier(r:RunSummary,tier:'light'|'deep'){const values=Object.values(r.tracks.general!.measures).map(m=>m.score??75),n=tier==='light'?30:100;r.protocols=fixtureRefs(tier==='light'?lightId:deepId);r.generalDefinition=fixtureDefinition(tier);r.tracks.general!.required=n*4;r.tracks.general!.graded=n*4;r.tracks.general!.answered=n*4;r.tracks.general!.measures=Object.fromEntries(['knowledge','math','instructions','coding'].map((id,i)=>[id,{required:n,graded:n,score:values[i]??75}]));r.metrics.tracks.general!.answer.calls=n*4;}
 const models=[{scopeId:'fixture',providerId:'local-lab',modelId:'Atlas-32B-Instruct',displayName:'Atlas-32B-Instruct',capabilities:{}},{scopeId:'fixture',providerId:'local-lab',modelId:'Orion-14B-Reasoning-Long-Deployment-Name',displayName:'Orion-14B-Reasoning-Long-Deployment-Name',capabilities:{}},{scopeId:'fixture',providerId:'local-lab',modelId:'Nebula-7B',displayName:'Nebula-7B',capabilities:{}},{scopeId:'fixture',providerId:'lab-review',modelId:'Reviewer-Large-v2',displayName:'Reviewer-Large-v2',capabilities:{}}];
 if(params.has('manyModels'))models.push(...Array.from({length:24},(_,i)=>({...models[0]!,modelId:'Additional-model-'+i,displayName:'Additional-model-'+i+'-Long-Deployment-Name-For-Layout-Checks'})));
+if(params.has('namedModels'))models.splice(0,models.length,...[
+ {providerId:'local-lab',modelId:'atlas-32b-instruct',displayName:'Atlas 32B'},
+ {providerId:'second-lab',modelId:'atlas-32b-instruct',displayName:'Atlas 32B'},
+ {providerId:'local-lab',modelId:'orion-reasoning',displayName:'Orion Reasoning'},
+ {providerId:'local-lab',modelId:'nebula-7b',displayName:'Nebula 7B'},
+ {providerId:'local-lab',modelId:'helios-coder',displayName:'Helios Coder'},
+ {providerId:'lab-review',modelId:'reviewer-large',displayName:'Reviewer Large'},
+].map(m=>({scopeId:'fixture',capabilities:{},...m})));
+if(params.has('longNamedModel'))Object.assign(models[1]!,{displayName:'Atlas Enterprise Reasoning Long Deployment Name for Multilingual Workloads',modelId:'atlas-32b-instruct-enterprise-reasoning-long-context-quantized-deployment-revision-2026-11'});
 const target=(modelId:string,temp=.7,deployment='INT8'):TargetSnapshot=>({scopeId:'fixture',providerId:'local-lab',modelId,routeTarget:{state:'known',value:'http://localhost:8000/v1',source:'adapter'},deployment:{value:deployment,source:'user'},controls:{temperature:{state:'known',value:temp,source:'adapter'},maxTokens:{state:'known',value:8192,source:'adapter'},reasoningEffort:{state:'known',value:'medium',source:'adapter'},stop:{state:'unset'}}});
 const judge=(modelId:string):JudgeSnapshot=>({target:target(modelId,.1,''),rubricId:'work-writing-five-dimensions-v1',promptId:'writing-judge-json-v1'});
 function run(model:string,scores:number[],writing:number,temp=.7,deployment='INT8'):RunSummary {
