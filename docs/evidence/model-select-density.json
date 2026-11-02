@@ -11,8 +11,9 @@
   "build": "passed",
   "legacyExecutionLineage": {"files": 22, "status": "passed", "freshRegrading": false},
   "package": {"files": 1984, "compressedBytes": 56835622, "sha256": "0ef32d15f24a35e779db16608ab895619d221bafb0dbb491b5e71c66d8bd8392", "runtimeDependencies": 0, "changedSinceAlpha16": ["README.md", "lib/client.js", "package.json"], "hostAndAllResourcesByteIdentical": true},
-  "installedDesktopVersion": "0.1.0-alpha.16",
-  "candidateDesktopUiVerified": false,
+  "installedDesktopVersion": "0.1.0-alpha.17",
+  "candidateDesktopUiVerified": true,
+  "desktop": {"version": "0.2.1-rc.5", "profile": "desktop", "installation": "official local-tgz plugin UI then Enable", "userConfirmed": true, "backupFiles": 2010, "installedFilesMatched": 1984, "nativeViewport": [1280,753], "nativeTheme": "dark", "sixConfiguredModelsFullyVisible": true, "inlineProviderAndIdReadable": true, "arrowHighlightAndTwoStageEscape": "passed", "modelSelected": false, "snapshotRequested": false, "unchangedHistoryAndRootFiles": 4, "summaryRevisionChanges": 0, "protectedResourceAndMetadataFilesUnchanged": 5271, "remainingRuns": 0, "remainingBatches": 0, "unrelatedProfile": "unchanged", "unrelatedLockEntries": "unchanged", "nativeLightNarrowAndSelectedLong": "not tested; covered by synthetic browser tests and PNG review"},
   "realModelCalls": 0,
   "realHistoryModified": false,
   "npmPublished": false
