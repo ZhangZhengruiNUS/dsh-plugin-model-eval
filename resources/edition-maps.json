@@ -1,0 +1,659 @@
+{
+  "schemaVersion": 1,
+  "maps": [
+    {
+      "schemaVersion": 1,
+      "id": "task-five-v2-to-v3-light",
+      "fromRefs": {
+        "generalId": "general-task-five-v2-light",
+        "writingId": "work-writing-12-v1",
+        "resourceVersion": "task-five-v2"
+      },
+      "toRefs": {
+        "generalId": "general-task-five-v3-light",
+        "writingId": "work-writing-12-v1",
+        "resourceVersion": "task-five-v3"
+      },
+      "fromDefinitionHash": "684babd6e184f113f6c0b7296ce65bc73fe201685bdd2d0e6507f6e0eb30739c",
+      "toDefinitionHash": "077c2195ef3aee0821ff38f7329325e78859681f373ac101b1fabe6703fd5270",
+      "domains": [
+        {
+          "id": "knowledge",
+          "itemIds": [
+            "knowledge/mmlu-pro/2815",
+            "knowledge/mmlu-pro/3820",
+            "knowledge/mmlu-pro/10472",
+            "knowledge/mmlu-pro/7552",
+            "knowledge/mmlu-pro/11462",
+            "knowledge/mmlu-pro/6796",
+            "knowledge/mmlu-pro/1831",
+            "knowledge/mmlu-pro/5987",
+            "knowledge/mmlu-pro/11254",
+            "knowledge/mmlu-pro/9052",
+            "knowledge/mmlu-pro/2409",
+            "knowledge/mmlu-pro/3365",
+            "knowledge/mmlu-pro/548",
+            "math/olympiad-text-math/2648",
+            "math/olympiad-text-math/2839",
+            "math/olympiad-text-math/2676",
+            "math/olympiad-text-math/2954"
+          ]
+        },
+        {
+          "id": "reading",
+          "itemIds": [
+            "reading/66ebd5125a08c7b9b35e0616",
+            "reading/66ed1556821e116aacb1ea14",
+            "reading/66f2b676821e116aacb2b27a",
+            "reading/66f55d66821e116aacb33734",
+            "reading/66f6bcf3bb02136c067c2703",
+            "reading/66f96115bb02136c067c541c",
+            "reading/66fab4bfbb02136c067c754c",
+            "reading/671b13f5bb02136c067d4ee3"
+          ]
+        },
+        {
+          "id": "instructions",
+          "itemIds": [
+            "instructions/ifeval/3069",
+            "instructions/ifeval/2275",
+            "instructions/ifeval/2683",
+            "instructions/ifeval/2736",
+            "instructions/ifeval/1129",
+            "instructions/ifeval/1670",
+            "instructions/ifeval/3035",
+            "instructions/ifeval/332",
+            "instructions/ifeval/3534",
+            "instructions/ifeval/1582",
+            "instructions/ifeval/1619",
+            "instructions/ifeval/3188",
+            "instructions/ifeval/3204",
+            "instructions/ifeval/1040",
+            "instructions/ifeval/152",
+            "instructions/ifeval/1012",
+            "instructions/ifeval/1219",
+            "instructions/ifeval/2853",
+            "instructions/ifeval/3380"
+          ]
+        },
+        {
+          "id": "coding",
+          "itemIds": [
+            "coding/code-contests-test/160",
+            "coding/code-contests-test/59",
+            "coding/code-contests-test/115",
+            "coding/code-contests-test/129",
+            "coding/code-contests-test/121",
+            "coding/code-contests-test/151",
+            "coding/code-contests-test/3"
+          ]
+        },
+        {
+          "id": "tools",
+          "itemIds": [
+            "tools/multi_turn_base_39",
+            "tools/multi_turn_base_5",
+            "tools/multi_turn_base_11",
+            "tools/multi_turn_base_83",
+            "tools/multi_turn_base_148",
+            "tools/multi_turn_base_142",
+            "tools/multi_turn_base_153",
+            "tools/multi_turn_base_196"
+          ]
+        }
+      ],
+      "common": [
+        "knowledge/mmlu-pro/2815",
+        "knowledge/mmlu-pro/3820",
+        "knowledge/mmlu-pro/10472",
+        "knowledge/mmlu-pro/7552",
+        "knowledge/mmlu-pro/11462",
+        "knowledge/mmlu-pro/6796",
+        "knowledge/mmlu-pro/1831",
+        "knowledge/mmlu-pro/5987",
+        "knowledge/mmlu-pro/11254",
+        "knowledge/mmlu-pro/9052",
+        "knowledge/mmlu-pro/2409",
+        "knowledge/mmlu-pro/3365",
+        "knowledge/mmlu-pro/548",
+        "math/olympiad-text-math/2648",
+        "math/olympiad-text-math/2839",
+        "math/olympiad-text-math/2676",
+        "math/olympiad-text-math/2954",
+        "reading/66ebd5125a08c7b9b35e0616",
+        "reading/66ed1556821e116aacb1ea14",
+        "reading/66f2b676821e116aacb2b27a",
+        "reading/66f55d66821e116aacb33734",
+        "reading/66f6bcf3bb02136c067c2703",
+        "reading/66f96115bb02136c067c541c",
+        "reading/66fab4bfbb02136c067c754c",
+        "reading/671b13f5bb02136c067d4ee3",
+        "instructions/ifeval/3069",
+        "instructions/ifeval/2275",
+        "instructions/ifeval/2683",
+        "instructions/ifeval/2736",
+        "instructions/ifeval/1129",
+        "instructions/ifeval/1670",
+        "instructions/ifeval/3035",
+        "instructions/ifeval/332",
+        "instructions/ifeval/3534",
+        "instructions/ifeval/1582",
+        "instructions/ifeval/1619",
+        "instructions/ifeval/3188",
+        "instructions/ifeval/3204",
+        "instructions/ifeval/1040",
+        "instructions/ifeval/152",
+        "instructions/ifeval/1012",
+        "instructions/ifeval/1219",
+        "instructions/ifeval/2853",
+        "instructions/ifeval/3380",
+        "coding/code-contests-test/160",
+        "coding/code-contests-test/59",
+        "coding/code-contests-test/115",
+        "coding/code-contests-test/129",
+        "coding/code-contests-test/121",
+        "coding/code-contests-test/151",
+        "coding/code-contests-test/3",
+        "tools/multi_turn_base_39",
+        "tools/multi_turn_base_5",
+        "tools/multi_turn_base_11",
+        "tools/multi_turn_base_83",
+        "tools/multi_turn_base_148",
+        "tools/multi_turn_base_142",
+        "tools/multi_turn_base_153",
+        "tools/multi_turn_base_196"
+      ],
+      "fromOnly": [
+        "knowledge/mmlu-pro/645",
+        "knowledge/mmlu-pro/4819",
+        "knowledge/mmlu-pro/9014",
+        "instructions/ifeval/3371",
+        "coding/code-contests-test/20"
+      ],
+      "toOnly": [
+        "coding/code-contests-test/109",
+        "instructions/ifeval/127",
+        "knowledge/mmlu-pro/4885",
+        "knowledge/mmlu-pro/747",
+        "knowledge/mmlu-pro/8445"
+      ],
+      "compatibility": {
+        "knowledge/mmlu-pro/2815": {
+          "contentHash": "d37fac59453b7417ff930282e4faf887e1a5422952b29765486f36a8971736d1",
+          "promptHash": "94ef99196e1bdf783c10a099fe3822b6ab43541ffe8741cfca1b548f0f2459a1",
+          "gradingHash": "b90f69211e757ae78860aa5966af844ea3b20baedbb184b59bd162a58f2aa91f",
+          "runtimeHash": "41208c51c1940510f61fea0d57de93dcc9a1ff166bcf7723e3ce8f1f70894835",
+          "combinedHash": "13ffa2f543cf2acb75d2e1cba129bbd51831fcf533213cd840a72335476c77a4"
+        },
+        "knowledge/mmlu-pro/3820": {
+          "contentHash": "62d8d02d1b41e63cac3563a938f2cbc7fc60481d8b6e267d513762c2b8eedfce",
+          "promptHash": "cd1ae4bf95df2467ebb218e2892706f7c4fb60e35ddfbde0931dd9feddb6503e",
+          "gradingHash": "9695334ac976deb7f8f369045575d78b00ec86ae50535f380fa4b71dd2942677",
+          "runtimeHash": "41208c51c1940510f61fea0d57de93dcc9a1ff166bcf7723e3ce8f1f70894835",
+          "combinedHash": "134695abe97d2d16a90a8ecf33020ed03df679f4ae83f3ab58629d5da89e4e1a"
+        },
+        "knowledge/mmlu-pro/10472": {
+          "contentHash": "7627b7671cfdbf0f0816c85e01798b1ce0337bf99aae67ee5e6db273c5b6f449",
+          "promptHash": "c493690209485ebc74a5545cf651f0307f4c3b7c5f249da2ec1f8e186ca45c4a",
+          "gradingHash": "9695334ac976deb7f8f369045575d78b00ec86ae50535f380fa4b71dd2942677",
+          "runtimeHash": "41208c51c1940510f61fea0d57de93dcc9a1ff166bcf7723e3ce8f1f70894835",
+          "combinedHash": "5e43cc7254e0e29970e9c0af7f2b9c12c63de3148c9ba7ee4fb5449c4f75a4f0"
+        },
+        "knowledge/mmlu-pro/7552": {
+          "contentHash": "c65b757e17ba3734fbf9b92800bd88eb9513ce4ef7e1a189f6e8b5e4ffae352d",
+          "promptHash": "954b09ea2e8c8cfd452f4dbfd5a5597c9541227abc881dea517b927845b0a69e",
+          "gradingHash": "ced1d81aca56eca3679e4ff843e6b139bc4dc0c0e7fa1dc321259c1c5589bf4a",
+          "runtimeHash": "41208c51c1940510f61fea0d57de93dcc9a1ff166bcf7723e3ce8f1f70894835",
+          "combinedHash": "ccad6f6a97704bd49372cc1af71d38ab8c999992475a60e1a59f8d599c1b2e85"
+        },
+        "knowledge/mmlu-pro/11462": {
+          "contentHash": "056adbeaeebc8e0d551880eb71cd8722d61cb6608e3d34fb1da58172528b9ff4",
+          "promptHash": "4fb1544e97785e0b7ae3cd2fdedc660107868edeac247abd77c65651482c3266",
+          "gradingHash": "ba1c1b5f256cb114988eef18a763cc56004938f4a59fec7718c6cb2f38460845",
+          "runtimeHash": "41208c51c1940510f61fea0d57de93dcc9a1ff166bcf7723e3ce8f1f70894835",
+          "combinedHash": "033fbe8881798e12bbb68190770206edace5fa27b6ff8cf225d2b9558edb57c6"
+        },
+        "knowledge/mmlu-pro/6796": {
+          "contentHash": "4b44c55054a773580a53e50451819987890880f9b2e2accb493b98b91463dd98",
+          "promptHash": "2966fb7a47b596b93c280773e3a3f411a1c2e64aef149ade60f86f61b62b12c1",
+          "gradingHash": "8c638697b13eb446f443c206ded383906ae79eaf91837664681d929c2654e6be",
+          "runtimeHash": "41208c51c1940510f61fea0d57de93dcc9a1ff166bcf7723e3ce8f1f70894835",
+          "combinedHash": "ec0b8c7ecd54e3b150e96f5eb747903aaf60d00086bbd2901e035c9d6bed5ba1"
+        },
+        "knowledge/mmlu-pro/1831": {
+          "contentHash": "c7c6ffeaa428f49542eddf26ba0cf93a90df47a3ace24dd61fb93dd34aeaa58a",
+          "promptHash": "b6e7cc5a5e7721ef914c39bd1081f297b6e75995a264af4f1bb293bc4b1ac73a",
+          "gradingHash": "9695334ac976deb7f8f369045575d78b00ec86ae50535f380fa4b71dd2942677",
+          "runtimeHash": "41208c51c1940510f61fea0d57de93dcc9a1ff166bcf7723e3ce8f1f70894835",
+          "combinedHash": "24eeae5156aea54ddb4976398834cbefd94198a324b510b8483178d6621f25fb"
+        },
+        "knowledge/mmlu-pro/5987": {
+          "contentHash": "3e21ae0eb83b56632642aed7ce5b3e3906927edfc042d0dab9586ee641a59519",
+          "promptHash": "76edb19195a5746a8a15a1198e347bf8b038228220aa66c7764d442b872606e8",
+          "gradingHash": "28baea7477dd506bc776cfbdc52aa16b7396106ab82517ed53bd1b1369a4373b",
+          "runtimeHash": "41208c51c1940510f61fea0d57de93dcc9a1ff166bcf7723e3ce8f1f70894835",
+          "combinedHash": "6d4f1800ec47d5efa078f10866d638826636d87d472f421ec63d626512c8b432"
+        },
+        "knowledge/mmlu-pro/11254": {
+          "contentHash": "8ba1964bd0c24125cae0c676e13665f11afe69ec2f52918426c9ac6431a36136",
+          "promptHash": "6ffd270740cd92aa4b000a1aa8268e0073dfa5d6e2a140ddb04a68f8b4bf5ce2",
+          "gradingHash": "9acd274f67cab728837efead6418dea4348ef2252a2730fc033c93b81cfd18a8",
+          "runtimeHash": "41208c51c1940510f61fea0d57de93dcc9a1ff166bcf7723e3ce8f1f70894835",
+          "combinedHash": "5470fc4f38919c28f18ffcf9437838cd7d4a58ea74e738b07145752bd6eac93f"
+        },
+        "knowledge/mmlu-pro/9052": {
+          "contentHash": "a05e3a782aa717ac0ffdb6a174f38c658625ca8867d325450c110de111d0fdcb",
+          "promptHash": "3cf86bc1f9a5a77859ac2a4bfbe1fc339ac7333cb6ae2bc49b7742cd64d7ace8",
+          "gradingHash": "ced1d81aca56eca3679e4ff843e6b139bc4dc0c0e7fa1dc321259c1c5589bf4a",
+          "runtimeHash": "41208c51c1940510f61fea0d57de93dcc9a1ff166bcf7723e3ce8f1f70894835",
+          "combinedHash": "3fc5ce8b8c29fcaa912dbe133934a5b0fb4ce440b94c1ceb20c2a1d45424a56a"
+        },
+        "knowledge/mmlu-pro/2409": {
+          "contentHash": "397024b58c283b8df12d2a37a90227f4c75d41d528de130054acdcb42cf70579",
+          "promptHash": "f07d1253e5cff21a0beb7269fdf9cefb919870982ec64461263afed9b3fdb1bb",
+          "gradingHash": "28baea7477dd506bc776cfbdc52aa16b7396106ab82517ed53bd1b1369a4373b",
+          "runtimeHash": "41208c51c1940510f61fea0d57de93dcc9a1ff166bcf7723e3ce8f1f70894835",
+          "combinedHash": "1cdb82da4381b1aa0fe0dc5b138312b392b67ef7babb5fae483d326c2a4ac474"
+        },
+        "knowledge/mmlu-pro/3365": {
+          "contentHash": "dcc8225876918060dd623f365e75384c49c6729a3b2cc0f34b9f33f369268f95",
+          "promptHash": "ba9f05da7a22e6642c417b4b0c4a17fbb1a8b0d8b5e509849a29bfae6315f44a",
+          "gradingHash": "2206536337718c4aa034046a74cd481f08e1e0c7ff0206c5f8a058cb12f1f9d9",
+          "runtimeHash": "41208c51c1940510f61fea0d57de93dcc9a1ff166bcf7723e3ce8f1f70894835",
+          "combinedHash": "a0c53753c187ac0760046098447878ba6a62f04b2773635cd91992e7f190ff90"
+        },
+        "knowledge/mmlu-pro/548": {
+          "contentHash": "3f4688b2bded94d6b7e1aa3b9896f5717da84572de8df29772f18aa958cf8fce",
+          "promptHash": "fa4e8a2ee9acc68595453bf12d9387fff7aafbd57cd237364314c5e06b561d45",
+          "gradingHash": "8c638697b13eb446f443c206ded383906ae79eaf91837664681d929c2654e6be",
+          "runtimeHash": "41208c51c1940510f61fea0d57de93dcc9a1ff166bcf7723e3ce8f1f70894835",
+          "combinedHash": "0cea93e681dd052a22f4a87081ee59dee9c8e288d477525126d1fbb833592acc"
+        },
+        "math/olympiad-text-math/2648": {
+          "contentHash": "5eb03718d620da3a98050a819d2aee88d68b198c2f823194802dfaeb03d9b043",
+          "promptHash": "f86da48ef015581f1809bba198b5ab3ce7bf6e6c126ea3b3283703b388df6953",
+          "gradingHash": "7b8871426699710ced7770089fe06b0be557f7f9e379a9ba36b5c618bb3dc901",
+          "runtimeHash": "41208c51c1940510f61fea0d57de93dcc9a1ff166bcf7723e3ce8f1f70894835",
+          "combinedHash": "33b3124c4655f13301f124a565a41eddeb6fc08b60ea54aeee751ad7afa70dd4"
+        },
+        "math/olympiad-text-math/2839": {
+          "contentHash": "a6bf6ea01b2f67de8a3d8e5fc8a6e3798068ebb6b9889605153e177fb7a6fa4a",
+          "promptHash": "d0d0a815946c7e2659dd1e28677e9eb5ef47aa46c01bc3c0c4bf1dea4f8a6629",
+          "gradingHash": "302e0f22beaa7ddc4a1a292036ed05dc525375337363c40007ab96ccf078b10e",
+          "runtimeHash": "41208c51c1940510f61fea0d57de93dcc9a1ff166bcf7723e3ce8f1f70894835",
+          "combinedHash": "3c7c41c5fc511593eeab34aeaed078a6e364ef6a51a0f7729c51c511d3a04f11"
+        },
+        "math/olympiad-text-math/2676": {
+          "contentHash": "020313238efb3727fc1b6a5c31e9141758ca2822834138f53418c118f29eedc6",
+          "promptHash": "5b63a4dc8dbb4fe5669ad36c63cccb5bea12f196c21bb1ef14a44bb56706525b",
+          "gradingHash": "dcbc109b3be74e87a36ad9953d3c74344c625658ce82b7587593434b4758363e",
+          "runtimeHash": "41208c51c1940510f61fea0d57de93dcc9a1ff166bcf7723e3ce8f1f70894835",
+          "combinedHash": "082d944912b1db40127c2bc8e7f48f8f925d0624ef8836339809848f9fc2a6e6"
+        },
+        "math/olympiad-text-math/2954": {
+          "contentHash": "89cdb7088f2245b1a984c5f8a3e6019bf7cfdddc9da7ee3e8c54057af4dc6385",
+          "promptHash": "525759f03cf9d41dff6784d34faa8a3b3ce28fd5880b0a030b29aeb4d27f1ac4",
+          "gradingHash": "1011acd1ec265fbf8050deb1b1bbe415acca6588a07e16e523c6c44d39edfa56",
+          "runtimeHash": "41208c51c1940510f61fea0d57de93dcc9a1ff166bcf7723e3ce8f1f70894835",
+          "combinedHash": "3d9920be3b021758a55633948f9a32a16f89dbb996883ded45e0a880bb1110b8"
+        },
+        "reading/66ebd5125a08c7b9b35e0616": {
+          "contentHash": "b9208e1557b37984b32e109b1fea282787483f443c7e48388757eb4ec50a8c4b",
+          "promptHash": "996320ad82e8f6bd84c4c946b7588b300c37eab2954b77934152a06e76cae93b",
+          "gradingHash": "7f2b13d9f94ea99f892632328fcb1d5c95ad19933090aa0aa0b4a9bedc42b739",
+          "runtimeHash": "41208c51c1940510f61fea0d57de93dcc9a1ff166bcf7723e3ce8f1f70894835",
+          "combinedHash": "8e6d7467c3ea6afbc8c934eda6e92c63d5553838746e9c307fb09048b024a3c6"
+        },
+        "reading/66ed1556821e116aacb1ea14": {
+          "contentHash": "5e2b306a03c22148d1f83a358389c1c5a1d52b664013e368afa8a9a55b523dbe",
+          "promptHash": "b68de91bf4b4d3d6297409b9cb3694cce67f0d39733a4e9ff4367ac6f1fc9c57",
+          "gradingHash": "2423c766baf60ff5076113e854605f14607085c1ebee928432a7611c5df21eb8",
+          "runtimeHash": "41208c51c1940510f61fea0d57de93dcc9a1ff166bcf7723e3ce8f1f70894835",
+          "combinedHash": "162541842cec67c314173b9d384b73e0eadc2c7ad2c3ca5f9569a61187847083"
+        },
+        "reading/66f2b676821e116aacb2b27a": {
+          "contentHash": "1c153105b669c9fed6fce61e16b6e12f5eee487857770286847796734722ba71",
+          "promptHash": "4ee982caca38046aca580ec71fafddc0749ff9e6257520babd444b2a35214a8a",
+          "gradingHash": "d5a5d9bd9d7b01730f95599b8ba6913e6509e62789d778c3d8c58a176b070501",
+          "runtimeHash": "41208c51c1940510f61fea0d57de93dcc9a1ff166bcf7723e3ce8f1f70894835",
+          "combinedHash": "6b907ed30d865d2ac0cdcdfcd1adb0fa4fa6b84fa940b0f647ed846d868a603f"
+        },
+        "reading/66f55d66821e116aacb33734": {
+          "contentHash": "73e7b81f8fd06e32a449276b3f8884fb4800dc90782cca46f51b2c06ded70000",
+          "promptHash": "3ff167adddbc2207c62a23ed658108c1df40e48af3ead5ef236b8cbdb4f4b92e",
+          "gradingHash": "894982d57921e1317a2dcff39a71006359a693f5403db69d01d2d469b72d87dd",
+          "runtimeHash": "41208c51c1940510f61fea0d57de93dcc9a1ff166bcf7723e3ce8f1f70894835",
+          "combinedHash": "2e6f385fe2b0978c2606c3b773fa04fece5cdcc95227b499787e4c5f053a2fec"
+        },
+        "reading/66f6bcf3bb02136c067c2703": {
+          "contentHash": "d1722ad808f3d675ba1d080917daa44dc446c383559c3fe9b89fb2d0516c781b",
+          "promptHash": "2bb3ffc391a77acd59132211db2c32d1ac7952c2903b39061e51b814d191be2b",
+          "gradingHash": "2423c766baf60ff5076113e854605f14607085c1ebee928432a7611c5df21eb8",
+          "runtimeHash": "41208c51c1940510f61fea0d57de93dcc9a1ff166bcf7723e3ce8f1f70894835",
+          "combinedHash": "47af3b6a4f4f17b2fa117fd33c5493ccf9da8a1549cd43cb81471ce2953bb61e"
+        },
+        "reading/66f96115bb02136c067c541c": {
+          "contentHash": "723dd4e30990f2d625f99cbd1c6dc8c321785550fe83c099077c3d8016dfada1",
+          "promptHash": "a8db61be8ff40e1157a82a459d6289b7ebbe7bd57eb63fb7245dd9d0198aff06",
+          "gradingHash": "894982d57921e1317a2dcff39a71006359a693f5403db69d01d2d469b72d87dd",
+          "runtimeHash": "41208c51c1940510f61fea0d57de93dcc9a1ff166bcf7723e3ce8f1f70894835",
+          "combinedHash": "e71be147e731ce13e0bfb9ad38f6f426fbdb189510a5098b4bf57425425cc8eb"
+        },
+        "reading/66fab4bfbb02136c067c754c": {
+          "contentHash": "6b91acd1ccde96c442c68ce7fc971b80b0ab3844e7c0fcbb1cb40073c7e28eaa",
+          "promptHash": "bf1d6a1cf943ddfb116a0b766dd7b7de85bae3777c667999079515c828667172",
+          "gradingHash": "7f2b13d9f94ea99f892632328fcb1d5c95ad19933090aa0aa0b4a9bedc42b739",
+          "runtimeHash": "41208c51c1940510f61fea0d57de93dcc9a1ff166bcf7723e3ce8f1f70894835",
+          "combinedHash": "8d26e346da79e32d985f9c29bafaf361b08d383ddbcb64fd49f4d145a15dec8b"
+        },
+        "reading/671b13f5bb02136c067d4ee3": {
+          "contentHash": "feaedd4a8c2293e8dd92fdb054dbb56fdda68ecb6fac1729ddd99c1a831b6973",
+          "promptHash": "20404ddf9c43b6e5687fedbddaf2abd1ba3c77f805ac034fe076994699acb279",
+          "gradingHash": "d5a5d9bd9d7b01730f95599b8ba6913e6509e62789d778c3d8c58a176b070501",
+          "runtimeHash": "41208c51c1940510f61fea0d57de93dcc9a1ff166bcf7723e3ce8f1f70894835",
+          "combinedHash": "a7ed27a69a94d9d61a33bcfc0e546f365232ca05c494a24dee71a35633c818b3"
+        },
+        "instructions/ifeval/3069": {
+          "contentHash": "98ae361e39caf7a2987c610c4284bedc71a7565e8ada4bce5946a219d6553dc9",
+          "promptHash": "92ed9265e8c1dd63d2783188e6d7e33bb5a449c600d84167b521f59af3c3df75",
+          "gradingHash": "7d10909b0b49627799e2731de84f333f253fa6e2a3b1d56c965c326cf57b8b26",
+          "runtimeHash": "41208c51c1940510f61fea0d57de93dcc9a1ff166bcf7723e3ce8f1f70894835",
+          "combinedHash": "322adb4450ae966bdae46e6498854722619c5c3155a3ad2bdc41b59057ab1eb3"
+        },
+        "instructions/ifeval/2275": {
+          "contentHash": "5bf99f3e312dfc397f645a124cafdba860dd739045265cd6dfeeb809a532a20c",
+          "promptHash": "6eb8cb950ef4c1e481ae3317c1beb7cc8b230b85b233358e69223ac8b93c39dc",
+          "gradingHash": "82a746992b2c45ae6d77b5399ec14e270a97ee18d81819cb8e581bb3e521ae7c",
+          "runtimeHash": "41208c51c1940510f61fea0d57de93dcc9a1ff166bcf7723e3ce8f1f70894835",
+          "combinedHash": "47a29ed2dce3d09e1bacc60f8c2a7f9a2a804be2bb8c592545b7717a0b363f54"
+        },
+        "instructions/ifeval/2683": {
+          "contentHash": "3e240bce5e05d1cbc678a314543a6c56bbf9e808cd5e930a94c0222c5de281ce",
+          "promptHash": "f061ad682db36327ad3b1e85100f3a1f26a996d1c3063d0647f766a58de030fb",
+          "gradingHash": "5c167ed56d8f3fe04a0134419268d2463a5a9b8ca47f6924f12f78d6b76ac203",
+          "runtimeHash": "41208c51c1940510f61fea0d57de93dcc9a1ff166bcf7723e3ce8f1f70894835",
+          "combinedHash": "5f423cfd326c67473fd262b63d396783fb5a56fe853dd6578ab0904f58af4bae"
+        },
+        "instructions/ifeval/2736": {
+          "contentHash": "4e7977502efd8157ac66b854c7b113822cfc2a0ebb5fd24f4f5dbb672b01c77a",
+          "promptHash": "9608a77692aa42235d12458c467c5693a55bc45544df6d407e78099c1c2b90fa",
+          "gradingHash": "050d232ec349eab4cdfe360720f85955129496b3ea58f1a80eadcb0aae7ca254",
+          "runtimeHash": "41208c51c1940510f61fea0d57de93dcc9a1ff166bcf7723e3ce8f1f70894835",
+          "combinedHash": "f0565998f9dfe00b9076e65a3d84f7ad3dbe2361be26dee0160828a463f737b0"
+        },
+        "instructions/ifeval/1129": {
+          "contentHash": "728fd6ce5f3ef5a65282841bba6a6620384fa1ed8d977b4321527e6487c9b83b",
+          "promptHash": "987d41a36bf793ca9bf749d80b6fca807bbba5bb431bda49eb286e4840b6dc7b",
+          "gradingHash": "ce52f84b07000ea549039f8b2d836a4bd9fa4bc296c3d1301709c42a3974edaf",
+          "runtimeHash": "41208c51c1940510f61fea0d57de93dcc9a1ff166bcf7723e3ce8f1f70894835",
+          "combinedHash": "742c179a79cea0b7510285b12b9c48497febe7ef1759ebdb7e04ee7610b01e2d"
+        },
+        "instructions/ifeval/1670": {
+          "contentHash": "6129b86d01b222a2fe4da79048efe33d00f691f1cdea65fa76fdd4058877ee6c",
+          "promptHash": "5100e0cf897015464a0f7107fa1e0d9a32cc347e6b7326c9df7fbbbaab9f0f86",
+          "gradingHash": "cf8e4c6e9bfbe6eef9152a295be095ca43b6e49dd0a189e930999f6c02aae18e",
+          "runtimeHash": "41208c51c1940510f61fea0d57de93dcc9a1ff166bcf7723e3ce8f1f70894835",
+          "combinedHash": "54c3604dd70b8e79175a5400326f4eaca52217f1cd2c5b703e4ca10cbd538abc"
+        },
+        "instructions/ifeval/3035": {
+          "contentHash": "ceb8cd0b89ea3595badad944b245dfb96f1a6bc7e6a6941556013e9cf6d0770c",
+          "promptHash": "7c9a5f21eeec96b10e676c787fbd0fd4f485ed3b5fa1bbbba734a07e5332086d",
+          "gradingHash": "dc8eaa61d52d3d3fc38abcb670384c9bd863247eb1a55b2a6c310e0a3bed5bcc",
+          "runtimeHash": "41208c51c1940510f61fea0d57de93dcc9a1ff166bcf7723e3ce8f1f70894835",
+          "combinedHash": "5bf59f9edac78fdfc51f7b7aa7f9f4f272b9a769fd5748e6521b6b913a6729ca"
+        },
+        "instructions/ifeval/332": {
+          "contentHash": "05828348873c0ed78c51a12f079bef84f9336d7817b70d74a7adeb45068079ef",
+          "promptHash": "2f0f49ee7a78ba2e6e6e82b0fe848347e9e1834d7f8e856512d7d6fc5bbac807",
+          "gradingHash": "9ae2ac38c023287890c53293f5133ecedf000f26a4f9e8f6b0709847365d1c62",
+          "runtimeHash": "41208c51c1940510f61fea0d57de93dcc9a1ff166bcf7723e3ce8f1f70894835",
+          "combinedHash": "af4ee76bf2988d9249ff2d4d6425851964b65e10830ffd5d8ffd61f7d3547959"
+        },
+        "instructions/ifeval/3534": {
+          "contentHash": "f19250f0a58d49b7d7bbd478fa1facdc07cd3a00d68792243eb18bf399e17364",
+          "promptHash": "247cc9b596bfbf09a7768f6147324def9105adc885b11250c880768a19a88465",
+          "gradingHash": "40231a03826b22835f4a44aa811df377cf57b1365f7753d96230ccfd8bf552dc",
+          "runtimeHash": "41208c51c1940510f61fea0d57de93dcc9a1ff166bcf7723e3ce8f1f70894835",
+          "combinedHash": "616ad066679e89d89a06236b0e47cde6ca219f1f1ff2d0821dd911907d5260a3"
+        },
+        "instructions/ifeval/1582": {
+          "contentHash": "ea1f6619a697238f94b3a866f3d2c783662406831fd9527a6572112a8ba5f384",
+          "promptHash": "3c4122799e7a4fee61aae45e9fb61599227254eecfb1cb0af134cf7568b9e2c3",
+          "gradingHash": "52c0ddf8e096bb13dad1c362f616aff5ad5194ab467c07f0a2c6feec422b5aa4",
+          "runtimeHash": "41208c51c1940510f61fea0d57de93dcc9a1ff166bcf7723e3ce8f1f70894835",
+          "combinedHash": "ceba394583a683eb8307401d65abe7e6fe99f024b3db1f200cfbe29e74165b24"
+        },
+        "instructions/ifeval/1619": {
+          "contentHash": "ce18736cfc7b4d79dab2b806298428ff46260bd36905cd943d10c02f4584a6ff",
+          "promptHash": "d0d1600a59f581fd76b25833a6611c7210c82b923b330eecb0716a604fa23284",
+          "gradingHash": "6246a7952ecb1c1f86022edd0dd0900e11e8eadc4b2cde90e0357e1c5eb7348f",
+          "runtimeHash": "41208c51c1940510f61fea0d57de93dcc9a1ff166bcf7723e3ce8f1f70894835",
+          "combinedHash": "ee8e7b2b7fe2e1f0a6b62e4573b966b74131b1a0894b74eef1bb6e98d643d07e"
+        },
+        "instructions/ifeval/3188": {
+          "contentHash": "abfb6a4c8e7e96d2801368180e5228f63d160b74e58a9f4ebf0a88d3166ab1b4",
+          "promptHash": "52d3024db5e8770cf3cc67b72774efce548c0e00c785a4317f974e9d2905c6ed",
+          "gradingHash": "deadc02e4b84f2a4c671b7ae4b0caeb3bf554bb2ca6721f05dde6747c09da135",
+          "runtimeHash": "41208c51c1940510f61fea0d57de93dcc9a1ff166bcf7723e3ce8f1f70894835",
+          "combinedHash": "9842cd15012d5ecefc45a28e8c0f566908587b7d7b18a5f34fdb66d5237b2190"
+        },
+        "instructions/ifeval/3204": {
+          "contentHash": "d7280977c3c24f88f509f054daf7dde5086c82a231c248a590907209371cb13e",
+          "promptHash": "5176708efa1a3bb11ab571d986e9190d49bb5766bf02d1fcc4bab1eaea051bc8",
+          "gradingHash": "919590a28f0b4059a7a5833933cee46d33f7ca3e638e9b5bcf71b3a89e716bfc",
+          "runtimeHash": "41208c51c1940510f61fea0d57de93dcc9a1ff166bcf7723e3ce8f1f70894835",
+          "combinedHash": "20defed487f6d13bd60ffaf8ff1686894cee0559d7d22bd3aeaa0ed8fba2e8dd"
+        },
+        "instructions/ifeval/1040": {
+          "contentHash": "72f52ed29b4a1e40f7ec76a9b4ba1c39b2207428e128b8148d4cb14f4bbe32e6",
+          "promptHash": "be4e53930f7b8ebd0511f228be94d6fc29a41201938347b0bc46762966315ce6",
+          "gradingHash": "f373f4844b87a32efee48bab045a6f75a13d1f36827a786baf3f9f8cd57033e4",
+          "runtimeHash": "41208c51c1940510f61fea0d57de93dcc9a1ff166bcf7723e3ce8f1f70894835",
+          "combinedHash": "d46f977d5408ec38dca5115b2b85df187c1e0cbd562d9db52032bdf44576ab2b"
+        },
+        "instructions/ifeval/152": {
+          "contentHash": "d5ac636f623d37012257c22940bf2468c48d489aff68bf7bb53cc3feaabb0c3f",
+          "promptHash": "04ee322c0dd0fbbcf8fc83db902ddf3faa6782d62e3c1c1b75e588e87f33c893",
+          "gradingHash": "47aaee3d9380f69bc7751ee6c7b97e8d6e0194d39f71b719ee1bed716a8d7c22",
+          "runtimeHash": "41208c51c1940510f61fea0d57de93dcc9a1ff166bcf7723e3ce8f1f70894835",
+          "combinedHash": "3c95878e5ab78f550635ede522d0c5c5bd7bfe3a13f1e12f81e43d9fe3b79736"
+        },
+        "instructions/ifeval/1012": {
+          "contentHash": "565ff49ce712e028df2f331e35f202ca5803f79a3f2712b52ae3fd9644c288d0",
+          "promptHash": "855b0ca13e55cdcde48ba16311a64a56f1f3a77fdeadfaf65a9012187abe876c",
+          "gradingHash": "85dbc3b4dad9c6ec7a64fc1f49110a16c264559701f67c25b3399caca88f41c2",
+          "runtimeHash": "41208c51c1940510f61fea0d57de93dcc9a1ff166bcf7723e3ce8f1f70894835",
+          "combinedHash": "ec5c265bd70e58b90380dc6b823efeff38ea016a3bb154b34837e2d485094476"
+        },
+        "instructions/ifeval/1219": {
+          "contentHash": "43f39b53d05ee55f51de64c6779b0db557f80098fc59cf7ec5af09d88a87272b",
+          "promptHash": "33e5bccbb4a306bb9361dfb1bbf88e8d0b3eb3acbcf84799db56da99c427f372",
+          "gradingHash": "bf812eb5f05d979304af860d2aa7a8462062ad9bfa846b1b729665ea7579aea8",
+          "runtimeHash": "41208c51c1940510f61fea0d57de93dcc9a1ff166bcf7723e3ce8f1f70894835",
+          "combinedHash": "d21ebd063f4cc42be7556ed1ae21a33297f18f3d7530ea39b193f6648cfffba1"
+        },
+        "instructions/ifeval/2853": {
+          "contentHash": "a03753c9623a9471cb3cbec8588b2666c308d1a992ae38381e7a19efe2107752",
+          "promptHash": "ed8977315e05dce29ef94c1b0bf73dbc732696246e12649427ef260e892bff69",
+          "gradingHash": "cc15ccec8b937b1a635e78b8fc964e98684ba3f4bbfd4cf088a507db9e50436a",
+          "runtimeHash": "41208c51c1940510f61fea0d57de93dcc9a1ff166bcf7723e3ce8f1f70894835",
+          "combinedHash": "287dba1ecf2a061eb60f87e36d347c4d09336b4e14f5be6809c88e34e92f3720"
+        },
+        "instructions/ifeval/3380": {
+          "contentHash": "48d998a6e6f8e5eebe9c59d0ae708b8633af3be206c90e2d5e0dd26580a1b353",
+          "promptHash": "157243333a5efe226de57ccd691c81ed918a487337ec9deb67073891366855a7",
+          "gradingHash": "3a5675689e153686aa32dabfd5a6fde62fdafe159bc230c50596fbe180691ee1",
+          "runtimeHash": "41208c51c1940510f61fea0d57de93dcc9a1ff166bcf7723e3ce8f1f70894835",
+          "combinedHash": "e99e6b7de47e2d5b70bfef94327246f119dab8e441a862644a7c2a75553754e4"
+        },
+        "coding/code-contests-test/160": {
+          "contentHash": "0be47da07e687ce53748dc396da0bf43f0168cbdce35229cf0b48128361fcaf9",
+          "promptHash": "b5016e7efc6845748078cb08c7471d081409d2c92872e57143f08b9f44e39eb8",
+          "gradingHash": "3aa7566bc497f112a3b246b35c1989a5ffc1eab523b23d40873cbd5ba142031d",
+          "runtimeHash": "41208c51c1940510f61fea0d57de93dcc9a1ff166bcf7723e3ce8f1f70894835",
+          "combinedHash": "4215edf990b852a356701329ecc8611375e39534283757545db4ea5ec9fb1eb6"
+        },
+        "coding/code-contests-test/59": {
+          "contentHash": "f1eb3c7656d34581b58318bed7b8948f37c400b948cf4c5d3aedd6845b401747",
+          "promptHash": "30b76c2c0ead23e5e1dac62956073113283f7e2b910143314b73337ac5d406b2",
+          "gradingHash": "04e76a076cf3953d491caed05a83581677d92116655344b2e44ddf2ce0b10b83",
+          "runtimeHash": "41208c51c1940510f61fea0d57de93dcc9a1ff166bcf7723e3ce8f1f70894835",
+          "combinedHash": "20a45a4a1f74cc02bb17d237fe924885d1febd00b846fbef4ae0affd214af5bc"
+        },
+        "coding/code-contests-test/115": {
+          "contentHash": "1090420ae0605503732afd73db7ec31785d3f1287373511b764f281859aaa0dd",
+          "promptHash": "5de5ecf49ec217c1e3659bbb679a1569433233f874882698fcec21a918725d0b",
+          "gradingHash": "da4a3e27ecd6f707f65cc9ba6b962bfc168408161ade1cab0c1015d1749d29e7",
+          "runtimeHash": "41208c51c1940510f61fea0d57de93dcc9a1ff166bcf7723e3ce8f1f70894835",
+          "combinedHash": "e321df0a4d070298cf3ddf2fd5d0e92a05957452f3b01990ad42d6db29fc7a67"
+        },
+        "coding/code-contests-test/129": {
+          "contentHash": "f97d5e5d1304be2cf50a1d1da268362dc569509e006bd1a9a9f13b67a2ede37d",
+          "promptHash": "a3e1a1b163a2864915f931341ad9f6b4048fd64105b9119e7ba9614ab1738638",
+          "gradingHash": "845a2ae6a7c4b4ea8ae75468ea91f4a6844bb849c442fa2f61232ff3a149dd50",
+          "runtimeHash": "41208c51c1940510f61fea0d57de93dcc9a1ff166bcf7723e3ce8f1f70894835",
+          "combinedHash": "bac87b76823e1b6b0c2ec59a546699188047cd67c4df5e71d23b5b24f04b9758"
+        },
+        "coding/code-contests-test/121": {
+          "contentHash": "14e7153b4bde5a06904a539d81b53cd728aa66af2b6d847a2e27b7348569764d",
+          "promptHash": "73ad6dca92219f63370ad845f93a24f89407ef34c8cf4f67c730b8c58e029e67",
+          "gradingHash": "b3bb1dba164521e3b1816b3561eaa94f2a3fdfd230b7d0c628ad06b3bd2f099f",
+          "runtimeHash": "41208c51c1940510f61fea0d57de93dcc9a1ff166bcf7723e3ce8f1f70894835",
+          "combinedHash": "73673faf64308cfd660059b2f663a5893f830b7798437ad50bde691d1a3335eb"
+        },
+        "coding/code-contests-test/151": {
+          "contentHash": "67ab59cc3026260378f6957b20635418a0ffed91a55417fc5c9d3a8003baacdf",
+          "promptHash": "0d1cb0c72787030b03cb116d4932be6fe49ae6e0b3a05fb96ca0d068bd63b95a",
+          "gradingHash": "f4aaa7a4554190c2eba3bd67e9a16a1fe4941f06334644c6263b127931d4e03f",
+          "runtimeHash": "41208c51c1940510f61fea0d57de93dcc9a1ff166bcf7723e3ce8f1f70894835",
+          "combinedHash": "3a75197b3840e7e042dbe754206b21ff173f1c05adf6aa49ca1303d89dfa9ec3"
+        },
+        "coding/code-contests-test/3": {
+          "contentHash": "d32879c8e0c8d74af4e118183b755819da58604d0346d7ed8caece09ac19b0e8",
+          "promptHash": "4379e7ac57da40dcd5bde5abe9a1bc6c66ed906cd40d8ce872dd9728ff8ea830",
+          "gradingHash": "f29eb9cfbb8dc80e7ab1a17f41a8be1fb9083ccb3f29c88510078894b15f41fe",
+          "runtimeHash": "41208c51c1940510f61fea0d57de93dcc9a1ff166bcf7723e3ce8f1f70894835",
+          "combinedHash": "fd0ace5f2d1ea301f27ad56e1949d4213438dc434c03405fbb366272de52e4b6"
+        },
+        "tools/multi_turn_base_39": {
+          "contentHash": "7df83207d3f908912c665e0700691acdfe53a961e28bf059012cfbb0fd62e6cf",
+          "promptHash": "0c6e576feb3bbb541b65d17ed3af2ec43f32d9417c11edf013c4976e9cbc761e",
+          "gradingHash": "7c19bc8f8aa9e28ac54128379006babb8df5234900a619069889767f12bf55ca",
+          "runtimeHash": "41208c51c1940510f61fea0d57de93dcc9a1ff166bcf7723e3ce8f1f70894835",
+          "combinedHash": "d0b8a9f798c352c7beb77eb49affff2677766961cbf0a7e5a45bf5c06884a979"
+        },
+        "tools/multi_turn_base_5": {
+          "contentHash": "b2c00907cbf1058e55353ff92d9a4000c3483256c692d02448643f2d5612a2b9",
+          "promptHash": "6fa6f794778b3e8ae55a6cae59199570d555a9ccc50d2d1795758b3b4ef5b1f2",
+          "gradingHash": "f79ab65d9c4d9d452b958a6ba9496cd70974b2c567af7a663a3f1208b6b66175",
+          "runtimeHash": "41208c51c1940510f61fea0d57de93dcc9a1ff166bcf7723e3ce8f1f70894835",
+          "combinedHash": "941c450c6dfe9376bf11a761fab617cb180d458c7eca51fdd687a2b563a91876"
+        },
+        "tools/multi_turn_base_11": {
+          "contentHash": "ae1b791adf27ecee4e998cf545b73da963a5f698fe0ec4ea2db1663c9587a2ac",
+          "promptHash": "c88b5f5102b7b3463fd8c0db25c03a66674d088fd7ed814722bc6b5d58b94c36",
+          "gradingHash": "13348170e364d7a8d071c799121259a04680a0d1e43f9d684cf2bccf179f6a08",
+          "runtimeHash": "41208c51c1940510f61fea0d57de93dcc9a1ff166bcf7723e3ce8f1f70894835",
+          "combinedHash": "f434cd825b4d71de8238de0c828286982af179ae1f39d90d8b24dabc0a61a8b2"
+        },
+        "tools/multi_turn_base_83": {
+          "contentHash": "177fbbe748bbc12f1be15be723f079190ca0c0c2c2a80b4e6766cef58f17ba95",
+          "promptHash": "090a243c2e9bf91b453d9212c40543aea3197aef04389c4f186a2bbc76dde237",
+          "gradingHash": "80499df0fa4bc68a9e9021dbe93ce3e0463f775a80322413f7503619758910bd",
+          "runtimeHash": "41208c51c1940510f61fea0d57de93dcc9a1ff166bcf7723e3ce8f1f70894835",
+          "combinedHash": "d763d2f848f13d77998450d2b8db16357f5036411f6ef10ff6ee0a8f91b76846"
+        },
+        "tools/multi_turn_base_148": {
+          "contentHash": "1118dfe58c124138de60045edd4b377b3fdbcb5f15b047d1179b0e7c353a4c5b",
+          "promptHash": "0b89849ebfcda1c12c70579ea9ac71c8a6c20c14edbf8d90d565031e6ee79372",
+          "gradingHash": "d9973c545462c3f456eb9ce0d6f3f6d5b7f62e75d7c24cebb048f49f2d95238f",
+          "runtimeHash": "41208c51c1940510f61fea0d57de93dcc9a1ff166bcf7723e3ce8f1f70894835",
+          "combinedHash": "f2a1d0c5d73006bcd7651965ec6d74fcde229c0bb0b974de397f849d2ae39848"
+        },
+        "tools/multi_turn_base_142": {
+          "contentHash": "a6a63088138b098f98abb880303fe8cb55aea182e876c5ff7d86731aa1b9868a",
+          "promptHash": "6ceab89afb5e71fb229d156fdf4430b62b129844fe78f96639e5a19236bbece0",
+          "gradingHash": "878af2e46a230a7a47b1d7968b97586d1df77b93545331b0961eda8286341b13",
+          "runtimeHash": "41208c51c1940510f61fea0d57de93dcc9a1ff166bcf7723e3ce8f1f70894835",
+          "combinedHash": "b3e8e404d00e83b7f9d72efc9f14d5a839af9a31b70cfa2128da7366474807db"
+        },
+        "tools/multi_turn_base_153": {
+          "contentHash": "b50c284ccef0532a092572571eea771304f08801b76c1b1796afb25cdbdaefe1",
+          "promptHash": "b66eb959e9b26f780f99965a7b6e919d6d3c2c2c85a373a7473b91eeb1a72e54",
+          "gradingHash": "6f671933bd063ec5e803191b56a33645a03e5094a553d44886a977ed979c65e1",
+          "runtimeHash": "41208c51c1940510f61fea0d57de93dcc9a1ff166bcf7723e3ce8f1f70894835",
+          "combinedHash": "5354b4898816370e28f0a55e66f86c82e47317943f5a3d1315711147ba63cec8"
+        },
+        "tools/multi_turn_base_196": {
+          "contentHash": "526c9f3849b7aacec4919eeb34c22c50bb3c9c1bfbd96ab5c21f35b65f37a138",
+          "promptHash": "b636a2732b22da2094f6183eb47cada37f02e657332d5301d47c3ee188cad54a",
+          "gradingHash": "868a99f014f6e519046f7d2267648211527423912e56bad6e614fd5b889313cb",
+          "runtimeHash": "41208c51c1940510f61fea0d57de93dcc9a1ff166bcf7723e3ce8f1f70894835",
+          "combinedHash": "c82e66984ee205129cd5f89764ec6fe364f8da321e7236e2f22c5552a304d72a"
+        }
+      },
+      "questionHashes": {
+        "knowledge/mmlu-pro/2815": "39825e591772ce8093826725e758f28c64cb963647e383de03b65ff6c71070aa",
+        "knowledge/mmlu-pro/3820": "34a288c59a716d9ab9aaa3aef35f0d626821fec95d28a1dbd2c7c11d7b91a15b",
+        "knowledge/mmlu-pro/10472": "4818381f4e330c85a3954a9106da54ad276a790fea41f5bd2f73a43c1d94e6d2",
+        "knowledge/mmlu-pro/7552": "f1de43047c83730aa0c9b941ab8ae4407d5caaec03dc2c1f14370ffaed34595e",
+        "knowledge/mmlu-pro/11462": "d20e7365f406de520c991d87eb044deec3d499d7162fa1870893b02ec1e7abd4",
+        "knowledge/mmlu-pro/6796": "bd889a3ebac5450927345d28ab9147d606d37110731df5b31e31ca75760fe958",
+        "knowledge/mmlu-pro/1831": "d30bca15c45a9023782a7b881260dbfc7ae878e71a7f6450aab53ccc3493d3ed",
+        "knowledge/mmlu-pro/5987": "9335f5f0b86db266c6dba52d912f3a5508e78ce48a9765e13a9976e88569a343",
+        "knowledge/mmlu-pro/11254": "b842b1c2f4cd7b7992cecb3de879313ad3aa9712572911789fe34b88d2751ba1",
+        "knowledge/mmlu-pro/9052": "6cf176e87cd44ea211a3987f40321bb72b53883fa41044ee627faf6134c43cd2",
+        "knowledge/mmlu-pro/2409": "ea366f62ed656dd0c8e4f610f76809e7dfa32e4d030b990cfb55b8348056fca2",
+        "knowledge/mmlu-pro/3365": "3758fe34a4b0a5c341f39b591e2f03012c58e3e51a4bfcd1131ac0de29e67eb6",
+        "knowledge/mmlu-pro/548": "754d020a89d8b020987feacee80b6a1f546ee87630d0e8e9f7495878788cb52a",
+        "math/olympiad-text-math/2648": "0a4b8f32c2ae2bb30c29293fbb9125cb2ef175513aa1572f4e4c16a472eebc13",
+        "math/olympiad-text-math/2839": "3faeb97746534f6f1afc853095d76fded4f3915053f170f97ea7e7ba6dc14803",
+        "math/olympiad-text-math/2676": "0f889366a9afaf26f5fdeab7616fa0cae19528c40740897e2810d93f3757398b",
+        "math/olympiad-text-math/2954": "50995a9ca2075d29569a55f718d0f9e8a2109a032fe44d5b36f485e93315203d",
+        "reading/66ebd5125a08c7b9b35e0616": "add88c3abc8fe45b73066ba36c51bf146ab55ae56a6ec93f6c6d2e6f2ed6b13c",
+        "reading/66ed1556821e116aacb1ea14": "d104ee0f85da64e59e9b5f952affdcf63d017f50c0f5b34c5bb08f2c4761a4ab",
+        "reading/66f2b676821e116aacb2b27a": "5f48898178fb8564f36ae3e66b5148c2d67829574e3c9d663bc3a4307e6f753d",
+        "reading/66f55d66821e116aacb33734": "4928c592404eabee416d2c64aca6b4aa4de9fc9130e4f79491a874c86b1b74f1",
+        "reading/66f6bcf3bb02136c067c2703": "c0038f307b912a3fab14caa39fea08acbd1f0eb8eb544814eacc472502f4ceba",
+        "reading/66f96115bb02136c067c541c": "c5c38bff549052087ed0eeb743e8902716b1905180eb9cc322a961ec18925627",
+        "reading/66fab4bfbb02136c067c754c": "4e9e6282218ca6762b984756199b38716b8b739eb6474d259bb53ff1f1fc7878",
+        "reading/671b13f5bb02136c067d4ee3": "415bef7fe1ee015d31635d49cd8803ec2203b3486b875c90ae942ab6417e7406",
+        "instructions/ifeval/3069": "9504d1b8650f68d3babe5685e451bc3aefad91347280210a147a463fca294cc2",
+        "instructions/ifeval/2275": "001d6bea7dda49d46c372a11970c79933d62a60b606875341f7b471776eeeb82",
+        "instructions/ifeval/2683": "174f3c4a9ab161c3b5f1c3e470d3621442da43f72ce663411c872c2d56914937",
+        "instructions/ifeval/2736": "51772ce8d044cde82f66b89518e6e5a2435b46f09525a6ba92ab240efdd2adf8",
+        "instructions/ifeval/1129": "e9f8386444d1c3f4d5c7c2d0b4b391a2670ec07265d98e68e56ef175d9104d97",
+        "instructions/ifeval/1670": "e97abd71a73052d15afd008b5cef01d5147afb9a244fdce5e43fe99620926a67",
+        "instructions/ifeval/3035": "03745c4b84974c297a97389eebe22a26a6e90c01ae045c2c0100300c69dde22d",
+        "instructions/ifeval/332": "1f525b322675cd1db01e665a7cfbadc9b64d6990813a4a6626e23eee865afdc8",
+        "instructions/ifeval/3534": "25fb6328757c62f1d00a982574bce3443f8aab1c0513c00823e251ab924887de",
+        "instructions/ifeval/1582": "7bb0c1998a27875b30739a01f73a7a459379f4c554421e9fb26e63022dcec1a7",
+        "instructions/ifeval/1619": "c383619334366f5f4a115f6a401e7bc3bb6fb1435ff2bbedf63fb952f955f220",
+        "instructions/ifeval/3188": "c230ea8de1fe0f51f8e1db26b25603f10badc35b152c389a29d8ed015650cb6c",
+        "instructions/ifeval/3204": "ec97fc711443484903d3282b9e47f70a2fb3893faf70e4f0a067a871294b0cc0",
+        "instructions/ifeval/1040": "8589c4d2459ac915e2e24adb661b5a0e54604b8b794ea30b3058173bd376a7e3",
+        "instructions/ifeval/152": "ca1844471da24c497732b1741b2cc36355b19ca0652c6c124aa6cf0ca004026c",
+        "instructions/ifeval/1012": "b42f35d25b4c9687fd2c4df4fd070e0ceb29796f1502e76202178846c59ba58e",
+        "instructions/ifeval/1219": "b4b51c178a985b16d99fb582bb2e70ff9b4b544ded36c66a739e7ea85777ddbd",
+        "instructions/ifeval/2853": "08d56932b5330c19641456e1ac13c7362ce4340e71372da46a1df14af7805c53",
+        "instructions/ifeval/3380": "afe0b63b5f595758b718d711b9bb7c0ed4ebb92bf66f25c2eae114ab80092e99",
+        "coding/code-contests-test/160": "287b0168e0962e537da62fe49511572cf92db53a574784e64cce9174d8af18fb",
+        "coding/code-contests-test/59": "a7cebfcdd9ddef0ad65c84148b63834521a3531e056f33bcb6dafa3d2b12512e",
+        "coding/code-contests-test/115": "6da805c58556d60a6c9a5a47012c917555f164888440cd1352aaf72ad2c7466c",
+        "coding/code-contests-test/129": "aaf544cf250e1cffac5f47f3c7a9eb91176b1c8e2fa41ed3a42a4e4d8a08823b",
+        "coding/code-contests-test/121": "e91c82b84c806ded87d92e2abb4ca19b9f968f097cc01990242674b05feeb2a4",
+        "coding/code-contests-test/151": "0ce583c9aef6d94bc078313a2af45e50b1c8f1a1d1f37c01047d93eab5305ca4",
+        "coding/code-contests-test/3": "4fc0d33a49bce8d08db3d1822cf3cc9a69c88ef6897e9d7324826c62a796514d",
+        "tools/multi_turn_base_39": "b6d43f036c583a971fa11e0a86bdabb7fdfb0a4a0416bc03b3bed0d2b3272458",
+        "tools/multi_turn_base_5": "6d902b46013e4640174f09a9b0f1d558b7a3d788fa615de9885f754e7b7bca30",
+        "tools/multi_turn_base_11": "45529c013018c859476737fe53ebfd2a16b3d368bcd5bf66f4adacfea06a61ce",
+        "tools/multi_turn_base_83": "c2fb886331c1cdb18280bd12977a4f8899cd068007abcbfff5df7947a5a558dd",
+        "tools/multi_turn_base_148": "095f1fea59bb32662e3ca568af5ebe18e3bfe8c81aa8e9ccbb468cd77eb10b5f",
+        "tools/multi_turn_base_142": "445073f6d612f9486d3b8d1ce6b8a095dc10292a363e1bc892af24ac055c56a6",
+        "tools/multi_turn_base_153": "c6c2d11f6dd0d078f1c3af33c9f5f96eadd8e1d2e7b0195293757dd38ba7d8ef",
+        "tools/multi_turn_base_196": "2ce63a642f945afbad963df144fb18605020d304f8ac7cd5b5115c3524573ce8"
+      },
+      "mapHash": "8422f1bc07f9993dce820152a6f35de88222f71062051f563c27353a3dd0170b"
+    }
+  ]
+}

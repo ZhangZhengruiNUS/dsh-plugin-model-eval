@@ -1,0 +1,24 @@
+/* Model-eval adapter only. Shared primitives never depend on these names. */
+.model-eval[data-dsh-ui]{
+ --me-bg:var(--ui-bg);--me-panel:var(--ui-surface);--me-text:var(--ui-text);--me-muted:var(--ui-muted);
+ --me-border:var(--ui-border);--me-hover:var(--ui-hover);--me-accent:var(--ui-accent);--me-accent-soft:var(--ui-soft);
+ --me-danger:var(--ui-danger);--me-primary-fill:var(--ui-accent);--me-primary-ink:var(--ui-on-accent);
+ --me-feedback:var(--ui-feedback);--me-warn-text:var(--ui-warning);
+ font-family:var(--ui-font);
+}
+.model-eval[data-dsh-ui] :is(input:not(.dsh-input):not([type=checkbox]):not([type=radio]),textarea){
+ border:1px solid var(--ui-control-border);border-radius:var(--ui-radius-control);background:var(--ui-surface);color:var(--ui-text);
+ font:13px/1.55 var(--ui-font);min-height:var(--ui-control);box-shadow:none;padding:7px 10px;
+}
+.model-eval[data-dsh-ui] :is(input:not([type=checkbox]):not([type=radio]),textarea):focus-visible{outline:2px solid var(--ui-focus);outline-offset:3px;box-shadow:none;}
+.model-eval[data-dsh-ui] :is(input[type=checkbox],input[type=radio]){accent-color:var(--ui-accent);}
+.model-eval[data-dsh-ui] .me-button{min-height:var(--ui-control);border-radius:var(--ui-radius-control);font-size:13px;}
+.model-eval[data-dsh-ui] .me-button:focus-visible{outline:2px solid var(--ui-focus);outline-offset:3px;}
+.model-eval[data-dsh-ui] .me-model-select{min-width:0;}
+.model-eval[data-dsh-ui] .me-result-protocol{max-width:340px;}
+.model-eval[data-dsh-ui] .me-result-protocol>.dsh-select{flex:1;min-width:0;}
+.model-eval[data-dsh-ui] .me-fields>.dsh-select{min-width:0;}
+.model-eval[data-dsh-ui] .me-result-search input{padding-left:35px;padding-right:36px;}
+.model-eval[data-dsh-ui] input.dsh-input[aria-invalid=true]{border-color:var(--ui-danger);}
+.model-eval[data-dsh-ui] .me-button.dsh-button-danger:not(.primary):not(.text){border-color:var(--ui-danger);color:var(--ui-danger);}
+@media(forced-colors:active){.model-eval[data-dsh-ui] .me-button.primary{background:Highlight;color:HighlightText;}}

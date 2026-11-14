@@ -1,0 +1,12 @@
+{
+  "schema": "tool-answer-correction-v1",
+  "id": "task-five-v3-r2",
+  "sourceVersion": "task-five-v3-r1",
+  "changedItems": [
+    "tools/multi_turn_base_39"
+  ],
+  "newQuestions": 0,
+  "excludedItems": [],
+  "profile": "filesystem-answer-list-v3",
+  "unchangedGrades": "carry after identity checks; no model calls or unchanged-grader execution"
+}

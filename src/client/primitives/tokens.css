@@ -1,0 +1,50 @@
+/* DSH Plugin UI 0.1.0-preview. Candidate tokens, scoped to each UI root. */
+[data-dsh-ui] {
+  --ui-bg:#f3f5f2;--ui-surface:#ffffff;--ui-raised:#ffffff;--ui-sidebar:#e9eee9;
+  --ui-text:#202a27;--ui-muted:#5b6862;--ui-border:#c5cdc8;--ui-control-border:#7f9186;
+  --ui-hover:#edf2ee;--ui-accent:#176555;--ui-on-accent:#ffffff;--ui-soft:#e6f1eb;--ui-focus:#217660;
+  --ui-danger:#a12f36;--ui-success:#216b3b;--ui-warning:#855511;
+  --ui-shadow:0 12px 32px #182b2526,0 2px 6px #182b2512;
+  --ui-font:system-ui,-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei UI",sans-serif;
+  --ui-space-1:4px;--ui-space-2:8px;--ui-space-3:12px;--ui-space-4:16px;--ui-space-6:24px;--ui-space-8:32px;
+  --ui-control:36px;--ui-row:44px;--ui-inset:24px;
+  --ui-radius-control:8px;--ui-radius-popup:10px;--ui-radius-card:12px;--ui-radius-dialog:16px;
+  --ui-feedback:140ms;--ui-enter:180ms;
+  color-scheme:light;color:var(--ui-text);font:13px/1.55 var(--ui-font);
+}
+[data-dsh-ui][data-palette="paper"] {
+  --ui-bg:#f4f1ea;--ui-surface:#fffdf8;--ui-raised:#fffefa;--ui-sidebar:#eae4d9;
+  --ui-text:#322b24;--ui-muted:#736656;--ui-border:#cfc5b8;--ui-control-border:#938370;
+  --ui-hover:#f3ede2;--ui-accent:#8a561c;--ui-on-accent:#ffffff;--ui-soft:#f6e9d1;--ui-focus:#8a561c;
+}
+[data-dsh-ui][data-appearance="dark"] {
+  --ui-bg:#161c1a;--ui-surface:#1c2420;--ui-raised:#232e28;--ui-sidebar:#19211d;
+  --ui-text:#ecf1ed;--ui-muted:#9fafa5;--ui-border:#34433b;--ui-control-border:#687b6f;
+  --ui-hover:#2a3730;--ui-accent:#9cc9b4;--ui-on-accent:#152a20;--ui-soft:#293f34;--ui-focus:#9cc9b4;
+  --ui-danger:#ffa6a9;--ui-success:#a0ceaa;--ui-warning:#e3bf83;
+  --ui-shadow:0 16px 40px #0006,0 2px 8px #0005;color-scheme:dark;
+}
+[data-dsh-ui][data-palette="paper"][data-appearance="dark"] {
+  --ui-bg:#201d19;--ui-surface:#29251f;--ui-raised:#322c24;--ui-sidebar:#242019;
+  --ui-text:#f0e8db;--ui-muted:#b8aa96;--ui-border:#4c4438;--ui-control-border:#8d7e65;
+  --ui-hover:#3a3329;--ui-accent:#dab77a;--ui-on-accent:#30200b;--ui-soft:#403322;--ui-focus:#dab77a;
+}
+
+/* Additional candidate palettes; shared semantic status colors stay unchanged. */
+[data-dsh-ui][data-palette="graphite"][data-appearance="light"] {
+  --ui-bg:#f3f3f3;--ui-surface:#ffffff;--ui-raised:#ffffff;--ui-sidebar:#e8e8e8;--ui-text:#252525;--ui-muted:#606060;--ui-border:#cccccc;--ui-control-border:#878787;--ui-hover:#ededed;--ui-accent:#353535;--ui-on-accent:#ffffff;--ui-soft:#e4e4e4;--ui-focus:#353535;
+}
+[data-dsh-ui][data-palette="graphite"][data-appearance="dark"] {
+  --ui-bg:#181818;--ui-surface:#222222;--ui-raised:#2c2c2c;--ui-sidebar:#1c1c1c;--ui-text:#eeeeee;--ui-muted:#b2b2b2;--ui-border:#404040;--ui-control-border:#818181;--ui-hover:#343434;--ui-accent:#d0d0d0;--ui-on-accent:#202020;--ui-soft:#383838;--ui-focus:#d0d0d0;
+}
+/* Electric blue: cold neutral surfaces, saturated blue emphasis. */
+[data-dsh-ui][data-palette="electric"][data-appearance="light"] {
+  --ui-bg:#eef4fc;--ui-surface:#ffffff;--ui-raised:#ffffff;--ui-sidebar:#e1ecfb;--ui-text:#12253f;--ui-muted:#4c6280;--ui-border:#becfe3;--ui-control-border:#7187a5;--ui-hover:#e6effb;--ui-accent:#065dcc;--ui-on-accent:#ffffff;--ui-soft:#dcecff;--ui-focus:#065dcc;
+}
+[data-dsh-ui][data-palette="electric"][data-appearance="dark"] {
+  --ui-bg:#0c1420;--ui-surface:#111e2e;--ui-raised:#182a40;--ui-sidebar:#0e1928;--ui-text:#e8f3ff;--ui-muted:#a1b4ce;--ui-border:#30445d;--ui-control-border:#6082a9;--ui-hover:#1d324b;--ui-accent:#4ba5ff;--ui-on-accent:#06172c;--ui-soft:#113b63;--ui-focus:#5bb9ff;
+}
+[data-dsh-ui][data-density="compact"] {--ui-control:32px;--ui-row:40px;}
+@media(pointer:coarse){[data-dsh-ui]{--ui-control:44px;--ui-row:48px;}}
+@media(prefers-reduced-motion:reduce){[data-dsh-ui]{--ui-feedback:0ms;--ui-enter:0ms;}}
+@media(forced-colors:active){[data-dsh-ui]{--ui-bg:Canvas;--ui-surface:Canvas;--ui-raised:Canvas;--ui-sidebar:Canvas;--ui-text:CanvasText;--ui-muted:CanvasText;--ui-border:CanvasText;--ui-control-border:ButtonText;--ui-hover:Canvas;--ui-accent:Highlight;--ui-on-accent:HighlightText;--ui-soft:Canvas;--ui-focus:Highlight;--ui-danger:CanvasText;--ui-success:CanvasText;--ui-warning:CanvasText;--ui-shadow:none;}}

@@ -1,10 +1,11 @@
+import {createTimingTraceHistory} from './timing-traces.ts';
 import {createSpeedHistory} from './speed.ts';
 import {randomUUID,createHash} from 'node:crypto';import {readdir,lstat,realpath,readFile,unlink} from 'node:fs/promises';import {join,relative,resolve} from 'node:path';
 import type {HistoryStore,HistoryTransaction} from './store.ts';import {readRecord,writeRecord} from './atomic.ts';
 import {refreshRunSummary} from '../evaluation/aggregate-run.ts';
 import {assertNoPendingReuse} from './reuse.ts';
 export interface RunUsage {runId:string;batchId:string;totalBytes:number;detailBytes:number;summaryBytes:number}
-export interface HistoryUsage {historyBytes:number;resourceBytes:number;sharedBytes:number;runs:RunUsage[];previews?:{previewId:string;totalBytes:number}[];measurement:'file-bytes'}
+export interface HistoryUsage {historyBytes:number;resourceBytes:number;sharedBytes:number;timingBytes?:number;timingTraces?:{traceId:string;bytes:number}[];runs:RunUsage[];previews?:{previewId:string;totalBytes:number}[];measurement:'file-bytes'}
 interface FileEntry {runId:string;path:string;size:number;sha256:string;state:'planned'|'deleting'|'deleted'|'missing'|'failed';error?:string}
 export interface CleanupPreview {token:string;rootId:string;batchIds:string[];runs:{runId:string;revision:number;losesResume:boolean}[];bytes:number;expiresAt:string}
 export interface CleanupOperation {operationId:string;rootId:string;batchIds:string[];runIds:string[];status:'running'|'partial'|'completed';plannedBytes:number;deletedBytes:number;unconfirmedBytes:number;remainingBytes:number;files:FileEntry[]}
@@ -16,19 +17,43 @@ async function walk(root:string,base=root,hashFiles=true):Promise<{path:string;s
   if(!info.isDirectory())return fail('CLEANUP_PATH_REJECTED');const files=[];
   for(const name of await readdir(root))files.push(...await walk(join(root,name),base,hashFiles));return files;
 }
+async function measureResources(path:string,seen=new Set<string>()):Promise<number>{
+  let info;try{info=await lstat(path,{bigint:true});}catch(error){if((error as NodeJS.ErrnoException).code==='ENOENT')return 0;throw error;}
+  if(info.isSymbolicLink()||await realpath(path)!==resolve(path))return fail('CLEANUP_PATH_REJECTED');
+  if(info.isFile()){
+    if(info.nlink>1n&&info.ino>0n){
+      const id=String(info.dev)+':'+String(info.ino);
+      if(seen.has(id))return 0;
+      seen.add(id);
+    }
+    return Number(info.size);
+  }
+  if(!info.isDirectory())return fail('CLEANUP_PATH_REJECTED');
+  let bytes=0;for(const name of await readdir(path))bytes+=await measureResources(join(path,name),seen);return bytes;
+}
 async function checkedFile(details:string,file:FileEntry):Promise<string> {
   if(!file.path||file.path.includes('\\')||file.path.split('/').some(x=>!x||x==='.'||x==='..'))return fail('CLEANUP_PATH_REJECTED');
   let path=details;for(const name of file.path.split('/')){path=join(path,name);const info=await lstat(path);if(info.isSymbolicLink()||await realpath(path)!==resolve(path))return fail('CLEANUP_PATH_REJECTED');}
   if(!(await lstat(path)).isFile())return fail('CLEANUP_PATH_REJECTED');return path;
 }
+export async function measureRunUsage(store:Pick<HistoryStore,'root'|'listSummaries'>):Promise<RunUsage[]> {
+  const runs:RunUsage[]=[];
+  for(const summary of await store.listSummaries()){
+    const path=join(store.root,'history','runs',summary.runId);
+    const files=await walk(path,path,false);
+    const totalBytes=files.reduce((n,file)=>n+file.size,0);
+    const detailBytes=files.filter(file=>file.path.startsWith('details/')).reduce((n,file)=>n+file.size,0);
+    runs.push({runId:summary.runId,batchId:summary.batchId,totalBytes,detailBytes,summaryBytes:totalBytes-detailBytes});
+  }
+  return runs;
+}
 export function createCleanup(store:HistoryStore,activeBatch:()=>string|undefined,options:{beforeDelete?:(file:Readonly<FileEntry>)=>Promise<void>}={}) {
   const previews=new Map<string,{preview:CleanupPreview;files:FileEntry[]}>(),operations=new Map<string,CleanupOperation>();
   const operationPath=(id:string)=>{if(!/^[a-f0-9-]{36}$/.test(id))return fail('CLEANUP_TOKEN_INVALID');return join(store.root,'history','maintenance',`cleanup-${id}.json`);};
   async function measureHistory():Promise<HistoryUsage>{
-    const summaries=await store.listSummaries(),runs:RunUsage[]=[];
-    for(const summary of summaries){const path=join(store.root,'history','runs',summary.runId),files=await walk(path,path,false),totalBytes=files.reduce((n,x)=>n+x.size,0),detailBytes=files.filter(x=>x.path.startsWith('details/')).reduce((n,x)=>n+x.size,0);runs.push({runId:summary.runId,batchId:summary.batchId,totalBytes,detailBytes,summaryBytes:totalBytes-detailBytes});}
-    const historyRoot=join(store.root,'history'),resources=join(store.root,'resources');const historyBytes=(await walk(historyRoot,historyRoot,false)).reduce((n,x)=>n+x.size,0),resourceBytes=(await walk(resources,resources,false)).reduce((n,x)=>n+x.size,0);
-    const previews=await createSpeedHistory(store).measure();return {historyBytes,resourceBytes,sharedBytes:Math.max(0,historyBytes-runs.reduce((n,x)=>n+x.totalBytes,0)-previews.reduce((n,x)=>n+x.totalBytes,0)),runs,previews,measurement:'file-bytes'};
+    const runs=await measureRunUsage(store);
+    const historyRoot=join(store.root,'history'),resources=join(store.root,'resources');const historyBytes=(await walk(historyRoot,historyRoot,false)).reduce((n,x)=>n+x.size,0),resourceBytes=await measureResources(resources);
+    const timing=await createTimingTraceHistory(store).measure();const previews=await createSpeedHistory(store).measure();return {historyBytes,resourceBytes,timingBytes:timing.totalBytes,timingTraces:timing.traces,sharedBytes:Math.max(0,historyBytes-runs.reduce((n,x)=>n+x.totalBytes,0)-previews.reduce((n,x)=>n+x.totalBytes,0)-timing.totalBytes),runs,previews,measurement:'file-bytes'};
   }
   async function previewCleanup(ids:string[]):Promise<CleanupPreview>{return store.exclusive(async tx=>{
     await assertNoPendingReuse(tx);
@@ -63,6 +88,11 @@ export function createCleanup(store:HistoryStore,activeBatch:()=>string|undefine
     const entry=previews.get(token);if(!entry)return fail('CLEANUP_TOKEN_INVALID');const {preview,files}=entry;
     if(preview.rootId!==store.rootId||Date.parse(preview.expiresAt)<Date.now())return fail('CLEANUP_PREVIEW_STALE');if(preview.batchIds.includes(activeBatch()??''))return fail('BATCH_ACTIVE');
     for(const expected of preview.runs){const {summary}=await tx.getRun(expected.runId);if(summary.revision!==expected.revision)return fail('CLEANUP_PREVIEW_STALE');}
+    for(const expected of preview.runs){
+      const current=await walk(await tx.detailsDirectory(expected.runId));
+      const planned=files.filter(file=>file.runId===expected.runId);
+      if(current.length!==planned.length||current.some(file=>!planned.some(old=>old.path===file.path&&old.size===file.size&&old.sha256===file.sha256)))return fail('CLEANUP_PREVIEW_STALE');
+    }
     for(const file of files){const path=await checkedFile(await tx.detailsDirectory(file.runId),file),bytes=await readFile(path);if(bytes.length!==file.size||digest(bytes)!==file.sha256)return fail('CLEANUP_PREVIEW_STALE');}
     op={operationId:token,rootId:store.rootId,batchIds:preview.batchIds,runIds:preview.runs.map(x=>x.runId),status:'running',plannedBytes:preview.bytes,deletedBytes:0,unconfirmedBytes:0,remainingBytes:preview.bytes,files:structuredClone(files)};
     operations.set(token,op);await persist(op);

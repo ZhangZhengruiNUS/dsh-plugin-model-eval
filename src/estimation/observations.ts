@@ -2,11 +2,16 @@ import {createHash} from 'node:crypto';
 import type {EvaluationRequest,JudgeSnapshot,ProtocolRefs,TargetSnapshot} from '../contracts.ts';
 import type {ItemRecord} from '../history/store.ts';
 import {fingerprintTarget} from '../model/identity.ts';
+import {assertFailurePolicy} from '../jobs/timeout-policy.ts';
 import type {PerformanceSample,PerformanceState,StageKey} from './contracts.ts';
 export const stageId=(s:StageKey)=>JSON.stringify([s.conditionKey,s.datasetId,s.phase]);
 export const emptyPerformance=():PerformanceState=>({version:1,samples:[],censoredBounds:[],activeStages:[]});
+export const knownTimingTarget=(target:TargetSnapshot):boolean=>target.routeTarget.state==='known'&&Object.values(target.controls).every(value=>value.state!=='unknown');
 export function performanceConditionKey(target:TargetSnapshot,protocols:ProtocolRefs,execution:EvaluationRequest['execution'],judge?:JudgeSnapshot):string {
-  return createHash('sha256').update(JSON.stringify([fingerprintTarget(target),protocols.generalId,protocols.writingId,protocols.resourceVersion,execution.concurrency,execution.callTimeoutMs,judge?[fingerprintTarget(judge.target),judge.rubricId,judge.promptId]:null])).digest('hex');
+  assertFailurePolicy(execution.failurePolicy);
+  const identity:unknown[]=[fingerprintTarget(target),protocols.generalId,protocols.writingId,protocols.resourceVersion,execution.concurrency,execution.callTimeoutMs,judge?[fingerprintTarget(judge.target),judge.rubricId,judge.promptId]:null];
+  if(execution.failurePolicy)identity.push(execution.failurePolicy);
+  return createHash('sha256').update(JSON.stringify(identity)).digest('hex');
 }
 export function normalizeObservation(input:PerformanceSample):PerformanceSample {
   const s=structuredClone(input);delete s.tpotMs;

@@ -13,6 +13,17 @@ export async function writeRecord<T>(path:string,value:T):Promise<void> {
   const temporary=join(dirname(path),`.${basename(path)}.${randomUUID()}.tmp`);
   const handle=await open(temporary,'wx');
   try {await handle.writeFile(data,'utf8');await handle.sync();}finally{await handle.close();}
-  // Unpublished temporary files remain diagnosable after failed publication.
-  await rename(temporary,path);
+  // Windows readers/indexers can briefly lock the destination. Retry publication
+  // of this already-flushed file, without deleting the committed destination.
+  const delays=[25,75,150,250,500];
+  for(let attempt=0;;attempt++){
+    try{await rename(temporary,path);return;}
+    catch(cause){
+      const raw=(cause as NodeJS.ErrnoException).code,code=typeof raw==='string'&&/^E[A-Z0-9_]{1,30}$/.test(raw)?raw:'UNKNOWN';
+      if(['EPERM','EACCES','EBUSY'].includes(code)&&attempt<delays.length){await new Promise(resolve=>setTimeout(resolve,delays[attempt]));continue;}
+      // Retain the unpublished temporary file and the in-process cause. Only a
+      // safe operation/errno code is propagated to persisted/user diagnostics.
+      throw Object.assign(new Error(`RECORD_PUBLISH_${code}`,{cause}),{code:`RECORD_PUBLISH_${code}`});
+    }
+  }
 }

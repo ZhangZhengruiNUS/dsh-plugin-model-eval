@@ -4,19 +4,26 @@ import { randomUUID, createHash } from 'node:crypto';
 import { mkdir, lstat, realpath, readdir, rename } from 'node:fs/promises';
 import { join } from 'node:path';
 import { isDeepStrictEqual } from 'node:util';
-import type { GeneratedAnswer, GradeResult, JudgeSnapshot, ProtocolRefs, RunSummary, TargetSnapshot, Track, TechnicalError,Question,ToolSessionCheckpoint } from '../contracts.ts';
+import type { EvaluationRequest, GeneratedAnswer, GradeResult, JudgeSnapshot, ProtocolRefs, RunSummary, TargetSnapshot, Track, TechnicalError,Question,ToolSessionCheckpoint } from '../contracts.ts';
 import { fingerprintTarget } from '../model/identity.ts';
 import {validateGeneralDefinition} from '../evaluation/definitions.ts';
+import {assertExecutionOrderStructure, type FrozenExecutionOrder} from '../jobs/execution-order.ts';
+import {isLongTasksFirstSchema} from '../evaluation/five-schema.ts';
 import { inspectRoot } from '../resources/prepare.ts';
 import { readRecord, writeRecord } from './atomic.ts';
 import { acquireWriter } from './lock.ts';
 
 export interface RequiredItem {id:string;track:Track;datasetId:string}
-export interface RunManifestInput {batchId:string;target:TargetSnapshot;protocols:ProtocolRefs;requiredItems:RequiredItem[];judge?:JudgeSnapshot;initialEstimation?:RunEstimation;execution?:{concurrency:1|2|3|4;callTimeoutMs:number};generalDefinition?:GeneralDefinition;reuseOrigin?:ReuseOrigin}
+export interface RunManifestInput {regradeOrigin?:import('../contracts.ts').RegradeOrigin;batchId:string;target:TargetSnapshot;protocols:ProtocolRefs;requiredItems:RequiredItem[];judge?:JudgeSnapshot;initialEstimation?:RunEstimation;execution?:EvaluationRequest['execution'];generalDefinition?:GeneralDefinition;reuseOrigin?:ReuseOrigin;executionOrder?:FrozenExecutionOrder}
+function validateManifestOrder(input: RunManifestInput): void {
+  const needsOrder = isLongTasksFirstSchema(input.generalDefinition?.schema) && input.requiredItems.some(item => item.track === 'general');
+  if (needsOrder !== (input.executionOrder !== undefined)) throw Error('INVALID_EXECUTION_ORDER');
+  if (input.executionOrder !== undefined) assertExecutionOrderStructure(input.executionOrder, input.requiredItems);
+}
 export interface RunManifest extends RunManifestInput {schemaVersion:1;runId:string;createdAt:string}
 export interface AttemptRecord {attemptId:string;phase:'answer'|'judge';status:'started'|'completed'|'failed'|'interrupted';startedAt:string;endedAt?:string;judge?:JudgeSnapshot;itemId?:string;track?:Track;
   observations?:GeneratedAnswer['observations'];error?:TechnicalError;rawText?:string;validationError?:TechnicalError;interruptedDetectedAt?:string;performance?:PerformanceSample;performanceKey?:StageKey;retryIndex?:number}
-export interface ItemInput {toolCheckpoint?:ToolSessionCheckpoint;toolActiveMs?:number;toolActiveStage?:ActiveStage;toolTimingIncomplete?:boolean;toolObservation?:PerformanceSample;gradingActive?:ActiveStage;gradingObservation?:PerformanceSample;itemId:string;attempts:AttemptRecord[];answer?:GeneratedAnswer;grade?:GradeResult;question?:Omit<Question,'grading'>;reuse?:ReuseEvidence}
+export interface ItemInput {regradedFrom?:{sourceItemHash:string;localGradingHash?:string;sourceGrade:GradeResult;toolEvidence?:ToolSessionCheckpoint};toolTaskTimingVersion?:1;toolLocalGradingMs?:number;toolCheckpoint?:ToolSessionCheckpoint;toolActiveMs?:number;toolActiveStage?:ActiveStage;toolTimingIncomplete?:boolean;toolObservation?:PerformanceSample;gradingActive?:ActiveStage;gradingObservation?:PerformanceSample;itemId:string;attempts:AttemptRecord[];answer?:GeneratedAnswer;grade?:GradeResult;question?:Omit<Question,'grading'>;reuse?:ReuseEvidence}
 export interface ItemRecord extends ItemInput {schemaVersion:1;revision:number;sequence:number;updatedAt:string;answerCommittedAt?:string;gradeCommittedAt?:string}
 export interface RecoveryDiagnostic {runId:string;itemId?:string;code:string}
 export interface RecoveryReport {recoveredRunIds:string[];diagnostics:RecoveryDiagnostic[];temporaryFiles:number}
@@ -33,6 +40,7 @@ export interface HistoryTransaction {
 }
 export interface HistoryStore {
   readonly writable:boolean;readonly root:string;readonly rootId:string;
+  detailsDirectory(runId:string):Promise<string>;
   createRun(input:RunManifestInput):Promise<RunSummary>;getRun(runId:string):Promise<RunRecord>;
   getItem(runId:string,itemId:string):Promise<ItemRecord|undefined>;listItems(runId:string):Promise<ItemRecord[]>;
   saveItem(runId:string,expectedRevision:number,item:ItemInput):Promise<void>;
@@ -65,7 +73,9 @@ export async function openHistory(root:string):Promise<HistoryStore> {
     const copies=await Promise.allSettled(['summary.json','summary.backup.json'].map(file=>readRecord<RunSummary>(join(path,file))));
     const valid=copies.flatMap(x=>x.status==='fulfilled'&&x.value.runId===id&&x.value.batchId===manifest.batchId?[x.value]:[]);
     const summary=valid.sort((a,b)=>b.revision-a.revision)[0];if(!summary)return fail('RUN_CORRUPT');
+    validateManifestOrder(manifest);
     if(manifest.generalDefinition){validateGeneralDefinition(manifest.generalDefinition,manifest.requiredItems);if(!isDeepStrictEqual(manifest.generalDefinition,summary.generalDefinition))return fail('RUN_CORRUPT');}
+    if(!isDeepStrictEqual(manifest.regradeOrigin,summary.regradeOrigin))return fail('RUN_CORRUPT');
     if(summary.runId!==id||summary.batchId!==manifest.batchId)return fail('RUN_CORRUPT');fingerprintTarget(summary.target);
     const entry={manifest,summary,items:new Map<string,ItemRecord>(),loaded:false};if(lease.writable)cache.set(id,entry);return entry;
   }
@@ -101,7 +111,8 @@ export async function openHistory(root:string):Promise<HistoryStore> {
   async function update(id:string,expected:number,change:(summary:RunSummary)=>void):Promise<RunSummary> {
     const run=await load(id),before=run.summary;if(before.revision!==expected)return fail('REVISION_CONFLICT');
     const next=clone(before);change(next);
-    if(next.runId!==before.runId||next.batchId!==before.batchId||!isDeepStrictEqual(next.target,before.target)||!isDeepStrictEqual(next.protocols,before.protocols)||!isDeepStrictEqual(next.generalDefinition,before.generalDefinition))return fail('IMMUTABLE_RUN');
+    if(before.executionChanges&&(!next.executionChanges||!isDeepStrictEqual(next.executionChanges.slice(0,before.executionChanges.length),before.executionChanges)))return fail('IMMUTABLE_EXECUTION_HISTORY');
+    if(next.runId!==before.runId||next.batchId!==before.batchId||!isDeepStrictEqual(next.target,before.target)||!isDeepStrictEqual(next.protocols,before.protocols)||!isDeepStrictEqual(next.generalDefinition,before.generalDefinition)||!isDeepStrictEqual(next.regradeOrigin,before.regradeOrigin))return fail('IMMUTABLE_RUN');
     if(before.details==='cleared'&&next.details!=='cleared'||!before.resumeAllowed&&next.resumeAllowed)return fail('IMMUTABLE_CLEANUP');
     for(const track of ['general','writing'] as const) {
       const old=before.tracks[track],value=next.tracks[track];
@@ -116,6 +127,7 @@ export async function openHistory(root:string):Promise<HistoryStore> {
   async function createRun(input:RunManifestInput,identity?:{runId:string;createdAt:string}):Promise<RunSummary>{
       fingerprintTarget(input.target);
       if(!input.requiredItems.length||new Set(input.requiredItems.map(x=>x.id)).size!==input.requiredItems.length)return fail('INVALID_RUN_MANIFEST');
+      validateManifestOrder(input);
       if(input.generalDefinition)validateGeneralDefinition(input.generalDefinition,input.requiredItems);
       const id=identity?.runId??randomUUID(),createdAt=identity?.createdAt??new Date().toISOString(),path=runPath(id);
       const manifest:RunManifest={...clone(input),schemaVersion:1,runId:id,createdAt};
@@ -125,7 +137,7 @@ export async function openHistory(root:string):Promise<HistoryStore> {
         await directory(path);
       }else await mkdir(path);
       await directory(join(path,'details'));await directory(join(path,'details','items'));await directory(join(path,'details','attempts'));await directory(join(path,'diagnostics'));
-      const summary:RunSummary={runId:id,batchId:input.batchId,target:clone(input.target),revision:0,createdAt,tracks:{},details:'available',resumeAllowed:true,protocols:clone(input.protocols),...(input.generalDefinition?{generalDefinition:clone(input.generalDefinition)}:{}),judges:[],metrics:{tracks:{},activeIntervals:[],incompleteTiming:false},...(input.initialEstimation?{estimation:clone(input.initialEstimation)}:{})};
+      const summary:RunSummary={...(input.regradeOrigin?{regradeOrigin:clone(input.regradeOrigin)}:{}),runId:id,batchId:input.batchId,target:clone(input.target),revision:0,createdAt,tracks:{},details:'available',resumeAllowed:true,protocols:clone(input.protocols),...(input.generalDefinition?{generalDefinition:clone(input.generalDefinition)}:{}),judges:[],metrics:{tracks:{},activeIntervals:[],incompleteTiming:false},...(input.initialEstimation?{estimation:clone(input.initialEstimation)}:{})};
       for(const track of ['general','writing'] as const){const required=input.requiredItems.filter(x=>x.track===track).length;if(required)summary.tracks[track]={status:'queued',required,graded:0,answered:0,measures:{}};}
       for(const [file,value] of [['run.json',manifest],['summary.json',summary],['summary.backup.json',summary]] as const){
         if(identity){try{const saved=await readRecord(join(path,file));if(!isDeepStrictEqual(saved,value))return fail('REUSE_DESTINATION_CHANGED');continue;}catch(error){if(!missing(error))throw error;}}
@@ -140,6 +152,7 @@ export async function openHistory(root:string):Promise<HistoryStore> {
       if(old?.grade?.kind==='scored'&&!isDeepStrictEqual(old.grade,input.grade))return fail('IMMUTABLE_GRADE');
       if(old?.grade?.kind==='scored'&&old.gradingObservation&&!isDeepStrictEqual(old.gradingObservation,input.gradingObservation))return fail('IMMUTABLE_GRADE');
       if(old?.question&&!isDeepStrictEqual(old.question,input.question))return fail('IMMUTABLE_QUESTION');
+      if(old?.regradedFrom&&!isDeepStrictEqual(old.regradedFrom,input.regradedFrom))return fail('IMMUTABLE_REGRADE');
       if(old?.reuse&&!isDeepStrictEqual(old.reuse,input.reuse))return fail('IMMUTABLE_REUSE');
       if(input.toolCheckpoint){const cp=input.toolCheckpoint,previous=old?.toolCheckpoint;
         if(run.manifest.requiredItems.find(q=>q.id===input.itemId)?.datasetId!=='bfcl-v4-multi-turn-selected'||cp.actions!==cp.committedCallIds.length||cp.callsByTurn.flat().length!==cp.actions||cp.actions<0||cp.actions>32||cp.logicalRounds<0||cp.logicalRounds>24||new Set(cp.committedCallIds).size!==cp.actions)return fail('INVALID_TOOL_CHECKPOINT');
@@ -165,6 +178,7 @@ export async function openHistory(root:string):Promise<HistoryStore> {
     const result=tail.then(()=>{assertOpen();if(faulted)return fail('HISTORY_NEEDS_RECOVERY');return action(transaction);});tail=result.catch(()=>{});return result;
   }
   const store:HistoryStore={writable:lease.writable,root,rootId:inspection.marker.rootId,exclusive,
+    detailsDirectory:transaction.detailsDirectory,
     getRun:transaction.getRun,listSummaries:summaries,
     getItem,listItems,
     createRun(input){return exclusive(tx=>tx.createRun(input));},
@@ -190,7 +204,11 @@ export async function openHistory(root:string):Promise<HistoryStore> {
               await rename(join(runPath(name),'details','items',hash(required.id)+'.json'),join(runPath(name),'diagnostics',`${hash(required.id)}-${randomUUID()}.corrupt.json`));
             }
             if(item)durableTimes.push(item.updatedAt);
-            const attempts=journal.get(required.id)??item?.attempts??[];
+            const committed=item?.attempts??[],byId=new Map((journal.get(required.id)??[]).map(a=>[a.attemptId,a])),known=new Set(committed.map(a=>a.attemptId));
+            // Journal filenames are hashes, not execution order. Preserve the
+            // committed sequence, update its durable values, then append only
+            // newly published attempts. Clone before recovery mutates status.
+            const attempts=clone([...committed.map(a=>byId.get(a.attemptId)??a),...[...byId.values()].filter(a=>!known.has(a.attemptId)).sort((a,b)=>a.startedAt.localeCompare(b.startedAt)||a.attemptId.localeCompare(b.attemptId))]);
             for(const attempt of attempts)if(attempt.status==='started'){attempt.status='interrupted';attempt.interruptedDetectedAt=new Date().toISOString();await writeRecord(join(runPath(name),'details','attempts',hash(attempt.attemptId)+'.json'),{itemId:required.id,attempt});}
             if((item||attempts.length)&&(!item||item.toolActiveStage||!isDeepStrictEqual(item.attempts,attempts))){const record:ItemRecord={...(item??{itemId:required.id}),attempts,schemaVersion:1,revision:(item?.revision??0)+1,sequence:Math.max(run.summary.revision,item?.sequence??0)+1,updatedAt:new Date().toISOString()};if(record.toolActiveStage){delete record.toolActiveStage;record.toolTimingIncomplete=true;}await writeRecord(join(runPath(name),'details','items',hash(required.id)+'.json'),record);run.items.set(required.id,record);}
           }

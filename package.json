@@ -1,9 +1,21 @@
 {
-  "name": "@aico/dsh-plugin-model-eval",
-  "version": "0.1.0-alpha.20",
-  "description": "DSH 模型能力测评与本地历史对比",
+  "name": "dsh-model-coordinates",
+  "version": "0.1.0",
+  "description": "评测你可用的模型，对比能力与耗时，选择适合当前任务的配置。",
   "type": "module",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ZhangZhengruiNUS/dsh-plugin-model-eval.git"
+  },
+  "keywords": [
+    "dsh-plugin",
+    "deepseek-harness",
+    "model-evaluation"
+  ],
+  "engines": {
+    "dsh": "0.2.2-rc.1"
+  },
   "scripts": {
     "test": "node scripts/test.mjs all",
     "test:unit": "node scripts/test.mjs unit",
@@ -27,13 +39,17 @@
   "exports": {
     ".": "./lib/index.js",
     "./client": "./lib/client.js",
+    "./icon": "./assets/icon.svg",
     "./locale/*.json": "./locale/*.json"
   },
   "files": [
     "lib/*.js",
     "cordis.patch.yml",
     "locale/*.json",
+    "assets/icon.svg",
     "resources/**",
+    "docs/design/protocol-releases.md",
+    "THIRD-PARTY-NOTICES.md",
     "LICENSE",
     "README.md"
   ],

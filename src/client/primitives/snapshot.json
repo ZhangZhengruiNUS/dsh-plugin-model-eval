@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "version": "0.2.0-rc.1",
+  "hashFormat": "sha256 over UTF-8 with LF line endings",
+  "files": {
+    "tokens.css": "3b31f3495b93457aa81ffe52988da455e1917e9768196ade62f2c1c16ac3e95b",
+    "react/Select.tsx": "05e0a99ff5794d6539e9712771ddb36a129400a98d7ba49d217916f0947db8c2",
+    "react/primitives.tsx": "3ee9fb402518009120fc2e30ce12039b3807f89c7e594d757119801be649cb7b",
+    "react/materials.tsx": "428f1416e362aee1d5e3ed110d65c7b097bb08cea8ccb9a031a5236dbde619d2",
+    "react/index.ts": "9e602fc810803f22c53d6bebd5e24fdbfa7ff198687323462bf95e2fad66a526",
+    "react/controls.css": "94e265be322231f0f15817af8bad1167ae053b2ced46e2370bdd5fc14bb971a1",
+    "react/materials.css": "a36e54b6f9afd5d649feab65ca0ce150549536e9b2639aa38e95491d1d91f6ea"
+  }
+}

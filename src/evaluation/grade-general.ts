@@ -3,8 +3,9 @@ import type {CodeRunner,CodeTest} from '../runtime/runner.ts';
 import type {RuleGrader,RuleGradeInput} from '../runtime/rule-grader.ts';
 import type {ContestRunner,ContestTest} from '../runtime/contest-runner.ts';
 import {numericAnswerMatches} from './numeric-answer.ts';
+import {CONTEST_WALL_SAFETY_ID,CONTEST_WALL_SAFETY_LIMITS} from './contest-budget.ts';
 import {gradeReading} from './grade-reading.ts';
-export interface PreparedEnvironment {code:CodeRunner;rules:RuleGrader;signal:AbortSignal;contest?:ContestRunner}
+export interface PreparedEnvironment {code:CodeRunner;rules:RuleGrader;signal:AbortSignal;contest?:ContestRunner;contestPolicy?:typeof CONTEST_WALL_SAFETY_ID}
 export function buildPrompt(question:Question):readonly PromptMessage[] {
   const suffix:Record<string,string>={
     'tiny-mmlu':'Give your final answer as a single option letter on the last line, in the form Final answer: A.',
@@ -46,9 +47,14 @@ export async function gradeGeneral(question:Question,answer:GeneratedAnswer,env:
   if(question.datasetId==='code-contests-selected'){
     if(!env.contest)return missing('CONTEST_ENVIRONMENT_NOT_READY');
     const code=extractCode(answer.text);if(code===undefined)return scored(false,{reason:'no-single-candidate'});
-    const outcome=await env.contest.runContest({id:question.id,cases:raw.cases,limits:raw.limits} as ContestTest,code,env.signal);
-    if(outcome.kind==='environment-error'||outcome.kind==='cancelled')return missing(outcome.kind==='cancelled'?'CANCELLED':outcome.code);
-    return scored(outcome.kind==='passed',{metric:'all-contest-tests',outcome:outcome.kind,...(outcome.kind==='failed'?{reason:outcome.reason}:{})});
+    const safety=env.contestPolicy===CONTEST_WALL_SAFETY_ID;
+    const outcome=await env.contest.runContest({id:question.id,cases:raw.cases,limits:safety?CONTEST_WALL_SAFETY_LIMITS:raw.limits} as ContestTest,code,env.signal);
+    const local={...(outcome.wallPhase?{wallPhase:outcome.wallPhase}:{}),...(outcome.cleanupFailed?{cleanupFailed:true}:{})};
+    if(outcome.kind==='environment-error'||outcome.kind==='cancelled'){
+      const incomplete=missing(outcome.kind==='cancelled'?'CANCELLED':outcome.code);
+      return safety?{...incomplete,evidence:local}:incomplete;
+    }
+    return scored(outcome.kind==='passed',{metric:'all-contest-tests',outcome:outcome.kind,...(outcome.kind==='failed'?{reason:outcome.reason}:{}),...local});
   }
   if(question.datasetId==='tiny-mmlu'){
     const want=raw.output??raw.answer??raw.target;const letter=typeof want==='number'?String.fromCharCode(65+want):String(want).trim();

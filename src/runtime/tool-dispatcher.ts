@@ -1,8 +1,9 @@
 import {spawn} from 'node:child_process';import {readFile} from 'node:fs/promises';import {join,resolve} from 'node:path';
-import type {JsonValue,NativeTool,Question,ToolCall} from '../contracts.ts';
-import {verifyRuntime} from './integrity.ts';import {RUNTIME_PINS} from './pins.ts';import {TOOL_RUNTIME_SHA256} from './tool-pin.ts';
+import type {JsonValue,NativeTool,Question,ToolCall,ToolMessage} from '../contracts.ts';
+import {verifyRuntime} from './integrity.ts';import {RUNTIME_PINS} from './pins.ts';import {TOOL_CORRECTION_SHA256} from './tool-correction-pin.ts';import {TOOL_RUNTIME_SHA256} from './tool-pin.ts';
+import {TOOL_ANSWER_CORRECTION_SHA256} from './tool-answer-correction-pin.ts';
 export interface ToolDispatchResult {snapshot:JsonValue;text:string;isError:boolean}
-export interface ToolDispatcher {tools:readonly NativeTool[];userTurns:readonly (readonly {role:string;content:string}[])[];initialize(signal:AbortSignal):Promise<JsonValue>;execute(snapshot:JsonValue,call:ToolCall,signal:AbortSignal):Promise<ToolDispatchResult>;grade(calls:readonly (readonly ToolCall[])[],signal:AbortSignal):Promise<{passed:boolean;reason:string}>}
+export interface ToolDispatcher {tools:readonly NativeTool[];userTurns:readonly (readonly {role:string;content:string}[])[];initialize(signal:AbortSignal):Promise<JsonValue>;execute(snapshot:JsonValue,call:ToolCall,signal:AbortSignal):Promise<ToolDispatchResult>;grade(calls:readonly (readonly ToolCall[])[],signal:AbortSignal,evidence?:{messages:readonly ToolMessage[]}):Promise<{passed:boolean;reason:string}>}
 const classFiles:Record<string,string>={GorillaFileSystem:'gorilla_file_system',TwitterAPI:'posting_api',TicketAPI:'ticket_api',MessageAPI:'message_api',TradingBot:'trading_bot',TravelAPI:'travel_booking',VehicleControlAPI:'vehicle_control'};
 function projectSchema(value:any):JsonValue {
  if(value===null||typeof value!=='object')return value as JsonValue;
@@ -19,6 +20,11 @@ export async function createToolDispatcher(resourcesRoot:string,question:Questio
  if(question.datasetId!=='bfcl-v4-multi-turn-selected')throw Error('INVALID_TOOL_SCENARIO');
  await verifyRuntime(runtime,'trusted-ifeval',RUNTIME_PINS['trusted-ifeval']);await verifyRuntime(simulator,'sealed-bfcl',TOOL_RUNTIME_SHA256);
  const raw=question.grading as any,scenario=raw.scenario;
+ const priorCorrection=raw.toolProfile==='filesystem-evidence-v2',answerCorrection=raw.toolProfile==='filesystem-answer-list-v3',corrected=priorCorrection||answerCorrection;
+ const worker=answerCorrection?join(root,'suites','task-five-v3-r2','bfcl'):priorCorrection?join(root,'suites','task-five-v3-r1','bfcl'):simulator;
+ if(raw.toolProfile&&!corrected)throw Error('INVALID_TOOL_PROFILE');
+ if(priorCorrection){if(!['multi_turn_base_39','multi_turn_base_5'].includes(question.sourceId))throw Error('INVALID_TOOL_PROFILE');await verifyRuntime(worker,'sealed-bfcl-correction',TOOL_CORRECTION_SHA256);}
+ if(answerCorrection){if(question.sourceId!=='multi_turn_base_39')throw Error('INVALID_TOOL_PROFILE');await verifyRuntime(worker,'sealed-bfcl-answer-correction',TOOL_ANSWER_CORRECTION_SHA256);}
  if(!scenario||question.sourceId!==scenario.id||!Array.isArray(scenario.involved_classes)||scenario.involved_classes.some((c:string)=>!Object.hasOwn(classFiles,c)))throw Error('INVALID_TOOL_SCENARIO');
  const docs=(await Promise.all(scenario.involved_classes.map(async(c:string)=>(await readFile(join(simulator,'doc__'+classFiles[c]+'.json'),'utf8')).split(/\r?\n/).filter(Boolean).map(line=>JSON.parse(line))))).flat();
  const tools:NativeTool[]=docs.filter(d=>!scenario.excluded_function?.includes(d.name)).map(d=>({name:d.name,description:d.description,parameters:projectSchema(d.parameters)}));
@@ -27,7 +33,7 @@ export async function createToolDispatcher(resourcesRoot:string,question:Questio
   if(signal.aborted)throw Error('ABORTED');
   const input=JSON.stringify({action,scenario,...payload});if(Buffer.byteLength(input)>16*1024*1024)throw Error('TOOL_INPUT_LIMIT');
   return new Promise((done,reject)=>{
-   const child=spawn(join(runtime,'python.exe'),['-I','-B','-X','utf8',join(simulator,'tool_worker.py')],{shell:false,windowsHide:true,cwd:simulator,env:{},stdio:['pipe','pipe','pipe']});
+   const child=spawn(join(runtime,'python.exe'),['-I','-B','-X','utf8',join(worker,'tool_worker.py')],{shell:false,windowsHide:true,cwd:simulator,env:{},stdio:['pipe','pipe','pipe']});
    let text='',bytes=0,stopped=false;const stop=()=>{stopped=true;child.kill('SIGKILL');},timer=setTimeout(stop,15000);signal.addEventListener('abort',stop,{once:true});if(signal.aborted)stop();
    child.on('error',()=>{stopped=true;});child.stdout.on('data',(b:Buffer)=>{bytes+=b.length;if(bytes>8*1024*1024)stop();else text+=b.toString('utf8');});child.stderr.on('data',()=>{});child.stdin.on('error',()=>{});
    child.on('close',code=>{clearTimeout(timer);signal.removeEventListener('abort',stop);if(signal.aborted)return reject(Error('ABORTED'));if(stopped||code!==0)return reject(Error('TOOL_SIMULATOR_FAILED'));try{done(JSON.parse(text));}catch{reject(Error('INVALID_TOOL_SIMULATOR_RESULT'));}});child.stdin.end(input);
@@ -36,5 +42,5 @@ export async function createToolDispatcher(resourcesRoot:string,question:Questio
  const data=(call:ToolCall)=>{let args:unknown;try{args=JSON.parse(call.argumentsJson);}catch{return {name:'__invalid_json__',arguments:{}};}return {name:call.name,arguments:args};};
  return {tools,userTurns:structuredClone(scenario.question),async initialize(signal){return (await invoke('initialize',{},signal)).snapshot;},async execute(snapshot,call,signal){
   const result=await invoke('execute',{snapshot,call:data(call)},signal);if(typeof result.text!=='string'||typeof result.isError!=='boolean'||!result.snapshot)throw Error('INVALID_TOOL_SIMULATOR_RESULT');return result;
- },async grade(calls,signal){const result=await invoke('grade',{callsByTurn:calls.map(turn=>turn.map(data)),reference:raw.reference},signal);if(typeof result.passed!=='boolean'||typeof result.reason!=='string')throw Error('INVALID_TOOL_GRADE');return result;}};
+ },async grade(calls,signal,evidence){const result=await invoke('grade',{callsByTurn:calls.map(turn=>turn.map(data)),reference:raw.reference,...(corrected?{messages:evidence?.messages}:{})},signal);if(typeof result.passed!=='boolean'||typeof result.reason!=='string')throw Error('INVALID_TOOL_GRADE');return result;}};
 }

@@ -34,12 +34,16 @@ function assign(config:DshCallConfig,field:Field,value:JsonValue):void {
   else {if (!Array.isArray(value)||!value.every(x=>typeof x==='string'&&x.length>0))fault('INVALID_PARAMETER');config.stop=value as string[];}
 }
 function safeFailure(failure:Failure|undefined,phase:'answer'|'judge'):TechnicalError {
-  const configCodes=['TOOLS_NOT_SUPPORTED','UNSUPPORTED_TOOLS','CONTEXT_LENGTH_EXCEEDED','UNSUPPORTED_OPTION','UNSUPPORTED_REASONING_EFFORT','INVALID_CONFIG','INVALID_PREPARED_CALL','MISSING_CREDENTIAL','NO_ADAPTER','UNKNOWN_MODEL','REGISTRATION_DISPOSED','INVALID_MODEL_MAX_TOKENS','AUTHENTICATION_ERROR','AUTHENTICATION_FAILED','PERMISSION_DENIED','INVALID_REQUEST','MODEL_NOT_FOUND'];
+  const configCodes=['TOOLS_NOT_SUPPORTED','UNSUPPORTED_TOOLS','CONTEXT_LENGTH_EXCEEDED','CONTEXT_WINDOW_EXCEEDED','UNSUPPORTED_OPTION','UNSUPPORTED_REASONING_EFFORT','INVALID_CONFIG','INVALID_PREPARED_CALL','MISSING_CREDENTIAL','NO_ADAPTER','UNKNOWN_MODEL','REGISTRATION_DISPOSED','INVALID_MODEL_MAX_TOKENS','AUTHENTICATION_ERROR','AUTHENTICATION_FAILED','PERMISSION_DENIED','INVALID_REQUEST','MODEL_NOT_FOUND'];
   const allowed=new Set([...configCodes,'NETWORK_ERROR','TIMEOUT','LLM_STREAM_IDLE_TIMEOUT','RATE_LIMIT','RATE_LIMITED','OVERLOADED','SERVICE_UNAVAILABLE','AUTHENTICATION_ERROR','AUTHENTICATION_FAILED','PERMISSION_DENIED','INVALID_REQUEST','MODEL_NOT_FOUND','ABORTED','INCOMPLETE_STREAM']);
-  const code=allowed.has(failure?.code??'')?failure!.code!:'UPSTREAM_ERROR';
   const status=failure?.status, retryAfterMs=failure?.providerRetryAfterMs;
+  const providerCode=failure?.code;
+  const code=status===403?'PERMISSION_DENIED':status===401||providerCode==='AUTH'?'AUTHENTICATION_ERROR':
+    providerCode&&allowed.has(providerCode)?providerCode:'UPSTREAM_ERROR';
+  const authenticationError=['AUTHENTICATION_ERROR','AUTHENTICATION_FAILED','PERMISSION_DENIED'].includes(code);
   return {code,phase:configCodes.includes(code)?'config':phase,retryable:!configCodes.includes(code)&&(['NETWORK_ERROR','TIMEOUT','LLM_STREAM_IDLE_TIMEOUT','RATE_LIMIT','RATE_LIMITED','OVERLOADED','SERVICE_UNAVAILABLE','INCOMPLETE_STREAM'].includes(code)||status===429||(typeof status==='number'&&status>=500&&status<=599)),
-    message:configCodes.includes(code)?'模型接口不支持当前配置或凭据不可用，请核对本轮设置。':code==='ABORTED'?'调用已中断。':'模型接口未完成本次回答。',
+    message:authenticationError?'模型接口拒绝访问。请在 DSH 中检查模型凭据或访问权限，恢复后继续本轮。':
+      ['CONTEXT_LENGTH_EXCEEDED','CONTEXT_WINDOW_EXCEEDED'].includes(code)?'模型上下文容量不足，无法同时容纳题目与当前最大输出设置。请核对供应商限制和本轮配置。':configCodes.includes(code)?'模型接口不支持当前配置或凭据不可用，请核对本轮设置。':code==='ABORTED'?'调用已中断。':'模型接口未完成本次回答。',
     ...(typeof status==='number'&&Number.isInteger(status)&&status>=100&&status<=599?{status}:{}),
     ...(typeof retryAfterMs==='number'&&Number.isFinite(retryAfterMs)&&retryAfterMs>=0?{retryAfterMs:Math.min(retryAfterMs,60_000)}:{})};
 }
@@ -124,6 +128,7 @@ export function createHostAdapter(ctx:AdapterContext):HostAdapter {
       const blocks=new Map<number,string>();let complete=false,truncated=false,error:TechnicalError|undefined;
       try {
         for await (const chunk of current.prepared.stream({...current.prepared.config,messages,...(system?{system}:{}),signal:input.signal,purpose:'model-evaluation'})) {
+          if(chunk.type==='reasoning-delta'||chunk.type==='text-delta'&&!!chunk.text||chunk.type==='block-end'&&chunk.block.type==='text'&&!!chunk.block.text)input.onActivity?.();
           if((chunk.type==='text-delta'&&chunk.text)||chunk.type==='reasoning-delta'){const elapsed=performance.now()-streamStarted;timing.firstOutputMs??=elapsed;timing.lastOutputMs=elapsed;if(chunk.type==='reasoning-delta')timing.sawReasoning=true;else timing.firstTextMs??=elapsed;}
           if (chunk.type==='text-delta') {if (chunk.text&&!observations.firstContentAt)observations.firstContentAt=new Date().toISOString();blocks.set(chunk.index,(blocks.get(chunk.index)??'')+chunk.text);}
           else if (chunk.type==='block-end'&&chunk.block.type==='text'&&typeof chunk.block.text==='string')blocks.set(chunk.index,chunk.block.text);

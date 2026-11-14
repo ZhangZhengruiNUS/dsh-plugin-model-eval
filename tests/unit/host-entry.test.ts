@@ -15,13 +15,13 @@ test('host probe owns one exact route and returns an unload disposer', async () 
   assert.deepEqual(inject, ['connection','llm','settings']);
   apply(ctx);
   assert.equal(routes.length, 1);
-  assert.equal(routes[0]!.path, '/api/aico/model-eval/v1/status');
+  assert.equal(routes[0]!.path, '/api/dsh-model-coordinates/v1/status');
   assert.deepEqual(routes[0]!.methods, ['GET']);
-  const result = await routes[0]!.fetch(new Request('http://localhost/api/aico/model-eval/v1/status'));
+  const result = await routes[0]!.fetch(new Request('http://localhost/api/dsh-model-coordinates/v1/status'));
   const status = await result.json();
   assert.equal(status.apiVersion, 1);
   assert.equal(status.ready, false);
-  assert.equal(status.plugin, '@aico/dsh-plugin-model-eval');
+  assert.equal(status.plugin, 'dsh-model-coordinates');
   assert.equal(result.headers.get('cache-control'), 'no-store');
   await cleanups[0]!();
   assert.equal(routes.length, 0);

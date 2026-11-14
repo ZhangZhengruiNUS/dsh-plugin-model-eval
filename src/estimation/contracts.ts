@@ -7,10 +7,17 @@ export interface CensoredBound extends StageKey {durationMs:number;observedAt:st
 export interface ActiveStage extends StageKey {sampleId:string;itemId:string;startedAt:string}
 export interface PerformanceState {version:1;samples:PerformanceSample[];recentFailures?:PerformanceSample[];censoredBounds:CensoredBound[];activeStages:ActiveStage[]}
 export interface TimeRange {low:number;high:number}
-export interface EstimateSnapshot {algorithm:'estimate-v1'|'estimate-v2';asOf:string;state:'calibrating'|'available'|'partial'|'stalled'|'paused'|'pending'|'completed';approximate?:boolean;referenceRemainingMs?:number;referenceTotalMs?:number;observedRemainingMs?:number;remainingMs?:TimeRange;totalMs?:TimeRange;coverage:{known:number;required:number};sources:string[];reasons:string[]}
+export interface FirstPassEstimateBasis {durationScope:'first-pass';phase:'preview'|'first-pass'|'makeup';programHash:string;baselineIds:string[];probeTraceIds:string[];deferredItems:number}
+export interface EstimateSnapshot {algorithm:'estimate-v1'|'estimate-v2'|'estimate-v3';asOf:string;state:'calibrating'|'available'|'partial'|'stalled'|'paused'|'pending'|'completed';approximate?:boolean;referenceRemainingMs?:number;referenceTotalMs?:number;observedRemainingMs?:number;remainingMs?:TimeRange;totalMs?:TimeRange;coverage:{known:number;required:number};sources:string[];reasons:string[];basis?:FirstPassEstimateBasis}
 export interface RunEstimation {current:EstimateSnapshot;originPreview?:SpeedSummary;final?:EstimateSnapshot}
-export interface SpeedConfigRecord {conditionKey:string;target:TargetSnapshot;tracks:Track[];protocols:ProtocolRefs;execution:EvaluationRequest['execution'];judge?:JudgeSnapshot;status:'queued'|'running'|'stopping'|'completed'|'stopped'|'failed';startedAt?:string;endedAt?:string;performance:PerformanceState;errorCode?:string}
-export interface SpeedSession {version:1;previewId:string;rootId:string;revision:number;createdAt:string;updatedAt:string;budgetMinutes:number;status:'running'|'stopping'|'completed'|'stopped'|'interrupted'|'failed';configs:SpeedConfigRecord[];estimate?:EstimateSnapshot}
+export interface SpeedConfigRecord {conditionKey:string;target:TargetSnapshot;tracks:Track[];protocols:ProtocolRefs;execution:EvaluationRequest['execution'];judge?:JudgeSnapshot;status:'queued'|'running'|'stopping'|'completed'|'stopped'|'failed';startedAt?:string;endedAt?:string;performance:PerformanceState;errorCode?:string;probe?:import('../speed/ordinary-preview.ts').ProbePreviewEvidence}
+export interface SpeedSession {version:1;previewId:string;rootId:string;revision:number;createdAt:string;updatedAt:string;budgetMinutes:number;status:'running'|'stopping'|'completed'|'stopped'|'interrupted'|'failed';configs:SpeedConfigRecord[];estimate?:EstimateSnapshot;probeMethod?:'speed-probe-v4'}
 export type SpeedSummary=SpeedSession;
 export interface PlannedJob {itemId:string;datasetId:string;track:Track;stages:StagePhase[]}
-export interface EstimationRunInput {runId?:string;target:TargetSnapshot;protocols:ProtocolRefs;execution:EvaluationRequest['execution'];judge?:JudgeSnapshot;jobs:PlannedJob[];performance:PerformanceState;priorSamples:PerformanceSample[];priorBounds?:CensoredBound[];priorSource?:string;priorSources?:Record<string,string>;incompleteElapsed?:boolean;activeElapsedMs:number;status:'running'|'queued'|'paused'|'pending'|'completed';activeWaitMs?:Record<string,number>}
+export interface EstimationRunInput {runId?:string;target:TargetSnapshot;protocols:ProtocolRefs;execution:EvaluationRequest['execution'];judge?:JudgeSnapshot;jobs:PlannedJob[];performance:PerformanceState;priorSamples:PerformanceSample[];priorBounds?:CensoredBound[];priorSource?:string;priorSources?:Record<string,string>;incompleteElapsed?:boolean;activeElapsedMs:number;status:'running'|'queued'|'paused'|'pending'|'completed';activeWaitMs?:Record<string,number>;advancedEstimate?:EstimateSnapshot}
+export type TimeAdvisorIntent = 'estimate' | 'collect';
+export interface TimeAdvisorResult {
+  configs: {observation?: {durationMs:number;capturedAt:string;recordCount:number;deferredItems:number};hasBaseline:boolean}[];
+  unavailable?: 'conditions' | 'timing' | 'unsupported';
+  offer?: {id:string;intent:TimeAdvisorIntent;budgetMinutes:number;callsPerConfig:number;totalCalls:number};
+}

@@ -9,7 +9,8 @@ import {CONTEST_CACHE_SHA256} from './contest-cache-pin.ts';
 import {ContestFrames} from './contest-frames.ts';
 import type {CodeLimits,CodeOutcome} from './runner.ts';
 export interface ContestTest {id:string;cases:readonly {stdin:string;expected:string}[];limits:CodeLimits}
-export interface ContestRunner {runContest(test:ContestTest,solution:string,signal:AbortSignal):Promise<CodeOutcome>}
+export type ContestOutcome=CodeOutcome & {wallPhase?:'setup'|'process'|'cleanup';cleanupFailed?:true};
+export interface ContestRunner {runContest(test:ContestTest,solution:string,signal:AbortSignal):Promise<ContestOutcome>}
 /** Guest output is opaque text. The Host owns every expected answer and comparison. */
 export function createContestRunner(runtimeRoot:string,options:{now?:()=>number}={}):ContestRunner {
   const root=resolve(runtimeRoot);

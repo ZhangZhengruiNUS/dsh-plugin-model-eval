@@ -1,0 +1,22 @@
+{
+  "schema": "scoring-correction-v1",
+  "id": "task-five-v3-r1",
+  "sourceVersion": "task-five-v3",
+  "exclusions": [
+    {
+      "id": "math/olympiad-text-math/2648",
+      "reason": "missing-positive-ratio-condition"
+    },
+    {
+      "id": "tools/multi_turn_base_11",
+      "reason": "draft-versus-publish-intent-ambiguous"
+    }
+  ],
+  "profiles": {
+    "rules": "literal-symbol-frequency-v1",
+    "reading": "reading-choice-content-v3",
+    "tools": "filesystem-evidence-v2"
+  },
+  "weights": "five-domains-equal",
+  "newQuestions": 0
+}

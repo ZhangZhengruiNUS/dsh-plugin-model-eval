@@ -3,7 +3,7 @@
     "target": "ES2023", "module": "NodeNext", "moduleResolution": "NodeNext",
     "lib": ["ES2023", "DOM"], "types": ["node", "react"],
     "strict": true, "noUncheckedIndexedAccess": true, "exactOptionalPropertyTypes": true,
-    "noEmit": true, "allowImportingTsExtensions": true, "jsx": "react",
+    "noEmit": true, "allowImportingTsExtensions": true, "resolveJsonModule": true, "jsx": "react",
     "skipLibCheck": true
   },
   "include": ["src/**/*.ts", "src/**/*.tsx", "tests/**/*.ts"]

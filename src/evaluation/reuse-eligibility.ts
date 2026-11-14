@@ -1,12 +1,14 @@
+import {buildExecutionOrder,validateExecutionOrder,validateGeneralOrderPrefix} from '../jobs/execution-order.ts';
 import type {TargetSnapshot,RunSummary,Question} from '../contracts.ts';
 import type {RunManifest,ItemRecord} from '../history/store.ts';
 import type {ResolvedProtocolSet,UpgradeCheck} from './tier-contracts.ts';
 import {identityHash,protocolKey} from './protocol-identity.ts';
 import {validateGeneralDefinition} from './definitions.ts';
 import {reuseTargetBinding} from '../model/reuse-identity.ts';
+import {generalWritingRef,LEGACY_WRITING_ID} from './writing-edition.ts';
 export interface UpgradeSource {manifest:RunManifest;summary:RunSummary;items:readonly ItemRecord[];protocol:ResolvedProtocolSet}
 const publicQuestion=(q:Question)=>{const {grading,...value}=q;return value;};
-export const upgradeDestinationIdentity=(protocol:ResolvedProtocolSet)=>identityHash({descriptor:protocol.descriptor,items:protocol.items,compatibility:protocol.compatibility});
+export const upgradeDestinationIdentity=(protocol:ResolvedProtocolSet)=>identityHash({descriptor:protocol.descriptor,items:protocol.items,compatibility:protocol.compatibility,executionOrderHash:buildExecutionOrder(protocol,['general'])?.hash});
 export const upgradeSourceEvidence=(source:Pick<UpgradeSource,'manifest'|'summary'|'items'>)=>identityHash({manifest:source.manifest,revision:source.summary.revision,general:source.summary.tracks.general,items:source.manifest.generalDefinition!.domains.flatMap(d=>d.itemIds).map(id=>source.items.find(x=>x.itemId===id))});
 /** Pure and fail-closed; callers must re-read source records and current host configuration at commit. */
 export function checkUpgrade(source:UpgradeSource,deep:ResolvedProtocolSet,current:TargetSnapshot):UpgradeCheck{
@@ -14,10 +16,20 @@ export function checkUpgrade(source:UpgradeSource,deep:ResolvedProtocolSet,curre
   const result:UpgradeCheck={eligible:false,sourceRunId:manifest.runId,sourceRevision:summary.revision,sourceEvidenceHash:'',destinationEvidenceHash:'',targetBindingHash:'',deepGeneralId:deep.generalId,reusedItems:0,newItems:0};
   const reject=(reasonCode:string):UpgradeCheck=>({...result,reasonCode});
   try{
-    if(protocol.descriptor.general.tier!=='light'||deep.descriptor.general.tier!=='deep'||deep.descriptor.general.parentGeneralId!==protocol.generalId||protocol.resourceVersion!==deep.resourceVersion||protocol.writingId!==deep.writingId||protocol.descriptor.general.schema!==deep.descriptor.general.schema)return reject('UPGRADE_TIER_MISMATCH');
+    if(summary.regradeOrigin||manifest.regradeOrigin)return reject('OFFLINE_REGRADE_NOT_UPGRADABLE');
+    // The explicit parent and per-question compatibility allow tiers to advance independently.
+    if(protocol.descriptor.general.tier!=='light'||deep.descriptor.general.tier!=='deep'||deep.descriptor.general.parentGeneralId!==protocol.generalId||generalWritingRef(protocol.writingId)!==generalWritingRef(deep.writingId)||protocol.descriptor.general.schema!==deep.descriptor.general.schema)return reject('UPGRADE_TIER_MISMATCH');
     if(protocolKey(manifest.protocols)!==protocolKey(protocol.descriptor.refs)||identityHash(manifest.generalDefinition)!==identityHash(protocol.descriptor.general)||identityHash(summary.generalDefinition)!==identityHash(manifest.generalDefinition)||manifest.runId!==summary.runId||manifest.batchId!==summary.batchId||identityHash(manifest.target)!==identityHash(summary.target))return reject('UPGRADE_SOURCE_CORRUPT');
     validateGeneralDefinition(protocol.descriptor.general,manifest.requiredItems);validateGeneralDefinition(deep.descriptor.general,deep.items);
+    const missingArchivedWriting=protocol.writingId===LEGACY_WRITING_ID&&summary.tracks.writing&&protocol.items.filter(q=>q.track==='writing').length!==summary.tracks.writing.required;
+    const order=buildExecutionOrder(protocol,missingArchivedWriting?['general']:Object.keys(summary.tracks) as ('general'|'writing')[]);
+    if(order){
+      if(!manifest.executionOrder)return reject('UPGRADE_SOURCE_CORRUPT');
+      if(missingArchivedWriting)validateGeneralOrderPrefix(manifest.executionOrder,manifest.requiredItems,order);
+      else validateExecutionOrder(manifest.executionOrder,manifest.requiredItems,order);
+    }
     if(summary.details!=='available')return reject('UPGRADE_DETAILS_UNAVAILABLE');
+    if(manifest.reuseOrigin||summary.reuse||items.some(item=>item.reuse))return reject('UPGRADE_CHAIN_UNSUPPORTED');
     const track=summary.tracks.general;
     if(track?.status!=='completed'||track.required!==protocol.descriptor.questionCount||track.graded!==protocol.descriptor.questionCount||track.score===undefined||!track.completedAt)return reject('UPGRADE_SOURCE_INCOMPLETE');
     const previous=reuseTargetBinding(manifest.target),next=reuseTargetBinding(current);

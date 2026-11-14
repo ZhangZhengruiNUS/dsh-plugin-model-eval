@@ -1,0 +1,3 @@
+Scoring correction of Task Five v3; no new questions. Two ambiguous items excluded uniformly.
+See ../task-five-v1/NOTICE.txt and the original dataset and runtime licenses.
+Old protocols remain separate. This is not an official full benchmark score.

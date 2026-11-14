@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "status": "passed",
+  "scope": "task-five-v3-product-runtime",
+  "newProtocolSha256": "7afeca697f6a4e4d8de824dac239cb6934e7490ea81790b91a1a487a25843911",
+  "runtimeAcceptanceSha256": "d81363f7fb8631c76b2e8647de76adbc31aa7f817139f9f5e5e109557b9a23f1",
+  "selectionHash": "9a018c9fdaa03b6633f78a11bcee3e8dda78083c8d80a9ffae237d603d577628",
+  "deepSelectionHash": "e16f4d5cef65030d08052da57dcdad0ac7d5cc5c00a91c2edc5c419f7fc5af84",
+  "editionMapHash": "8422f1bc07f9993dce820152a6f35de88222f71062051f563c27353a3dd0170b"
+}

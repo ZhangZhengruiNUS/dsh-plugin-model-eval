@@ -1,2 +1,1 @@
-/** Frozen catalog; five-capability runtime acceptance is separately recorded. */
-export const RESOURCE_CATALOG_SHA256 = 'c108fe349edf68ae382252c8b07b16e89bdbe44f837e951eb585d5179d14ffca';
+export const RESOURCE_CATALOG_SHA256="3c23e6ca29b4a2dd07d5a5d19f7fe55af58acd001dfce0ee204739b3a233d1f3";

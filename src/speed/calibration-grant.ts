@@ -1,0 +1,12 @@
+import type {EvaluationRequest} from '../contracts.ts';import {calibrationHash,traceIdValid} from '../estimation/calibration-contracts.ts';
+interface GrantBase {grantId:string;providerId:string;modelId:string;generalId:string;execution:EvaluationRequest['execution'];limits:{maxDispatches:number;maxWallMs:number;maxReportedTokens:number}}
+export type CalibrationGrant=GrantBase&({version:1}|{version:2;mode:'baseline'|'validation';programId:'speed-probe-v4';baselineIds:string[];durationScope?:'first-pass'});
+export function assertCalibrationGrant(value:unknown):asserts value is CalibrationGrant{
+ const object=(v:unknown):v is Record<string,unknown>=>!!v&&typeof v==='object'&&!Array.isArray(v);
+ const keys=(v:Record<string,unknown>,fields:string)=>Object.keys(v).sort().join(',')===fields;
+ const fail=()=>{throw Error('CALIBRATION_GRANT_INVALID');};if(!object(value))return fail();const g=value;
+ if(g.version!==1&&g.version!==2||!keys(g,g.version===1?'execution,generalId,grantId,limits,modelId,providerId,version':(g.durationScope!==undefined?'baselineIds,durationScope,execution,generalId,grantId,limits,mode,modelId,programId,providerId,version':'baselineIds,execution,generalId,grantId,limits,mode,modelId,programId,providerId,version'))||g.durationScope!==undefined&&g.durationScope!=='first-pass'||!traceIdValid(g.grantId)||g.generalId!=='general-task-five-v1-light'||!['providerId','modelId'].every(k=>typeof g[k]==='string'&&(g[k] as string).length>0&&(g[k] as string).length<=256)||!object(g.execution)||!object(g.limits))return fail();
+ const e=g.execution,l=g.limits;
+ if(!keys(e,g.version===1?'callTimeoutMs,concurrency':'callTimeoutMs,concurrency,failurePolicy')||e.concurrency!==4||e.callTimeoutMs!==300000||g.version===2&&e.failurePolicy!=='skip-observed-timeout-v1'||!keys(l,'maxDispatches,maxReportedTokens,maxWallMs')||Object.values(l).some(n=>!Number.isSafeInteger(n)||Number(n)<1)||Number(l.maxDispatches)>300||Number(l.maxWallMs)>3600000||Number(l.maxReportedTokens)>(g.version===2?1500000:1000000))return fail();
+ if(g.version===2&&(!['baseline','validation'].includes(String(g.mode))||g.programId!=='speed-probe-v4'||!Array.isArray(g.baselineIds)||g.baselineIds.some(id=>!calibrationHash(id))||new Set(g.baselineIds).size!==g.baselineIds.length||g.mode==='baseline'&&g.baselineIds.length!==0||g.mode==='validation'&&(g.baselineIds.length<1||g.baselineIds.length>3)))return fail();
+}

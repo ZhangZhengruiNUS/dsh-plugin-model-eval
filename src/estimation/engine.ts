@@ -1,4 +1,4 @@
-import type {Track} from '../contracts.ts';import type {EstimateSnapshot,EstimationRunInput,PerformanceSample,StagePhase,StageKey} from './contracts.ts';import {performanceConditionKey,stageId} from './observations.ts';
+import type {Track} from '../contracts.ts';import type {EstimateSnapshot,EstimationRunInput,PerformanceSample,StagePhase,StageKey} from './contracts.ts';import {performanceConditionKey,stageId} from './observations.ts';import {aggregateFirstPassSnapshots} from './first-pass-snapshots.ts';
 interface SimulationJob {track:Track;stages:{phase:StagePhase;durationMs:number}[]}
 export function simulateSchedule(jobs:readonly SimulationJob[],concurrency:1|2|3|4):number {
  if(![1,2,3,4].includes(concurrency))throw Error('INVALID_CONCURRENCY');let total=0;
@@ -13,6 +13,7 @@ export function simulateSchedule(jobs:readonly SimulationJob[],concurrency:1|2|3
 function quantile(points:{value:number;weight:number}[],p:number){const sorted=points.filter(x=>x.weight>0).sort((a,b)=>a.value-b.value),sum=sorted.reduce((n,x)=>n+x.weight,0);let c=0;for(const x of sorted){c+=x.weight;if(c+Number.EPSILON>=p*sum)return x.value;}return sorted.at(-1)!.value;}
 function usable(s:PerformanceSample,key:StageKey){return s.outcome==='completed'&&stageId(s)===stageId(key)&&Number.isFinite(s.durationMs)&&s.durationMs>=0;}
 export function estimateBatch({runs,now}:{runs:readonly EstimationRunInput[];now:string}):EstimateSnapshot {
+ if(runs.some(r=>r.advancedEstimate)){const rows=runs.map(r=>r.advancedEstimate??{algorithm:'estimate-v2' as const,asOf:now,state:'calibrating' as const,coverage:{known:0,required:0},sources:[],reasons:['MIXED_DURATION_SCOPE']});return rows.length===1?structuredClone(rows[0]!):aggregateFirstPassSnapshots(rows,now);}
  const result:EstimateSnapshot={algorithm:'estimate-v2',asOf:now,state:'calibrating',coverage:{known:0,required:0},sources:[],reasons:[]};if(!runs.length)return result;
  const completeTiming=runs.every(r=>!r.incompleteElapsed&&Number.isFinite(r.activeElapsedMs)&&r.activeElapsedMs>=0),elapsed=runs.reduce((n,r)=>n+(Number.isFinite(r.activeElapsedMs)?Math.max(0,r.activeElapsedMs):0),0);if(runs.some(r=>r.status==='pending')){result.state='pending';return result;}
  if(runs.every(r=>r.status==='completed'||!r.jobs.length)){result.state='completed';result.remainingMs={low:0,high:0};result.referenceRemainingMs=0;if(completeTiming){result.totalMs={low:elapsed,high:elapsed};result.referenceTotalMs=elapsed;}return result;}

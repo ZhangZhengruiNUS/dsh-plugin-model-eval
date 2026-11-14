@@ -1,3 +1,4 @@
+import {isFiveCapabilitySchema,isLongTasksFirstSchema} from '../evaluation/five-schema.ts';
 import {validSpeedBudget} from './budget.ts';
 import {randomUUID} from 'node:crypto';
 import type {EvaluationRequest,GeneratedAnswer,HostAdapter,PromptMessage,ProtocolRegistry,ResolvedProtocolSet,Question} from '../contracts.ts';
@@ -6,14 +7,26 @@ import {appendPerformanceSample,emptyPerformance,performanceConditionKey,isTimeo
 import type {SpeedHistory} from '../history/speed.ts';import {speedFail} from '../history/speed.ts';
 import {fingerprintTarget} from '../model/identity.ts';import {buildPrompt} from '../evaluation/grade-general.ts';import type {GradeServices} from '../jobs/queue.ts';
 import {selectProbeQuestions} from './probe-set.ts';import {speedClock,type SpeedClock} from './clock.ts';
-export function createSpeedRunner(deps:{adapter:HostAdapter;registry:ProtocolRegistry;graders:GradeServices;history:SpeedHistory;clock?:SpeedClock}){
+import type {BaselineProfileV1,TimingTraceHistory} from '../estimation/calibration-contracts.ts';import {runOrdinaryProbePreview} from './ordinary-preview.ts';import {previewEstimate} from '../estimation/inputs.ts';import {buildShortProbeProgram} from './short-probes.ts';
+interface ApprovedPreview {protocol:ResolvedProtocolSet;profiles:readonly (readonly BaselineProfileV1[])[]}
+export function createSpeedRunner(deps:{adapter:HostAdapter;registry:ProtocolRegistry;graders:GradeServices;history:SpeedHistory;timingHistory?:TimingTraceHistory;clock?:SpeedClock}){
  const clock=deps.clock??speedClock;let session:SpeedSession|undefined,controller=new AbortController(),running=Promise.resolve(),writeTail=Promise.resolve(),executing=false,disposed=false,failed:unknown;
  let admissionDone=Promise.resolve();
- const code=(e:unknown)=>{const c=(e as {code?:unknown})?.code;return typeof c==='string'&&/^[A-Z][A-Z0-9_]{1,70}$/.test(c)?c:'SPEED_FAILED';};
+ const code=(e:unknown)=>{const c=(e as {code?:unknown;message?:unknown})?.code??(e as Error)?.message;return typeof c==='string'&&/^[A-Z][A-Z0-9_]{1,70}$/.test(c)?c:'SPEED_FAILED';};
  function update(change:(s:SpeedSession)=>void):Promise<void>{const next=writeTail.then(async()=>{const value=structuredClone(session!);change(value);session=await deps.history.save(value,session!.revision);});writeTail=next.catch(e=>{failed=e;controller.abort();});return next;}
- async function execute(request:EvaluationRequest,protocols:ResolvedProtocolSet){
+ async function executeShortConfig(index:number,protocol:ResolvedProtocolSet,profiles?:readonly BaselineProfileV1[]){
+  const config=session!.configs[index]!;await update(s=>{s.configs[index]!.status='running';s.configs[index]!.startedAt=clock.now();});
+  const result=await runOrdinaryProbePreview({rootId:deps.history.rootId,adapter:deps.adapter,history:deps.timingHistory!,protocol,target:config.target,tracks:config.tracks,...(config.judge?{judge:config.judge}:{}),execution:config.execution,budgetMs:Math.round(session!.budgetMinutes*60000),signal:controller.signal,clock,
+   ...(profiles?{profiles}:{}),onBudget:()=>{void update(s=>{if(s.status==='running')s.status='stopping';s.configs[index]!.status='stopping';}).catch(()=>{});},
+   onEvent:event=>update(s=>{const phase=event.phase,record:PerformanceSample={conditionKey:performanceConditionKey(config.target,config.protocols,config.execution,phase==='judge'?config.judge:undefined),datasetId:event.datasetId,phase,sampleId:event.eventId,itemId:event.itemId,startedAt:event.startedAt,endedAt:event.endedAt,durationMs:event.durationMs,outcome:event.outcome==='censored'?'timeout':event.outcome,...(event.timing?{timing:event.timing}:{}),...(event.usage?{usage:event.usage}:{})};s.configs[index]!.performance=appendPerformanceSample(s.configs[index]!.performance,record);})});
+  const {state,errorCode,fatalConfig,...probe}=result;
+  await update(s=>{const c=s.configs[index]!;c.probe=probe;c.status=state;c.endedAt=clock.now();c.performance.activeStages=[];if(errorCode)c.errorCode=errorCode;if(state==='failed')s.status='failed';else if(s.status==='stopping'&&!controller.signal.aborted)s.status='running';s.estimate=previewEstimate(s,protocol.items,clock.now());});
+  if(fatalConfig)controller.abort();
+ }
+ async function execute(request:EvaluationRequest,protocols:ResolvedProtocolSet,approval?:ApprovedPreview){
   for(let index=0;index<request.targets.length&&!controller.signal.aborted;index++){
-   const config=session!.configs[index]!,abort=new AbortController(),start=clock.monotonicMs(),deadline=start+session!.budgetMinutes*60000;let expired=false,gradingTail:Promise<unknown>=Promise.resolve(),callsUsed=0,callLimitReached=false;
+   if(session!.probeMethod==='speed-probe-v4'){await executeShortConfig(index,protocols,approval?.profiles[index]);continue;}
+   const config=session!.configs[index]!,abort=new AbortController(),start=clock.monotonicMs(),deadline=start+Math.round(session!.budgetMinutes*60000);let expired=false,gradingTail:Promise<unknown>=Promise.resolve(),callsUsed=0,callLimitReached=false;
    const reserve=()=>{if(abort.signal.aborted||clock.monotonicMs()>=deadline)return false;if(callsUsed>=12){callLimitReached=true;return false;}callsUsed++;return true;};
    const stop=()=>abort.abort();controller.signal.addEventListener('abort',stop,{once:true});if(controller.signal.aborted)abort.abort();
    const cancelBudget=clock.schedule(Math.max(0,deadline-clock.monotonicMs()),()=>{expired=true;abort.abort();void update(s=>{if(s.configs[index]!.status==='running')s.configs[index]!.status='stopping';}).catch(()=>{});});
@@ -53,21 +66,21 @@ export function createSpeedRunner(deps:{adapter:HostAdapter;registry:ProtocolReg
     await update(s=>{const c=s.configs[index]!;c.endedAt=clock.now();if(c.status!=='failed')c.status=abort.signal.aborted?'stopped':'completed';if(expired)c.errorCode='SPEED_BUDGET_REACHED';else if(callLimitReached)c.errorCode='SPEED_CALL_LIMIT';c.performance.activeStages=[];});
    }finally{cancelBudget();controller.signal.removeEventListener('abort',stop);}
   }
-  await update(s=>{if(s.status!=='failed')s.status=controller.signal.aborted?'stopped':'completed';});
+  await update(s=>{if(s.status!=='failed')s.status=controller.signal.aborted?'stopped':'completed';if(s.probeMethod)s.estimate=previewEstimate(s,protocols.items,clock.now());});
  }
  return {
-  async start(request:EvaluationRequest&{budgetMinutes:number}){
+  async start(request:EvaluationRequest&{budgetMinutes:number},approval?:ApprovedPreview){
    if(disposed)speedFail('SERVICE_DISPOSED');if(executing)speedFail('ACTIVITY_BUSY');
    if(!validSpeedBudget(request.budgetMinutes)||!request.targets.length||request.targets.length>20||!request.tracks.length||new Set(request.tracks).size!==request.tracks.length||request.tracks.some(t=>!['general','writing'].includes(t))||![1,2,3,4].includes(request.execution.concurrency)||!Number.isInteger(request.execution.callTimeoutMs)||request.execution.callTimeoutMs<1000||request.execution.callTimeoutMs>1800000)speedFail('INVALID_BATCH');
    const targets=request.targets.map(fingerprintTarget);if(new Set(targets).size!==targets.length)speedFail('DUPLICATE_TARGET');if(request.tracks.includes('writing')&&!request.judge)speedFail('JUDGE_REQUIRED');if(request.judge)fingerprintTarget(request.judge.target);
    const input=structuredClone(request);executing=true;let release!:()=>void;admissionDone=new Promise<void>(r=>release=r);
    try{
     const generalId=input.generalId??deps.registry.list().find(d=>d.general.tier==='legacy')?.refs.generalId;if(!generalId)speedFail('PROTOCOL_UNAVAILABLE');
-    const protocols=await deps.registry.forNewRun(generalId!);if(disposed)speedFail('SERVICE_DISPOSED');selectProbeQuestions(protocols,input.tracks);
+    const protocols=approval?.protocol??await deps.registry.forNewRun(generalId!,input.tracks);if(disposed)speedFail('SERVICE_DISPOSED');const schema=protocols.descriptor.general.schema;if(isLongTasksFirstSchema(schema)&&!deps.timingHistory)speedFail('TIMING_UNAVAILABLE');const short=!!deps.timingHistory&&isFiveCapabilitySchema(schema);if(!short)selectProbeQuestions(protocols,input.tracks);
     controller=new AbortController();failed=undefined;writeTail=Promise.resolve();
-    const refs={generalId:protocols.generalId,writingId:protocols.writingId,resourceVersion:protocols.resourceVersion},configs:SpeedConfigRecord[]=input.targets.map(target=>({conditionKey:performanceConditionKey(target,refs,input.execution),target,tracks:input.tracks,protocols:structuredClone(refs),execution:input.execution,...(input.judge?{judge:input.judge}:{}),status:'queued',performance:emptyPerformance()}));session=await deps.history.save({version:1,previewId:randomUUID(),rootId:deps.history.rootId,revision:0,createdAt:clock.now(),updatedAt:clock.now(),budgetMinutes:input.budgetMinutes,status:'running',configs},0);
+    const refs={generalId:protocols.generalId,writingId:protocols.writingId,resourceVersion:protocols.resourceVersion},configs:SpeedConfigRecord[]=input.targets.map(target=>({conditionKey:performanceConditionKey(target,refs,input.execution),target,tracks:input.tracks,protocols:structuredClone(refs),execution:input.execution,...(input.judge?{judge:input.judge}:{}),status:'queued',performance:emptyPerformance()}));const initial:SpeedSession={version:1,previewId:randomUUID(),rootId:deps.history.rootId,revision:0,createdAt:clock.now(),updatedAt:clock.now(),budgetMinutes:input.budgetMinutes,status:'running',configs};if(short){initial.probeMethod='speed-probe-v4';initial.estimate={algorithm:'estimate-v3',asOf:initial.createdAt,state:'calibrating',coverage:{known:0,required:protocols.items.filter(q=>input.tracks.includes(q.track)).length*configs.length},sources:[],reasons:['PREVIEW_IN_PROGRESS'],basis:{durationScope:'first-pass',phase:'preview',programHash:buildShortProbeProgram(protocols,input.tracks).hash,baselineIds:[],probeTraceIds:[],deferredItems:0}};}session=await deps.history.save(initial,0);
     if(disposed){session.status='stopped';for(const c of session.configs)c.status='stopped';session=await deps.history.save(session,session.revision);speedFail('SERVICE_DISPOSED');}
-    running=execute(input,protocols).catch(async e=>{failed=e;controller.abort();if(session){session.status='failed';for(const c of session.configs)if(c.status==='running'||c.status==='stopping'){c.status='failed';c.errorCode=code(e);}try{session=await deps.history.save(session,session.revision);}catch{/* retain diagnostic in memory; caller idle rejects */}}}).finally(()=>{executing=false;});return {previewId:session.previewId};
+    running=execute(input,protocols,approval).catch(async e=>{failed=e;controller.abort();if(session){session.status='failed';for(const c of session.configs)if(c.status==='running'||c.status==='stopping'){c.status='failed';c.errorCode=code(e);}try{session=await deps.history.save(session,session.revision);}catch{/* retain diagnostic in memory; caller idle rejects */}}}).finally(()=>{executing=false;});return {previewId:session.previewId};
    }catch(e){executing=false;throw e;}finally{release();}
   },
   async cancel(id:string){if(session?.previewId!==id)speedFail('PREVIEW_NOT_FOUND');if(!executing)return;controller.abort();void update(s=>{if(s.status==='running')s.status='stopping';}).catch(()=>{});},

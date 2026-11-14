@@ -1,0 +1,8 @@
+{
+  "schemaVersion": 1,
+  "status": "passed",
+  "scope": "task-five-v2-product-runtime",
+  "newProtocolSha256": "371dddf044ddf97be71477ab6216af9e649390c942b8ca57b6db750138587123",
+  "runtimeAcceptanceSha256": "1e6838c6e5dd16bcb73f812e88abd994a0b5b8ce4e1c1775832270391e858124",
+  "realModelCalibration": "not-performed"
+}

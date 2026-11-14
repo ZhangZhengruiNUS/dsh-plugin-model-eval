@@ -6,8 +6,9 @@ import type {ProtocolBundle,ProtocolDescriptor} from '../evaluation/tier-contrac
 import {identityHash,protocolKey} from '../evaluation/protocol-identity.ts';
 import {RESOURCE_CATALOG_SHA256} from './catalog-pin.ts';
 import {validateGeneralDefinition} from '../evaluation/definitions.ts';
+import {generalReleaseFor,generalSchemaFor} from '../evaluation/current-edition.ts';
 export interface CatalogEntry extends ProtocolDescriptor {bundleId:string}
-export interface ResourceCatalog {schemaVersion:1;legacyRefs:ProtocolRefs;bundles:ProtocolBundle[];entries:CatalogEntry[]}
+export interface ResourceCatalog {schemaVersion:1;legacyRefs:ProtocolRefs;bundles:ProtocolBundle[];entries:CatalogEntry[];localOnlyBundles?:string[]}
 export const bytesHash=(data:Buffer|string)=>createHash('sha256').update(data).digest('hex');
 export async function readCatalogFile(resourceRoot:string,path:string):Promise<Buffer> {
   const root=resolve(resourceRoot);
@@ -33,13 +34,41 @@ export async function readProtocolCatalog(packageRoot:string):Promise<ResourceCa
   }
   for(const entry of catalog.entries){
     const key=protocolKey(entry.refs),{definitionHash,...definition}=entry.general;
+    const release=generalReleaseFor(entry.refs);
+    const schema=generalSchemaFor(entry.refs);
     validateGeneralDefinition(entry.general);
-    if(refs.has(key)||identityHash(definition)!==definitionHash||entry.general.domains.reduce((n,d)=>n+d.itemIds.length,0)!==entry.questionCount||(entry.general.schema==='task-five-v1')!==(entry.refs.resourceVersion==='task-five-v1'))throw Error('INVALID_PROTOCOL_DEFINITION');
+    if(refs.has(key)||identityHash(definition)!==definitionHash||entry.general.domains.reduce((n,d)=>n+d.itemIds.length,0)!==entry.questionCount||
+      entry.general.schema!==schema||release&&entry.general.tier!==release.tier)throw Error('INVALID_PROTOCOL_DEFINITION');
     refs.add(key);
     if(entry.bundleId!=='legacy'&&!bundles.has(entry.bundleId))throw Error('INVALID_PROTOCOL_CATALOG');
   }
+  if(catalog.localOnlyBundles!==undefined&&(!Array.isArray(catalog.localOnlyBundles)||
+    new Set(catalog.localOnlyBundles).size!==catalog.localOnlyBundles.length||
+    catalog.localOnlyBundles.some(id=>!bundles.has(id)||catalog.entries.some(entry=>entry.bundleId===id&&entry.allowNewRuns))))
+    throw Error('INVALID_PROTOCOL_CATALOG');
   return catalog;
 }
 export async function verifyBundle(packageRoot:string,bundle:ProtocolBundle):Promise<void> {
-  for(const file of bundle.files){const bytes=await readCatalogFile(join(resolve(packageRoot),'resources'),file.path);if(bytes.length!==file.size||bytesHash(bytes)!==file.sha256)throw Error('RESOURCE_HASH_MISMATCH');}
+  await verifyBundleFiles(join(resolve(packageRoot),'resources'),bundle);
+}
+export async function verifyBundleFiles(root:string,bundle:ProtocolBundle):Promise<void> {
+  for(const file of bundle.files){
+    const bytes=await readCatalogFile(root,file.path);
+    if(bytes.length!==file.size||bytesHash(bytes)!==file.sha256)throw Error('RESOURCE_HASH_MISMATCH');
+  }
+}
+export function bundleCachePath(root:string,bundle:ProtocolBundle):string {
+  return join(resolve(root),'resources',bundle.id+'-'+identityHash(bundle).slice(0,12));
+}
+export async function readBundleCache(root:string|undefined,bundle:ProtocolBundle) {
+  if(!root)throw Error('ARCHIVED_GENERAL_UNAVAILABLE');
+  const path=bundleCachePath(root,bundle);
+  try {
+    const ready=JSON.parse((await readCatalogFile(path,'.ready.json')).toString('utf8'));
+    if(ready.manifestHash!==identityHash(bundle)||typeof ready.preparedAt!=='string')throw Error('PREPARED_VERSION_MISMATCH');
+    return {path,preparedAt:ready.preparedAt as string};
+  } catch(error) {
+    if((error as NodeJS.ErrnoException).code==='ENOENT')throw Error('ARCHIVED_GENERAL_UNAVAILABLE');
+    throw error;
+  }
 }

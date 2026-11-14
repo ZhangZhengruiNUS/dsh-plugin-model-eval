@@ -7,6 +7,7 @@ export class ContestFrames {
   private buffer='';private index=0;private total=0;private terminal:Verdict|undefined;private mismatch=false;
   private readonly cases:readonly {expected:string}[];
   constructor(cases:readonly {expected:string}[]){this.cases=cases;}
+  get matchedCases():number {return Math.max(0,this.index-(this.mismatch?1:0));}
   push(chunk:string):boolean {
     if(this.mismatch)return true;
     // The wire is ASCII JSON, independent of UTF-8 chunk boundaries in guest output.

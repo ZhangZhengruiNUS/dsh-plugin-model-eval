@@ -1,9 +1,11 @@
 import {rebuildPerformance} from '../estimation/observations.ts';
 import {manifestGeneralDefinition} from './definitions.ts';
 import {summarizeReuse} from '../jobs/metrics.ts';
+import {summarizeTaskTiming} from '../jobs/task-duration.ts';
 import {isDeepStrictEqual} from 'node:util';import type {GradeResult,JudgeSnapshot,Question,RunSummary} from '../contracts.ts';import type {HistoryStore,HistoryTransaction,ItemRecord,RunManifest} from '../history/store.ts';import {fingerprintTarget} from '../model/identity.ts';import {summarizeGeneral} from './aggregate.ts';import {summarizeMetrics} from '../jobs/metrics.ts';
 /** Derive only from committed records. Never calls a model or regrades an answer. */
 export function rebuildRunSummary(manifest:RunManifest,summary:RunSummary,items:readonly ItemRecord[]):RunSummary {
+  if(manifest.regradeOrigin){if(summary.resumeAllowed||Object.values(summary.tracks).some(t=>t.status!=='completed'))throw Error('OFFLINE_REGRADE_INCOMPLETE');return structuredClone(summary);}
   const next=structuredClone(summary),valid=items.flatMap(x=>x.grade?[x.grade]:[]);
   if(manifest.reuseOrigin)next.reuse=summarizeReuse(items,manifest.reuseOrigin);
   for(const track of ['general','writing'] as const){const old=next.tracks[track];if(!old||old.status==='completed')continue;
@@ -24,6 +26,8 @@ export function rebuildRunSummary(manifest:RunManifest,summary:RunSummary,items:
   }
   const allAttempts=items.flatMap(item=>{const required=manifest.requiredItems.find(x=>x.id===item.itemId)!;return item.attempts.map(a=>({...a,itemId:item.itemId,track:required.track}));});
   const previous=next.metrics,calculated=summarizeMetrics(allAttempts,previous.activeIntervals,Object.fromEntries(Object.entries(previous.tracks).map(([k,v])=>[k,v.gradingMs])));calculated.incompleteTiming=previous.incompleteTiming;next.metrics=calculated;
+  const taskTiming=summarizeTaskTiming(manifest.requiredItems,items,manifestGeneralDefinition(manifest)?.domains);
+  for(const track of ['general','writing'] as const){const metrics=next.metrics.tracks[track];if(metrics&&taskTiming[track])metrics.answer.taskTiming=taskTiming[track];}
   if(next.performance||items.some(x=>x.toolActiveStage||x.toolObservation||x.gradingObservation||x.attempts.some(a=>a.performance||a.performanceKey)))next.performance=rebuildPerformance(items,next.performance);
   next.judges=[];
   function group(judge:JudgeSnapshot){const key=fingerprintTarget(judge.target)+judge.rubricId+judge.promptId;let found=next.judges.find(x=>fingerprintTarget(x.snapshot.target)+x.snapshot.rubricId+x.snapshot.promptId===key);if(!found){found={snapshot:structuredClone(judge),itemIds:[]};next.judges.push(found);}return found;}

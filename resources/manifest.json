@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "resourceVersion": "suite-2026-10-31-v3",
   "generalId": "general-chat-root-stable-rule-tokenizer-v3",
-  "writingId": "work-writing-12-v1",
+  "writingId": "work-writing-12-v2",
   "datasets": [
     {
       "id": "tiny-mmlu",
@@ -69,12 +69,12 @@
     },
     {
       "path": "protocols/writing.json",
-      "size": 78530,
-      "sha256": "bfc98addf418e3a4bb4664fdfacc50d2dd744ddeab5df241b2de7e481d8e75d4",
+      "size": 13901,
+      "sha256": "c1d63c96fbef1464886dbded0f738d63950cf49cfe950dff23f268873d2eec64",
       "kind": "dataset",
-      "source": "https://huggingface.co/datasets/IDEA-CCNL/Ziya-Writing-Eval-Chinese ; https://github.com/X-PLUG/WritingBench",
-      "revision": "f55b23a942608083cffe2813c803d3517ebb1e41 ; ae2d5176449b7b769815482641d35926f26793eb",
-      "license": "Apache-2.0"
+      "source": "https://huggingface.co/datasets/IDEA-CCNL/Ziya-Writing-Eval-Chinese ; DSH Model Eval original fictional material",
+      "revision": "f55b23a942608083cffe2813c803d3517ebb1e41 ; work-writing-12-v2",
+      "license": "Apache-2.0 (Ziya) AND MIT (project originals)"
     },
     {
       "path": "protocols/general-chat-v1.json",
@@ -179,15 +179,6 @@
       "path": "licenses/MMLU-MIT.txt",
       "size": 1091,
       "sha256": "2a582ab008bf22916482bc3cdbeabba5ec7b729a4182bd25392bdae464e1f435",
-      "kind": "license",
-      "source": "See per-resource attribution and source URLs",
-      "revision": "suite-v1",
-      "license": "See file"
-    },
-    {
-      "path": "licenses/WritingBench-Apache-2.0.txt",
-      "size": 11357,
-      "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
       "kind": "license",
       "source": "See per-resource attribution and source URLs",
       "revision": "suite-v1",
@@ -411,8 +402,8 @@
     },
     {
       "path": "licenses/writing-provenance.md",
-      "size": 370,
-      "sha256": "f33bb12e5e0a1999bc54031857738735b032a7c77718d4c51fdd9abd96a9a5f7",
+      "size": 573,
+      "sha256": "63d0da46b6ca58976ccdadf5d298324044898fa76d441c88fcf1806087c4d180",
       "kind": "license",
       "source": "See per-resource attribution and source URLs",
       "revision": "suite-v1",

@@ -1,7 +1,19 @@
 /** Strict additive projection. Never changes or replaces the original reference snapshot. */
 import {createHash} from 'node:crypto';import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
 const sha=b=>createHash('sha256').update(b).digest('hex');
+const extensions=JSON.parse(readFileSync(new URL('../../docs/evidence/tiers/versioned-execution-projection-v1.json',import.meta.url)));
 export function legacyExecutionBytes(path,bytes){
+ const extension=extensions[path];
+ if(extension&&sha(bytes)===extension.currentSha256){
+  let source=bytes.toString('utf8');
+  for(const {current,previous} of extension.edits){
+   assert.equal(source.split(current).length,2,'exactly one reviewed extension fragment');
+   source=source.replace(current,()=>previous);
+  }
+  bytes=Buffer.from(source);
+  assert.equal(sha(bytes),extension.previousSha256,'reviewed extension must reconstruct its original parent');
+ }
  if(path!=='src/evaluation/grade-general.ts')return bytes;
  let source=bytes.toString('utf8');
  for(const addition of ["import {gradeReading} from './grade-reading.ts';\n","  if(question.datasetId==='longbench-v2-selected')return gradeReading(question,answer);\n"]){

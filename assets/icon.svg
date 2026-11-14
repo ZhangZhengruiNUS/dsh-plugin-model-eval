@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <style>
+    @media (prefers-color-scheme: dark) {
+      .outer { stroke: #b8c2ce; }
+      .inner { stroke: #a4afbd; }
+      .sample { fill: #8fb9ff; }
+    }
+  </style>
+  <g transform="translate(-.7 .4) scale(2.8)" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path class="outer" d="M18.45 7.4 12 2.8 3.25 9.25l3.3 10.5h10.9l1.9-5.55" stroke="#7f8996" stroke-width="1.85"/>
+    <path class="inner" d="m12 7.15 4.55 3.85-1.6 5.35-6.55.85-1.85-6.25Z" stroke="#768290" stroke-width="1.55"/>
+    <circle class="sample" cx="20.95" cy="10.5" r="1.6" fill="#567fbc"/>
+  </g>
+</svg>

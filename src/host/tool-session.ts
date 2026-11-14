@@ -3,9 +3,12 @@ import type {AttemptObservation,GradeResult,HostToolAdapter,Question,TargetSnaps
 import type {ToolDispatcher} from '../runtime/tool-dispatcher.ts';
 import {identityHash} from '../evaluation/protocol-identity.ts';import {fingerprintTarget} from '../model/identity.ts';
 import {runAttempt,type RetryClock} from '../jobs/attempts.ts';
-export interface ToolSessionInput {target:TargetSnapshot;scenarioId:string;checkpoint?:ToolSessionCheckpoint;signal:AbortSignal;automaticRetry?:false;dispatchAllowed?:()=>boolean;commit:(checkpoint:ToolSessionCheckpoint)=>Promise<void>;onAttempt:(observation:AttemptObservation,error?:import('../contracts.ts').TechnicalError)=>Promise<void>}
+import {createCallWatchdog} from '../jobs/call-watchdog.ts';
+import {timeoutFailure,assertFailurePolicy,hasObservedOutput,isFatalCallError} from '../jobs/timeout-policy.ts';import {isTimeoutFailure} from '../estimation/observations.ts';
+export interface ToolSessionInput {onLocalGradingTime?:(ms:number)=>void;target:TargetSnapshot;scenarioId:string;checkpoint?:ToolSessionCheckpoint;signal:AbortSignal;automaticRetry?:false;dispatchAllowed?:()=>boolean;dispatchReady?:()=>boolean;commit:(checkpoint:ToolSessionCheckpoint)=>Promise<void>;onAttempt:(observation:AttemptObservation,error?:import('../contracts.ts').TechnicalError)=>Promise<void>}
 /** An assistant turn and its pending calls commit before any pure simulator action. */
-export function createToolSessionRunner(adapter:HostToolAdapter,question:Question,dispatcher:ToolDispatcher,options:{clock?:RetryClock;callTimeoutMs?:number}={}){
+export function createToolSessionRunner(adapter:HostToolAdapter,question:Question,dispatcher:ToolDispatcher,options:{clock?:RetryClock;callTimeoutMs?:number;failurePolicy?:import('../contracts.ts').EvaluationRequest['execution']['failurePolicy']}={}){
+ assertFailurePolicy(options.failurePolicy);
  return async function runToolSession(input:ToolSessionInput):Promise<GradeResult>{
   const missing=(code:string,retryable=false):GradeResult=>({kind:'technical-missing',track:'general',itemId:question.id,error:{code,phase:code==='CHECKPOINT_SAVE_FAILED'?'storage':'answer',retryable,message:code==='ABORTED'?'本轮已暂停，进度已保存。':'工具任务未完成，保留进度待继续。'},evidence:null});
   const scored=(passed:boolean,reason:string):GradeResult=>({kind:'scored',track:'general',itemId:question.id,passed,evidence:{metric:'bfcl-state-and-response-v1',reason,logicalRounds:state.logicalRounds,actions:state.actions}});
@@ -38,7 +41,7 @@ export function createToolSessionRunner(adapter:HostToolAdapter,question:Questio
      state.stage='model';await save();continue;
     }
     if(state.stage==='judge'){
-     const verdict=await dispatcher.grade(state.callsByTurn,input.signal);return await finish(verdict.passed,verdict.reason);
+     const gradeStart=performance.now();let verdict:Awaited<ReturnType<typeof dispatcher.grade>>;try{verdict=await dispatcher.grade(state.callsByTurn,input.signal,{messages:state.messages});}finally{input.onLocalGradingTime?.(performance.now()-gradeStart);}return await finish(verdict.passed,verdict.reason);
     }
     if(!state.roundReserved){if(state.logicalRounds>=24)return await finish(false,'logical-round-budget');state.logicalRounds++;state.roundReserved=true;await save();}
     const invoke=async()=>{
@@ -47,12 +50,12 @@ export function createToolSessionRunner(adapter:HostToolAdapter,question:Questio
      const report:ToolSessionInput['onAttempt']=async(...args)=>{try{await input.onAttempt(...args);}catch{throw Error('CHECKPOINT_SAVE_FAILED');}};
      const startedAt=new Date().toISOString();await report({...context,startedAt,endedAt:'',usage:{available:false}});
      const child=new AbortController(),cancel=()=>child.abort();input.signal.addEventListener('abort',cancel,{once:true});if(input.signal.aborted)cancel();
-     let timedOut=false;const timer=setTimeout(()=>{timedOut=true;child.abort();},options.callTimeoutMs??300000);
+     let timedOut=false;const watchdog=createCallWatchdog(options.callTimeoutMs??300000,options.failurePolicy,()=>{timedOut=true;child.abort();});
      let result:Awaited<ReturnType<HostToolAdapter['generateTurn']>>;
-     try{result=await adapter.generateTurn({target:input.target,messages:state.messages,tools:dispatcher.tools,signal:child.signal,context});}
+     try{if(child.signal.aborted||input.dispatchReady&&!input.dispatchReady())result={kind:'technical-missing',error:{code:'ABORTED',phase:'answer',retryable:false,message:'工具模型调用已中断。'},observation:{...context,startedAt,endedAt:new Date().toISOString(),usage:{available:false}}};else result=await adapter.generateTurn({target:input.target,messages:state.messages,tools:dispatcher.tools,signal:child.signal,onActivity:watchdog.activity,context});}
      catch{result={kind:'technical-missing',error:{code:'CALL_FAILED',phase:'answer',retryable:true,message:'工具模型调用未完成。'},observation:{...context,startedAt,endedAt:new Date().toISOString(),usage:{available:false}}};}
-     finally{clearTimeout(timer);input.signal.removeEventListener('abort',cancel);}
-     if(timedOut||input.signal.aborted)result={kind:'technical-missing',error:{code:timedOut?'CALL_TIMEOUT':'ABORTED',phase:'answer',retryable:timedOut&&!input.signal.aborted,message:'工具模型调用已中断。'},observation:result.observation};
+     finally{watchdog.dispose();input.signal.removeEventListener('abort',cancel);}
+     if(input.signal.aborted||!(options.failurePolicy&&result.kind==='technical-missing'&&isFatalCallError(result.error))&&(timedOut||options.failurePolicy&&result.kind==='technical-missing'&&isTimeoutFailure(result.error)&&hasObservedOutput(result.observation)))result={kind:'technical-missing',error:timeoutFailure({policy:options.failurePolicy,phase:'answer',observation:result.observation,parentAborted:input.signal.aborted,...(result.kind==='completed'?{text:result.assistant.content.filter(b=>b.type==='text').map(b=>b.text).join('')}:{})}),observation:result.observation};
      await report(result.observation,result.kind==='technical-missing'?result.error:undefined);
      return result.kind==='completed'?{ok:true as const,value:result}:{ok:false as const,error:result.error};
     };

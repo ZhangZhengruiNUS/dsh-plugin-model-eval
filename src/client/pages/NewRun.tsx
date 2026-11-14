@@ -1,18 +1,42 @@
-import {EvaluationBasis} from '../components/EvaluationBasis.tsx';
-import {SpeedPreview,type SpeedPayload} from '../components/SpeedPreview.tsx';
+import {ExecutionSettings} from '../components/ExecutionSettings.tsx';
+import {Checkbox,Field,Radio,TextInput} from '../primitives/primitives.tsx';
+import {isFiveCapabilitySchema,isLongTasksFirstSchema} from '../../evaluation/five-schema.ts';
+import {generalEditionLabel,generalEditionOrder,generalReleaseName} from '../protocol-editions.ts';
+import {generalEvaluationName,isCurrentGeneralRelease} from '../../evaluation/current-edition.ts';
+import {CURRENT_WRITING_ID,writingEditionName} from '../../evaluation/writing-edition.ts';
+import {isArchivedProtocol} from '../protocol-archive.ts';
+import {Disclosure} from '../components/Disclosure.tsx';
+import {EvaluationBasis,WritingEvaluationBasis} from '../components/EvaluationBasis.tsx';
+import {SpeedPreview,type SpeedPayload,type SpeedPreviewSession} from '../components/SpeedPreview.tsx';
 import {ModelSelect} from '../components/ModelSelect.tsx';
-import * as React from 'react';import type {ModelChoice,ParamValue,TargetSnapshot,Track} from '../../contracts.ts';import type {ClientApi} from '../api.ts';import {zh as t} from '../locales.ts';import {Button,Modal,type PageProps} from '../ui.tsx';
+import {LocalPreparationNotice,PreparationNotice} from '../components/PreparationNotice.tsx';
+import {DEFAULT_SPEED_SECONDS} from '../../speed/budget.ts';
+import * as React from 'react';import type {ModelChoice,ParamValue,TargetSnapshot,Track} from '../../contracts.ts';import type {ClientApi} from '../api.ts';import {zh as t} from '../locales.ts';import {ActionButton,activityUnavailable,Button,Modal,type LocalPreparation,type PageProps} from '../ui.tsx';
 export interface Draft {id:string;model:string;deployment:string;fields:Record<string,string>;snapshot?:{handle:string;target:TargetSnapshot}}
+export interface BackgroundSpeedDraft {
+  session:SpeedPreviewSession;
+  drafts:Draft[];
+  generalId:string;
+  general:boolean;
+  writing:boolean;
+  judge:Draft;
+  concurrency:number;
+  timeout:number;
+  speedBudget:string;
+  scrollTop:number;
+}
 export const emptyDraft=():Draft=>({id:crypto.randomUUID(),model:'',deployment:'',fields:{}});
 const fields=['temperature','maxTokens','reasoningEffort','stop'] as const;
-export function ConfigEditor({draft,models,api,change,reportError,label}:{draft:Draft;models:ModelChoice[];api:ClientApi;change(draft:Draft):void;reportError(message:string):void;label:string}){
+export function ConfigEditor({draft,models,api,change,reportError,label,defaultModelLabel}:{draft:Draft;models:ModelChoice[];api:ClientApi;change(draft:Draft):void;reportError(message:string):void;label:string;defaultModelLabel?:string|undefined}){
   const [loading,setLoading]=React.useState(false);const generation=React.useRef(0);
   async function select(model:string){if(model===draft.model&&draft.snapshot)return;reportError('');const id=++generation.current;change({...emptyDraft(),id:draft.id,model});if(!model)return;setLoading(true);try{const [providerId,modelId]=JSON.parse(model);const snapshot=await api<{handle:string;target:TargetSnapshot}>('snapshot',{providerId,modelId});if(id===generation.current)change({id:draft.id,model,deployment:'',fields:{},snapshot});}catch(error){reportError((error as Error).message);}finally{if(id===generation.current)setLoading(false);}}
-  return <div className="me-config-editor"><ModelSelect label={label} value={draft.model} models={models} onChange={model=>void select(model)} disabled={loading} placeholder={loading?t.loading:t.chooseModel}/>{!models.length&&<p className="me-help">{t.noModels}</p>}
-  {draft.snapshot&&<><label>{t.deployment}<input maxLength={100} value={draft.deployment} onChange={e=>change({...draft,deployment:e.target.value})} placeholder={t.deploymentHint}/></label><details><summary>{t.params}</summary><p className="me-help">{t.defaults}</p><div className="me-fields">{fields.map(key=>{const p=draft.snapshot!.target.controls[key],value=draft.fields[key]??(p?.state==='known'?typeof p.value==='string'?p.value:JSON.stringify(p.value):'');return <label key={key}>{t[key]}<input type={key==='temperature'||key==='maxTokens'?'number':'text'} step={key==='temperature'?'0.1':'1'} min={key==='temperature'?0:key==='maxTokens'?1:undefined} value={value} onChange={e=>change({...draft,fields:{...draft.fields,[key]:e.target.value}})} placeholder={t.inherit} aria-label={t[key]} aria-describedby={draft.id+'-'+key+'-help'}/><small id={draft.id+'-'+key+'-help'} className="me-param-help">{t.parameterHelp[key]}</small></label>;})}</div></details></>}
+  const edited=Object.keys(draft.fields).length;
+  return <div className="me-config-editor"><ModelSelect label={label} value={draft.model} models={models} onChange={model=>void select(model)} disabled={loading} placeholder={loading?t.loading:'请选择'} {...(defaultModelLabel?{defaultLabel:defaultModelLabel}:{})}/>{!models.length&&<p className="me-help">{t.noModels}</p>}
+  {draft.snapshot&&<><Field label={t.configNoteOptional} hint={t.configNoteHint}><TextInput maxLength={100} value={draft.deployment} onChange={e=>change({...draft,deployment:e.target.value})} placeholder={t.configNotePlaceholder}/></Field><Disclosure kind="settings" title={t.params} value={edited?"已调整 "+edited+" 项":"沿用宿主设置"}><p className="me-help">{t.defaults}</p><div className="me-fields">{fields.map(key=>{const p=draft.snapshot!.target.controls[key],value=draft.fields[key]??(p?.state==='known'?typeof p.value==='string'?p.value:JSON.stringify(p.value):'');return <label key={key}>{t[key]}<TextInput type={key==='temperature'||key==='maxTokens'?'number':'text'} step={key==='temperature'?'0.1':'1'} min={key==='temperature'?0:key==='maxTokens'?1:undefined} value={value} onChange={e=>change({...draft,fields:{...draft.fields,[key]:e.target.value}})} placeholder={t.inherit} aria-label={t[key]} aria-describedby={draft.id+'-'+key+'-help'}/><small id={draft.id+'-'+key+'-help'} className="me-param-help">{t.parameterHelp[key]}</small></label>;})}</div></Disclosure></>}
   </div>;
 }
-export async function resolveDraft(api:ClientApi,draft:Draft):Promise<string>{
+export async function resolveDraft(api:ClientApi,draft:Draft,signal?:AbortSignal):Promise<string>{
+  signal?.throwIfAborted();
   if(!draft.model||!draft.snapshot)throw new Error(t.selectRequired);
   if(!Object.keys(draft.fields).length&&!draft.deployment)return draft.snapshot.handle;
   const overrides:Record<string,ParamValue>={};
@@ -21,23 +45,247 @@ export async function resolveDraft(api:ClientApi,draft:Draft):Promise<string>{
     if(key==='stop'){try{parsed=JSON.parse(value);}catch{throw new Error(t.invalidStop);}if(!Array.isArray(parsed)||!parsed.every(x=>typeof x==='string'))throw new Error(t.invalidStop);}
     overrides[key]={state:'known',value:parsed as any,source:'override'};
   }
-  const [providerId,modelId]=JSON.parse(draft.model),snapshot=await api<{handle:string}>('snapshot',{providerId,modelId,overrides,deployment:draft.deployment});return snapshot.handle;
+  const [providerId,modelId]=JSON.parse(draft.model),snapshot=await api<{handle:string}>('snapshot',{providerId,modelId,overrides,deployment:draft.deployment},signal);return snapshot.handle;
 }
-export function NewRun({onClose,...props}:PageProps&{onClose():void}){
- const tiers=props.data.protocols.filter(p=>p.prepared&&p.descriptor.allowNewRuns&&(p.descriptor.general.tier==='light'||p.descriptor.general.tier==='deep')).sort((a,b)=>Number(b.descriptor.general.schema==='task-five-v1')-Number(a.descriptor.general.schema==='task-five-v1')),[generalId,setGeneralId]=React.useState(()=>tiers.find(p=>p.descriptor.general.tier==='light')?.descriptor.refs.generalId??''),selectedTier=tiers.find(p=>p.descriptor.refs.generalId===generalId),tierReady=!!selectedTier?.prepared&&selectedTier.descriptor.allowNewRuns;
- React.useEffect(()=>{if(!tiers.some(p=>p.descriptor.refs.generalId===generalId))setGeneralId(tiers.find(p=>p.descriptor.general.tier==='light')?.descriptor.refs.generalId??'');},[props.data.protocols,generalId]);
- const [drafts,setDrafts]=React.useState<Draft[]>([emptyDraft()]),[writing,setWriting]=React.useState(false),[general,setGeneral]=React.useState(true),[judge,setJudge]=React.useState(emptyDraft),[concurrency,setConcurrency]=React.useState(4),[timeout,setTimeoutValue]=React.useState(300),[error,setError]=React.useState(''),[previewId,setPreviewId]=React.useState<string>(),[probing,setProbing]=React.useState(false),[probeStarting,setProbeStarting]=React.useState(false),[closing,setClosing]=React.useState(false);
+export function NewRun({onClose,onBackground,saved,preparation,onRetryPreparation,...props}:PageProps&{
+  onClose():void;onBackground(draft:BackgroundSpeedDraft):void;saved?:BackgroundSpeedDraft;
+  preparation:LocalPreparation|undefined;onRetryPreparation():void;
+}){
+ const tiers=props.data.protocols.filter(({descriptor})=>descriptor.allowNewRuns
+   && descriptor.general.tier!=='legacy' && !isArchivedProtocol(descriptor.refs,props.protocolArchive))
+   .sort((a,b)=>generalEditionOrder(b.descriptor.refs.resourceVersion)-generalEditionOrder(a.descriptor.refs.resourceVersion));
+ const currentTiers=tiers.filter(p=>isCurrentGeneralRelease(p.descriptor.refs));
+ const newestSchema=tiers.find(p=>isLongTasksFirstSchema(p.descriptor.general.schema))?.descriptor.general.schema;
+ const primaryTiers=currentTiers.length?currentTiers:newestSchema?tiers.filter(p=>p.descriptor.general.schema===newestSchema):tiers;
+ const previousTiers=tiers.filter(tier=>!primaryTiers.includes(tier));
+ const defaultVersion=primaryTiers[0]?.descriptor.refs.resourceVersion;
+ const defaultGeneralId=(primaryTiers.find(p=>p.descriptor.general.tier==='light'&&(currentTiers.length>0||p.descriptor.refs.resourceVersion===defaultVersion))
+   ??primaryTiers[0])?.descriptor.refs.generalId??'';
+ const [generalId,setGeneralId]=React.useState(saved?.generalId??defaultGeneralId);
+ const selectedTier=tiers.find(p=>p.descriptor.refs.generalId===generalId);
+ const tierReady=!!selectedTier?.prepared;
+ const generalTitle=currentTiers.length?generalEvaluationName:
+   isFiveCapabilitySchema(selectedTier?.descriptor.general.schema)?'任务综合能力':t.general;
+ const writingTitle=writingEditionName(CURRENT_WRITING_ID)??t.writing;
+ const tierName=(item:typeof tiers[number])=>{
+   const {general,refs}=item.descriptor;
+   const tier=general.tier==='light'?'轻量':'深入';
+   const edition=generalEditionLabel(refs.resourceVersion);
+   return generalReleaseName(refs)??(edition?tier+' · '+edition:tier);
+ };
+ const legacyValue=selectedTier&&previousTiers.includes(selectedTier)?tierName(selectedTier):'未选用';
+ const tracksId=React.useId();
+ const renderTier=(item:typeof tiers[number])=>{
+   const {descriptor,prepared}=item;
+   const {general,refs}=descriptor;
+   const light=general.tier==='light';
+   const fiveCapability=isFiveCapabilitySchema(general.schema);
+   const description=fiveCapability?(light?'日常选型':'覆盖更全'):'四项能力 · 仅与同版成绩比较';
+   return (
+     <label className="me-tier-option" key={refs.generalId}>
+       <Radio name={tracksId+'-tier'} checked={generalId===refs.generalId}
+         disabled={!descriptor.allowNewRuns} onChange={()=>setGeneralId(refs.generalId)}/>
+       <span>
+         <strong>{tierName(item)}</strong>
+         <small>{description}{!prepared?' · 尚未准备':''}</small>
+       </span>
+     </label>
+   );
+ };
+ React.useEffect(()=>{if(!selectedTier)setGeneralId(defaultGeneralId);},[selectedTier,defaultGeneralId]);
+ const [drafts,setDrafts]=React.useState<Draft[]>(()=>saved?.drafts??[emptyDraft()]);
+ const [writing,setWriting]=React.useState(saved?.writing??false),[general,setGeneral]=React.useState(saved?.general??true);
+ const [judge,setJudge]=React.useState(()=>saved?.judge??emptyDraft());
+ const useEvaluationConfigAsJudge=drafts.length===1&&!judge.model;
+ const judgeReady=useEvaluationConfigAsJudge?!!drafts[0]?.snapshot:!!judge.snapshot;
+ const [concurrency,setConcurrency]=React.useState(saved?.concurrency??4),[timeout,setTimeoutValue]=React.useState(saved?.timeout??300);
+ const [speedBudget,setSpeedBudget]=React.useState(saved?.speedBudget??String(DEFAULT_SPEED_SECONDS));
+ const [error,setError]=React.useState(''),[preview,setPreview]=React.useState<{key:string;id:string}>();
+ const [probing,setProbing]=React.useState(!!saved),[probeStarting,setProbeStarting]=React.useState(false),[closing,setClosing]=React.useState(false);
+ const [copyOpen,setCopyOpen]=React.useState(false);
+ const [advisorOpen,setAdvisorOpen]=React.useState(!!saved);
+ const formBody=React.useRef<HTMLDivElement>(null);
+ const advisorTrigger=React.useRef<HTMLDivElement>(null);
+ React.useLayoutEffect(()=>{if(saved&&formBody.current)formBody.current.scrollTop=saved.scrollTop;},[saved]);
+ React.useEffect(()=>{if(saved&&!advisorOpen)advisorTrigger.current?.querySelector('button')?.focus({preventScroll:true});},[saved,advisorOpen]);
+ const advisorId=React.useId(),advisorOpener=React.useRef<HTMLButtonElement|null>(null);
+ const adoptPreview=React.useCallback((key:string,id:string|undefined)=>{
+   setPreview(old=>id?(old?.key===key&&old.id===id?old:{key,id}):old===undefined?old:undefined);
+ },[]);
+ function openAdvisor(event:React.MouseEvent<HTMLButtonElement>){if(advisorUnavailable||dialogLocked)return;advisorOpener.current=event.currentTarget;setAdvisorOpen(true);}
+ const copyChoicesId=React.useId();
+ const copyButton=React.useRef<HTMLButtonElement|null>(null);
+ const maxConfigs=20;
+ const configurationName=(index:number)=>t.configItem+' '+String(index+1).padStart(2,'0');
+ function appendConfig(source?:Draft) {
+   const next=source?{...structuredClone(source),id:crypto.randomUUID()}:emptyDraft();
+   setDrafts(current=>current.length<maxConfigs?[...current,next]:current);
+   if(source&&copyOpen) copyButton.current?.focus({preventScroll:true});
+   setCopyOpen(false);
+ }
+ function chooseCopySource(event:React.MouseEvent<HTMLButtonElement>) {
+   copyButton.current=event.currentTarget;
+   if(drafts.length===1) appendConfig(drafts[0]);
+   else setCopyOpen(!copyOpen);
+ }
+ function closeCopyChoices() {
+   setCopyOpen(false);
+   copyButton.current?.focus({preventScroll:true});
+ }
  const cancelPreview=React.useRef<()=>Promise<boolean>>(async()=>true),registerCancel=React.useCallback((fn:()=>Promise<boolean>)=>{cancelPreview.current=fn;},[]),runningChange=React.useCallback((running:boolean,starting=false)=>{setProbing(running);setProbeStarting(starting);},[]);
- const refresh=React.useCallback(()=>{void props.act(async()=>true);},[props.act]);
- const draftKey=JSON.stringify({drafts:drafts.map(d=>({model:d.model,deployment:d.deployment,fields:d.fields,target:d.snapshot?.target})),generalId,general,writing,judge:writing?judge:undefined,concurrency,timeout});
+ const refresh=React.useCallback(()=>{void props.refresh();},[props.refresh]);
+ const draftKey=JSON.stringify({rootId:props.data.status.rootId,rootEpoch:props.data.status.rootEpoch,drafts:drafts.map(d=>({model:d.model,deployment:d.deployment,fields:d.fields,target:d.snapshot?.target})),generalId,general,writing,writingId:writing?props.data.status.writingId:undefined,judge:writing?judge:undefined,concurrency,timeout});
  const writingReady=props.data.protocols.some(p=>p.descriptor.refs.generalId===props.data.status.generalId&&p.prepared&&p.descriptor.allowNewRuns);
- const valid=!drafts.some(x=>!x.snapshot)&&(!writing||!!judge.snapshot)&&(general||writing)&&(general?tierReady:writingReady),active=!!props.data.status.activeActivity||!!props.data.queue.activeBatchId;
- async function request():Promise<SpeedPayload>{const handles=[];for(const draft of drafts)handles.push(await resolveDraft(props.api,draft));const tracks=[...(general?['general']:[]),...(writing?['writing']:[])];if(!tracks.length)throw Error(t.selectRequired);return {generalId:general?generalId:props.data.status.generalId,handles,tracks,execution:{concurrency,callTimeoutMs:timeout*1000},...(writing?{judgeHandle:await resolveDraft(props.api,judge)}:{})};}
+ const currentSelected=general&&!!selectedTier&&isCurrentGeneralRelease(selectedTier.descriptor.refs);
+ const hostPreparing=props.data.status.preparing||props.data.status.activeActivity?.kind==='prepare';
+ const waiting=preparation?.phase==='pending'||currentSelected&&hostPreparing&&preparation?.phase!=='failed';
+ const preparationNotice:LocalPreparation|undefined=waiting?{phase:'pending'}:
+   currentSelected&&(!tierReady||preparation?.phase==='failed'&&preparation.verifyOnly)?
+     {...(preparation?.phase==='failed'?preparation:{phase:'failed'}),code:preparation?.phase==='failed'&&preparation.code||selectedTier?.errorCode}:undefined;
+ const advisorPrerequisite=drafts.some(d=>!d.model)?(drafts.length===1?'请先选择模型。':'请为每个配置选择模型。'):
+   drafts.some(d=>!d.snapshot)?'模型配置尚未就绪，请检查所选模型。':
+   !general&&!writing?'请至少选择一项评测内容。':
+   general&&!selectedTier?'当前没有可用的通用评测协议。':
+   writing&&!judgeReady?(judge.model?'裁判配置尚未就绪，请检查所选裁判。':'请先选择写作裁判。'):
+   !Number.isInteger(timeout)||timeout<1||timeout>1800?'请将无输出等待上限设为 1–1800 秒。':undefined;
+ const advisorReady=!advisorPrerequisite;
+ const advisorUnavailable=probing?undefined:advisorPrerequisite;
+ const scope=[general&&selectedTier?(generalReleaseName(selectedTier.descriptor.refs,true)??generalTitle+' · '+tierName(selectedTier)):'',
+   writing?writingTitle:''].filter(Boolean).join('　/　');
+ const advisorNames=drafts.map((draft,i)=>{
+   const model=draft.snapshot?.target.modelId;
+   return configurationName(i)+(model?' · '+model:'');
+ });
+ const valid=!drafts.some(x=>!x.snapshot)&&(!writing||judgeReady)&&(general||writing)&&(general?tierReady:writingReady)&&!(currentSelected&&preparation?.phase==='failed'&&preparation.verifyOnly);
+ const active=!!props.data.status.activeActivity||!!props.data.queue.activeBatchId||hostPreparing||waiting;
+ const startUnavailable=advisorPrerequisite??
+   (!props.data.status.writable?'数据目录为只读，请在设置中切换到可写目录。':
+    probing?'测速正在进行，请等测速结束或停止测速。':
+    waiting?'正在准备评测环境，请稍候。':
+    activityUnavailable(props.data.status,props.data.queue.activeBatchId)??
+    (preparation?.phase==='failed'&&!valid?'评测环境准备未完成，请重试准备。':
+     !valid?'请先完成所选评测的环境准备。':
+     props.busy?'正在处理当前操作，请稍候。':undefined));
+ const retryDisabled=props.busy||!props.data.status.writable||!!props.data.queue.activeBatchId||
+   (!!props.data.status.activeActivity&&props.data.status.activeActivity.kind!=='prepare')||hostPreparing&&!(preparation?.phase==='failed'&&preparation.verifyOnly);
+ async function request(signal?:AbortSignal):Promise<SpeedPayload>{
+   const handles=[];
+   for(const draft of drafts)handles.push(await resolveDraft(props.api,draft,signal));
+   const tracks=[...(general?['general']:[]),...(writing?['writing']:[])];
+   if(!tracks.length)throw Error(t.selectRequired);
+   const judgeHandle=writing?(useEvaluationConfigAsJudge?handles[0]:await resolveDraft(props.api,judge,signal)):undefined;
+   return {generalId:general?generalId:props.data.status.generalId,handles,tracks,execution:{concurrency,callTimeoutMs:timeout*1000},...(judgeHandle?{judgeHandle}:{})};
+ }
  async function close(){if(closing)return;setClosing(true);if(await cancelPreview.current())onClose();else setClosing(false);}
- async function start(){setError('');const result=await props.act(async()=>props.api('createBatch',{...await request(),...(previewId?{previewId}:{})}));if(result){onClose();props.navigate('jobs');}}
- return <Modal title={t.newRun} onClose={()=>void close()} wide variant="new-run" locked={props.busy||probeStarting||closing}><div className="me-dialog-body"><fieldset className="me-run-fields" disabled={probing||props.busy||closing}>
- <div className="me-config-list">{drafts.map((draft,index)=><section className="me-config-card" key={draft.id}><div className="me-config-head"><strong>{t.model} {String(index+1).padStart(2,'0')}</strong><div><Button kind="text" onClick={()=>setDrafts([...drafts,{...structuredClone(draft),id:crypto.randomUUID()}])}>{t.duplicate}</Button>{drafts.length>1&&<Button kind="text" onClick={()=>setDrafts(drafts.filter(x=>x.id!==draft.id))}>{t.remove}</Button>}</div></div><ConfigEditor draft={draft} models={props.data.models} api={props.api} change={value=>setDrafts(old=>old.map(x=>x.id===value.id?value:x))} reportError={setError} label={t.chooseModel}/></section>)}</div><Button icon="plus" onClick={()=>setDrafts([...drafts,emptyDraft()])} disabled={drafts.length>=20}>{t.addConfig}</Button>
- <section className="me-form-section"><h3>{t.tracks}</h3><div className="me-track-choice"><label><input type="checkbox" checked={general} onChange={e=>setGeneral(e.target.checked)}/><span>{selectedTier?.descriptor.general.schema==='task-five-v1'?'任务综合能力':t.general} · {selectedTier?.descriptor.questionCount??'—'}题</span></label><label><input type="checkbox" checked={writing} onChange={e=>setWriting(e.target.checked)}/><span>{t.writingCount}</span></label></div>{general&&<><div role="radiogroup" aria-label="通用评测档位" className="me-tier-choices">{tiers.map(p=><label key={p.descriptor.refs.generalId}><input type="radio" name="general-tier" checked={generalId===p.descriptor.refs.generalId} disabled={!p.prepared||!p.descriptor.allowNewRuns} onChange={()=>setGeneralId(p.descriptor.refs.generalId)}/><span><strong>{p.descriptor.general.schema!=='task-five-v1'?'旧版 · ':''}{p.descriptor.general.tier==='light'?'轻量':'深入'} · {p.descriptor.questionCount}题</strong><small>{p.descriptor.general.schema==='task-five-v1'?(p.descriptor.general.tier==='light'?'参考约 30 分钟 · 日常选型':'参考约 2—3 小时 · 更充分覆盖'):'四项能力 · 仅与同版成绩比较'}{!p.prepared?' · 尚未准备':''}</small></span></label>)}</div><p className="me-help">参考时长不作完成保证，实际按当前部署测速与运行观测估算；中文写作另计。</p>{selectedTier?.descriptor.general.schema==='task-five-v1'&&<EvaluationBasis definition={selectedTier.descriptor.general}/>} {!tierReady&&<div className="me-inline-warning">所选档位尚未准备。<Button onClick={()=>void props.act(()=>props.api('prepare'))} disabled={props.busy||active}>准备评测环境</Button></div>}</>}{writing&&<div className="me-judge-config"><ConfigEditor draft={judge} models={props.data.models} api={props.api} change={setJudge} reportError={setError} label={t.judge}/><p className="me-help">{t.judgeHelp}</p></div>}</section>
- <section className="me-form-section"><h3>{t.execution}</h3><div className="me-fields"><label>{t.concurrency}<select value={concurrency} onChange={e=>setConcurrency(Number(e.target.value))}>{[1,2,3,4].map(n=><option key={n} value={n}>{n}</option>)}</select></label><label>{t.timeout}<input type="number" value={timeout} min={1} max={1800} onChange={e=>setTimeoutValue(Number(e.target.value))}/></label></div><p className="me-help">{t.runHint}</p></section></fieldset>
- <SpeedPreview tracks={[...(general?['general']:[]),...(writing?['writing']:[])]} draftKey={draftKey} request={request} api={props.api} disabled={!valid||props.busy||active} configCount={drafts.length} {...(props.data.status.activeActivity?{activity:props.data.status.activeActivity}:{})} onAdopt={setPreviewId} onRunningChange={runningChange} registerCancel={registerCancel} onRefresh={refresh}/>{error&&<p role="alert" className="me-inline-error">{error}</p>}</div><footer className="me-dialog-foot"><Button onClick={()=>void close()} disabled={props.busy||probeStarting||closing}>{t.cancel}</Button><Button kind="primary" icon="play" disabled={props.busy||!valid||probing||active||closing} onClick={()=>void start()}>{props.busy?t.loading:t.start}</Button></footer></Modal>;
+ async function start(){if(startUnavailable||closing)return;setError('');const result=await props.act(async()=>props.api('createBatch',{...await request(),...(preview?.key===draftKey?{previewId:preview.id}:{})}));if(result){onClose();props.navigate('jobs');}}
+ const dialogLocked=props.busy||probeStarting||closing;
+ return <><Modal title={t.newRun} onClose={()=>void close()} wide variant="new-run" inactive={advisorOpen} locked={dialogLocked}>
+ <div ref={formBody} className="me-dialog-body me-run-form">{preparationNotice&&<LocalPreparationNotice state={preparationNotice} retry={onRetryPreparation} settings={()=>{onClose();props.navigate('settings');}} disabled={retryDisabled}/>}<fieldset className="me-run-fields" disabled={probing||props.busy||closing}>
+ <section className="me-form-section me-model-config-section">
+   <h3 className="me-form-title">{t.model}</h3>
+   <div className="me-config-list">
+     {drafts.map((draft,index)=><section className="me-config-card" key={draft.id}>
+       <header className="me-config-head">
+         <h4 className="me-config-title">{configurationName(index)}</h4>
+         <div>
+           {drafts.length>1&&<Button kind="text" onClick={()=>{setCopyOpen(false);setDrafts(current=>current.filter(item=>item.id!==draft.id));}}>{t.remove}</Button>}
+         </div>
+       </header>
+       <ConfigEditor draft={draft} models={props.data.models} api={props.api}
+         change={value=>setDrafts(old=>old.map(x=>x.id===value.id?value:x))}
+         reportError={setError} label={t.chooseModel}/>
+     </section>)}
+   </div>
+   <div onKeyDown={event=>{
+     if(event.key==='Escape'&&copyOpen){
+       event.stopPropagation();
+       closeCopyChoices();
+     }
+   }}>
+     <div className="me-config-actions">
+       <Button icon="plus" onClick={()=>appendConfig()} disabled={drafts.length>=maxConfigs}>{t.addConfig}</Button>
+       <Button icon="copy" onClick={chooseCopySource} disabled={drafts.length>=maxConfigs}
+         aria-expanded={drafts.length>1?copyOpen:undefined}
+         aria-controls={copyOpen?copyChoicesId:undefined}>{t.duplicate}</Button>
+     </div>
+     {copyOpen&&<fieldset className="me-copy-choices" id={copyChoicesId}>
+       <legend>选择要复制的配置</legend>
+       <div className="me-copy-options">
+         {drafts.map((draft,index)=>{
+           const target=draft.snapshot?.target;
+           const detail=[target?target.providerId+' / '+target.modelId:'未选择模型',draft.deployment].filter(Boolean).join(' · ');
+           return <button type="button" className="me-copy-option" key={draft.id} onClick={()=>appendConfig(draft)}>
+             <strong>{configurationName(index)}</strong>
+             <span>{detail}</span>
+           </button>;
+         })}
+       </div>
+     </fieldset>}
+   </div>
+ </section>
+ <section className="me-form-section" aria-labelledby={tracksId}>
+   <h3 className="me-form-title" id={tracksId}>{t.tracks}</h3>
+   <div className="me-track-list">
+     <div className="me-track-panel" role="group" aria-labelledby={tracksId+'-general'} data-selected={general||undefined}>
+       <label className="me-track-toggle">
+         <Checkbox checked={general} onChange={event=>setGeneral(event.target.checked)}/>
+         <strong id={tracksId+'-general'}>{generalTitle}</strong>
+       </label>
+       {general&&<div className="me-track-options">
+         {selectedTier?<fieldset role="radiogroup" aria-label={`通用${t.evaluationTier}`} className="me-tier-group">
+           <legend>{t.evaluationTier}</legend>
+           <div className="me-tier-choices">
+             {primaryTiers.map(renderTier)}
+           </div>
+           {previousTiers.length>0&&
+             <Disclosure kind="settings" title="旧版评测协议" value={legacyValue}>
+               <div role="group" aria-label="旧版评测协议" className="me-tier-choices">
+                 {previousTiers.map(renderTier)}
+               </div>
+             </Disclosure>}
+         </fieldset>:<p className="me-help">当前没有开放新建的通用评测协议。</p>}
+         {selectedTier&&<EvaluationBasis definition={selectedTier.descriptor.general} questionCount={selectedTier.descriptor.questionCount}/>}
+         {selectedTier&&!tierReady&&!currentSelected&&
+           <PreparationNotice generalId={generalId} api={props.api} act={props.act} disabled={props.busy||active}
+             externalPreparing={props.data.status.preparing} message="所选档位尚未准备。"/>}
+       </div>}
+     </div>
+     <div className="me-track-panel" role="group" aria-labelledby={tracksId+'-writing'} data-selected={writing||undefined}>
+       <label className="me-track-toggle">
+         <Checkbox checked={writing} onChange={event=>setWriting(event.target.checked)}/>
+         <strong id={tracksId+'-writing'}>{writingTitle}</strong>
+       </label>
+       {writing&&<div className="me-track-options">
+         {!general&&!writingReady&&
+           <PreparationNotice generalId={props.data.status.generalId} api={props.api} act={props.act} disabled={props.busy||active}
+             externalPreparing={props.data.status.preparing} message="单独写作的评测环境尚未准备。"/>}
+         <ConfigEditor draft={judge} models={props.data.models} api={props.api} change={setJudge} reportError={setError} label={t.judge}
+           defaultModelLabel={drafts.length===1?'沿用评测配置':undefined}/>
+         <p className="me-help">{drafts.length===1?'可更换裁判，报告会记录实际评分模型。':t.judgeHelp}</p>
+         <WritingEvaluationBasis/>
+       </div>}
+     </div>
+   </div>
+ </section>
+ <ExecutionSettings concurrency={concurrency} timeout={timeout} configurationCount={drafts.length}
+   onConcurrencyChange={setConcurrency} onTimeoutChange={setTimeoutValue}/>
+ </fieldset>
+ {error&&<p role="alert" className="me-inline-error">{error}</p>}</div>
+ <footer className="me-dialog-foot me-new-run-actions">
+   <div ref={advisorTrigger} className="me-advisor-trigger">
+     <ActionButton icon="clock" disabled={probeStarting||closing} hintAlign="start" unavailableReason={advisorUnavailable}
+       onClick={openAdvisor}>{probing?'查看测速进度':'查看用时参考'}</ActionButton>
+   </div>
+   <div className="me-new-run-submit"><Button onClick={()=>void close()} disabled={props.busy||probeStarting||closing}>{t.cancel}</Button>
+     <ActionButton kind="primary" icon="play" disabled={closing} unavailableReason={startUnavailable} onClick={()=>void start()}>{props.busy&&!waiting?t.loading:t.start}</ActionButton></div>
+ </footer></Modal>
+ <SpeedPreview id={advisorId} open={advisorOpen} scope={scope} names={advisorNames} locked={dialogLocked} returnFocusTo={advisorOpener.current} onClose={()=>setAdvisorOpen(false)}
+   ready={advisorReady} prepared={general?tierReady:writingReady} canProbe={valid&&!props.busy&&!active&&!closing} hostSupportsAdvisor={props.data.status.timeAdvisorVersion===1}
+   concurrency={concurrency} {...(currentSelected&&!writing&&(generalId==='general-task-five-v3-r3-light'||generalId==='general-task-five-v3-r3-deep')?{planningTier:generalId.endsWith('-deep')?'deep' as const:'light' as const}:{})}
+   budget={speedBudget} onBudgetChange={setSpeedBudget}
+   draftKey={draftKey} request={request} api={props.api} {...(props.data.status.activeActivity?{activity:props.data.status.activeActivity}:{})}
+   {...(saved?{initialSession:saved.session}:{})}
+   onBackground={session=>onBackground({session,drafts,generalId,general,writing,judge,concurrency,timeout,speedBudget,scrollTop:formBody.current?.scrollTop??0})}
+   onAdopt={adoptPreview} onRunningChange={runningChange}
+   registerCancel={registerCancel} onRefresh={refresh}/></>;
 }

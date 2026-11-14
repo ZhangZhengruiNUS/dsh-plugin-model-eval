@@ -1,2 +1,2 @@
 /** Fixed offline resource manifest. */
-export const RESOURCE_MANIFEST_SHA256 = '8b510ec7a2f04543c2fad279d44ee562186de99e92a74f4a1d8fba937f1be16b';
+export const RESOURCE_MANIFEST_SHA256 = '070142158fa697cb36b059d120e73dd74eaf8418cff9ba5f03d96acd0087cddc';

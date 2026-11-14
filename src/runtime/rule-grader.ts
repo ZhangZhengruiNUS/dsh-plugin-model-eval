@@ -8,6 +8,7 @@ import { RUNTIME_PINS } from './pins.ts';
 export interface RuleGradeInput {
   itemId: string; key: number; prompt: string; instruction_id_list: string[];
   kwargs: Record<string, JsonValue>[]; answer: string;
+  ruleProfile?: 'literal-symbol-frequency-v1';
 }
 export interface RuleGrader { gradeRules(request: RuleGradeInput,signal?:AbortSignal): Promise<GradeResult> }
 
@@ -20,6 +21,19 @@ export function createRuleGrader(runtimeRoot: string): RuleGrader {
       error: { code, retryable: false, phase: 'grader', message: '本地规则评分环境无法完成检查。' }, evidence: null,
     });
     try {
+      if(request.ruleProfile!==undefined&&request.ruleProfile!=='literal-symbol-frequency-v1')return missing('UNKNOWN_RULE_PROFILE');
+      const literalCounts:{index:number;character:string;count:number;relation:string;required:number}[]=[];
+      if(request.ruleProfile){
+        if(request.instruction_id_list.length!==request.kwargs.length)return missing('INVALID_RULE_ARGUMENTS');
+        for(const [index,id]of request.instruction_id_list.entries())if(id==='keywords:letter_frequency'){
+          const args=request.kwargs[index]!,character=args.letter,required=args.let_frequency,relation=args.let_relation;
+          if(typeof character!=='string'||Array.from(character).length!==1||typeof required!=='number'||!Number.isSafeInteger(required)||required<0||!['less than','at least'].includes(String(relation)))return missing('INVALID_RULE_ARGUMENTS');
+          if(!/^[a-z]$/i.test(character)){
+            if(/\p{L}/u.test(character))return missing('UNSUPPORTED_LITERAL_LETTER');
+            literalCounts.push({index,character,count:Array.from(request.answer).filter(c=>c===character).length,relation:String(relation),required});
+          }
+        }
+      }
       if(signal?.aborted)return missing('CANCELLED');
       if (process.platform !== 'win32' || process.arch !== 'x64') return missing('UNSUPPORTED_RUNTIME');
       await verifyRuntime(root, 'trusted-ifeval', RUNTIME_PINS['trusted-ifeval']);
@@ -46,8 +60,10 @@ export function createRuleGrader(runtimeRoot: string): RuleGrader {
       const data = JSON.parse(result.text);
       if (typeof data.passed !== 'boolean' || !Array.isArray(data.instructions)
         || data.instructions.length !== request.instruction_id_list.length || !data.instructions.every((x: unknown) => typeof x === 'boolean')) return missing('INVALID_RULE_RESULT');
-      return { kind: 'scored', track: 'general', itemId: request.itemId, passed: data.passed,
-        evidence: { metric: 'prompt-level-strict', instructions: data.instructions, seed: 0, tokenizer:'ifeval-code-tokenizer-v1' } };
+      const instructions=[...data.instructions] as boolean[];
+      for(const value of literalCounts)instructions[value.index]=value.relation==='less than'?value.count<value.required:value.count>=value.required;
+      return { kind: 'scored', track: 'general', itemId: request.itemId, passed: request.ruleProfile?instructions.every(Boolean):data.passed,
+        evidence: { metric: 'prompt-level-strict', instructions, seed: 0, tokenizer:'ifeval-code-tokenizer-v1',...(request.ruleProfile?{ruleProfile:request.ruleProfile,literalCounts}:{} ) } };
     } catch { return missing('RULE_ENVIRONMENT_UNAVAILABLE'); }
   } };
 }

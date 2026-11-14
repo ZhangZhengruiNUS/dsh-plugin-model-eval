@@ -1,0 +1,62 @@
+{
+  "src/runtime/contest-runner.ts": {
+    "currentSha256": "616db725eeb5dd66f0971417a073103d1ea8d9c14f006cb0959f292e354e9712",
+    "previousSha256": "82f73dffb6c535f163fc71e013e491ea09597062fc56c4844c212a9800ca4f0c",
+    "parentCommit": "9da0f64^",
+    "edits": [
+      {
+        "current": "export type ContestOutcome=CodeOutcome & {wallPhase?:'setup'|'process'|'cleanup';cleanupFailed?:true};\nexport interface ContestRunner {runContest(test:ContestTest,solution:string,signal:AbortSignal):Promise<ContestOutcome>}\n",
+        "previous": "export interface ContestRunner {runContest(test:ContestTest,solution:string,signal:AbortSignal):Promise<CodeOutcome>}\n"
+      }
+    ]
+  },
+  "src/runtime/contest-frames.ts": {
+    "currentSha256": "c4e25005a6c98c9e018ff445cbb8a68a3a268e3854cd3e82475331e8f762a2ab",
+    "previousSha256": "43bb68a619e983581c800d7e26d9d206a9715edf403c5f254ada4e07a1569528",
+    "parentCommit": "9da0f64^",
+    "edits": [
+      {
+        "current": "  get matchedCases():number {return Math.max(0,this.index-(this.mismatch?1:0));}\n",
+        "previous": ""
+      }
+    ]
+  },
+  "src/runtime/rule-grader.ts": {
+    "currentSha256": "0c20f14845e3d6e6638e6a7190d943ceddf2bccc50c1896389b650165b9a17a3",
+    "previousSha256": "1f0fbad926b4a89be7065b493db75d5aad96f82c8657cdfbb8a776b499682798",
+    "parentCommit": "dd493b2^",
+    "edits": [
+      {
+        "current": "  ruleProfile?: 'literal-symbol-frequency-v1';\n",
+        "previous": ""
+      },
+      {
+        "current": "      if(request.ruleProfile!==undefined&&request.ruleProfile!=='literal-symbol-frequency-v1')return missing('UNKNOWN_RULE_PROFILE');\n      const literalCounts:{index:number;character:string;count:number;relation:string;required:number}[]=[];\n      if(request.ruleProfile){\n        if(request.instruction_id_list.length!==request.kwargs.length)return missing('INVALID_RULE_ARGUMENTS');\n        for(const [index,id]of request.instruction_id_list.entries())if(id==='keywords:letter_frequency'){\n          const args=request.kwargs[index]!,character=args.letter,required=args.let_frequency,relation=args.let_relation;\n          if(typeof character!=='string'||Array.from(character).length!==1||typeof required!=='number'||!Number.isSafeInteger(required)||required<0||!['less than','at least'].includes(String(relation)))return missing('INVALID_RULE_ARGUMENTS');\n          if(!/^[a-z]$/i.test(character)){\n            if(/\\p{L}/u.test(character))return missing('UNSUPPORTED_LITERAL_LETTER');\n            literalCounts.push({index,character,count:Array.from(request.answer).filter(c=>c===character).length,relation:String(relation),required});\n          }\n        }\n      }\n",
+        "previous": ""
+      },
+      {
+        "current": "      const instructions=[...data.instructions] as boolean[];\n      for(const value of literalCounts)instructions[value.index]=value.relation==='less than'?value.count<value.required:value.count>=value.required;\n      return { kind: 'scored', track: 'general', itemId: request.itemId, passed: request.ruleProfile?instructions.every(Boolean):data.passed,\n        evidence: { metric: 'prompt-level-strict', instructions, seed: 0, tokenizer:'ifeval-code-tokenizer-v1',...(request.ruleProfile?{ruleProfile:request.ruleProfile,literalCounts}:{} ) } };\n",
+        "previous": "      return { kind: 'scored', track: 'general', itemId: request.itemId, passed: data.passed,\n        evidence: { metric: 'prompt-level-strict', instructions: data.instructions, seed: 0, tokenizer:'ifeval-code-tokenizer-v1' } };\n"
+      }
+    ]
+  },
+  "src/evaluation/grade-general.ts": {
+    "currentSha256": "9c7a395366809c66c628d77f5aef4bda3b888539ac9b7bf0302ad134ec687729",
+    "previousSha256": "b87347504f130372d69d9cab35b097d5f5918aac390d137e0954b90996b0367a",
+    "parentCommit": "9da0f64^",
+    "edits": [
+      {
+        "current": "import {CONTEST_WALL_SAFETY_ID,CONTEST_WALL_SAFETY_LIMITS} from './contest-budget.ts';\n",
+        "previous": ""
+      },
+      {
+        "current": "export interface PreparedEnvironment {code:CodeRunner;rules:RuleGrader;signal:AbortSignal;contest?:ContestRunner;contestPolicy?:typeof CONTEST_WALL_SAFETY_ID}\n",
+        "previous": "export interface PreparedEnvironment {code:CodeRunner;rules:RuleGrader;signal:AbortSignal;contest?:ContestRunner}\n"
+      },
+      {
+        "current": "    const safety=env.contestPolicy===CONTEST_WALL_SAFETY_ID;\n    const outcome=await env.contest.runContest({id:question.id,cases:raw.cases,limits:safety?CONTEST_WALL_SAFETY_LIMITS:raw.limits} as ContestTest,code,env.signal);\n    const local={...(outcome.wallPhase?{wallPhase:outcome.wallPhase}:{}),...(outcome.cleanupFailed?{cleanupFailed:true}:{})};\n    if(outcome.kind==='environment-error'||outcome.kind==='cancelled'){\n      const incomplete=missing(outcome.kind==='cancelled'?'CANCELLED':outcome.code);\n      return safety?{...incomplete,evidence:local}:incomplete;\n    }\n    return scored(outcome.kind==='passed',{metric:'all-contest-tests',outcome:outcome.kind,...(outcome.kind==='failed'?{reason:outcome.reason}:{}),...local});\n",
+        "previous": "    const outcome=await env.contest.runContest({id:question.id,cases:raw.cases,limits:raw.limits} as ContestTest,code,env.signal);\n    if(outcome.kind==='environment-error'||outcome.kind==='cancelled')return missing(outcome.kind==='cancelled'?'CANCELLED':outcome.code);\n    return scored(outcome.kind==='passed',{metric:'all-contest-tests',outcome:outcome.kind,...(outcome.kind==='failed'?{reason:outcome.reason}:{})});\n"
+      }
+    ]
+  }
+}

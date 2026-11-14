@@ -1,17 +1,27 @@
 import * as React from 'react';
-import {dimensionNames,rowName,type ComparisonRow} from '../../comparison/model.ts';import type {ComparisonSelection} from '../../comparison/state.ts';
+import {dimensionNames,modelDisplayName,rowName,rowSourceLabel,type ComparisonRow} from '../../comparison/model.ts';import type {ComparisonSelection} from '../../comparison/state.ts';
 export type ProfileMode='radar'|'delta';
 const signed=(value:number)=>{const rounded=Math.round(value*10)/10;return (rounded>0?'+':'')+rounded.toFixed(1);};
-export function AbilityProfile({rows,selection,mode,onMode,onBaseline,onHighlight,highlighted,color}:{rows:ComparisonRow[];selection:ComparisonSelection;mode:ProfileMode;onMode(mode:ProfileMode):void;onBaseline(key:string):void;onHighlight(key:string|null):void;highlighted:string|null;color(key:string):string}){
+export function AbilityProfile({rows,selection,mode,canCompare,onMode,onBaseline,onHighlight,highlighted,color}:{rows:ComparisonRow[];selection:ComparisonSelection;mode:ProfileMode;canCompare:boolean;onMode(mode:ProfileMode):void;onBaseline(key:string):void;onHighlight(key:string|null):void;highlighted:string|null;color(key:string):string}){
   const track=rows[0]?.track??'general',names=dimensionNames(rows[0]?.source,track),five=track==='general'&&names.length===5,limit=track==='general'?100:4,base=rows.find(r=>r.configKey===selection.baseline)??rows[0],peers=rows.filter(r=>r!==base),cx=200,cy=149,radius=103;
+  const scale=`0–${limit} 分`;
   const polar=(r:number,i:number)=>[cx+Math.cos(-Math.PI/2+2*Math.PI*i/names.length)*r,cy+Math.sin(-Math.PI/2+2*Math.PI*i/names.length)*r] as const;
   const maxDiff=Math.max(0,...peers.flatMap(r=>r.dimensions.flatMap((v,i)=>v===null||base?.dimensions[i]==null?[]:[Math.abs(v-base.dimensions[i]!)]))),range=track==='general'?Math.max(2,Math.ceil(maxDiff/10)*10):Math.max(.5,Math.ceil(maxDiff*2)/2);
   const svg=React.useRef<SVGSVGElement>(null),signature=JSON.stringify([mode,selection.baseline,rows.map(r=>[r.configKey,r.dimensions])]);
   React.useLayoutEffect(()=>{if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;const animation=svg.current?.animate([{opacity:.45},{opacity:1}],{duration:240,easing:'ease-out'});return()=>animation?.cancel();},[signature]);
-  const shortName=(row:ComparisonRow)=>row.target.providerId+' / '+(row.target.modelId.length>23?row.target.modelId.slice(0,21)+'…':row.target.modelId);
-  const responseDiff=(row:ComparisonRow)=>{if(row.latencyMs===null||base?.latencyMs==null)return '';const delta=row.latencyMs-base.latencyMs;return delta===0?' · 响应中位相同':` · 响应${delta<0?'缩短':'增加'}${Math.abs(delta)<100?'不足0.1':(Math.abs(delta)/1000).toFixed(1)}秒`;};
-  return <section className="me-card me-profile-card"><div className="me-chart-heading"><h2>{mode==='radar'?'能力画像':'相较基准的差值'}</h2><div className="me-profile-switch">{(['radar','delta'] as const).map(m=><button key={m} aria-pressed={mode===m} onClick={()=>onMode(m)}>{m==='radar'?'轮廓':'差值'}</button>)}</div></div><p className="me-profile-caption">{mode==='radar'?`${track==='general'?five?'五项能力 · 统一0—100分':'四类能力 · 统一0—100分':'五维写作 · 统一0—4分'}`:base?`基准：${rowName(base)} · ${track==='general'?'能力分':'维度分'}`:'请选择差值基准'}</p>
-    {!rows.length?<div className="me-profile-empty">从矩阵或图中选择配置，查看能力差异。</div>:<svg ref={svg} className="me-profile-svg" role="img" aria-label={mode==='radar'?(track==='general'?five?'五轴任务能力雷达图':'四轴通用能力雷达图':'五轴写作能力雷达图'):'相对基准的能力差值'} viewBox="0 0 400 310">
+  const shortName=(row:ComparisonRow)=>{
+    const name=modelDisplayName(row);
+    return rowSourceLabel(row)+' / '+(name.length>23?name.slice(0,21)+'…':name);
+  };
+  const responseDiff=(row:ComparisonRow)=>{if(row.taskMeanMs==null||base?.taskMeanMs==null)return '';const delta=row.taskMeanMs-base.taskMeanMs;return delta===0?' · 任务耗时相同':` · 任务耗时${delta<0?'缩短':'增加'}${Math.abs(delta)<100?'不足0.1':(Math.abs(delta)/1000).toFixed(1)}秒/题`;};
+  return <section className="me-card me-profile-card">
+    <div className="me-chart-heading">
+      <h2>{mode==='radar'?'能力画像':'相较基准的差值'}</h2>
+      {mode==='radar'&&rows.length>0&&<small>{scale}</small>}
+      {canCompare&&<div className="me-profile-switch">{(['radar','delta'] as const).map(m=><button key={m} aria-pressed={mode===m} onClick={()=>onMode(m)}>{m==='radar'?'轮廓':'差值'}</button>)}</div>}
+    </div>
+    {mode==='delta'&&base&&<p className="me-profile-caption">{`基准：${rowName(base)} · ${track==='general'?'能力分':'维度分'}`}</p>}
+    {!rows.length?<div className="me-profile-empty">从矩阵或图中选择配置，查看能力差异。</div>:<svg ref={svg} className="me-profile-svg" role="img" aria-label={mode==='radar'?(track==='general'?five?'五轴任务能力雷达图':'四轴通用能力雷达图':'五轴写作能力雷达图'):'相对基准的能力差值'} aria-description={mode==='radar'?`分值范围 ${scale}`:undefined} viewBox="0 0 400 310">
       {mode==='radar'?<>
         {[1,2,3,4].map(level=><g key={level}><polygon className="me-radar-grid" points={names.map((_,i)=>polar(radius*level/4,i).join(',')).join(' ')}/><text className="me-radar-level" x={cx+5} y={cy-radius*level/4+4}>{limit*level/4}</text></g>)}
         {names.map((name,i)=>{const p=polar(radius,i),label=polar(radius+29,i);return <g key={name}><line className="me-radar-grid" x1={cx} y1={cy} x2={p[0]} y2={p[1]}/><text className="me-radar-label" x={label[0]} y={label[1]+4} textAnchor={Math.abs(label[0]-cx)<10?'middle':label[0]>cx?'start':'end'}>{name}</text></g>;})}
@@ -24,8 +34,13 @@ export function AbilityProfile({rows,selection,mode,onMode,onBaseline,onHighligh
         {names.map((name,i)=>{const py=49+i*220/names.length;return <g key={name}><text className="me-delta-name" x="12" y={py+6}>{name}</text>{peers.map((row,j)=>{const value=row.dimensions[i],origin=base?.dimensions[i],dy=py+j*16;if(value==null||origin==null)return <text key={row.configKey} className="me-chart-tick" x="245" y={dy+4}>缺失</text>;const d=value-origin,px=235+d/range*110;return <g key={row.configKey} className={highlighted&&highlighted!==row.configKey?'me-dim':''}><line x1="235" x2={px} y1={dy} y2={dy} stroke={color(row.configKey)} className="me-delta-line"/><circle cx={px} cy={dy} r="3.5" fill={color(row.configKey)}/><text className="me-delta-value" x={px+(d>=0?8:-8)} y={dy+4} textAnchor={d>=0?'start':'end'}>{signed(d)}</text></g>;})}</g>;})}<text className="me-chart-tick" x="235" y="301" textAnchor="middle">{track==='general'?'能力分差':'写作维度分差'} · 左负右正</text>
       </>}
     </svg>}
-    <div className="me-profile-legend">{rows.map((row,i)=><button key={row.configKey} title={rowName(row)} onClick={()=>onBaseline(row.configKey)} onPointerEnter={()=>onHighlight(row.configKey)} onPointerLeave={()=>onHighlight(null)} aria-label={`将 ${rowName(row)} 设为差值基准`} aria-pressed={row.configKey===selection.baseline}><i style={{color:color(row.configKey)}}>{['●','◆','■'][i]}</i><span>{shortName(row)} <small>{row.target.deployment?.value}</small></span>{row.configKey===selection.baseline&&<span>☆</span>}</button>)}</div>
+    <div className="me-profile-legend">{rows.map((row,i)=>{
+      const label=<><i style={{color:color(row.configKey)}}>{['●','◆','■'][i]}</i><span>{shortName(row)} <small>{row.target.deployment?.value}</small></span></>;
+      return canCompare
+        ?<button key={row.configKey} title={rowName(row)} onClick={()=>onBaseline(row.configKey)} onPointerEnter={()=>onHighlight(row.configKey)} onPointerLeave={()=>onHighlight(null)} aria-label={`将 ${rowName(row)} 设为差值基准`} aria-pressed={row.configKey===selection.baseline}>{label}{row.configKey===selection.baseline&&<span>★</span>}</button>
+        :<span className="me-profile-series-label" key={row.configKey} title={rowName(row)}>{label}</span>;
+    })}</div>
     {rows.some(r=>r.dimensions.some(v=>v===null))&&<p className="me-profile-caption">缺失维度以断线呈现，精确值见矩阵。</p>}
-    <div className="me-profile-summary">{base&&peers.length?peers.map(row=><span key={row.configKey} title={`相较 ${rowName(base)}，${rowName(row)}`}>{shortName(row)}{row.target.deployment?.value&&<small> · {row.target.deployment.value}</small>} <b>{row.score===null||base.score===null?'分差缺失':signed(row.score-base.score)+'分'}</b>{responseDiff(row)}</span>):base?'当前展示单个配置的能力轮廓。':'选择配置后，可设定基准核对分差。'}</div>
+    {base&&peers.length>0&&<div className="me-profile-summary">{peers.map(row=><span key={row.configKey} title={`相较 ${rowName(base)}，${rowName(row)}`}>{shortName(row)}{row.target.deployment?.value&&<small> · {row.target.deployment.value}</small>} <b>{row.score===null||base.score===null?'分差缺失':signed(row.score-base.score)+'分'}</b>{responseDiff(row)}</span>)}</div>}
   </section>;
 }

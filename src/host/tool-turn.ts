@@ -12,6 +12,7 @@ export function nativeToolTurn(prepare:(input:ToolTurnInput)=>Promise<Prepared>,
   try{
    const prepared=await prepare(input);unchanged=prepared.unchanged;streamStart=performance.now();timing.prepareMs=streamStart-started;
    for await(const chunk of prepared.stream({...prepared.config,messages:structuredClone(input.messages) as DshGenerateOptions['messages'],tools:structuredClone(input.tools),signal:input.signal,purpose:'model-evaluation-tools'})){
+    if(chunk.type==='reasoning-delta'||chunk.type==='text-delta'&&!!chunk.text||chunk.type==='block-end'&&chunk.block.type==='text'&&!!chunk.block.text)input.onActivity?.();
     if(chunk.type==='usage'){const usage:AttemptObservation['usage']={available:false};for(const key of ['inputTokens','outputTokens','reasoningTokens','cacheReadTokens','cacheWriteTokens','totalTokens'] as const){const v=chunk.usage[key];if(Number.isSafeInteger(v)&&v!>=0)usage[key]=v!;}usage.available=usage.inputTokens!==undefined||usage.outputTokens!==undefined;observation.usage=usage;}
     if(chunk.type==='reasoning-delta'||chunk.type==='tool-call-delta'||chunk.type==='text-delta'&&chunk.text){const now=performance.now()-streamStart;timing.firstOutputMs??=now;timing.lastOutputMs=now;if(chunk.type==='reasoning-delta')timing.sawReasoning=true;else{if(chunk.type==='text-delta')timing.firstTextMs??=now;observation.firstContentAt??=new Date().toISOString();}}
     if(chunk.type==='text-delta')texts.set(chunk.index,(texts.get(chunk.index)??'')+chunk.text);
@@ -21,6 +22,7 @@ export function nativeToolTurn(prepare:(input:ToolTurnInput)=>Promise<Prepared>,
      if(!Number.isSafeInteger(chunk.index)||chunk.index<0||!chunk.id||typeof chunk.argumentsDelta!=='string'||previous&&previous.callId!==chunk.id||previous?.name&&chunk.name&&previous.name!==chunk.name)invalid='INVALID_TOOL_CALL_STREAM';
      if(!previous)calls.set(chunk.index,{callId:chunk.id??'',name:chunk.name??'',argumentsJson:chunk.argumentsDelta??''});
      else{previous.name=chunk.name??previous.name;previous.argumentsJson+=chunk.argumentsDelta??'';}
+     if(!invalid&&(chunk.name||chunk.argumentsDelta))input.onActivity?.();
     }
     if(chunk.type==='finish'){if(['stop','tool-calls','max-tokens'].includes(chunk.reason.kind))finish=chunk.reason.kind as typeof finish;else error=failure(chunk.reason.failure??{code:'INCOMPLETE_STREAM'});break;}
    }

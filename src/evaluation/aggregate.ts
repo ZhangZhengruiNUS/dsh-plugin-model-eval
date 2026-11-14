@@ -1,6 +1,7 @@
 import type {GradeResult,TrackSummary} from '../contracts.ts';
 import type {GeneralDefinition} from './tier-contracts.ts';
 import {ABILITY_DATASETS,validateGeneralDefinition} from './definitions.ts';
+import {isFiveCapabilitySchema} from './five-schema.ts';
 export function summarizeGeneral(results:readonly GradeResult[],definition:GeneralDefinition):TrackSummary {
   validateGeneralDefinition(definition);
   const requiredIds=definition.domains.flatMap(d=>d.itemIds),ids=new Set(requiredIds);
@@ -16,5 +17,5 @@ export function summarizeGeneral(results:readonly GradeResult[],definition:Gener
   }
   const complete=requiredIds.length>0&&grades.size===requiredIds.length&&Object.values(measures).every(x=>x.required>0&&x.score!==undefined);
   return {status:complete?'completed':'pending',required:requiredIds.length,graded:grades.size,measures,
-    ...(complete?{score:definition.schema==='task-five-v1'?definition.domains.reduce((n,d)=>n+measures[d.id]!.score!*d.weight,0):Object.values(measures).reduce((n,x)=>n+x.score!,0)/4}:{})};
+    ...(complete?{score:isFiveCapabilitySchema(definition.schema)?definition.domains.reduce((n,d)=>n+measures[d.id]!.score!*d.weight,0):Object.values(measures).reduce((n,x)=>n+x.score!,0)/4}:{})};
 }

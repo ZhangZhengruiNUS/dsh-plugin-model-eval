@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "kind": "sealed-bfcl-answer-correction",
+  "files": [
+    {
+      "path": "tool_worker.py",
+      "sha256": "5e07bbd5508710ad62eb0615f74bf65e8d23ccd0b66a624241e716e5a5fb4f41"
+    }
+  ]
+}

@@ -1,0 +1,4 @@
+Scoring correction of Task Five R1; identical 62/348 questions, order and weights.
+Only tool39 accepts verified complete inline file-order lists.
+See ../task-five-v1/NOTICE.txt and original dataset/runtime licenses.
+Old protocols and grades remain separate. Not official full benchmark scores.

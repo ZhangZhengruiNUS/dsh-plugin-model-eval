@@ -1,10 +1,28 @@
 import type {FetchRoute} from '../index.ts';import {safeApiError,validateEnvelope,type Action} from './api.ts';
 export interface DispatchService {dispatch(action:Action,payload:Record<string,unknown>):Promise<unknown>;dispose():Promise<void>}
 export interface ChannelContext {connection:{fetch:{register(route:FetchRoute):()=>Promise<void>}}}
+
+function acceptsBrowserOrigin(request:Request):boolean {
+  if(request.headers.get('sec-fetch-site')==='cross-site')return false;
+  const origin=request.headers.get('origin');
+  if(origin===null)return true;
+  const requestOrigin=new URL(request.url).origin;
+  if(requestOrigin!=='http://dsh.internal')return origin===requestOrigin;
+
+  // The Web carrier validates Host/Origin and admits the owner before normalizing
+  // the Fetch URL. It preserves the external Host from the admitted request.
+  const authority=request.headers.get('host');
+  if(!authority||!/^(?:\[[0-9a-f:.]+\]|[0-9a-z.-]+)(?::\d+)?$/i.test(authority))return false;
+  try{
+    const external=new URL(origin);
+    return (external.protocol==='http:'||external.protocol==='https:')&&external.origin===origin&&
+      new URL(external.protocol+'//'+authority).host===external.host;
+  }catch{return false;}
+}
 /** This route is registered only with the official owner-only Connection carrier. */
 export function registerHostChannel(ctx:ChannelContext,service:DispatchService):()=>Promise<void> {
-  const dispose=ctx.connection.fetch.register({path:'/api/aico/model-eval/v1/operation',methods:['POST'],requestBody:'buffered',async fetch(request){
-    const origin=request.headers.get('origin');if(origin&&origin!==new URL(request.url).origin||request.headers.get('sec-fetch-site')==='cross-site')return new Response('forbidden',{status:403});
+  const dispose=ctx.connection.fetch.register({path:'/api/dsh-model-coordinates/v1/operation',methods:['POST'],requestBody:'buffered',async fetch(request){
+    if(!acceptsBrowserOrigin(request))return new Response('forbidden',{status:403});
     let requestId:string|undefined;
     try{
       if(!(request.headers.get('content-type')??'').toLowerCase().startsWith('application/json'))throw Object.assign(new Error(),{code:'INVALID_REQUEST'});

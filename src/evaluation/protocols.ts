@@ -3,11 +3,19 @@ import { lstat, readFile, realpath } from 'node:fs/promises';
 import { isAbsolute, join, resolve } from 'node:path';
 import type { JsonValue, ProtocolSet, Question } from '../contracts.ts';
 import { RESOURCE_MANIFEST_SHA256 } from '../resources/pins.ts';
+import {writingEditionFor} from './writing-edition.ts';
 const hash = (data: string | Buffer) => createHash('sha256').update(data).digest('hex');
+export function writingQuestions(rows:{sourceId:string;query:string;querySha256:string;category:string;checklist?:JsonValue}[]):Question[]{
+  return rows.map(({sourceId,query,querySha256,category,checklist})=>{
+    if(hash(query)!==querySha256)throw Error('WRITING_SOURCE_HASH_MISMATCH');
+    return {id:'writing/'+sourceId,track:'writing',datasetId:'writing',sourceId,sourceHash:querySha256,prompt:[{role:'user',content:query}],grading:{category,checklist:checklist??[]}};
+  });
+}
 export interface ResourceFile { path: string; size: number; sha256: string; kind: 'dataset' | 'license' | 'protocol' | 'runtime'; source: string; revision: string; license: string }
 export interface ResourceManifest {
   schemaVersion: 1; resourceVersion: string; generalId: string; writingId: string;
   datasets: { id: string; path: string; count: number }[]; files: ResourceFile[];
+  writingArchives?: { writingId: string; path: string; count: number }[];
   gates: { resources: 'passed' | 'pending'; runtime: 'passed' | 'pending' | 'failed' };
 }
 export async function readResourceManifest(root: string): Promise<ResourceManifest> {
@@ -34,6 +42,7 @@ export async function loadProtocolSet(resourceRoot: string): Promise<ProtocolSet
     const rows = dataset.id === 'ifeval' ? text.trim().split('\n').map(x => JSON.parse(x))
       : dataset.id === 'humaneval-plus' ? JSON.parse(text).tasks : JSON.parse(text);
     if (rows.length !== dataset.count) throw new Error('RESOURCE_COUNT_MISMATCH');
+    if(dataset.id==='writing'){items.push(...writingQuestions(rows));continue;}
     for (const row of rows) {
       let sourceId: string, prompt: string, sourceHash: string, grading: JsonValue;
       if (dataset.id === 'tiny-mmlu' || dataset.id === 'tiny-gsm8k') {
@@ -43,16 +52,15 @@ export async function loadProtocolSet(resourceRoot: string): Promise<ProtocolSet
         sourceId = `ifeval:${row.key}`; prompt = row.prompt; sourceHash = hash(JSON.stringify(row)); grading = row;
       } else if (dataset.id === 'humaneval-plus') {
         sourceId = row.id; prompt = row.prompt; sourceHash = hash(prompt); grading = row;
-      } else {
-        sourceId = row.sourceId; prompt = row.query; sourceHash = row.querySha256;
-        if (hash(prompt) !== sourceHash) throw new Error('WRITING_SOURCE_HASH_MISMATCH');
-        grading = { category: row.category, checklist: row.checklist ?? [] };
-      }
-      items.push({ id: `${dataset.id}/${sourceId}`, track: dataset.id === 'writing' ? 'writing' : 'general',
+      } else throw Error('UNKNOWN_RESOURCE_DATASET');
+      items.push({ id: `${dataset.id}/${sourceId}`, track: 'general',
         datasetId: dataset.id, sourceId, sourceHash, prompt: [{ role: 'user', content: prompt }], grading });
     }
   }
-  const expected = new Map([['tiny-mmlu',100],['tiny-gsm8k',100],['ifeval',541],['humaneval-plus',164],['writing',12]]);
-  if (items.length !== 917 || new Set(items.map(x => x.id)).size !== 917 || [...expected].some(([id, n]) => items.filter(x => x.datasetId === id).length !== n)) throw new Error('FIXED_SUITE_MISMATCH');
+  const writingCount=writingEditionFor(manifest.writingId)?.questionCount;
+  if(writingCount===undefined)throw Error('WRITING_EDITION_MISMATCH');
+  const expected = new Map([['tiny-mmlu',100],['tiny-gsm8k',100],['ifeval',541],['humaneval-plus',164],['writing',writingCount]]);
+  const expectedCount=905+writingCount;
+  if (items.length !== expectedCount || new Set(items.map(x => x.id)).size !== expectedCount || [...expected].some(([id, n]) => items.filter(x => x.datasetId === id).length !== n)) throw new Error('FIXED_SUITE_MISMATCH');
   return { generalId: manifest.generalId, writingId: manifest.writingId, resourceVersion: manifest.resourceVersion, items };
 }

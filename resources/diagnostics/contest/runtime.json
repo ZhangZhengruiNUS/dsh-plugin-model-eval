@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "kind": "contest",
+  "files": [
+    {
+      "path": "execute_contest_wasi.py",
+      "sha256": "476d556e5d986ceb3bec528afb9356c01f17b5f3b568a446c32f9e08c1966d24"
+    }
+  ]
+}

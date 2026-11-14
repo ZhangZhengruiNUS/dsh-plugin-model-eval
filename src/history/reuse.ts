@@ -1,6 +1,8 @@
+import {toolTaskDuration} from '../jobs/task-duration.ts';
 import {randomUUID,createHash} from 'node:crypto';
 import {readdir,lstat,realpath} from 'node:fs/promises';
 import {join,resolve} from 'node:path';
+import {assertExecutionOrderStructure,buildExecutionOrder} from '../jobs/execution-order.ts';
 import type {EvaluationRequest,TargetSnapshot,ResolvedProtocolSet,UpgradeCheck,UpgradeCommit,ReuseImportOperation,QuestionCompatibility} from '../contracts.ts';
 import type {HistoryStore,HistoryTransaction,RunManifestInput,ItemInput,ItemRecord} from './store.ts';
 import {readRecord,writeRecord} from './atomic.ts';
@@ -8,6 +10,7 @@ import {identityHash} from '../evaluation/protocol-identity.ts';
 import {upgradeSourceEvidence,upgradeDestinationIdentity} from '../evaluation/reuse-eligibility.ts';
 import {reuseTargetBinding} from '../model/reuse-identity.ts';
 import {validateGeneralDefinition} from '../evaluation/definitions.ts';
+import {isLongTasksFirstSchema} from '../evaluation/five-schema.ts';
 import {refreshRunSummary} from '../evaluation/aggregate-run.ts';
 const fail=(code:string):never=>{throw Object.assign(new Error(code),{code});};
 const validId=(id:string)=>/^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/.test(id);
@@ -34,21 +37,31 @@ export async function readUpgradeItems(tx:HistoryTransaction,runId:string):Promi
 }
 function copiedInput(journal:Journal,pin:CopyPin,source:ItemRecord):ItemInput{
   if(!source.answer?.complete||source.grade?.kind!=='scored'||source.grade.track!=='general'||!source.question||!source.answerCommittedAt||!source.gradeCommittedAt)fail('REUSE_SOURCE_CHANGED');
-  return {itemId:pin.id,attempts:[],answer:structuredClone(source.answer!),grade:structuredClone(source.grade!),question:structuredClone(source.question!),...(source.toolCheckpoint?{toolCheckpoint:structuredClone(source.toolCheckpoint)}:{}),reuse:{sourceRunId:journal.sourceRunId,sourceItemId:pin.id,sourceRevision:source.revision,sourceRecordHash:pin.sourceRecordHash,compatibility:structuredClone(pin.compatibility),sourceAnswerCommittedAt:source.answerCommittedAt!,sourceGradeCommittedAt:source.gradeCommittedAt!,importedAt:journal.importedAt,sourceAttempts:structuredClone(source.attempts)}};
+  return {itemId:pin.id,attempts:[],answer:structuredClone(source.answer!),grade:structuredClone(source.grade!),question:structuredClone(source.question!),...(source.toolCheckpoint?{toolCheckpoint:structuredClone(source.toolCheckpoint)}:{}),reuse:{sourceRunId:journal.sourceRunId,sourceItemId:pin.id,sourceRevision:source.revision,sourceRecordHash:pin.sourceRecordHash,compatibility:structuredClone(pin.compatibility),sourceAnswerCommittedAt:source.answerCommittedAt!,sourceGradeCommittedAt:source.gradeCommittedAt!,importedAt:journal.importedAt,...(toolTaskDuration(source)!==undefined?{sourceToolTaskMs:toolTaskDuration(source)!}:{}),sourceAttempts:structuredClone(source.attempts)}};
+}
+function reuseCounts(schema: NonNullable<RunManifestInput['generalDefinition']>['schema']) {
+  if(schema==='task-five-v3-r1'||schema==='task-five-v3-r2'||schema==='task-five-v3-r3'||schema==='task-five-original-v1')return {light:62,deep:348};
+  if(isLongTasksFirstSchema(schema))return {light:64,deep:350};
+  if(schema==='task-five-v1')return {light:100,deep:350};
+  return {light:120,deep:400};
 }
 async function readJournal(tx:HistoryTransaction,rootId:string,id:string):Promise<Journal|undefined>{
   if(!validId(id))return fail('REUSE_TOKEN_INVALID');const path=join(tx.maintenanceDirectory,`reuse-${id}.json`);
   try{
     if((await lstat(path)).isSymbolicLink()||await realpath(path)!==resolve(path))return fail('REUSE_JOURNAL_CORRUPT');
     const value=await readRecord<Journal>(path);
-    const five=value.manifest?.generalDefinition?.schema==='task-five-v1',count=five?100:120;
+    const counts=reuseCounts(value.manifest?.generalDefinition?.schema),count=counts.light;
     if(value.schemaVersion!==1||value.rootId!==rootId||value.operationId!==id||value.token!==id||!validId(value.destinationRunId)||!validId(value.destinationBatchId)||!['copying','ready','failed'].includes(value.state)||!Array.isArray(value.items)||value.items.length!==count||new Set(value.items.map(x=>x.id)).size!==count||value.manifest.reuseOrigin?.operationId!==id||value.manifest.batchId!==value.destinationBatchId)return fail('REUSE_JOURNAL_CORRUPT');
     validateGeneralDefinition(value.manifest.generalDefinition!,value.manifest.requiredItems);
+    if(value.manifest.requiredItems.length!==counts.deep)return fail('REUSE_JOURNAL_CORRUPT');
+    const order=value.manifest.executionOrder;
+    if(isLongTasksFirstSchema(value.manifest.generalDefinition?.schema)!==(order!==undefined))return fail('REUSE_JOURNAL_CORRUPT');
+    if(order)assertExecutionOrderStructure(order,value.manifest.requiredItems);
     return value;
   }catch(error){if(missing(error))return undefined;throw error;}
 }
 export async function assertNoPendingReuse(tx:HistoryTransaction):Promise<void>{
-  for(const name of await readdir(tx.maintenanceDirectory))if(/^reuse-[a-f0-9-]{36}\.json$/.test(name)){
+  for(const name of await readdir(tx.maintenanceDirectory))if(/^(?:reuse|edition-reuse)-[a-f0-9-]{36}\.json$/.test(name)){
     const path=join(tx.maintenanceDirectory,name);if((await lstat(path)).isSymbolicLink())return fail('REUSE_JOURNAL_CORRUPT');
     const journal=await readRecord<Journal>(path);if(!['copying','ready','failed'].includes(journal.state))return fail('REUSE_JOURNAL_CORRUPT');if(journal.state==='copying')return fail('REUSE_RECOVERY_REQUIRED');
   }
@@ -97,13 +110,14 @@ export function createReuseHistory(store:HistoryStore,options:{checkpoint?:(stag
       const source=await tx.getRun(check.sourceRunId);
       if(source.summary.details!=='available')return fail('UPGRADE_DETAILS_UNAVAILABLE');
       const items:ItemRecord[]=[];for(const required of source.manifest.requiredItems.filter(q=>q.track==='general')){const item=await durableItem(tx,check.sourceRunId,required.id);if(!item)return fail('UPGRADE_DETAILS_INCOMPLETE');items.push(item);}
+      if(source.manifest.reuseOrigin||source.summary.reuse||items.some(item=>item.reuse))return fail('UPGRADE_CHAIN_UNSUPPORTED');
       const protocol=input.protocol,binding=reuseTargetBinding(input.target);
       if(!check.eligible||!binding||binding.hash!==check.targetBindingHash||source.summary.details!=='available'||source.summary.revision!==check.sourceRevision||upgradeSourceEvidence({...source,items})!==check.sourceEvidenceHash||upgradeDestinationIdentity(protocol)!==check.destinationEvidenceHash||check.deepGeneralId!==protocol.generalId||protocol.descriptor.general.tier!=='deep'||protocol.descriptor.general.parentGeneralId!==source.manifest.protocols.generalId)return fail('UPGRADE_PREVIEW_STALE');
       validateGeneralDefinition(protocol.descriptor.general,protocol.items);
       const required=protocol.items.filter(q=>q.track==='general').map(({id,track,datasetId})=>({id,track,datasetId})),ids=source.manifest.generalDefinition!.domains.flatMap(d=>d.itemIds),now=new Date().toISOString(),batchId=randomUUID();
-      const five=protocol.descriptor.general.schema==='task-five-v1';
-      if(source.manifest.generalDefinition?.schema!==protocol.descriptor.general.schema||source.manifest.protocols.resourceVersion!==protocol.resourceVersion||ids.length!==(five?100:120)||required.length!==(five?350:400)||ids.some(id=>!required.some(q=>q.id===id)))return fail('UPGRADE_PROTOCOL_CHANGED');
-      const manifest:RunManifestInput={batchId,target:structuredClone(input.target),protocols:structuredClone(protocol.descriptor.refs),generalDefinition:structuredClone(protocol.descriptor.general),requiredItems:required,execution:structuredClone(input.execution),reuseOrigin:{operationId:input.token,sourceRunId:check.sourceRunId,sourceActivity:{scope:'source-run',tracks:Object.keys(source.summary.tracks) as ('general'|'writing')[],activeIntervals:structuredClone(source.summary.metrics.activeIntervals),incompleteTiming:source.summary.metrics.incompleteTiming},sourceCreatedAt:source.manifest.createdAt,...(source.summary.completedAt?{sourceCompletedAt:source.summary.completedAt}:{})}};
+      const counts=reuseCounts(protocol.descriptor.general.schema),executionOrder=buildExecutionOrder(protocol,['general']);
+      if(source.manifest.generalDefinition?.schema!==protocol.descriptor.general.schema||source.manifest.protocols.resourceVersion!==protocol.resourceVersion||ids.length!==counts.light||required.length!==counts.deep||ids.some(id=>!required.some(q=>q.id===id)))return fail('UPGRADE_PROTOCOL_CHANGED');
+      const manifest:RunManifestInput={...(executionOrder?{executionOrder}:{}),batchId,target:structuredClone(input.target),protocols:structuredClone(protocol.descriptor.refs),generalDefinition:structuredClone(protocol.descriptor.general),requiredItems:required,execution:structuredClone(input.execution),reuseOrigin:{...(source.summary.executionChanges?.length||identityHash(source.manifest.execution??null)!==identityHash(input.execution)?{mixedExecution:true as const}:{}),...(source.manifest.execution?{sourceExecution:structuredClone(source.manifest.execution)}:{}),...(source.summary.executionChanges?{sourceExecutionChanges:structuredClone(source.summary.executionChanges)}:{}),operationId:input.token,sourceRunId:check.sourceRunId,sourceActivity:{scope:'source-run',tracks:Object.keys(source.summary.tracks) as ('general'|'writing')[],activeIntervals:structuredClone(source.summary.metrics.activeIntervals),incompleteTiming:source.summary.metrics.incompleteTiming},sourceCreatedAt:source.manifest.createdAt,...(source.summary.completedAt?{sourceCompletedAt:source.summary.completedAt}:{})}};
       const journal:Journal={schemaVersion:1,rootId:store.rootId,operationId:input.token,token:input.token,sourceRunId:check.sourceRunId,destinationRunId:randomUUID(),destinationBatchId:batchId,sourceRevision:check.sourceRevision,sourceEvidenceHash:check.sourceEvidenceHash,deepRefs:protocol.descriptor.refs,targetBindingHash:check.targetBindingHash,state:'copying',copiedItemIds:[],createdAt:now,importedAt:now,manifest,sourceManifestHash:identityHash(source.manifest),sourceGeneralHash:identityHash(source.summary.tracks.general),destinationEvidenceHash:check.destinationEvidenceHash,items:[]};
       journal.items=ids.map(id=>{const item=items.find(x=>x.itemId===id)!;const pin:CopyPin={id,sourceRecordHash:identityHash(item),compatibility:protocol.compatibility[id]!,copyHash:''};pin.copyHash=identityHash(copiedInput(journal,pin,item));return pin;});
       await persist(tx,journal);await options.checkpoint?.('journal');return apply(tx,journal);

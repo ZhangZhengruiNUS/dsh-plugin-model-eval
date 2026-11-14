@@ -1,0 +1,145 @@
+.model-eval .me-count-heading,
+.model-eval .me-count-with-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.model-eval .me-count-badge {
+  display: inline-flex;
+  align-items: baseline;
+  justify-content: center;
+  min-inline-size: 22px;
+  min-block-size: 20px;
+  padding: 1px 7px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background: var(--ui-hover);
+  color: var(--ui-text);
+  font-size: 12px;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+  line-height: 16px;
+  white-space: pre;
+}
+
+.model-eval .me-count-total,
+.model-eval .me-data-unit {
+  color: var(--ui-muted);
+  font-weight: 450;
+}
+
+.model-eval .me-data-value {
+  color: var(--ui-text);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.model-eval .me-data-unit {
+  font-size: .9em;
+  white-space: nowrap;
+}
+
+.model-eval .me-record-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 12px;
+  color: var(--ui-muted);
+  font-size: 12px;
+}
+
+.model-eval .me-record-meta time,
+.model-eval .me-history-heading time {
+  font-variant-numeric: tabular-nums;
+}
+
+.model-eval .me-history-heading {
+  flex-wrap: wrap;
+  gap: 6px 14px;
+}
+
+.model-eval .me-history-heading > b,
+.model-eval .me-storage-values .me-data-value,
+.model-eval .me-batch-progress .me-data-value {
+  white-space: nowrap;
+}
+
+.model-eval .me-task-list-bar h2,
+.model-eval .me-history-toolbar h2 {
+  margin: 0;
+  color: var(--ui-text);
+  font-size: 14px;
+}
+
+.model-eval .me-history-toolbar {
+  margin-bottom: 4px;
+}
+
+.model-eval .me-history-toolbar > :is(.me-button,.me-action-anchor) {
+  margin-inline-start: auto;
+}
+
+.model-eval .me-history-readouts {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+}
+
+.model-eval .me-inline-readout {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 2px 8px;
+  margin: 0;
+}
+
+.model-eval :is(.me-inline-readout,.me-history-facts) dt {
+  color: var(--ui-muted);
+  font-size: 12px;
+}
+
+.model-eval :is(.me-inline-readout,.me-history-facts) dd {
+  margin: 0;
+}
+
+.model-eval .me-inline-readout .me-data-value {
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.model-eval .me-selected-storage:empty {
+  position: absolute;
+}
+
+.model-eval .me-history-help {
+  margin-bottom: 8px;
+}
+
+.model-eval .me-speed-history-summary {
+  display: grid;
+  gap: 8px;
+}
+
+.model-eval .me-history-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  margin: 0;
+}
+
+.model-eval .me-history-facts small {
+  margin-inline-start: 6px;
+  color: var(--ui-muted);
+}
+
+.model-eval .me-speed-history-summary > p {
+  margin: 0;
+}
+
+@media (forced-colors: active) {
+  .model-eval .me-count-badge {
+    border-color: CanvasText;
+  }
+}

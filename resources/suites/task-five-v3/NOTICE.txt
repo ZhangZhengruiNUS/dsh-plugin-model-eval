@@ -1,0 +1,3 @@
+Task Five v3 uses an audited fixed selection derived from Task Five v2.
+See ../task-five-v1/NOTICE.txt and the original attribution and license files.
+The original benchmark scores and this selected protocol are different scales.
