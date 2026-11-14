@@ -6,9 +6,9 @@ Evaluate your available models, compare capability and task time, and choose a c
 
 面向 DSH（DeepSeek Harness）已配置模型的本地选型工具。比较量化、微调或不同生成参数下的能力、响应速度和可得用量，保留每次运行和逐题证据。
 
-**首发版本 0.1.0。** 兼容环境为 Windows x64、DSH 0.2.2-rc.1。安装包自带 Windows 判分资源；选择测评、裁判或测速模型时，实际请求由 DSH 发送到相应的供应商。资源准备和历史读取不需要模型请求。
+**当前版本 0.1.1。** 兼容环境为 Windows x64、DSH 0.2.2-rc.1。安装包自带 Windows 判分资源；选择测评、裁判或测速模型时，实际请求由 DSH 发送到相应的供应商。资源准备和历史读取不需要模型请求。
 
-**当前提供通用能力评测轻量 1.1、深入 1.2 和中文写作 1.0。三个系列独立升版。首次准备复制当前通用档位的离线资源，单独写作按需准备。**
+**当前提供通用能力评测轻量 1.0、深入 1.0 和中文写作 1.0。三个系列独立升版。首次准备复制当前通用档位的离线资源，单独写作按需准备。**
 
 首装显示各系列的当前版本。升级后，如当前数据目录已有旧通用评测记录，可在设置中恢复其显示。具体见[评测版本与归档](docs/design/protocol-releases.md)。
 
@@ -55,8 +55,8 @@ Evaluate your available models, compare capability and task time, and choose a c
 
 ## 使用
 
-1. 在 [GitHub Releases](https://github.com/ZhangZhengruiNUS/dsh-plugin-model-eval/releases/download/v0.1.0/dsh-model-coordinates.tgz) 下载 `dsh-model-coordinates.tgz`。在 DSH 的插件管理中选择「安装第三方插件」，输入下载文件的路径，安装后启用。在侧栏打开「模型评测」。宿主兼容声明为 DSH 0.2.2-rc.1，随包判分环境面向 Windows x64。
-2. 第一次点「新建评测」会在后台准备轻量 1.1、深入 1.2 的题集和两档共用的 Windows 判分工具，你可以同时选择模型。准备失败可在表单内重试。资源随包提供，准备过程不会调用模型。
+1. 在 [GitHub Releases](https://github.com/ZhangZhengruiNUS/dsh-plugin-model-eval/releases/download/v0.1.1/dsh-model-coordinates.tgz) 下载 `dsh-model-coordinates.tgz`。在 DSH 的插件管理中选择「安装第三方插件」，输入下载文件的路径，安装后启用。在侧栏打开「模型评测」。宿主兼容声明为 DSH 0.2.2-rc.1，随包判分环境面向 Windows x64。
+2. 第一次点「新建评测」会在后台准备轻量 1.0、深入 1.0 的题集和两档共用的 Windows 判分工具，你可以同时选择模型。准备失败可在表单内重试。资源随包提供，准备过程不会调用模型。
 3. 新建评测，选择模型。评分资源就绪后，由你点击「开始评测」。默认读取宿主参数，可修改本轮温度、最大输出 Token、推理强度、停止词，不写回宿主。可添加同模型的多个配置，并用备注区分不同部署或实验条件。
 4. 选择通用能力的轻量或深入档，也可另选中文写作或只测写作。只有一套评测配置时，写作默认沿用该配置评分，可更换裁判。多套配置需选择统一裁判。不支持的参数会明确提示。
 5. 多配置依次执行，每配置同时调用1—4题，默认4，连续无新输出等待默认300秒，持续推理、正文和有效工具调用不设总时限。重型本地评分串行。技术调用最多额外尝试2次，鉴权和配置错误暂停；有效答错不重试。

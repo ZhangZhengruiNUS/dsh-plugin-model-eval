@@ -10,8 +10,8 @@ const historicalEditions = [
   {resourceVersion:'task-five-v3',label:'五项能力第 3 版'},
   {resourceVersion:'task-five-v3-r1',label:'评分修订 1'},
   {resourceVersion:'task-five-v3-r2',label:'评分修订 2'},
-  {resourceVersion:'task-five-original-v1',label:'通用能力评测 1.1'},
-  {resourceVersion:'task-five-original-v1-deep-r2',label:'深入 1.2'},
+  {resourceVersion:'task-five-original-v1',label:generalEvaluationName},
+  {resourceVersion:'task-five-original-v1-deep-r2',label:generalEvaluationName},
 ] as const;
 
 export function generalEditionLabel(resourceVersion:string):string|undefined {
@@ -25,5 +25,5 @@ export function generalEditionOrder(resourceVersion:string):number {
 export function generalReleaseName(refs:ProtocolRefs, full=false):string|undefined {
   const release=generalReleaseFor(refs);
   if(!release)return undefined;
-  return (full?generalEvaluationName+' · ':'')+(release.tier==='light'?'轻量':'深入')+' '+release.version;
+  return (full?generalEvaluationName+' · ':'')+(release.tier==='light'?'轻量':'深入')+' '+release.version+(release.preview?'（试用版）':'');
 }

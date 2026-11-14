@@ -12,20 +12,21 @@ type GeneralReleaseRefs = Pick<ProtocolRefs,'generalId'|'resourceVersion'>;
 
 export interface GeneralRelease extends PublicEvaluationRelease, GeneralReleaseRefs {
   tier: 'light'|'deep';
+  preview?: true;
   schema: FiveCapabilitySchema;
 }
 
 /** Each tier has its own current release, even when their resource bundle is shared. */
 export const generalReleases: readonly GeneralRelease[] = [
-  {tier:'light',version:'1.0',current:false,generalId:'general-task-five-v3-r3-light',
+  {tier:'light',version:'1.0',current:false,preview:true,generalId:'general-task-five-v3-r3-light',
     resourceVersion:'task-five-v3-r3',schema:'task-five-v3-r3'},
-  {tier:'deep',version:'1.0',current:false,generalId:'general-task-five-v3-r3-deep',
+  {tier:'deep',version:'1.0',current:false,preview:true,generalId:'general-task-five-v3-r3-deep',
     resourceVersion:'task-five-v3-r3',schema:'task-five-v3-r3'},
-  {tier:'light',version:'1.1',current:true,generalId:'general-task-five-original-v1-light',
+  {tier:'light',version:'1.0',current:true,generalId:'general-task-five-original-v1-light',
     resourceVersion:'task-five-original-v1',schema:'task-five-original-v1'},
-  {tier:'deep',version:'1.1',current:false,generalId:'general-task-five-original-v1-deep',
+  {tier:'deep',version:'1.1',current:false,preview:true,generalId:'general-task-five-original-v1-deep',
     resourceVersion:'task-five-original-v1',schema:'task-five-original-v1'},
-  {tier:'deep',version:'1.2',current:true,generalId:'general-task-five-original-v1-deep-r2',
+  {tier:'deep',version:'1.0',current:true,generalId:'general-task-five-original-v1-deep-r2',
     resourceVersion:'task-five-original-v1-deep-r2',schema:'task-five-original-v1'},
 ];
 

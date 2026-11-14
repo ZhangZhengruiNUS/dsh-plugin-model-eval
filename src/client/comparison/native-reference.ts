@@ -63,6 +63,12 @@ export function admittedNativeWritingReference(
   return result.score !== undefined && Math.abs(result.score - score) < 1e-7;
 }
 
+// Capture IDs were fixed at collection time. The public edition label can change independently.
+const astraGeneralCaptureIds: Readonly<Record<string,string|undefined>> = {
+  'general-task-five-original-v1-light': 'openai-gpt-6-astra-max-light-v1-1',
+  'general-task-five-original-v1-deep-r2': 'openai-gpt-6-astra-max-deep-v1-2',
+};
+
 export function admittedNativeReference(
   run: RunSummary, execution: ComparisonExecution, capture: NativeReferenceCapture,
 ): boolean {
@@ -75,7 +81,7 @@ export function admittedNativeReference(
 
   if (!release?.current || !definition ||
       definition.schema !== release.schema || definition.tier !== release.tier ||
-      run.runId !== `openai-gpt-6-astra-max-${release.tier}-v${release.version.replace('.', '-')}` ||
+      run.runId !== astraGeneralCaptureIds[release.generalId] ||
       run.batchId !== 'built-in-reference' || run.details !== 'cleared' || run.resumeAllowed ||
       run.target.scopeId !== 'built-in-reference' || run.target.providerId !== 'OpenAI' ||
       run.target.modelId !== 'gpt-6-astra' || run.target.routeTarget.state !== 'unknown' ||
