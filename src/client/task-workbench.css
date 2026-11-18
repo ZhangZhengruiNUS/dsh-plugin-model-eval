@@ -1,8 +1,6 @@
 .me-task-workbench {--me-task-inset:18px;min-width:0}
 .model-eval .me-task-workbench .me-task-list-bar {min-height:38px;margin-block-end:14px}
-.me-task-record-groups {display:grid;gap:18px}
-.me-task-record-group>.me-count-heading {margin-block-end:8px}
-.me-task-record-group h2 {margin:0;font-size:13px;font-weight:600;line-height:1.5}
+.me-task-empty-actions {justify-content:center}
 .model-eval .me-card.me-task-records,.model-eval .me-card.me-live-task {overflow:visible}
 .me-task-records {padding:0;margin:0;list-style:none}
 .me-task-records>li+li {border-block-start:1px solid var(--me-border)}
@@ -32,7 +30,7 @@
 .me-task-record-progress {grid-area:progress;justify-self:end;font-size:13px;font-variant-numeric:tabular-nums}
 .me-task-record-chevron {grid-area:arrow;color:var(--me-muted);display:grid;place-items:center}
 .me-task-record[aria-expanded=true]>.me-task-record-chevron {transform:rotate(180deg)}
-.me-task-no-records {padding:18px var(--me-task-inset);color:var(--me-muted);font-size:13px}
+.me-task-no-records {display:flex;align-items:center;flex-wrap:wrap;gap:4px 12px;padding:12px var(--me-task-inset);color:var(--me-muted);font-size:13px}
 
 .me-task-records .me-task-detail {border-block-start:1px solid var(--me-border)}
 .me-task-detail-head {

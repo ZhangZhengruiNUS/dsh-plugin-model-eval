@@ -1,3 +1,4 @@
+import {canResumeRun,runIsComplete} from './task-batches.ts';
 import {Button as PrimitiveButton} from './primitives/primitives.tsx';
 import {createPortal} from 'react-dom';
 import * as React from 'react';import type {ModelChoice,RunSummary,TargetSnapshot,TechnicalError,Track} from '../contracts.ts';import {generalReleaseName} from './protocol-editions.ts';import {writingEditionName} from '../evaluation/writing-edition.ts';import type {BatchView,QueueView,RunOperation} from '../jobs/queue.ts';import type {ClientApi} from './api.ts';import {zh as t} from './locales.ts';import {formatScore,time,generalTierLabel} from './store.ts';
@@ -9,7 +10,7 @@ export function taskFailureText(error:TechnicalError):string {
 export interface Status {timeAdvisorVersion?:number;codingDiagnostics?:import('../diagnostics/contracts.ts').CodingDiagnosticSettings;rootId:string;rootEpoch:number;ready:boolean;prepared:boolean;preparing:boolean;writable:boolean;rootPath:string;resourceVersion:string;generalId:string;writingId:string;packageBytes:number;activeActivity?:import('../jobs/activity.ts').ActivityView}
 export interface ViewData {status:Status;models:ModelChoice[];modelsLoading?:boolean;runs:RunSummary[];protocols:import('../contracts.ts').ProtocolCatalogItem[];comparison?:import('../comparison/contracts.ts').ComparisonMetadata;comparisonError?:string|undefined;queue:QueueView&{estimates?:Record<string,import('../estimation/contracts.ts').EstimateSnapshot>;roughWork?:{batchId:string;excludesDeferredWork:boolean;estimate?:import('../estimation/rough-remaining.ts').RoughRemaining|undefined;sampling?:{ready:number;total:number}}}}
 export type LocalPreparation={phase:'pending'}|{phase:'failed';code?:string|undefined;reason?:string;verifyOnly?:boolean};
-export interface PageProps {data:ViewData;api:ClientApi;busy:boolean;canCreateRun:boolean;newRunUnavailable?:string|undefined;protocolArchive:import('./protocol-archive.ts').ProtocolArchive;setProtocolArchive?(value:import('./protocol-archive.ts').ProtocolArchive):void;refresh():Promise<void>;act<T>(fn:()=>Promise<T>):Promise<T|undefined>;actQueue(fn:()=>Promise<ViewData['queue']>):Promise<ViewData['queue']|undefined>;loadModels():Promise<void>;report(id:string):void;newRun():void;navigate(view:'compare'|'jobs'|'history'|'settings'):void}
+export interface PageProps {data:ViewData;api:ClientApi;busy:boolean;canCreateRun:boolean;newRunUnavailable?:string|undefined;protocolArchive:import('./protocol-archive.ts').ProtocolArchive;setProtocolArchive?(value:import('./protocol-archive.ts').ProtocolArchive):void;refresh():Promise<void>;act<T>(fn:()=>Promise<T>):Promise<T|undefined>;actQueue(fn:()=>Promise<ViewData['queue']>):Promise<ViewData['queue']|undefined>;loadModels():Promise<void>;report(id:string):void;newRun():void;navigate(view:'compare'|'jobs'|'history'|'settings',batchId?:string):void}
 const iconPaths: Record<string, string> = {
   search: 'M21 21l-5-5 M18 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0',
   jobs: 'M5 4h14v17l-7-4-7 4z M9 8h6 M9 12h5',
@@ -105,7 +106,7 @@ export function activityUnavailable(status:Pick<Status,'activeActivity'|'prepari
   if(activity)return '另一项本地操作正在进行，请稍候。';
   return undefined;
 }
-export function Empty({title,body,children}:{title:string;body:string;children?:React.ReactNode}){return <section className="me-empty"><span className="me-empty-icon"><BrandIcon size={30}/></span><h2>{title}</h2><p>{body}</p>{children}</section>;}
+export function Empty({title,body,children}:{title:string;body:string;children?:React.ReactNode}){return <section className="me-empty"><span className="me-empty-icon"><BrandIcon size={30}/></span><h2>{title}</h2>{body&&<p>{body}</p>}{children}</section>;}
 export function Badge({status}:{status:string}){return <span className={'me-badge '+status}><span/>{t.statuses[status as keyof typeof t.statuses]??status}</span>;}
 export function Score({value,large=false}:{value:number|undefined;large?:boolean}){return <span className={'me-score '+(large?'large':'')}>{formatScore(value)}</span>;}
 export function reasoningEffortLabel(target:TargetSnapshot){
@@ -211,10 +212,6 @@ export function Modal({title,children,onClose,wide=false,locked=false,variant,re
   return host?createPortal(overlay,host):overlay;
 }
 export const trackNames:Record<Track,string>={general:t.general,writing:t.writing};
-export function runIsComplete(run:RunSummary){
-  const tracks=Object.values(run.tracks);
-  return tracks.length>0&&tracks.every(track=>track.status==='completed');
-}
 const compactRunActions:Record<RunOperation,string>={hold:'挂起',resume:'继续',remove:'移出',rejoin:'重新加入'};
 
 export function BatchRuns({batch,runs,report,control,unavailableReason,pending}:{
@@ -297,7 +294,7 @@ export function BatchRuns({batch,runs,report,control,unavailableReason,pending}:
             const reason=processing
               ? needsDetails&&batch.status!=='paused'&&batch.status!=='running'?'正在核对题集和已保存的进度。':'正在更新此配置的队列状态。'
               : settling?t.runControl.settling:unavailableReason
-              ??(needsDetails&&(!run.resumeAllowed||run.details!=='available')?t.runControl.unavailable:undefined);
+              ??(needsDetails&&!canResumeRun(run)?t.runControl.unavailable:undefined);
             const label=processing?(needsDetails?'正在恢复…':'正在更新…'):t.runControl[operation];
             return <ActionButton key={operation} kind={operation==='remove'?'text':''}
               aria-label={label}

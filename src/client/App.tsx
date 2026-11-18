@@ -30,7 +30,12 @@ export function App({api:provided,references}:{api?:ClientApi;references?:readon
   const appearance = useHostAppearance(uiRoot);
   useGlassInteraction(uiRoot);
   const api=React.useMemo(()=>provided??createClientApi(),[provided]),[view,setView]=React.useState<WorkbenchView>('compare'),[data,setData]=React.useState<ViewData>(),[error,setError]=React.useState(''),[busy,setBusy]=React.useState(false),[newRun,setNewRun]=React.useState<string>(),[report,setReport]=React.useState<{id:string;rootId:string;rootEpoch:number;openId:string;returnFocusTo:HTMLElement|null}>();const sequence=React.useRef(0),alive=React.useRef(true);
-  React.useLayoutEffect(()=>{if(pageScroll.current)pageScroll.current.scrollTop=0;},[view]);
+  const [taskBatchId,setTaskBatchId]=React.useState<string>();
+  function navigate(next:WorkbenchView,batchId?:string){
+    setTaskBatchId(batchId);
+    setView(next);
+  }
+  React.useLayoutEffect(()=>{if(pageScroll.current&&!taskBatchId)pageScroll.current.scrollTop=0;},[view,taskBatchId]);
   const [background,setBackground]=React.useState(parkedRun);
   const backgroundAction=React.useRef<HTMLSpanElement>(null);
   const focusBackground=React.useRef(false);
@@ -222,11 +227,11 @@ export function App({api:provided,references}:{api?:ClientApi;references?:readon
       const returnFocusTo=report?.returnFocusTo??(active instanceof HTMLElement?active:null);
       setReport({id,openId:crypto.randomUUID(),rootId:data.status.rootId,rootEpoch:data.status.rootEpoch,returnFocusTo});
     },
-    newRun:()=>{if(savedRun||canCreateRun){setNewRun(scope);void loadModels();if(!savedRun)void prepareCurrent();}},navigate:setView,
+    newRun:()=>{if(savedRun||canCreateRun){setNewRun(scope);void loadModels();if(!savedRun)void prepareCurrent();}},navigate,
   }:undefined;
   return <ModalHostContext.Provider value={uiRoot}><div ref={uiRoot} className="model-eval" data-dsh-ui="" data-material="glass" data-palette="moss" data-appearance={appearance}><style>{comparisonStyle+'\n'+styles+'\n'+evaluationBasis+'\n'+glass+'\n'+surfaces+'\n'+dialogs+'\n'+uiTokens+'\n'+uiControls+'\n'+uiAdapter+'\n'+uiMaterials+'\n'+materialLayout+'\n'+disclosure+'\n'+workbench+'\n'+dataReadouts+'\n'+taskWorkbench}</style><div className="me-shell">
-    <WorkbenchNav view={view} hasActiveJob={Boolean(data?.queue.activeBatchId)} onNavigate={setView}/>
-    <main ref={pageScroll} className="me-main" aria-labelledby={pageHeadingId}><header className="me-page-head"><h1 id={pageHeadingId}>{t[view]}</h1></header>{data&&!data.status.writable&&<div className="me-inline-warning">{t.readonly}</div>}{data?.status.preparing&&<div className="me-active-banner" role="status"><span className="me-pulse"/><span>{t.environmentCheckingHelp}</span></div>}{data?.queue.activeBatchId&&view!=='jobs'&&<div className="me-active-banner"><span className="me-pulse"/><strong>{t.active}</strong><span>{data.queue.batches.find(x=>x.batchId===data.queue.activeBatchId)?.batchId.slice(0,8)}</span><Button kind="text" onClick={()=>setView('jobs')} icon="arrow">{t.viewProgress}</Button></div>}
+    <WorkbenchNav view={view} hasActiveJob={Boolean(data?.queue.activeBatchId)} onNavigate={navigate}/>
+    <main ref={pageScroll} className="me-main" aria-labelledby={pageHeadingId}><header className="me-page-head"><h1 id={pageHeadingId}>{t[view]}</h1></header>{data&&!data.status.writable&&<div className="me-inline-warning">{t.readonly}</div>}{data?.status.preparing&&<div className="me-active-banner" role="status"><span className="me-pulse"/><span>{t.environmentCheckingHelp}</span></div>}{data?.queue.activeBatchId&&view!=='jobs'&&<div className="me-active-banner"><span className="me-pulse"/><strong>{t.active}</strong><span>{data.queue.batches.find(x=>x.batchId===data.queue.activeBatchId)?.batchId.slice(0,8)}</span><Button kind="text" onClick={()=>navigate('jobs')} icon="arrow">{t.viewProgress}</Button></div>}
   {(speedActivity||speedInBackground)&&<div className="me-active-banner">
     <span role="status"><strong>{speedActivity?.state==='stopping'?'测速正在收尾':speedActivity?'测速进行中':'测速已结束'}</strong></span>
     {speedInBackground&&<span ref={backgroundAction}>
@@ -234,6 +239,6 @@ export function App({api:provided,references}:{api?:ClientApi;references?:readon
     </span>}
     {speedActivity&&<Button kind="text" onClick={()=>void act(()=>api('cancelSpeedPreview',{previewId:speedActivity.id}))}
       disabled={busy||speedActivity.state==='stopping'}>停止测速</Button>}
-  </div>}{data?.status.activeActivity?.kind==='coding-diagnostic'&&<div className="me-inline-warning me-actions"><span>正在本地诊断编程题</span><Button disabled={busy||data.status.activeActivity.state==='stopping'} onClick={()=>void act(()=>api('cancelCodingDiagnostic',{diagnosticId:data.status.activeActivity!.id}))}>取消诊断</Button></div>}{data?.queue.recoveryIssues?.length?<div className="me-inline-warning">{t.recoveryIssue}</div>:null}<div className="me-page-content" key={view}>{!props?<Empty title={error||t.startupLoading} body={error?'':t.startupHelp}>{error&&<Button onClick={()=>void refresh()}>{t.retry}</Button>}</Empty>:view==='compare'?<Compare {...props} references={references}/>:view==='jobs'?<Progress {...props}/>:view==='history'?<History {...props}/>:<Settings {...props} key={props.data.status.rootPath}/>}</div>
+  </div>}{data?.status.activeActivity?.kind==='coding-diagnostic'&&<div className="me-inline-warning me-actions"><span>正在本地诊断编程题</span><Button disabled={busy||data.status.activeActivity.state==='stopping'} onClick={()=>void act(()=>api('cancelCodingDiagnostic',{diagnosticId:data.status.activeActivity!.id}))}>取消诊断</Button></div>}{data?.queue.recoveryIssues?.length?<div className="me-inline-warning">{t.recoveryIssue}</div>:null}<div className="me-page-content" key={view}>{!props?<Empty title={error||t.startupLoading} body={error?'':t.startupHelp}>{error&&<Button onClick={()=>void refresh()}>{t.retry}</Button>}</Empty>:view==='compare'?<Compare {...props} references={references}/>:view==='jobs'?<Progress {...props} targetBatchId={taskBatchId}/>:view==='history'?<History {...props}/>:<Settings {...props} key={props.data.status.rootPath}/>}</div>
   </main></div>{error&&<div className="me-toast" role="alert"><Icon name="info"/><span>{error}</span><Button kind="icon" icon="close" aria-label={t.close} onClick={()=>setError('')}/></div>}{props&&newRun&&newRun===scope&&<NewRun {...props} preparation={scopedPreparation} onRetryPreparation={()=>void prepareCurrent(true)} onClose={closeNewRun} onBackground={sendToBackground} {...(savedRun?{saved:savedRun}:{})}/>} {props&&report&&report.rootId===data?.status.rootId&&report.rootEpoch===data?.status.rootEpoch&&<Report key={report.openId} {...props} runId={report.id} returnFocusTo={report.returnFocusTo} onClose={()=>setReport(undefined)}/>}</div></ModalHostContext.Provider>;
 }

@@ -1,3 +1,4 @@
+import {taskBatches} from '../task-batches.ts';
 import {generalReleaseFor} from '../../evaluation/current-edition.ts';
 import {writingEditionFor,writingEditionName} from '../../evaluation/writing-edition.ts';
 import {formatElapsed} from '../batch-metrics.ts';
@@ -81,8 +82,9 @@ export function Compare(props:PageProps&{references?:readonly BuiltInReference[]
   const report=(id:string)=>{const reference=groups.flatMap(g=>g.rows).find(row=>row.runId===id&&row.reference);if(reference)setReferenceDetail(reference);else props.report(id);};
   const colors=React.useRef({scope:'',map:new Map<string,string>()});if(colors.current.scope!==scope)colors.current={scope,map:new Map()};for(const r of [...allRows].sort((a,b)=>a.configKey.localeCompare(b.configKey)))if(!colors.current.map.has(r.configKey))colors.current.map.set(r.configKey,'var(--comparison-'+colors.current.map.size%7+')');const color=(key:string)=>colors.current.map.get(key)??'var(--me-accent)';
   const baseline=(key:string)=>{setBaselineChoice({scope,key});setMode('delta');};
-  const incomplete=savedRuns.some(r=>!archiveApplies(r)&&r.tracks[track]&&r.tracks[track]?.status!=='completed'&&
-    (group?scopeKeyFor(r,track)===group.key:track==='general'?r.protocols.resourceVersion===data.status.resourceVersion:r.protocols.writingId===data.status.writingId));
+  const {pending:pendingBatches,runsFor}=taskBatches(data.queue,data.runs);
+  const incomplete=pendingBatches.find(batch=>runsFor(batch).some(r=>!archiveApplies(r)&&r.tracks[track]&&r.tracks[track]?.status!=='completed'&&
+    (group?scopeKeyFor(r,track)===group.key:track==='general'?r.protocols.resourceVersion===data.status.resourceVersion:r.protocols.writingId===data.status.writingId)));
   const offlineOnly=allRows.length>0&&allRows.every(r=>(r.source.regradeOrigin||r.wallReplay)&&r.taskMeanMs==null);
   const scoresOnly=allRows.length>0&&allRows.every(row=>row.wallReplay);
   const applySelection=(keys:string[])=>{
@@ -141,7 +143,7 @@ export function Compare(props:PageProps&{references?:readonly BuiltInReference[]
       </>}
     </section>
     {!allRows.length?<Empty title={track==='general'?t.noScores:t.noWriting} body={activeBatch ? '有评测任务正在运行，完成后可在对应类别查看成绩。' : incomplete?`已有未完成的${track==='general'?t.general:t.writing}评测，可前往评测页查看。`:track==='general'?t.noScoresBody:t.noWritingBody}>
-      {!activeBatch&&(incomplete?<Button kind="primary" onClick={()=>props.navigate('jobs')} icon="arrow">查看评测任务</Button>:<ActionButton kind="primary" onClick={props.newRun} icon="plus" hintAlign="start" unavailableReason={props.newRunUnavailable}>{t.newRun}</ActionButton>)}
+      {!activeBatch&&(incomplete?<Button kind="primary" onClick={()=>props.navigate('jobs',incomplete.batchId)} icon="arrow">查看评测任务</Button>:<ActionButton kind="primary" onClick={props.newRun} icon="plus" hintAlign="start" unavailableReason={props.newRunUnavailable}>{t.newRun}</ActionButton>)}
     </Empty>:<>
       <PerformanceScatter key={scope} track={track} rows={chartRows} guideRows={guideRows} selectionOpen={pickerScope===scope}
         onReport={report} onHighlight={setHighlight} highlighted={highlighted} color={color}
