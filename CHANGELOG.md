@@ -4,6 +4,13 @@
 
 ## [Unreleased]
 
+## [0.2.1] - 2026-11-18
+
+### Fixed
+
+- 升级至 DSH 0.2.2-rc.5 后可以加载插件、打开旧报告和继续未完成的评测。Windows x64 隔离档案使用本地模拟模型验证续跑。
+- 宿主兼容声明保留 0.2.2-rc.1，并允许从 0.2.2-rc.3 起的同线版本加载。支持范围以 0.2.3 首个预发布版本为上界。
+
 ## [0.2.0] - 2026-11-18
 
 ### Added
@@ -51,7 +58,8 @@
 - 三档提供 GPT‑6 Astra Max 的实测预置。轻量 90.1 分，深入 89.0 分，写作 98.3 分。首装即可查看参考，首次新建评测在后台准备所需的离线资源。
 - 安装包支持已验证的 Windows x64、DSH 0.2.2-rc.1。
 
-[Unreleased]: https://github.com/ZhangZhengruiNUS/dsh-plugin-model-eval/compare/v0.2.0...HEAD
+[Unreleased]: https://github.com/ZhangZhengruiNUS/dsh-plugin-model-eval/compare/v0.2.1...HEAD
+[0.2.1]: https://github.com/ZhangZhengruiNUS/dsh-plugin-model-eval/compare/v0.2.0...v0.2.1
 [0.2.0]: https://github.com/ZhangZhengruiNUS/dsh-plugin-model-eval/compare/v0.1.1...v0.2.0
 [0.1.1]: https://github.com/ZhangZhengruiNUS/dsh-plugin-model-eval/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/ZhangZhengruiNUS/dsh-plugin-model-eval/releases/tag/v0.1.0

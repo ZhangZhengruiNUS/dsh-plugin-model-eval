@@ -30,7 +30,10 @@ export function verifyPackage(path){
   const manifestBytes=get('resources/manifest.json'),manifest=JSON.parse(manifestBytes);if(manifest.gates.runtime!=='passed'||!host.includes(hash(manifestBytes)))throw new Error('MANIFEST_PIN');
   for(const file of manifest.files){const packed=get('resources/'+file.path);if(packed.length!==file.size||hash(packed)!==file.sha256)throw new Error('RESOURCE_PACKAGE_MISMATCH: '+file.path);}
   verifyWritingResources(get,manifest);
-  assert.equal(pkg.engines.dsh,'0.2.2-rc.1 || 0.2.2-rc.3 || 0.2.2-rc.4');
+  const sourcePackage=JSON.parse(readFileSync(new URL('../package.json',import.meta.url),'utf8'));
+  assert.equal(pkg.version,sourcePackage.version,'PACKAGE_VERSION');
+  assert(typeof sourcePackage.engines?.dsh==='string'&&sourcePackage.engines.dsh.trim(),'DSH_COMPATIBILITY_REQUIRED');
+  assert.equal(pkg.engines?.dsh,sourcePackage.engines.dsh,'DSH_COMPATIBILITY');
   const tiers=verifyTierResources(get,host,manifest,entries);
   const diagnosticPaths=[...entries.keys()].filter(path=>path.startsWith('package/resources/diagnostics/contest/'));
   let diagnostics;
