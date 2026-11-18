@@ -2,12 +2,14 @@ import { randomUUID } from 'node:crypto';
 import type { GeneratedAnswer, GenerationInput, HostAdapter, JsonValue, ModelChoice, ParamValue, TargetSnapshot, TechnicalError } from '../contracts.ts';
 import { fingerprintTarget } from '../model/identity.ts';
 import {nativeToolTurn} from './tool-turn.ts';
+import {captureUpstreamDiagnostic,configFailureCodes,diagnosticBlocksRetry,hasInferredOverload,upstreamFailureCause} from './upstream-error.ts';
+import {chunkHasModelOutput,chunkHasText,knownStreamFinishReason} from './stream-output.ts';
 
 export interface DshCallConfig { provider:string;model:string;temperature?:number;maxTokens?:number;reasoningEffort?:string;stop?:string[] }
 export interface DshGenerateOptions extends DshCallConfig {
   messages:({role:'user';content:{type:'text';text:string}[]}|import('../contracts.ts').ToolMessage)[];system?:string;signal:AbortSignal;purpose?:string;tools?:readonly import('../contracts.ts').NativeTool[];
 }
-interface Failure {code?:string;status?:number;providerRetryAfterMs?:number;message?:string}
+interface Failure {code?:string;status?:number;providerRetryAfterMs?:number;message?:string;requestId?:string}
 export type DshChunk = {type:'text-delta';index:number;text:string}
   | {type:'block-end';index:number;block:{type:string;text?:string}}
   | {type:'usage';usage:{inputTokens:number;outputTokens:number;reasoningTokens?:number;cacheReadTokens?:number;cacheWriteTokens?:number;totalTokens?:number}}
@@ -33,17 +35,27 @@ function assign(config:DshCallConfig,field:Field,value:JsonValue):void {
   else if (field==='reasoningEffort') {if (typeof value!=='string'||!value)fault('INVALID_PARAMETER');config.reasoningEffort=value;}
   else {if (!Array.isArray(value)||!value.every(x=>typeof x==='string'&&x.length>0))fault('INVALID_PARAMETER');config.stop=value as string[];}
 }
-function safeFailure(failure:Failure|undefined,phase:'answer'|'judge'):TechnicalError {
-  const configCodes=['TOOLS_NOT_SUPPORTED','UNSUPPORTED_TOOLS','CONTEXT_LENGTH_EXCEEDED','CONTEXT_WINDOW_EXCEEDED','UNSUPPORTED_OPTION','UNSUPPORTED_REASONING_EFFORT','INVALID_CONFIG','INVALID_PREPARED_CALL','MISSING_CREDENTIAL','NO_ADAPTER','UNKNOWN_MODEL','REGISTRATION_DISPOSED','INVALID_MODEL_MAX_TOKENS','AUTHENTICATION_ERROR','AUTHENTICATION_FAILED','PERMISSION_DENIED','INVALID_REQUEST','MODEL_NOT_FOUND'];
-  const allowed=new Set([...configCodes,'NETWORK_ERROR','TIMEOUT','LLM_STREAM_IDLE_TIMEOUT','RATE_LIMIT','RATE_LIMITED','OVERLOADED','SERVICE_UNAVAILABLE','AUTHENTICATION_ERROR','AUTHENTICATION_FAILED','PERMISSION_DENIED','INVALID_REQUEST','MODEL_NOT_FOUND','ABORTED','INCOMPLETE_STREAM']);
+function safeFailure(failure:Failure|undefined,phase:'answer'|'judge',sawOutput=false):TechnicalError {
+  const allowed=new Set([...configFailureCodes,'NETWORK_ERROR','TIMEOUT','LLM_STREAM_IDLE_TIMEOUT','RATE_LIMIT','RATE_LIMITED','OVERLOADED','SERVICE_UNAVAILABLE','AUTHENTICATION_ERROR','AUTHENTICATION_FAILED','PERMISSION_DENIED','INVALID_REQUEST','MODEL_NOT_FOUND','ABORTED','INCOMPLETE_STREAM']);
   const status=failure?.status, retryAfterMs=failure?.providerRetryAfterMs;
   const providerCode=failure?.code;
   const code=status===403?'PERMISSION_DENIED':status===401||providerCode==='AUTH'?'AUTHENTICATION_ERROR':
     providerCode&&allowed.has(providerCode)?providerCode:'UPSTREAM_ERROR';
   const authenticationError=['AUTHENTICATION_ERROR','AUTHENTICATION_FAILED','PERMISSION_DENIED'].includes(code);
-  return {code,phase:configCodes.includes(code)?'config':phase,retryable:!configCodes.includes(code)&&(['NETWORK_ERROR','TIMEOUT','LLM_STREAM_IDLE_TIMEOUT','RATE_LIMIT','RATE_LIMITED','OVERLOADED','SERVICE_UNAVAILABLE','INCOMPLETE_STREAM'].includes(code)||status===429||(typeof status==='number'&&status>=500&&status<=599)),
+  const upstream=captureUpstreamDiagnostic(failure);
+  const upstreamCause=upstreamFailureCause(code,providerCode,status,upstream);
+  const retryableOverload=code==='UPSTREAM_ERROR'&&hasInferredOverload(status,upstream);
+  const retryableStatus=status===429||(typeof status==='number'&&status>=500&&status<=599);
+  const effectiveStatus=status??upstream?.httpStatus;
+  const retryableTransport=providerCode==='TRANSPORT'&&code==='UPSTREAM_ERROR'&&!sawOutput&&
+    (effectiveStatus===undefined||Number.isInteger(effectiveStatus)&&effectiveStatus>=500&&effectiveStatus<=599)&&!diagnosticBlocksRetry(upstream);
+  const retryableCode=['NETWORK_ERROR','TIMEOUT','LLM_STREAM_IDLE_TIMEOUT','RATE_LIMIT','RATE_LIMITED','OVERLOADED','SERVICE_UNAVAILABLE','INCOMPLETE_STREAM'].includes(code);
+  return {code,phase:configFailureCodes.has(code)?'config':phase,
+    retryable:!configFailureCodes.has(code)&&(upstreamCause==='transport'?retryableTransport:retryableCode||retryableStatus||retryableOverload),
     message:authenticationError?'模型接口拒绝访问。请在 DSH 中检查模型凭据或访问权限，恢复后继续本轮。':
-      ['CONTEXT_LENGTH_EXCEEDED','CONTEXT_WINDOW_EXCEEDED'].includes(code)?'模型上下文容量不足，无法同时容纳题目与当前最大输出设置。请核对供应商限制和本轮配置。':configCodes.includes(code)?'模型接口不支持当前配置或凭据不可用，请核对本轮设置。':code==='ABORTED'?'调用已中断。':'模型接口未完成本次回答。',
+      ['CONTEXT_LENGTH_EXCEEDED','CONTEXT_WINDOW_EXCEEDED'].includes(code)?'模型上下文容量不足，无法同时容纳题目与当前最大输出设置。请核对供应商限制和本轮配置。':configFailureCodes.has(code)?'模型接口不支持当前配置或凭据不可用，请核对本轮设置。':code==='ABORTED'?'调用已中断。':'模型接口未完成本次回答。',
+    ...(upstream?{upstream}:{}),
+    ...(upstreamCause?{upstreamCause}:{}),
     ...(typeof status==='number'&&Number.isInteger(status)&&status>=100&&status<=599?{status}:{}),
     ...(typeof retryAfterMs==='number'&&Number.isFinite(retryAfterMs)&&retryAfterMs>=0?{retryAfterMs:Math.min(retryAfterMs,60_000)}:{})};
 }
@@ -110,7 +122,7 @@ export function createHostAdapter(ctx:AdapterContext):HostAdapter {
     const origin=input.target.origin,before=route(choice.providerId);if(origin?.adapterInstance===instance&&(origin.adapterEpoch!==epoch||origin.settingsRevision!==before.revision))fault('TARGET_CHANGED');
     const current=await prepare(choice,input.target.controls,input.signal);if(input.target.deployment)current.target.deployment=structuredClone(input.target.deployment);
     if(fingerprintTarget(input.target)!==fingerprintTarget(current.target))fault('TARGET_CHANGED');return {config:current.prepared.config,stream:options=>current.prepared.stream(options),unchanged:()=>current.capturedEpoch===epoch&&current.revision===route(choice.providerId).revision};
-  },error=>safeFailure(error as Failure,'answer'));
+  },(error,sawOutput)=>safeFailure(error as Failure,'answer',sawOutput));
   return {catalog,generateTurn,async snapshot(choice,overrides){return (await prepare(choice,overrides)).target;},
     async generateOnce(input:GenerationInput):Promise<GeneratedAnswer> {
       const invocationStarted=performance.now();
@@ -125,10 +137,14 @@ export function createHostAdapter(ctx:AdapterContext):HostAdapter {
       const messages=input.messages.filter(x=>x.role==='user').map(x=>({role:'user' as const,content:[{type:'text' as const,text:x.content}]}));
       const observations:GeneratedAnswer['observations']={...input.context,startedAt:new Date().toISOString(),endedAt:'',usage:{available:false}};
       const streamStarted=performance.now();const timing:NonNullable<GeneratedAnswer['observations']['timing']>={prepareMs:streamStarted-invocationStarted,streamMs:0,totalMs:0,sawReasoning:false,outputTokenScope:'unknown'};observations.timing=timing;
-      const blocks=new Map<number,string>();let complete=false,truncated=false,error:TechnicalError|undefined;
+      const blocks=new Map<number,string>();let complete=false,truncated=false,sawOutput=false,error:TechnicalError|undefined;
       try {
+        observations.textReceived=false;
         for await (const chunk of current.prepared.stream({...current.prepared.config,messages,...(system?{system}:{}),signal:input.signal,purpose:'model-evaluation'})) {
-          if(chunk.type==='reasoning-delta'||chunk.type==='text-delta'&&!!chunk.text||chunk.type==='block-end'&&chunk.block.type==='text'&&!!chunk.block.text)input.onActivity?.();
+          sawOutput||=chunkHasModelOutput(chunk);
+          const hasText=chunkHasText(chunk);
+          if(hasText)observations.textReceived=true;
+          if(chunk.type==='reasoning-delta'||hasText)input.onActivity?.();
           if((chunk.type==='text-delta'&&chunk.text)||chunk.type==='reasoning-delta'){const elapsed=performance.now()-streamStarted;timing.firstOutputMs??=elapsed;timing.lastOutputMs=elapsed;if(chunk.type==='reasoning-delta')timing.sawReasoning=true;else timing.firstTextMs??=elapsed;}
           if (chunk.type==='text-delta') {if (chunk.text&&!observations.firstContentAt)observations.firstContentAt=new Date().toISOString();blocks.set(chunk.index,(blocks.get(chunk.index)??'')+chunk.text);}
           else if (chunk.type==='block-end'&&chunk.block.type==='text'&&typeof chunk.block.text==='string')blocks.set(chunk.index,chunk.block.text);
@@ -140,19 +156,23 @@ export function createHostAdapter(ctx:AdapterContext):HostAdapter {
             if (usage.inputTokens===undefined&&usage.outputTokens===undefined)usage.available=false;
             observations.usage=usage;
           }else if (chunk.type==='finish') {
+            const finishReason=knownStreamFinishReason(chunk.reason.kind);
+            if(finishReason)observations.streamFinishReason=finishReason;
             complete=['stop','max-tokens','tool-calls'].includes(chunk.reason.kind);truncated=chunk.reason.kind==='max-tokens';
-            if (!complete)error=safeFailure(chunk.reason.failure,input.context.phase);
+            if (!complete)error=safeFailure(chunk.reason.failure,input.context.phase,sawOutput);
             break;
           }
         }
-      }catch (thrown) {error=safeFailure(thrown as Failure,input.context.phase);}
+      }catch (thrown) {error=safeFailure(thrown as Failure,input.context.phase,sawOutput);}
       timing.streamMs=performance.now()-streamStarted;timing.totalMs=performance.now()-invocationStarted;
       observations.endedAt=new Date().toISOString();
+      const upstream=error?.upstream;
       if (input.signal.aborted) {complete=false;error=safeFailure({code:'ABORTED'},input.context.phase);}
       if (current.capturedEpoch!==epoch||current.revision!==route(choice.providerId).revision) {
         complete=false;error={code:'TARGET_CHANGED',phase:'config',retryable:false,message:'宿主配置已变化，请核对后创建新运行。'};
       }
       if (!complete&&!error)error=safeFailure({code:'INCOMPLETE_STREAM'},input.context.phase);
+      if(error&&upstream)error={...error,upstream};
       return {text:[...blocks.values()].join(''),complete,truncated,observations,...(error?{error}:{})};
     }};
 }

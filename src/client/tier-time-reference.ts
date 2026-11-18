@@ -1,11 +1,7 @@
 import type {SpeedConfigRecord,SpeedSession} from '../estimation/contracts.ts';
 import {validSpeedBudget} from '../speed/budget.ts';
-
-export type PlanningTier='light'|'deep';
-
-// Rounded provider-reported output totals for the matching 1.0 questions.
-// Light uses the median of three reference runs. Deep has one reference run.
-export const tierOutputTokens:Record<PlanningTier,number>={light:270_000,deep:2_400_000};
+import {tierOutputTokens,type PlanningTier} from '../estimation/output-workload.ts';
+export {tierOutputTokens,type PlanningTier};
 
 function measuredOutputRate(config:SpeedConfigRecord,budgetMs:number){
   const reachedBudget=config.status==='stopped'&&config.errorCode==='SPEED_BUDGET_REACHED';

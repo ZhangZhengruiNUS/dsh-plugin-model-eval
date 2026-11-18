@@ -6,10 +6,10 @@ export default defineConfig({
   workers: 1,
   reporter: 'list',
   use: {
-    baseURL: 'http://127.0.0.1:4178',
+    baseURL: 'http://127.0.0.1:43189',
     trace: 'retain-on-failure',
     ...(executablePath ? {launchOptions: {executablePath}} : {}),
   },
   projects: [{name: 'chromium', use: {browserName: 'chromium'}}],
-  webServer: {command: 'node scripts/preview.mjs', url: 'http://127.0.0.1:4178', reuseExistingServer: false},
+  webServer: {command: 'node scripts/preview.mjs', url: 'http://127.0.0.1:43189', reuseExistingServer: false},
 });

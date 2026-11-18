@@ -38,7 +38,7 @@ export function ComparisonTable({children,heading,beforeTable,empty}:{
    </div>}
   </div>}
   {beforeTable}
-  {hasTable?<div className="me-table-wrap" id={regionId} role="region" aria-label={t.tableRegion} aria-description={overflow&&heading?'可用左右方向键横向滚动':undefined} tabIndex={0} ref={region} onScroll={measure}>
+  {hasTable?<div className="me-table-wrap" id={regionId} role="region" aria-label={t.tableRegion} data-horizontal-overflow={overflow||undefined} aria-description={overflow&&heading?'可用左右方向键横向滚动':undefined} tabIndex={0} ref={region} onScroll={measure}>
    {overflow&&!heading&&<div className="me-table-hint">{t.horizontalHint}</div>}
    {children}
   </div>:empty}

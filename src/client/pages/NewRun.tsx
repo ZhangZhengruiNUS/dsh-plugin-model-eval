@@ -27,11 +27,11 @@ export interface BackgroundSpeedDraft {
 }
 export const emptyDraft=():Draft=>({id:crypto.randomUUID(),model:'',deployment:'',fields:{}});
 const fields=['temperature','maxTokens','reasoningEffort','stop'] as const;
-export function ConfigEditor({draft,models,api,change,reportError,label,defaultModelLabel}:{draft:Draft;models:ModelChoice[];api:ClientApi;change(draft:Draft):void;reportError(message:string):void;label:string;defaultModelLabel?:string|undefined}){
+export function ConfigEditor({draft,models,modelsLoading=false,api,change,reportError,label,defaultModelLabel}:{draft:Draft;models:ModelChoice[];modelsLoading?:boolean;api:ClientApi;change(draft:Draft):void;reportError(message:string):void;label:string;defaultModelLabel?:string|undefined}){
   const [loading,setLoading]=React.useState(false);const generation=React.useRef(0);
   async function select(model:string){if(model===draft.model&&draft.snapshot)return;reportError('');const id=++generation.current;change({...emptyDraft(),id:draft.id,model});if(!model)return;setLoading(true);try{const [providerId,modelId]=JSON.parse(model);const snapshot=await api<{handle:string;target:TargetSnapshot}>('snapshot',{providerId,modelId});if(id===generation.current)change({id:draft.id,model,deployment:'',fields:{},snapshot});}catch(error){reportError((error as Error).message);}finally{if(id===generation.current)setLoading(false);}}
   const edited=Object.keys(draft.fields).length;
-  return <div className="me-config-editor"><ModelSelect label={label} value={draft.model} models={models} onChange={model=>void select(model)} disabled={loading} placeholder={loading?t.loading:'请选择'} {...(defaultModelLabel?{defaultLabel:defaultModelLabel}:{})}/>{!models.length&&<p className="me-help">{t.noModels}</p>}
+  return <div className="me-config-editor"><ModelSelect label={label} value={draft.model} models={models} onChange={model=>void select(model)} disabled={loading||modelsLoading} placeholder={modelsLoading?'正在读取模型…':loading?t.loading:'请选择'} {...(defaultModelLabel?{defaultLabel:defaultModelLabel}:{})}/>{!modelsLoading&&!models.length&&<p className="me-help">{t.noModels}</p>}
   {draft.snapshot&&<><Field label={t.configNoteOptional} hint={t.configNoteHint}><TextInput maxLength={100} value={draft.deployment} onChange={e=>change({...draft,deployment:e.target.value})} placeholder={t.configNotePlaceholder}/></Field><Disclosure kind="settings" title={t.params} value={edited?"已调整 "+edited+" 项":"沿用宿主设置"}><p className="me-help">{t.defaults}</p><div className="me-fields">{fields.map(key=>{const p=draft.snapshot!.target.controls[key],value=draft.fields[key]??(p?.state==='known'?typeof p.value==='string'?p.value:JSON.stringify(p.value):'');return <label key={key}>{t[key]}<TextInput type={key==='temperature'||key==='maxTokens'?'number':'text'} step={key==='temperature'?'0.1':'1'} min={key==='temperature'?0:key==='maxTokens'?1:undefined} value={value} onChange={e=>change({...draft,fields:{...draft.fields,[key]:e.target.value}})} placeholder={t.inherit} aria-label={t[key]} aria-describedby={draft.id+'-'+key+'-help'}/><small id={draft.id+'-'+key+'-help'} className="me-param-help">{t.parameterHelp[key]}</small></label>;})}</div></Disclosure></>}
   </div>;
 }
@@ -177,7 +177,15 @@ export function NewRun({onClose,onBackground,saved,preparation,onRetryPreparatio
    return {generalId:general?generalId:props.data.status.generalId,handles,tracks,execution:{concurrency,callTimeoutMs:timeout*1000},...(judgeHandle?{judgeHandle}:{})};
  }
  async function close(){if(closing)return;setClosing(true);if(await cancelPreview.current())onClose();else setClosing(false);}
- async function start(){if(startUnavailable||closing)return;setError('');const result=await props.act(async()=>props.api('createBatch',{...await request(),...(preview?.key===draftKey?{previewId:preview.id}:{})}));if(result){onClose();props.navigate('jobs');}}
+ const [startingEvaluation,setStartingEvaluation]=React.useState(false);
+ async function start(){
+   if(startUnavailable||closing||startingEvaluation)return;
+   setError('');setStartingEvaluation(true);
+   try{
+     const result=await props.act(async()=>props.api('createBatch',{...await request(),...(preview?.key===draftKey?{previewId:preview.id}:{})}));
+     if(result){onClose();props.navigate('jobs');}
+   }finally{setStartingEvaluation(false);}
+ }
  const dialogLocked=props.busy||probeStarting||closing;
  return <><Modal title={t.newRun} onClose={()=>void close()} wide variant="new-run" inactive={advisorOpen} locked={dialogLocked}>
  <div ref={formBody} className="me-dialog-body me-run-form">{preparationNotice&&<LocalPreparationNotice state={preparationNotice} retry={onRetryPreparation} settings={()=>{onClose();props.navigate('settings');}} disabled={retryDisabled}/>}<fieldset className="me-run-fields" disabled={probing||props.busy||closing}>
@@ -191,7 +199,7 @@ export function NewRun({onClose,onBackground,saved,preparation,onRetryPreparatio
            {drafts.length>1&&<Button kind="text" onClick={()=>{setCopyOpen(false);setDrafts(current=>current.filter(item=>item.id!==draft.id));}}>{t.remove}</Button>}
          </div>
        </header>
-       <ConfigEditor draft={draft} models={props.data.models} api={props.api}
+       <ConfigEditor draft={draft} models={props.data.models} modelsLoading={!!props.data.modelsLoading} api={props.api}
          change={value=>setDrafts(old=>old.map(x=>x.id===value.id?value:x))}
          reportError={setError} label={t.chooseModel}/>
      </section>)}
@@ -259,7 +267,7 @@ export function NewRun({onClose,onBackground,saved,preparation,onRetryPreparatio
          {!general&&!writingReady&&
            <PreparationNotice generalId={props.data.status.generalId} api={props.api} act={props.act} disabled={props.busy||active}
              externalPreparing={props.data.status.preparing} message="单独写作的评测环境尚未准备。"/>}
-         <ConfigEditor draft={judge} models={props.data.models} api={props.api} change={setJudge} reportError={setError} label={t.judge}
+         <ConfigEditor draft={judge} models={props.data.models} modelsLoading={!!props.data.modelsLoading} api={props.api} change={setJudge} reportError={setError} label={t.judge}
            defaultModelLabel={drafts.length===1?'沿用评测配置':undefined}/>
          <p className="me-help">{drafts.length===1?'可更换裁判，报告会记录实际评分模型。':t.judgeHelp}</p>
          <WritingEvaluationBasis/>
@@ -277,7 +285,7 @@ export function NewRun({onClose,onBackground,saved,preparation,onRetryPreparatio
        onClick={openAdvisor}>{probing?'查看测速进度':'查看用时参考'}</ActionButton>
    </div>
    <div className="me-new-run-submit"><Button onClick={()=>void close()} disabled={props.busy||probeStarting||closing}>{t.cancel}</Button>
-     <ActionButton kind="primary" icon="play" disabled={closing} unavailableReason={startUnavailable} onClick={()=>void start()}>{props.busy&&!waiting?t.loading:t.start}</ActionButton></div>
+     <ActionButton kind="primary" icon="play" disabled={closing} unavailableReason={startUnavailable} onClick={()=>void start()}>{startingEvaluation?'正在启动评测…':t.start}</ActionButton></div>
  </footer></Modal>
  <SpeedPreview id={advisorId} open={advisorOpen} scope={scope} names={advisorNames} locked={dialogLocked} returnFocusTo={advisorOpener.current} onClose={()=>setAdvisorOpen(false)}
    ready={advisorReady} prepared={general?tierReady:writingReady} canProbe={valid&&!props.busy&&!active&&!closing} hostSupportsAdvisor={props.data.status.timeAdvisorVersion===1}

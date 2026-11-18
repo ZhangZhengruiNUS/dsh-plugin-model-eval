@@ -4,6 +4,10 @@ import {zh as t} from '../locales.ts';
 
 const countText = new Intl.NumberFormat('zh-CN');
 
+export function PresetTag() {
+  return <span className="me-preset-tag">预置</span>;
+}
+
 export function CountBadge({count, total, description}: {count: number; total?: number | undefined; description: string}) {
   return <>
     <span className="me-count-badge" aria-hidden="true">

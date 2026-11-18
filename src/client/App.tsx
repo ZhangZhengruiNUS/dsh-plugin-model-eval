@@ -10,6 +10,7 @@ import evaluationBasis from './evaluation-basis.css';
 import disclosure from './disclosure.css';
 import workbench from './workbench.css';
 import dataReadouts from './data-readout.css';
+import taskWorkbench from './task-workbench.css';
 import glass from './glass.css';import surfaces from './surfaces.css';import dialogs from './dialogs.css';
 import * as React from 'react';import {createClientApi,type ClientApi} from './api.ts';import {zh as t} from './locales.ts';import {activityUnavailable,Button,Icon,type ViewData,type PageProps,type LocalPreparation,Empty,ModalHostContext} from './ui.tsx';import {Compare} from './pages/Compare.tsx';import {NewRun,type BackgroundSpeedDraft} from './pages/NewRun.tsx';import {Progress} from './pages/Progress.tsx';import {History} from './pages/History.tsx';import {Settings} from './pages/Settings.tsx';import {Report} from './pages/Report.tsx';import styles from './styles.css';
 import type {ComparisonMetadata} from '../comparison/contracts.ts';
@@ -43,23 +44,109 @@ export function App({api:provided,references}:{api?:ClientApi;references?:readon
       backgroundAction.current.querySelector('button')?.focus();
     }
   },[newRun,background]);
-  const comparisonCache=React.useRef<{signature:string;snapshot:ComparisonMetadata}>();
+  const pendingReads=React.useRef(0),mutating=React.useRef(false);
+  const comparisonAttempt=React.useRef<string>();
+  const comparisonFlight=React.useRef<{scope:string}>();
+  const [comparisonCycle,retryComparison]=React.useReducer((n:number)=>n+1,0);
+  const modelFlight=React.useRef<{scope:string;promise:Promise<void>}>();
   const [preparation,setPreparation]=React.useState<{scope:string;state:LocalPreparation}>();
   const preparationRequest=React.useRef<object>();
-  const readView=React.useCallback(async(showError=true)=>{const seq=++sequence.current;try{
-    const [status,models,runs,queue,protocols]=await Promise.all([api<ViewData['status']>('status'),api<ViewData['models']>('catalog'),api<ViewData['runs']>('history'),api<ViewData['queue']>('queue'),api<ViewData['protocols']>('protocolCatalog')]);
-    const signature=JSON.stringify([status.rootId,status.rootEpoch,runs.map(r=>[r.runId,r.revision]).sort()]);let comparison:ComparisonMetadata|undefined,comparisonError:string|undefined;
-    try{comparison=comparisonCache.current?.signature===signature?comparisonCache.current.snapshot:await api<ComparisonMetadata>('comparisonMetadata');if(comparison.rootId!==status.rootId||comparison.rootEpoch!==status.rootEpoch){comparison=undefined;comparisonError='数据目录正在切换，请刷新后重试。';}}
-    catch(e){comparisonError=(e as Error).message;}
-    const snapshot={status,models,runs,queue,protocols,...(comparison?{comparison}:{}),...(comparisonError?{comparisonError}:{})};
-    if(alive.current&&seq===sequence.current){if(comparison)comparisonCache.current={signature,snapshot:comparison};else comparisonCache.current=undefined;setData(snapshot);setError('');}
-    return snapshot;
-  }catch(e){if(showError&&alive.current&&seq===sequence.current)setError((e as Error).message);}},[api]);
-  const refresh=React.useCallback(async()=>{await readView();},[readView]);
+  const readView=React.useCallback(async(showError=true)=>{
+    const seq=++sequence.current;
+    pendingReads.current++;
+    try{
+      const [status,runs,queue,protocols]=await Promise.all([
+        api<ViewData['status']>('status'),api<ViewData['runs']>('history'),
+        api<ViewData['queue']>('queue'),api<ViewData['protocols']>('protocolCatalog'),
+      ]);
+      const snapshot:ViewData={status,models:[],runs,queue,protocols};
+      if(alive.current&&seq===sequence.current){
+        setData(previous=>{
+          if(!previous||rootScope(previous.status)!==rootScope(status))return snapshot;
+          return {...previous,status,runs,queue,protocols};
+        });
+        if(showError)setError('');
+      }
+      return snapshot;
+    }catch(e){
+      if(showError&&alive.current&&seq===sequence.current)setError((e as Error).message);
+    }finally{pendingReads.current--;}
+  },[api]);
+  const refresh=React.useCallback(async()=>{
+    if(!comparisonFlight.current)comparisonAttempt.current=undefined;
+    await readView();
+    retryComparison();
+  },[readView]);
+  const loadedScope=data&&rootScope(data.status);
+  const selectedScope=React.useRef(loadedScope);
+  selectedScope.current=loadedScope;
+  const comparisonSignature=loadedScope&&JSON.stringify([loadedScope,data!.runs.map(run=>[run.runId,run.revision]).sort()]);
+  React.useEffect(()=>{
+    if(view!=='compare'||!loadedScope||!comparisonSignature||comparisonAttempt.current===comparisonSignature||
+      comparisonFlight.current?.scope===loadedScope)return;
+    const flight={scope:loadedScope};
+    comparisonFlight.current=flight;
+    comparisonAttempt.current=comparisonSignature;
+    const update=(change:(previous:ViewData)=>ViewData)=>{
+      if(alive.current)setData(previous=>previous&&rootScope(previous.status)===loadedScope?change(previous):previous);
+    };
+    void api<ComparisonMetadata>('comparisonMetadata').then(value=>{
+      if(JSON.stringify([value.rootId,value.rootEpoch])!==loadedScope)
+        throw Error('数据目录正在切换，请刷新后重试。');
+      update(previous=>({...previous,comparison:value,comparisonError:undefined}));
+    }).catch(error=>{
+      update(previous=>({...previous,comparisonError:(error as Error).message}));
+    }).finally(()=>{
+      if(comparisonFlight.current===flight){
+        comparisonFlight.current=undefined;
+        if(alive.current)retryComparison();
+      }
+    });
+  },[api,view,loadedScope,comparisonSignature,comparisonCycle]);
+  function loadModels():Promise<void>{
+    if(!loadedScope)return Promise.resolve();
+    if(modelFlight.current?.scope===loadedScope)return modelFlight.current.promise;
+    const update=(change:(previous:ViewData)=>ViewData)=>{
+      if(alive.current)setData(previous=>previous&&rootScope(previous.status)===loadedScope?change(previous):previous);
+    };
+    update(previous=>({...previous,modelsLoading:true}));
+    const flight={scope:loadedScope,promise:Promise.resolve()};
+    flight.promise=api<ViewData['models']>('catalog').then(models=>{
+      update(previous=>({...previous,models,modelsLoading:false}));
+    }).catch(error=>{
+      update(previous=>({...previous,modelsLoading:false}));
+      if(alive.current&&selectedScope.current===loadedScope&&modelFlight.current===flight)setError((error as Error).message);
+    }).finally(()=>{if(modelFlight.current===flight)modelFlight.current=undefined;});
+    modelFlight.current=flight;
+    return flight.promise;
+  }
   React.useEffect(()=>{setReport(undefined);},[data?.status.rootId,data?.status.rootEpoch]);
   React.useEffect(()=>{alive.current=true;void refresh();return()=>{alive.current=false;sequence.current++;};},[refresh]);
-  React.useEffect(()=>{const update=()=>{if(document.visibilityState==='visible'&&!preparationRequest.current)void refresh();};const timer=setInterval(()=>{if(data?.queue.activeBatchId||data?.status.activeActivity||data?.status.preparing)update();},1000);document.addEventListener('visibilitychange',update);window.addEventListener('online',update);return()=>{clearInterval(timer);document.removeEventListener('visibilitychange',update);window.removeEventListener('online',update);};},[refresh,data?.queue.activeBatchId,data?.status.activeActivity?.id,data?.status.preparing]);
-  async function act<T,>(fn:()=>Promise<T>):Promise<T|undefined>{setBusy(true);setError('');try{const result=await fn();await refresh();return result;}catch(e){setError((e as Error).message);return undefined;}finally{setBusy(false);}}
+  React.useEffect(()=>{
+    const update=()=>{
+      if(document.visibilityState==='visible'&&!preparationRequest.current&&!mutating.current&&!pendingReads.current)void readView(false);
+    };
+    const timer=setInterval(()=>{if(data?.queue.activeBatchId||data?.status.activeActivity||data?.status.preparing)update();},1000);
+    document.addEventListener('visibilitychange',update);window.addEventListener('online',update);
+    return()=>{clearInterval(timer);document.removeEventListener('visibilitychange',update);window.removeEventListener('online',update);};
+  },[readView,data?.queue.activeBatchId,data?.status.activeActivity?.id,data?.status.preparing]);
+  async function act<T,>(fn:()=>Promise<T>,applyQueue?: (result:T)=>ViewData['queue']):Promise<T|undefined>{
+    if(mutating.current)return;
+    mutating.current=true;
+    setBusy(true);
+    setError('');
+    try{
+      const result=await fn();
+      if(applyQueue){
+        sequence.current++;
+        const queue=applyQueue(result);
+        setData(previous=>previous&&rootScope(previous.status)===loadedScope?{...previous,queue}:previous);
+        void readView(false);
+      }else await refresh();
+      return result;
+    }catch(e){setError((e as Error).message);return undefined;}
+    finally{mutating.current=false;setBusy(false);}
+  }
   const current=currentTiers(data),currentAvailable=current.length>0;
   const scope=data&&rootScope(data.status);
   const savedRun=background?.scope===scope?background?.draft:undefined;
@@ -123,7 +210,7 @@ export function App({api:provided,references}:{api?:ClientApi;references?:readon
   const props:PageProps|undefined=data?{
     data:view==='jobs'||view==='history'?archiveEvaluationLists(data,protocolArchive):
       localPending?{...data,status:{...data.status,preparing:true}}:data,
-    api,busy,act,refresh,canCreateRun,protocolArchive,
+    api,busy,act,actQueue:fn=>act(fn,result=>result),loadModels,refresh,canCreateRun,protocolArchive,
     newRunUnavailable:canCreateRun?undefined:!data.status.writable?'数据目录为只读，请在设置中切换到可写目录。':
       activityUnavailable(data.status,data.queue.activeBatchId)??(busy?'正在处理当前操作，请稍候。':'请先到设置中准备评测环境。'),
     ...(hasArchivedRuns&&{setProtocolArchive:(value:ProtocolArchive)=>{
@@ -135,15 +222,15 @@ export function App({api:provided,references}:{api?:ClientApi;references?:readon
       const returnFocusTo=report?.returnFocusTo??(active instanceof HTMLElement?active:null);
       setReport({id,openId:crypto.randomUUID(),rootId:data.status.rootId,rootEpoch:data.status.rootEpoch,returnFocusTo});
     },
-    newRun:()=>{if(savedRun||canCreateRun){setNewRun(scope);if(!savedRun)void prepareCurrent();}},navigate:setView,
+    newRun:()=>{if(savedRun||canCreateRun){setNewRun(scope);void loadModels();if(!savedRun)void prepareCurrent();}},navigate:setView,
   }:undefined;
-  return <ModalHostContext.Provider value={uiRoot}><div ref={uiRoot} className="model-eval" data-dsh-ui="" data-material="glass" data-palette="moss" data-appearance={appearance}><style>{comparisonStyle+'\n'+styles+'\n'+evaluationBasis+'\n'+glass+'\n'+surfaces+'\n'+dialogs+'\n'+uiTokens+'\n'+uiControls+'\n'+uiAdapter+'\n'+uiMaterials+'\n'+materialLayout+'\n'+disclosure+'\n'+workbench+'\n'+dataReadouts}</style><div className="me-shell">
+  return <ModalHostContext.Provider value={uiRoot}><div ref={uiRoot} className="model-eval" data-dsh-ui="" data-material="glass" data-palette="moss" data-appearance={appearance}><style>{comparisonStyle+'\n'+styles+'\n'+evaluationBasis+'\n'+glass+'\n'+surfaces+'\n'+dialogs+'\n'+uiTokens+'\n'+uiControls+'\n'+uiAdapter+'\n'+uiMaterials+'\n'+materialLayout+'\n'+disclosure+'\n'+workbench+'\n'+dataReadouts+'\n'+taskWorkbench}</style><div className="me-shell">
     <WorkbenchNav view={view} hasActiveJob={Boolean(data?.queue.activeBatchId)} onNavigate={setView}/>
     <main ref={pageScroll} className="me-main" aria-labelledby={pageHeadingId}><header className="me-page-head"><h1 id={pageHeadingId}>{t[view]}</h1></header>{data&&!data.status.writable&&<div className="me-inline-warning">{t.readonly}</div>}{data?.status.preparing&&<div className="me-active-banner" role="status"><span className="me-pulse"/><span>{t.environmentCheckingHelp}</span></div>}{data?.queue.activeBatchId&&view!=='jobs'&&<div className="me-active-banner"><span className="me-pulse"/><strong>{t.active}</strong><span>{data.queue.batches.find(x=>x.batchId===data.queue.activeBatchId)?.batchId.slice(0,8)}</span><Button kind="text" onClick={()=>setView('jobs')} icon="arrow">{t.viewProgress}</Button></div>}
   {(speedActivity||speedInBackground)&&<div className="me-active-banner">
     <span role="status"><strong>{speedActivity?.state==='stopping'?'测速正在收尾':speedActivity?'测速进行中':'测速已结束'}</strong></span>
     {speedInBackground&&<span ref={backgroundAction}>
-      <Button onClick={()=>setNewRun(scope)}>{speedActivity?'查看测速进度':'查看测速结果'}</Button>
+      <Button onClick={()=>{setNewRun(scope);void loadModels();}}>{speedActivity?'查看测速进度':'查看测速结果'}</Button>
     </span>}
     {speedActivity&&<Button kind="text" onClick={()=>void act(()=>api('cancelSpeedPreview',{previewId:speedActivity.id}))}
       disabled={busy||speedActivity.state==='stopping'}>停止测速</Button>}

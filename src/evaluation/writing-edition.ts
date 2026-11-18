@@ -7,8 +7,9 @@ interface WritingEdition extends Omit<PublicEvaluationRelease,'version'> {
 }
 
 const legacyWritingEdition: WritingEdition = {id:'work-writing-12-v1',questionCount:12,current:false};
-export const currentWritingEdition = {id:'work-writing-12-v2',questionCount:12,version:'1.0',current:true} as const;
-const writingEditions: readonly WritingEdition[] = [legacyWritingEdition,currentWritingEdition];
+export const writingV2Edition = {id:'work-writing-12-v2',questionCount:12,version:'1.0',current:false} as const;
+export const currentWritingEdition = {id:'work-writing-12-v3',questionCount:12,version:'1.1',current:true} as const;
+const writingEditions: readonly WritingEdition[] = [legacyWritingEdition,writingV2Edition,currentWritingEdition];
 export const LEGACY_WRITING_ID=legacyWritingEdition.id;
 export const CURRENT_WRITING_ID=currentWritingEdition.id;
 

@@ -1,7 +1,7 @@
 import type {RunSummary} from '../../contracts.ts';
 import type {ComparisonExecution} from '../../comparison/contracts.ts';
 import {generalReleaseFor} from '../../evaluation/current-edition.ts';
-import {currentWritingEdition} from '../../evaluation/writing-edition.ts';
+import {writingEditionFor} from '../../evaluation/writing-edition.ts';
 import {DIMENSIONS} from '../../writing/score.ts';
 
 /** Public fingerprints bind the projection to privately retained run records. */
@@ -15,11 +15,28 @@ export interface NativeReferenceCapture {
 const positive = (value: unknown): value is number =>
   typeof value === 'number' && Number.isFinite(value) && value > 0;
 
+export function nativePresetModelName(modelId: string): string | undefined {
+  if (modelId === 'gpt-6-astra') return 'GPT-6 Astra';
+  if (modelId === 'gpt-6.2-astra') return 'GPT-6.2 Astra';
+}
+
+function nativePresetRunId(modelId: string, edition: string): string | undefined {
+  if (nativePresetModelName(modelId)) return `openai-${modelId}-max-${edition.replace('.', '-')}`;
+}
+
+// The capture IDs predate the public edition labels and follow the protocol identity.
+const generalCaptureEditions: Readonly<Record<string, string | undefined>> = {
+  'general-task-five-original-v1-light': 'light-v1-1',
+  'general-task-five-original-v1-deep-r2': 'deep-v1-2',
+};
+
 export function admittedNativeWritingReference(
   run: RunSummary, execution: ComparisonExecution, capture: NativeReferenceCapture,
 ): boolean {
   const result = run.tracks.writing;
-  const count = currentWritingEdition.questionCount;
+  const edition = writingEditionFor(run.protocols.writingId);
+  if (!edition?.version) return false;
+  const count = edition.questionCount;
   const metrics = run.metrics.tracks.writing;
   const timing = metrics?.answer.taskTiming;
   const effort = run.target.controls.reasoningEffort;
@@ -27,13 +44,13 @@ export function admittedNativeWritingReference(
   const judgeEffort = judge?.snapshot.target.controls.reasoningEffort;
   const ended = Date.parse(run.completedAt ?? '');
   const began = Date.parse(run.createdAt ?? '');
+  const expectedRunId = nativePresetRunId(run.target.modelId, `writing-v${edition.version}`);
 
-  if (run.protocols.writingId !== currentWritingEdition.id ||
-      run.runId !== 'openai-gpt-6-astra-max-writing-v1-0' ||
+  if (!expectedRunId || run.runId !== expectedRunId ||
       run.batchId !== 'built-in-reference' || run.details !== 'cleared' || run.resumeAllowed ||
       run.tracks.general || run.generalDefinition || run.regradeOrigin || run.reuse || run.executionChanges?.length ||
       run.target.scopeId !== 'built-in-reference' || run.target.providerId !== 'OpenAI' ||
-      run.target.modelId !== 'gpt-6-astra' || run.target.routeTarget.state !== 'unknown' ||
+      run.target.routeTarget.state !== 'unknown' ||
       effort?.state !== 'known' || effort.value !== 'max' ||
       run.judges.length !== 1 || !judge ||
       judge.snapshot.target.scopeId !== run.target.scopeId || judge.snapshot.target.providerId !== run.target.providerId ||
@@ -63,12 +80,6 @@ export function admittedNativeWritingReference(
   return result.score !== undefined && Math.abs(result.score - score) < 1e-7;
 }
 
-// Capture IDs were fixed at collection time. The public edition label can change independently.
-const astraGeneralCaptureIds: Readonly<Record<string,string|undefined>> = {
-  'general-task-five-original-v1-light': 'openai-gpt-6-astra-max-light-v1-1',
-  'general-task-five-original-v1-deep-r2': 'openai-gpt-6-astra-max-deep-v1-2',
-};
-
 export function admittedNativeReference(
   run: RunSummary, execution: ComparisonExecution, capture: NativeReferenceCapture,
 ): boolean {
@@ -78,13 +89,14 @@ export function admittedNativeReference(
   const timing = run.metrics.tracks.general?.answer.taskTiming;
   const count = release?.tier === 'light' ? 62 : 348;
   const effort = run.target.controls.reasoningEffort;
+  const captureEdition = generalCaptureEditions[run.protocols.generalId];
 
   if (!release?.current || !definition ||
       definition.schema !== release.schema || definition.tier !== release.tier ||
-      run.runId !== astraGeneralCaptureIds[release.generalId] ||
+      !captureEdition || run.runId !== nativePresetRunId(run.target.modelId, captureEdition) ||
       run.batchId !== 'built-in-reference' || run.details !== 'cleared' || run.resumeAllowed ||
       run.target.scopeId !== 'built-in-reference' || run.target.providerId !== 'OpenAI' ||
-      run.target.modelId !== 'gpt-6-astra' || run.target.routeTarget.state !== 'unknown' ||
+      run.target.routeTarget.state !== 'unknown' ||
       effort?.state !== 'known' || effort.value !== 'max' ||
       capture.schema !== 'native-run-reference-v1' ||
       ![capture.summarySha256, capture.itemsSha256, capture.requiredSha256].every(hash => /^[a-f0-9]{64}$/.test(hash)) ||

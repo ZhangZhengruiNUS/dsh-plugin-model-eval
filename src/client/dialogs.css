@@ -47,6 +47,13 @@
 .model-eval .me-question-list>button {min-height:42px;padding:12px 16px;transition:background-color var(--me-feedback);}
 .model-eval .me-item-detail details {padding:8px 0;}
 .model-eval .me-item-detail {scroll-margin-block-start:16px;}
+.model-eval .me-attempt-list {list-style:none;margin:8px 0 0;padding:0;}
+.model-eval .me-attempt-list>li {padding:12px 0;border-top:1px solid var(--me-border);min-width:0;}
+.model-eval .me-attempt-header {display:flex;justify-content:space-between;gap:4px 12px;flex-wrap:wrap;}
+.model-eval .me-attempt-header time {color:var(--me-muted);font-size:12px;}
+.model-eval .me-attempt-list dl {margin:8px 0 0;}
+.model-eval .me-attempt-list dl>div {display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:8px 12px;padding:4px 0;}
+.model-eval .me-attempt-list dd {margin:0;text-align:start;overflow-wrap:anywhere;font-variant-numeric:tabular-nums;}
 .model-eval .me-coding-diagnostic dl {max-width:440px;}
 .model-eval .me-coding-diagnostic dl>div {display:grid;grid-template-columns:minmax(96px,1fr) auto;gap:24px;}
 .model-eval .me-coding-diagnostic .me-item-heading {display:flex;flex-direction:row;flex-wrap:wrap;align-items:center;gap:8px;}

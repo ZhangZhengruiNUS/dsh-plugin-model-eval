@@ -1,10 +1,15 @@
 import {Button as PrimitiveButton} from './primitives/primitives.tsx';
 import {createPortal} from 'react-dom';
-import * as React from 'react';import type {ModelChoice,RunSummary,TargetSnapshot,Track} from '../contracts.ts';import {generalReleaseName} from './protocol-editions.ts';import {writingEditionName} from '../evaluation/writing-edition.ts';import type {BatchView,QueueView} from '../jobs/queue.ts';import type {ClientApi} from './api.ts';import {zh as t} from './locales.ts';import {formatScore,time,generalTierLabel} from './store.ts';
+import * as React from 'react';import type {ModelChoice,RunSummary,TargetSnapshot,TechnicalError,Track} from '../contracts.ts';import {generalReleaseName} from './protocol-editions.ts';import {writingEditionName} from '../evaluation/writing-edition.ts';import type {BatchView,QueueView,RunOperation} from '../jobs/queue.ts';import type {ClientApi} from './api.ts';import {zh as t} from './locales.ts';import {formatScore,time,generalTierLabel} from './store.ts';
+export function taskFailureText(error:TechnicalError):string {
+  if(error.code==='ABORTED')return t.abortedHelp;
+  const cause=error.upstreamCause??(error.code==='UPSTREAM_ERROR'?'unknown':undefined);
+  return cause&&Object.hasOwn(t.upstreamCauses,cause)?t.upstreamCauses[cause]:error.message;
+}
 export interface Status {timeAdvisorVersion?:number;codingDiagnostics?:import('../diagnostics/contracts.ts').CodingDiagnosticSettings;rootId:string;rootEpoch:number;ready:boolean;prepared:boolean;preparing:boolean;writable:boolean;rootPath:string;resourceVersion:string;generalId:string;writingId:string;packageBytes:number;activeActivity?:import('../jobs/activity.ts').ActivityView}
-export interface ViewData {status:Status;models:ModelChoice[];runs:RunSummary[];protocols:import('../contracts.ts').ProtocolCatalogItem[];comparison?:import('../comparison/contracts.ts').ComparisonMetadata;comparisonError?:string;queue:QueueView&{estimates?:Record<string,import('../estimation/contracts.ts').EstimateSnapshot>}}
+export interface ViewData {status:Status;models:ModelChoice[];modelsLoading?:boolean;runs:RunSummary[];protocols:import('../contracts.ts').ProtocolCatalogItem[];comparison?:import('../comparison/contracts.ts').ComparisonMetadata;comparisonError?:string|undefined;queue:QueueView&{estimates?:Record<string,import('../estimation/contracts.ts').EstimateSnapshot>;roughWork?:{batchId:string;excludesDeferredWork:boolean;estimate?:import('../estimation/rough-remaining.ts').RoughRemaining|undefined;sampling?:{ready:number;total:number}}}}
 export type LocalPreparation={phase:'pending'}|{phase:'failed';code?:string|undefined;reason?:string;verifyOnly?:boolean};
-export interface PageProps {data:ViewData;api:ClientApi;busy:boolean;canCreateRun:boolean;newRunUnavailable?:string|undefined;protocolArchive:import('./protocol-archive.ts').ProtocolArchive;setProtocolArchive?(value:import('./protocol-archive.ts').ProtocolArchive):void;refresh():Promise<void>;act<T>(fn:()=>Promise<T>):Promise<T|undefined>;report(id:string):void;newRun():void;navigate(view:'compare'|'jobs'|'history'|'settings'):void}
+export interface PageProps {data:ViewData;api:ClientApi;busy:boolean;canCreateRun:boolean;newRunUnavailable?:string|undefined;protocolArchive:import('./protocol-archive.ts').ProtocolArchive;setProtocolArchive?(value:import('./protocol-archive.ts').ProtocolArchive):void;refresh():Promise<void>;act<T>(fn:()=>Promise<T>):Promise<T|undefined>;actQueue(fn:()=>Promise<ViewData['queue']>):Promise<ViewData['queue']|undefined>;loadModels():Promise<void>;report(id:string):void;newRun():void;navigate(view:'compare'|'jobs'|'history'|'settings'):void}
 const iconPaths: Record<string, string> = {
   search: 'M21 21l-5-5 M18 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0',
   jobs: 'M5 4h14v17l-7-4-7 4z M9 8h6 M9 12h5',
@@ -22,6 +27,7 @@ const iconPaths: Record<string, string> = {
   refresh: 'M20 8a8 8 0 1 0 0 8 M20 3v5h-5',
   clock: 'M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z M12 7v5l3 2',
   back: 'M19 12H5m5-5-5 5 5 5',
+  chevron: 'm6 9 6 6 6-6',
 };
 
 export function BrandIcon({size}: {size: number}) {
@@ -111,12 +117,13 @@ export function reasoningEffortLabel(target:TargetSnapshot){
     : value;
 }
 
-export function ModelLabel({target,nameAction,displayName=target.modelId,secondaryLabel=target.providerId,showParams=false}:{
+export function ModelLabel({target,nameAction,displayName=target.modelId,secondaryLabel=target.providerId,showParams=false,compact=false}:{
   target:TargetSnapshot;
   nameAction?:{label:string;onClick():void};
   displayName?:string;
   secondaryLabel?:string;
   showParams?:boolean;
+  compact?:boolean;
 }){
   const effort=showParams?reasoningEffortLabel(target):undefined;
   const effortId=React.useId();
@@ -124,15 +131,16 @@ export function ModelLabel({target,nameAction,displayName=target.modelId,seconda
     ? <button type="button" className="me-model-report" aria-haspopup="dialog" aria-label={nameAction.label}
         aria-describedby={effort?effortId:undefined} onClick={nameAction.onClick}>{displayName}</button>
     : <strong title={target.modelId}>{displayName}</strong>;
-  return <div className="me-model">
+  const source=<span>{secondaryLabel}{target.deployment&&<> · <b>{target.deployment.value}</b></>}</span>;
+  return <div className={'me-model'+(compact?' me-model-compact':'')}>
     {effort?<div className="me-model-name-line">
       {name}
       <span id={effortId} className="me-reasoning-effort" title={`${t.reasoningEffort}：${effort}`}>
         <span className="dsh-sr-only">{t.reasoningEffort}：</span>{effort}
       </span>
     </div>:name}
-    <span>{secondaryLabel}{target.deployment&&<> · <b>{target.deployment.value}</b></>}</span>
-    {showParams&&<Params target={target}/>}
+    {compact?<div className="me-model-meta">{source}{showParams&&<Params target={target}/>}</div>:
+      <>{source}{showParams&&<Params target={target}/>}</>}
   </div>;
 }
 
@@ -203,5 +211,133 @@ export function Modal({title,children,onClose,wide=false,locked=false,variant,re
   return host?createPortal(overlay,host):overlay;
 }
 export const trackNames:Record<Track,string>={general:t.general,writing:t.writing};
-export function BatchRuns({batch,runs,report}:{batch:BatchView;runs:RunSummary[];report(id:string):void}){return <div className="me-run-list">{batch.runIds.map((id,i)=>{const run=runs.find(x=>x.runId===id);if(!run)return null;return <div className="me-run-row" key={id}><span className="me-index">{String(i+1).padStart(2,'0')}</span><div className="me-run-model"><ModelLabel target={run.target} showParams/></div><div className="me-track-results">{(['general','writing'] as const).map(track=>{const value=run.tracks[track];return value&&<div key={track}><span>{track==='general'?(generalReleaseName(run.protocols,true)??(trackNames.general+(run.generalDefinition?' · '+generalTierLabel(run):''))):(writingEditionName(run.protocols.writingId)??trackNames.writing)}</span>{value.status==='completed'?<Score value={value.score}/>:<span className="me-mono">{value.graded} / {value.required}</span>}</div>;})}</div><Button onClick={()=>report(id)}>{t.report}</Button></div>;})}</div>;}
-export function MetaTime({value}:{value:string|undefined}){return <time>{time(value)}</time>;}
+export function runIsComplete(run:RunSummary){
+  const tracks=Object.values(run.tracks);
+  return tracks.length>0&&tracks.every(track=>track.status==='completed');
+}
+const compactRunActions:Record<RunOperation,string>={hold:'挂起',resume:'继续',remove:'移出',rejoin:'重新加入'};
+
+export function BatchRuns({batch,runs,report,control,unavailableReason,pending}:{
+  batch:BatchView;
+  runs:RunSummary[];
+  report(runId:string):void;
+  control(runId:string,operation:RunOperation):void;
+  unavailableReason?:string|undefined;
+  pending?:{runId:string;operation:RunOperation}|undefined;
+}){
+  const lastAction=React.useRef<{trigger:HTMLButtonElement;row:HTMLElement}>();
+  const [removal,setRemoval]=React.useState<{runId:string;trigger:HTMLButtonElement;row:HTMLElement}>();
+  const removalRun=removal&&runs.find(run=>run.runId===removal.runId);
+  const removalUnavailable=unavailableReason??
+    (removal&&batch.settlingRunId===removal.runId?t.runControl.settling:undefined)??
+    (removalRun&&(runIsComplete(removalRun)||batch.runControls?.[removalRun.runId]?.state==='removed')?t.runControl.changed:undefined);
+  React.useLayoutEffect(()=>{
+    const previous=lastAction.current;
+    if(!previous||previous.trigger.isConnected)return;
+    lastAction.current=undefined;
+    const {row,trigger}=previous;
+    if(row.isConnected&&(!activeIn(row)||activeIn(row)===trigger.ownerDocument.body)){
+      const nextButton=row.querySelector<HTMLElement>('.me-action-anchor button:not([aria-disabled="true"])')
+        ??row.querySelector('button');
+      nextButton?.focus();
+    }
+  });
+  const bothTracks=runs.some(run=>run.tracks.general)&&runs.some(run=>run.tracks.writing);
+  return <><div className="me-run-list" role="list" aria-label={t.model}>
+    {batch.runIds.map((id,index)=>{
+      const run=runs.find(entry=>entry.runId===id);
+      if(!run)return null;
+      const controlState=batch.runControls?.[id];
+      const complete=runIsComplete(run);
+      const settling=batch.settlingRunId===id;
+      const running=batch.activeRunId===id;
+      let status:string;
+      if(settling)status='stopping';
+      else if(controlState?.state==='held')status=controlState.error?'attention':'held';
+      else if(controlState?.state==='removed')status='removed';
+      else if(complete)status='completed';
+      else if(running)status='running';
+      else if(batch.status==='paused')status='paused';
+      else if(batch.status==='running')status='queued';
+      else if(Object.values(run.tracks).some(track=>track.status==='pending'))status='pending';
+      else status='queued';
+      let operations:RunOperation[]=[];
+      if(!complete){
+        if(controlState?.state==='removed')operations=['rejoin'];
+        else if(controlState?.state==='held')operations=['resume','remove'];
+        else operations=['hold','remove'];
+      }
+      const error=controlState?.state==='held'?controlState.error:undefined;
+      return <div className="me-run-row me-controlled-run" role="listitem" key={id}
+        aria-label={`${t.model} ${index+1} ${run.target.modelId}`}>
+        <div className="me-run-model">
+          <ModelLabel target={run.target} showParams compact nameAction={{
+            label:t.report+' '+run.target.modelId,onClick:()=>report(id),
+          }}/>
+        </div>
+        <div className="me-run-status"><Badge status={status}/></div>
+        <div className={'me-track-results'+(bothTracks?' both-tracks':'')}>
+          {(['general','writing'] as const).map(track=>{
+            const value=run.tracks[track];
+            if(!value)return null;
+            const name=track==='general'
+              ? generalReleaseName(run.protocols,true)??(trackNames.general+(run.generalDefinition?' · '+generalTierLabel(run):''))
+              : writingEditionName(run.protocols.writingId)??trackNames.writing;
+            const label=name.replace(/^通用能力(?:评测)?(?= · )/,'通用').replace(/^中文写作(?= )/,'写作');
+            return <div key={track} data-track={track}>
+              <span title={name}>{label}</span>
+              {value.status==='completed'?<Score value={value.score}/>:<span className="me-mono">{value.graded} / {value.required}</span>}
+            </div>;
+          })}
+        </div>
+        {operations.length>0&&<div className="me-run-actions">
+          {operations.map(operation=>{
+            const needsDetails=operation==='resume'||operation==='rejoin';
+            const processing=pending?.runId===id&&pending.operation===operation;
+            const reason=processing
+              ? needsDetails&&batch.status!=='paused'&&batch.status!=='running'?'正在核对题集和已保存的进度。':'正在更新此配置的队列状态。'
+              : settling?t.runControl.settling:unavailableReason
+              ??(needsDetails&&(!run.resumeAllowed||run.details!=='available')?t.runControl.unavailable:undefined);
+            const label=processing?(needsDetails?'正在恢复…':'正在更新…'):t.runControl[operation];
+            return <ActionButton key={operation} kind={operation==='remove'?'text':''}
+              aria-label={label}
+              aria-haspopup={operation==='remove'?'dialog':undefined}
+              unavailableReason={reason} onClick={event=>{
+                const trigger=event.currentTarget;
+                const row=trigger.closest<HTMLElement>('.me-run-row');
+                if(operation==='remove'){
+                  if(row)setRemoval({runId:id,trigger,row});
+                  return;
+                }
+                if(row&&activeIn(row)===trigger)lastAction.current={trigger,row};
+                control(id,operation);
+              }}>
+              <span className="me-run-action-long">{label}</span>
+              <span className="me-run-action-short">{processing?label:compactRunActions[operation]}</span>
+            </ActionButton>;
+          })}
+        </div>}
+        {error&&<div className="me-inline-warning me-run-warning">
+          <p>{t.errorPhases[error.phase]} · {taskFailureText(error)}</p>
+          <code>{error.code}</code>
+        </div>}
+        {controlState?.state==='removed'&&!settling&&<p className="me-help me-run-preserved">{t.runControl.saved}</p>}
+      </div>;
+    })}
+  </div>
+  {removal&&removalRun&&<Modal title={t.runControl.remove} onClose={()=>setRemoval(undefined)} returnFocusTo={removal.trigger}>
+    <div className="me-dialog-body me-run-removal-body">
+      <ModelLabel target={removalRun.target} showParams/>
+      <p className="me-help">{t.runControl.removeBody}</p>
+    </div>
+    <footer className="me-dialog-foot">
+      <Button onClick={()=>setRemoval(undefined)}>{t.cancel}</Button>
+      <ActionButton kind="primary" unavailableReason={removalUnavailable} onClick={()=>{
+        lastAction.current=removal;
+        setRemoval(undefined);
+        control(removal.runId,'remove');
+      }}>{t.runControl.remove}</ActionButton>
+    </footer>
+  </Modal>}</>;
+}
+export function MetaTime({value}:{value:string|undefined}){return <time dateTime={value}>{time(value)}</time>;}

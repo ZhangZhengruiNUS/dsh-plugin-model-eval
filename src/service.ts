@@ -1,3 +1,4 @@
+import {createProtocolAdmission,resolveProtocolForRead,type ProtocolAdmission} from './evaluation/protocol-resolution.ts';
 import {isCurrentGeneralRelease} from './evaluation/current-edition.ts';
 import {isFiveCapabilitySchema} from './evaluation/five-schema.ts';
 import {createSpeedHistory,type SpeedHistory} from './history/speed.ts';
@@ -8,6 +9,8 @@ import {validSpeedBudget} from './speed/budget.ts';
 import {createCalibrationExperiment} from './speed/calibration-experiment.ts';
 import {speedClock,type SpeedClock} from './speed/clock.ts';
 import {createLiveEstimator} from './estimation/live.ts';
+import {estimateRoughRemaining} from './estimation/rough-remaining.ts';
+import {JUDGE_ITEM_PENDING} from './contracts.ts';
 import {previewEstimate,previewInputs,matchingPreviewConfig,runInput,addHistoryPriors} from './estimation/inputs.ts';
 import {estimateBatch} from './estimation/engine.ts';
 import type {EstimateSnapshot,EstimationRunInput,SpeedSession,RunEstimation,TimeAdvisorResult} from './estimation/contracts.ts';
@@ -17,7 +20,7 @@ import {join} from 'node:path';import {readdir,readFile} from 'node:fs/promises'
 import type {HostAdapter,JudgeSnapshot,ParamValue,TargetSnapshot,Track,EvaluationRequest,UpgradeCheck,UpgradePreview,UpgradeCommit,ProtocolDescriptor,ProtocolCatalogItem} from './contracts.ts';
 import {defaultRoot,switchRoot,prepareResources,prepareProtocolResources,type PreparedEnvironment} from './resources/prepare.ts';import {readResourceManifest,loadProtocolSet} from './evaluation/protocols.ts';
 import {readRecord,writeRecord} from './history/atomic.ts';import {openHistory,type HistoryStore} from './history/store.ts';import {createCleanup,measureRunUsage} from './history/cleanup.ts';
-import {createQueue,type EvaluationQueue} from './jobs/queue.ts';import {gradeGeneral} from './evaluation/grade-general.ts';import {createCodeRunner} from './runtime/runner.ts';import {createRuleGrader} from './runtime/rule-grader.ts';import {createWritingGrader,type WritingRubric} from './writing/judge.ts';
+import {createQueue,dispatchableRunIds,type EvaluationQueue} from './jobs/queue.ts';import {gradeGeneral} from './evaluation/grade-general.ts';import {createCodeRunner} from './runtime/runner.ts';import {createRuleGrader} from './runtime/rule-grader.ts';import {createWritingGrader,type WritingRubric} from './writing/judge.ts';
 import {validateEnvelope,type Action} from './host/api.ts';import {fingerprintTarget} from './model/identity.ts';
 import {selfcheckEnvironment,selfcheckFailure} from './resources/selfcheck.ts';
 import {readComparisonMetadata} from './comparison/project.ts';
@@ -114,7 +117,7 @@ export async function createEvaluationService(deps:ServiceDependencies) {
   }
   function protocolCatalog():ProtocolCatalogItem[]{return registry.list().map(descriptor=>({descriptor,prepared:environments.has(refsKey(descriptor.refs)),...(preparationErrors.has(refsKey(descriptor.refs))?{errorCode:preparationErrors.get(refsKey(descriptor.refs))!}:!descriptor.allowNewRuns?{errorCode:'PROTOCOL_NOT_VERIFIED'}:{})}));}
   function requirePrepared(protocol:ResolvedProtocolSet){if(environments.get(environmentKey(protocol))?.resourceVersion!==protocol.resourceVersion)fail('ENVIRONMENT_NOT_PREPARED');}
-  async function requestedProtocol(request:Pick<EvaluationRequest,'generalId'>&{tracks?:readonly Track[]}){try{return await registry.forNewRun(request.generalId??legacyRefs.generalId,request.tracks);}catch(error){return fail(safeCode(error));}}
+  async function requestedProtocol(request:Pick<EvaluationRequest,'generalId'>&{tracks?:readonly Track[]},resolver:Pick<ProtocolAdmission,'forNewRun'>=registry){try{return await resolver.forNewRun(request.generalId??legacyRefs.generalId,request.tracks);}catch(error){return fail(safeCode(error));}}
   async function currentTarget(handle:unknown):Promise<TargetSnapshot>{
     const saved=target(handle),choice=(await deps.adapter.catalog()).find(c=>c.scopeId===saved.scopeId&&c.providerId===saved.providerId&&c.modelId===saved.modelId);if(!choice)fail('UPGRADE_TARGET_CHANGED');
     const current=await deps.adapter.snapshot(choice!,saved.controls);if(saved.deployment)current.deployment=structuredClone(saved.deployment);
@@ -133,10 +136,40 @@ export async function createEvaluationService(deps:ServiceDependencies) {
     const check=await store.exclusive(async tx=>{const fresh=await tx.getRun(sourceRunId),items=await readUpgradeItems(tx,sourceRunId);return checkEditionReuse({...fresh,items,protocol:sourceProtocol},destination,current,map!);});
     return {check,map:map!,sourceProtocol};
   }
-  async function getInputs(batchId:string):Promise<readonly EstimationRunInput[]>{
+  async function getInputs(batchId:string,includeDeferred=false){
     const view=queue.snapshot(),batch=view.batches.find(b=>b.batchId===batchId);if(!batch)fail('BATCH_NOT_FOUND');const result:EstimationRunInput[]=[],summaries=await store.listSummaries();
-    for(const id of batch!.runIds){const {manifest:runManifest,summary}=await store.getRun(id),complete=Object.values(summary.tracks).every(t=>t.status==='completed'),status=complete?'completed':summary.details!=='available'?'pending':view.activeBatchId===batchId?(Object.values(summary.tracks).some(t=>t.status==='running')?'running':'queued'):batch!.status==='pending'?'pending':'paused';const items=summary.details==='available'&&!complete?await store.listItems(id):[],input=addHistoryPriors(runInput(runManifest,summary,items,status,clock.now(),batch!.judge),summaries.filter(r=>r.runId!==id));input.runId=id;if(complete)input.jobs=[];const advanced=await timing.snapshot(id,status,clock.now());if(advanced)input.advancedEstimate=advanced;result.push(input);}
-    return result;
+    const ids=includeDeferred?batch!.runIds:dispatchableRunIds(batch!);
+    for(const id of ids){
+      const {manifest:runManifest,summary}=await store.getRun(id);
+      const complete=Object.values(summary.tracks).every(track=>track.status==='completed');
+      const control=batch!.runControls?.[id];
+      const status=complete?'completed':control||summary.details!=='available'?'pending':
+        view.activeBatchId===batchId?(batch!.activeRunId===id?'running':'queued'):batch!.status==='pending'?'pending':'paused';
+      const items=summary.details==='available'&&!complete?await store.listItems(id):[];
+      const input=addHistoryPriors(runInput(runManifest,summary,items,status,clock.now(),batch!.judge),summaries.filter(run=>run.runId!==id));
+      input.runId=id;
+      if(complete)input.jobs=[];
+      const advanced=await timing.snapshot(id,status,clock.now());
+      if(advanced)input.advancedEstimate=advanced;
+      result.push(input);
+    }
+    const scope=includeDeferred?undefined:queue.activeWork(batchId);
+    if(!scope||scope.sampling&&scope.sampling.ready<scope.sampling.total)return {runs:result};
+    const jobs=new Map(result.map(input=>[input.runId!,input.jobs]));
+    const work=new Map(scope.runIds.map(id=>[id,(jobs.get(id)??[]).filter(job=>!scope.deferred.get(id)?.has(job.itemId))]));
+    const byId=new Map(summaries.map(summary=>[summary.runId,summary]));
+    const singleJudgeAttempts=new Map<string,Set<string>>();
+    for(const pending of batch!.pendingItems??[])if(pending.error.code===JUDGE_ITEM_PENDING){
+      const items=singleJudgeAttempts.get(pending.runId)??new Set<string>();
+      items.add(pending.itemId);
+      singleJudgeAttempts.set(pending.runId,items);
+    }
+    try{
+      const rough=estimateRoughRemaining({runs:batch!.runIds.flatMap(id=>byId.get(id)??[]),work,
+        execution:batch!.execution,singleJudgeAttempts,excludesDeferredWork:scope.excludesDeferredWork,
+        ...(scope.sampling?{sampledAnswerMs:scope.sampling.answerMs}:{}),...(batch!.judge?{judge:batch!.judge}:{})});
+      return {runs:result,rough};
+    }catch{return {runs:result};} // Optional estimates must not affect evaluation or saved timing.
   }
   async function bind(path:string,backgroundEnvironment=false):Promise<void>{
     await coding?.dispose();
@@ -163,7 +196,7 @@ export async function createEvaluationService(deps:ServiceDependencies) {
           return fixtures.map((f,i)=>async(signal:AbortSignal)=>{const result=await runner.runContest({id:'local-speed-'+i,cases:[{stdin:f.stdin,expected:f.expected}],limits:CONTEST_SCORING_LIMITS},f.code,signal);if(result.kind!=='passed')throw Error('LOCAL_CALIBRATION_FAILED');});
         }});
       timing=createOrdinaryTiming({store,registry,now:()=>clock.now()});if(store.writable)await timing.recover();
-      queue=createQueue(store,deps.adapter,registry,services,{...timing.hooks,prepareRegrade:ensurePrepared,onChange(runId){if(!live)return;const batch=queue.snapshot().batches.find(b=>b.runIds.includes(runId));if(batch)void live.invalidate(batch.batchId,'performance').catch(()=>{});}});
+      queue=createQueue(store,deps.adapter,registry,services,{...timing.hooks,sampleMultiConfigEta:true,prepareRegrade:ensurePrepared,onChange(runId){if(!live)return;const batch=queue.snapshot().batches.find(b=>b.runIds.includes(runId));if(batch)void live.invalidate(batch.batchId,'performance').catch(()=>{});}});
       await queue.idle();speed=createSpeedRunner({adapter:deps.adapter,registry,graders:services,history:speedHistory,timingHistory:timing.history,clock});
       live=createLiveEstimator({clock,getRuns:getInputs,getActiveBatchIds:()=>{const id=queue.snapshot().activeBatchId;return id?[id]:[];},publish(id,value){void queue.saveEstimate(id,value).catch(()=>{});}});
       const restoredSummaries=await store.listSummaries(),mixedBatches=new Set(restoredSummaries.filter(hasMixedExecution).map(s=>s.batchId));
@@ -311,8 +344,41 @@ export async function createEvaluationService(deps:ServiceDependencies) {
     }
     if(Object.keys(estimates).length)request.initialEstimates=estimates;
   }
-  async function finishEvaluation(batchId:string){await queue.idle();await live?.invalidate(batchId,'finish');const inputs=await getInputs(batchId),batch=queue.snapshot().batches.find(b=>b.batchId===batchId)!;
-    await store.exclusive(async tx=>{for(let i=0;i<batch.runIds.length;i++){const id=batch.runIds[i]!,{summary}=await tx.getRun(id),input=inputs[i]!,computed=estimateBatch({runs:[input],now:clock.now()}),current=live?.snapshotRun(id)??computed;await tx.updateSummary(id,summary.revision,next=>{next.estimation={...next.estimation,current,...(computed.state==='completed'&&!next.estimation?.final?{final:computed}:{})};});}});
+  async function finishEvaluation(batchId:string){
+    await queue.idle();
+    await live?.invalidate(batchId,'finish');
+    const {runs:inputs}=await getInputs(batchId,true),batch=queue.snapshot().batches.find(value=>value.batchId===batchId)!;
+    await store.exclusive(async tx=>{
+      for(const input of inputs){
+        const id=input.runId!,{summary}=await tx.getRun(id);
+        const computed=estimateBatch({runs:[input],now:clock.now()});
+        const current=(!batch.runControls?.[id]&&live?.snapshotRun(id))||computed;
+        await tx.updateSummary(id,summary.revision,next=>{
+          next.estimation={...next.estimation,current,...(computed.state==='completed'&&!next.estimation?.final?{final:computed}:{})};
+        });
+      }
+    });
+  }
+  function followEvaluation(id:string,lease:ActivityLease):void{
+    lease.identify(id);
+    evaluationLease=lease;
+    evaluationDone=finishEvaluation(id).then(()=>{
+      lease.release();
+      if(evaluationLease===lease)evaluationLease=undefined;
+    },()=>lease.fault('QUEUE_STORAGE_FAILED'));
+  }
+  async function prepareResumedRuns(ids:readonly string[],admission:ProtocolAdmission):Promise<void> {
+    const protocols:ResolvedProtocolSet[]=[];
+    for(const id of ids){
+      const {manifest,summary}=await store.getRun(id);
+      if(Object.values(summary.tracks).every(track=>track.status==='completed'))continue;
+      if(!summary.resumeAllowed||summary.details!=='available')fail('RUN_CANNOT_RESUME');
+      const key=refsKey(manifest.protocols);
+      let protocol=protocols.find(value=>refsKey(value)===key);
+      if(!protocol){protocol=await admission.resolve(manifest.protocols);protocols.push(protocol);}
+      if(manifest.protocols.writingId===LEGACY_WRITING_ID&&summary.tracks.writing&&protocol.items.filter(q=>q.track==='writing').length!==summary.tracks.writing.required)fail('ARCHIVED_WRITING_UNAVAILABLE');
+    }
+    for(const protocol of protocols)await ensurePrepared(protocol);
   }
   async function refreshedPreview(row:import('./estimation/contracts.ts').SpeedSession){
     if(row.probeMethod==='speed-probe-v4')return row;
@@ -386,12 +452,12 @@ export async function createEvaluationService(deps:ServiceDependencies) {
       case 'setRoot':return mutate(async()=>{inactive();advisorRead?.controller.abort();if(typeof payload.path!=='string')return fail('INVALID_REQUEST');const selection=await switchRoot(payload.path,{writing:false});if(selection.path===store.root)return {rootPath:store.root};
         const oldRoot=store.root;await experiment?.dispose();experiment=undefined;live?.dispose();await speed.dispose();await queue.dispose();await store.close();
         try{await bind(selection.path);await writeRecord(preference,{root:store.root});}catch(error){await queue?.dispose().catch(()=>{});await store?.close().catch(()=>{});await bind(oldRoot);throw error;}return {rootPath:store.root,previousRoot:oldRoot,historyMoved:false};});
-      case 'createBatch':return mutate(async()=>{writable();const request=requestFrom(payload),selected=await requestedProtocol(request);
+      case 'createBatch':return mutate(async()=>{writable();const request=requestFrom(payload);const admission=createProtocolAdmission(registry),selected=await requestedProtocol(request,admission);
         if (request.tracks.length===1 && request.tracks[0]==='writing' && request.judge) await ensurePrepared(selected);
         else requirePrepared(selected);
         request.generalId=selected.generalId;
         if(payload.previewId)try{await linkPreview(String(payload.previewId),request,selected);}catch{/* Optional timing evidence cannot block a formal run. */}
-        return queue.enqueue(request);
+        return queue.enqueue(request,admission);
       });
       case 'commitEditionUpgrade':return mutate(async()=>{
         writable();inactive();const token=String(payload.token),entry=editionTokens.get(token);if(!entry||entry.rootId!==store.rootId||entry.rootEpoch!==rootEpoch)fail('EDITION_TOKEN_INVALID');
@@ -425,23 +491,50 @@ export async function createEvaluationService(deps:ServiceDependencies) {
         const result=await createReuseHistory(store).import(check,{token,target:current,protocol:deep,execution:entry!.execution}),{manifest}=await store.getRun(result.runId);
         await queue.attachImported({batchId:result.batchId,runIds:[result.runId],createdAt:manifest.createdAt,status:'queued',execution:entry!.execution},result.runId,result.operationId);entry!.result=result;void live?.invalidate(result.batchId,'resume').catch(()=>{});return result;
       });
-      case 'queue':{const view=queue.snapshot();return {...view,estimates:Object.fromEntries(view.batches.flatMap(b=>{const e=live?.snapshot(b.batchId)??b.estimate;return e?[[b.batchId,e]]:[];}))};}
+      case 'queue':{
+        const view=queue.snapshot(),activeId=view.activeBatchId;
+        const scope=activeId?queue.activeWork(activeId):undefined;
+        const rough=scope&&activeId?live?.roughSnapshot(activeId):undefined;
+        return {...view,...(scope?{roughWork:{batchId:activeId!,excludesDeferredWork:scope.excludesDeferredWork,estimate:rough,
+          ...(scope.sampling?{sampling:{ready:scope.sampling.ready,total:scope.sampling.total}}:{})}}:{}),
+          estimates:Object.fromEntries(view.batches.flatMap(b=>{const e=live?.snapshot(b.batchId)??b.estimate;return e?[[b.batchId,e]]:[];}))};
+      }
       case 'pause':return mutate(async()=>{let estimate:Promise<void>|undefined;if(queue.snapshot().activeBatchId===payload.batchId){evaluationLease?.stopping();estimate=live?.invalidate(String(payload.batchId),'pause').catch(()=>{});}await queue.pause(String(payload.batchId));await estimate;await evaluationDone;return queue.snapshot();});
       case 'rejudge':return mutate(async()=>{
         writable();
         await queue.rejudge(String(payload.batchId),String(payload.operationId));
         return queue.snapshot();
       });
-      case 'resume':return mutate(async()=>{writable();const batch=queue.snapshot().batches.find(b=>b.batchId===payload.batchId);if(!batch)fail('BATCH_NOT_FOUND');const protocols: ResolvedProtocolSet[] = [];
-        for(const id of batch!.runIds){
-          const {manifest,summary}=await store.getRun(id);
-          if(!summary.resumeAllowed||summary.details!=='available')fail('RUN_CANNOT_RESUME');
-          const key=refsKey(manifest.protocols);
-          let protocol=protocols.find(p=>refsKey(p)===key);
-          if(!protocol){protocol=await registry.resolve(manifest.protocols);protocols.push(protocol);}
-          if(manifest.protocols.writingId===LEGACY_WRITING_ID&&summary.tracks.writing&&protocol.items.filter(q=>q.track==='writing').length!==summary.tracks.writing.required)fail('ARCHIVED_WRITING_UNAVAILABLE');
-        }
-        for(const protocol of protocols)await ensurePrepared(protocol);await queue.resume(String(payload.batchId),payload.judgeHandle?judge(payload.judgeHandle):undefined,OUTPUT_IDLE_POLICY);void live?.invalidate(String(payload.batchId),'resume').catch(()=>{});return queue.snapshot();});
+      case 'controlRun':return mutate(async()=>{
+        writable();
+        const batchId=String(payload.batchId),runId=String(payload.runId);
+        const operation=payload.operation as import('./jobs/queue.ts').RunOperation;
+        const current=activity.snapshot();
+        if(current&&(current.kind!=='evaluation'||current.state!=='running'||current.id!==batchId||
+          queue.snapshot().activeBatchId!==batchId))fail('ACTIVITY_BUSY');
+        const lift=operation==='resume'||operation==='rejoin';
+        const lease=!current&&lift?activity.claim('evaluation',batchId):undefined;
+        let following=false;
+        try{
+          await queue.controlRun(batchId,runId,operation,!!lease,prepareResumedRuns,OUTPUT_IDLE_POLICY);
+          if(lease&&queue.snapshot().activeBatchId===batchId){
+            followEvaluation(batchId,lease);
+            following=true;
+          }
+          void live?.invalidate(batchId,lease&&following?'resume':'scope').catch(()=>{});
+          return queue.snapshot();
+        }finally{if(!following)lease?.release();}
+      });
+      case 'resume':return mutate(async()=>{
+        writable();
+        const batchId=String(payload.batchId),batch=queue.snapshot().batches.find(value=>value.batchId===batchId);
+        if(!batch)return fail('BATCH_NOT_FOUND');
+        const admission=createProtocolAdmission(registry);
+        await prepareResumedRuns(dispatchableRunIds(batch),admission);
+        await queue.resume(batchId,payload.judgeHandle?judge(payload.judgeHandle):undefined,OUTPUT_IDLE_POLICY,admission);
+        void live?.invalidate(batchId,'resume').catch(()=>{});
+        return queue.snapshot();
+      });
       case 'checkTimeAdvisor':return checkTimeAdvisor(payload);
       case 'startSpeedPreview':return mutate(()=>startAdvisedPreview(payload));
       case 'speedPreviewStatus':{const row=await speedHistory.read(String(payload.previewId));if(!row)fail('PREVIEW_NOT_FOUND');const current=activity.snapshot();if(current?.kind==='speed-preview'&&current.id===row!.previewId&&current.state==='stopping')row!.status='stopping';return refreshedPreview(row!);}
@@ -494,13 +587,23 @@ export async function createEvaluationService(deps:ServiceDependencies) {
         });
       });
       case 'report':return readBound(async captured=>{
-        const run=await captured.getRun(String(payload.runId));const records=run.summary.details==='available'?await captured.listItems(run.summary.runId):[];
-        const current=live?.snapshotRun(run.summary.runId);if(current)run.summary.estimation={...run.summary.estimation,current};return {summary:run.summary,...(run.manifest.execution?{execution:run.manifest.execution}:{}),questions:run.manifest.requiredItems.map(q=>{const item=records.find(x=>x.itemId===q.id);return {...q,answered:!!item?.answer?.complete,grade:item?.grade??null};})};});
+        const run=await captured.getRun(String(payload.runId));
+        const current=live?.snapshotRun(run.summary.runId);
+        if(current)run.summary.estimation={...run.summary.estimation,current};
+        const header={summary:run.summary,...(run.manifest.execution?{execution:run.manifest.execution}:{})};
+        if(payload.includeQuestions===false)return header;
+        const records=run.summary.details==='available'?await captured.listItems(run.summary.runId):[];
+        const byId=new Map(records.map(item=>[item.itemId,item]));
+        return {...header,questions:run.manifest.requiredItems.map(question=>{
+          const item=byId.get(question.id);
+          return {...question,answered:!!item?.answer?.complete,grade:item?.grade??null};
+        })};
+      });
       case 'item':return readBound(async captured=>{
         const runId=String(payload.runId),id=String(payload.itemId),{manifest:runManifest}=await captured.getRun(runId);
         if(!runManifest.requiredItems.some(x=>x.id===id))return fail('ITEM_NOT_IN_PROTOCOL');
         const item=await captured.getItem(runId,id);let question=item?.question;
-        if(!question)try{question=(await registry.resolve(runManifest.protocols)).items.find(x=>x.id===id);}catch{/* Historical records stay readable; unknown refs never borrow current questions. */}
+        if(!question)try{question=(await resolveProtocolForRead(registry,runManifest.protocols)).items.find(x=>x.id===id);}catch{/* Historical records stay readable; unknown refs never borrow current questions. */}
         return {question:question?{id:question.id,track:question.track,datasetId:question.datasetId,sourceId:question.sourceId,sourceHash:question.sourceHash,prompt:question.prompt}:null,item:item??null};
       });
       case 'usage':return cleanup.measureHistory();
@@ -519,7 +622,7 @@ export async function createEvaluationService(deps:ServiceDependencies) {
   const activityKinds:Partial<Record<Action,ActivityKind>>={startCodingDiagnostic:'coding-diagnostic',setCodingDiagnostics:'coding-diagnostic',prepare:'prepare',setRoot:'root-change',createBatch:'evaluation',resume:'evaluation',rejudge:'evaluation',previewUpgrade:'upgrade',commitUpgrade:'upgrade',previewEditionUpgrade:'upgrade',commitEditionUpgrade:'upgrade',previewCleanup:'cleanup',commitCleanup:'cleanup',startSpeedPreview:'speed-preview',previewSpeedCleanup:'cleanup',commitSpeedCleanup:'cleanup',previewTimingCleanup:'cleanup',commitTimingCleanup:'cleanup'};
   async function dispatchWithActivity(action:Action,payload:Record<string,unknown>):Promise<unknown>{
     if(disposed)fail('SERVICE_DISPOSED');const kind=activityKinds[action],lease=kind?activity.claim(kind,randomUUID()):undefined;let held=false;
-    try{const result=await operate(action,payload);if(lease&&(kind==='evaluation'||action==='commitUpgrade'||action==='commitEditionUpgrade')){const id=action==='createBatch'||action==='commitUpgrade'||action==='commitEditionUpgrade'?(result as {batchId:string}).batchId:String(payload.batchId);lease.identify(id);held=true;evaluationLease=lease;evaluationDone=finishEvaluation(id).then(()=>{lease.release();if(evaluationLease===lease)evaluationLease=undefined;},()=>lease.fault('QUEUE_STORAGE_FAILED'));}else if(lease&&kind==='speed-preview'){const id=(result as {previewId:string}).previewId;lease.identify(id);held=true;speedLease=lease;speedDone=finishSpeed(id,lease);}else if(lease&&action==='startCodingDiagnostic'){
+    try{const result=await operate(action,payload);if(lease&&(kind==='evaluation'||action==='commitUpgrade'||action==='commitEditionUpgrade')){const id=action==='createBatch'||action==='commitUpgrade'||action==='commitEditionUpgrade'?(result as {batchId:string}).batchId:String(payload.batchId);held=true;followEvaluation(id,lease);}else if(lease&&kind==='speed-preview'){const id=(result as {previewId:string}).previewId;lease.identify(id);held=true;speedLease=lease;speedDone=finishSpeed(id,lease);}else if(lease&&action==='startCodingDiagnostic'){
       lease.identify((result as {diagnosticId:string}).diagnosticId);held=true;codingLease=lease;
       codingDone=coding.idle().finally(()=>{lease.release();if(codingLease===lease)codingLease=undefined;});
     }return result;}finally{if(!held)lease?.release();}

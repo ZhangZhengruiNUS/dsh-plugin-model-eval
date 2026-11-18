@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import {validateGeneralDefinition} from '../src/evaluation/definitions.ts';
 import {generalReleases} from '../src/evaluation/current-edition.ts';
-import {CURRENT_WRITING_ID,LEGACY_WRITING_ID,generalWritingRef} from '../src/evaluation/writing-edition.ts';
+import {CURRENT_WRITING_ID,LEGACY_WRITING_ID,generalWritingRef,writingV2Edition} from '../src/evaluation/writing-edition.ts';
 import {fiveV2Projection, verifyFiveV2} from './support/five-v2-lineage.mjs';
 import {fiveV3Projection,verifyFiveV3} from './support/five-v3-lineage.mjs';
 import {projectVerifiedScoringRevisions} from './support/scoring-revision-lineage.mjs';
@@ -25,16 +25,12 @@ export function verifyPackage(path){
   const bytes=readFileSync(path),entries=unpackTar(bytes),get=name=>{const value=entries.get('package/'+name);if(!value)throw new Error('PACKAGE_FILE_MISSING: '+name);return value;};
   const pkg=JSON.parse(get('package.json'));if(pkg.name!=='dsh-model-coordinates'||pkg.type!=='module'||Object.keys(pkg.dependencies??{}).length||['preinstall','install','postinstall','prepare'].some(x=>pkg.scripts?.[x]))throw new Error('PACKAGE_CONTRACT');
   const patch=get('cordis.patch.yml').toString(),client=get('lib/client.js').toString(),host=get('lib/index.js').toString(),locale=JSON.parse(get('locale/zh-CN.json'));
-  if(!patch.includes(`id: '${pkg.name}'`)||!patch.includes(`name: '${pkg.name}'`)||!client.includes(`id:${JSON.stringify(pkg.name)}`)||!locale.meta.title||!locale.meta.description)throw new Error('PACKAGE_IDENTITY');
+  if(!patch.includes(`name: '${pkg.name}'`)||!client.includes(`id:${JSON.stringify(pkg.name)}`)||!locale.meta.title||!locale.meta.description)throw new Error('PACKAGE_IDENTITY');
   if(!client.includes('require("react")')||client.includes('react-dom/client')||client.includes('createRoot('))throw new Error('HOST_REACT_CONTRACT');
   const manifestBytes=get('resources/manifest.json'),manifest=JSON.parse(manifestBytes);if(manifest.gates.runtime!=='passed'||!host.includes(hash(manifestBytes)))throw new Error('MANIFEST_PIN');
   for(const file of manifest.files){const packed=get('resources/'+file.path);if(packed.length!==file.size||hash(packed)!==file.sha256)throw new Error('RESOURCE_PACKAGE_MISMATCH: '+file.path);}
-  if(manifest.writingId==='work-writing-12-v2'){
-    const rows=JSON.parse(get('resources/protocols/writing.json'));
-    const ids=rows.map(row=>row.sourceId),originals=['dsh-original:news-materials-01','dsh-original:meeting-actions-01'];
-    if(ids.length!==12||new Set(ids).size!==12||ids.filter(id=>id.startsWith('ziya:')).length!==10||originals.some(id=>!ids.includes(id))||rows.some(row=>hash(row.query)!==row.querySha256))throw Error('WRITING_PACKAGE_CONTRACT');
-  }
-  assert.equal(pkg.engines.dsh,'0.2.2-rc.1');
+  verifyWritingResources(get,manifest);
+  assert.equal(pkg.engines.dsh,'0.2.2-rc.1 || 0.2.2-rc.3 || 0.2.2-rc.4');
   const tiers=verifyTierResources(get,host,manifest,entries);
   const diagnosticPaths=[...entries.keys()].filter(path=>path.startsWith('package/resources/diagnostics/contest/'));
   let diagnostics;
@@ -48,6 +44,26 @@ export function verifyPackage(path){
   for(const path of entries.keys())if(/(?:^|\/)(?:\.npmrc|\.env(?:\.[^/]*)?|\.git|node_modules|\.local|\.superpowers|AGENTS\.md|MEMORY\.md|WORKPOOL\.md)(?:\/|$)/i.test(path)||path.startsWith('package/tests/')||path.startsWith('package/docs/policies/'))throw new Error('FORBIDDEN_PACKAGE_FILE');
   return {entries,report:{schemaVersion:1,status:'passed',name:pkg.name,version:pkg.version,sha256:hash(bytes),compressedBytes:bytes.length,unpackedBytes:[...entries.values()].reduce((n,x)=>n+x.length,0),resourceBytes:manifest.files.reduce((n,x)=>n+x.size,0),files:entries.size,resourceManifestSha256:hash(manifestBytes),runtimeDependencies:0,tiers,...(diagnostics?{diagnostics}:{})}};
 }
+function verifyWritingResources(get,manifest){
+  assert.equal(manifest.writingId,CURRENT_WRITING_ID,'WRITING_PACKAGE_VERSION');
+  const current=manifest.datasets.find(dataset=>dataset.id==='writing');
+  const previous=manifest.writingArchives?.find(archive=>archive.writingId===writingV2Edition.id);
+  assert(current&&previous&&current.count===12&&previous.count===12,'WRITING_PACKAGE_COUNT');
+  for(const dataset of [current,previous])assert(manifest.files.some(file=>file.path===dataset.path&&file.kind==='dataset'),'WRITING_PACKAGE_MANIFEST');
+  const sealed=get('resources/'+previous.path);
+  assert.equal(hash(sealed),'c1d63c96fbef1464886dbded0f738d63950cf49cfe950dff23f268873d2eec64','WRITING_V2_ARCHIVE_CHANGED');
+  const former=JSON.parse(sealed);
+  const rows=JSON.parse(get('resources/'+current.path));
+  assert.equal(rows.length,12,'WRITING_PACKAGE_COUNT');
+  assert.equal(new Set(rows.map(row=>row.sourceId)).size,12,'WRITING_PACKAGE_ITEM_IDS');
+  assert(rows.every(row=>hash(row.query)===row.querySha256),'WRITING_PACKAGE_PROMPT_HASH');
+  const retiredIndex=former.findIndex(row=>row.sourceId==='ziya:13');
+  assert(retiredIndex>=0);
+  assert.equal(rows[retiredIndex]?.sourceId,'dsh-original:community-fund-report-01','WRITING_PACKAGE_REPLACEMENT');
+  assert(rows.every(row=>row.sourceId!=='ziya:13'),'WRITING_RETIRED_QUESTION_IN_CURRENT');
+  assert.deepEqual(rows.filter((_,index)=>index!==retiredIndex),former.filter((_,index)=>index!==retiredIndex),'WRITING_PACKAGE_UNCHANGED_ITEMS');
+  assert.equal(hash(get('resources/protocols/rubric-writing-v1.json')),'b0f5de242e4848f28e7e6238560a43a11c597cfc8ab35d4d722fb1d186b69c06','WRITING_RUBRIC_CHANGED');
+}
 export function verifyTierResources(get,host,manifest,entries){
   const raw=get('resources/protocol-registry.json'),catalog=JSON.parse(raw),catalogSha256=hash(raw);
   if(!host.includes(catalogSha256))throw Error('CATALOG_PIN');
@@ -55,7 +71,7 @@ export function verifyTierResources(get,host,manifest,entries){
   const original=projectVerifiedScoringRevisions(catalog,get);
   verifyFiveV3(original,get);const previous=fiveV3Projection(original);
   const answerCorrection=catalog.bundles.find(b=>b.id==='task-five-v3-r2');if(answerCorrection&&!host.includes(answerCorrection.grading.toolAnswerCorrectionManifest))throw Error('ANSWER_CORRECTION_WORKER_PIN');
-  const baseWritingId=manifest.writingId==='work-writing-12-v2'?'work-writing-12-v1':manifest.writingId;
+  const baseWritingId=generalWritingRef(manifest.writingId);
   if(catalog.schemaVersion!==1||fiveV2Projection(previous).entries.length!==5||catalog.legacyRefs.generalId!==manifest.generalId||catalog.legacyRefs.writingId!==baseWritingId||catalog.legacyRefs.resourceVersion!==manifest.resourceVersion)throw Error('TIER_CATALOG_CONTRACT');
   for(const [tier,count] of [['legacy',905],['light',120],['deep',400]]){const row=fiveV2Projection(previous).entries.find(e=>e.refs.resourceVersion!=='task-five-v1'&&e.general.tier===tier);if(!row?.allowNewRuns||row.questionCount!==count||row.general.domains.length!==4||row.general.domains.some(d=>d.weight!==.25)||row.general.domains.reduce((n,d)=>n+d.itemIds.length,0)!==count)throw Error('TIER_ADMISSION_CONTRACT');}
   const five=catalog.entries.filter(e=>e.refs.resourceVersion==='task-five-v1'),bundleFive=catalog.bundles.find(b=>b.id==='task-five-v1');

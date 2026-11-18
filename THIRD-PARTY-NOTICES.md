@@ -10,7 +10,7 @@
 | LongBench v2 | [固定数据版](https://huggingface.co/datasets/zai-org/LongBench-v2/tree/ac35867b9c9436dc81c4c7535fe640ba7cf47877)，保留原文，选用限定长度的资料并适配单轮终答。 | [数据卡](resources/suites/task-five-v1/LongBench-v2-dataset-card.md) · [Apache-2.0](resources/suites/task-five-v1/LongBench-v2-Apache-2.0.txt) |
 | IFEval | [Google Research](https://github.com/google-research/google-research/tree/e6890f85757dd84e27ca6df2dd30651dafad28e0/instruction_following_eval)，选题、提示与本地规则评分适配。 | [Apache-2.0](resources/licenses/IFEval-Apache-2.0.txt) |
 | BFCL V4 | [Berkeley Gorilla](https://github.com/ShishirPatil/gorilla/tree/6ea57973c7a6097fd7c5915698c54c17c5b1b6c8/berkeley-function-call-leaderboard)，选取基础多轮工具场景，在封闭模拟中判分；不连接场景所描绘的真实系统。 | [Apache-2.0](resources/suites/task-five-v1/bfcl/LICENSE) · [适配摘要](resources/suites/task-five-v1/NOTICE.txt) |
-| 中文写作 1.0 | Ziya 10 题＋项目原创虚构题 2 道。旧 WritingBench 题面不进入这套写作资源。 | [固定来源与差异](resources/licenses/writing-provenance.md) · [Ziya 数据卡](resources/licenses/Ziya-data-card.md) |
+| 中文写作 1.1 | Ziya 9 题＋项目原创虚构题 3 道。另保留中文写作 1.0 的原题集供旧记录读取和续测。 | [固定来源与差异](resources/licenses/writing-provenance.md) · [Ziya 数据卡](resources/licenses/Ziya-data-card.md) |
 | 旧通用套题 | tinyBenchmarks/MMLU、GSM8K、IFEval、HumanEval/HumanEval+。旧协议为本地记录的历史身份，独立于当前系列。 | [Tiny 来源说明](resources/licenses/tiny-provenance.md) · [HumanEval MIT](resources/licenses/HumanEval-OpenAI-MIT.txt) · [HumanEval+ 许可](resources/licenses/HumanEvalPlus-LICENSE.txt) |
 | 离线评分运行时 | Windows x64 CPython、Wasmtime、WASI Python 与规则依赖。 | [运行组件及固定版本](resources/licenses/runtime-components.json) · 许可与 notice 文件见 `resources/licenses/` 及各组件目录。 |
 

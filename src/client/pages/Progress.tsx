@@ -1,10 +1,64 @@
-import {Estimate} from '../components/Estimate.tsx';
+import type {BatchView,RunOperation} from '../../jobs/queue.ts';
+import {JUDGE_ITEM_PENDING,type RunSummary} from '../../contracts.ts';
+import {Estimate,RoughEstimate} from '../components/Estimate.tsx';
+import {estimateDisplay} from '../estimation-view.ts';
 import {CountBadge,DataValue} from '../components/DataReadout.tsx';
 import {generalSchemaFor,isCurrentGeneralRelease} from '../../evaluation/current-edition.ts';
 import {usesContestWallSafety} from '../../evaluation/five-schema.ts';
-import * as React from 'react';import {zh as t} from '../locales.ts';import {ActionButton,activityUnavailable,Button,Empty,Badge,BatchRuns,MetaTime,Modal,type PageProps} from '../ui.tsx';import {ConfigEditor,emptyDraft,resolveDraft} from './NewRun.tsx';import {summarizeBatchMetrics,formatElapsed} from '../batch-metrics.ts';
+import * as React from 'react';
+import {zh as t} from '../locales.ts';
+import {ActionButton,activityUnavailable,Button,Empty,Badge,BatchRuns,Icon,MetaTime,Modal,runIsComplete,taskFailureText,type PageProps} from '../ui.tsx';
+import {SelectionBar} from '../components/SelectionBar.tsx';
+import {Disclosure} from '../components/Disclosure.tsx';
+import {ConfigEditor,emptyDraft,resolveDraft} from './NewRun.tsx';
+import {summarizeBatchMetrics,formatElapsed} from '../batch-metrics.ts';
+
+const taskTabs=[{id:'current',label:'当前评测'},{id:'records',label:'批次记录'}] as const;
+type TaskTab=(typeof taskTabs)[number]['id'];
+
+function readBatchProgress(runs:RunSummary[]){
+  const tracks=runs.flatMap(run=>Object.values(run.tracks));
+  return {
+    graded:tracks.reduce((count,track)=>count+track.graded,0),
+    required:tracks.reduce((count,track)=>count+track.required,0),
+  };
+}
+
+function batchStatus(batch:BatchView,active=false){
+  if(active)return 'running';
+  const states=Object.values(batch.runControls??{});
+  if(batch.status==='completed'&&states.some(control=>control.state==='removed'))return 'ended';
+  if(batch.status==='pending'&&states.some(control=>control.state==='held'))return 'attention';
+  return batch.status;
+}
+
 export function Progress(props:PageProps){const [changing,setChanging]=React.useState<string>(),[judge,setJudge]=React.useState(emptyDraft),[error,setError]=React.useState('');
-  const [now,setNow]=React.useState(Date.now),{activeBatchId,batches}=props.data.queue;
+  const [pending,setPending]=React.useState<{batchId:string;runId:string;operation:RunOperation}>();
+  const [batchAction,setBatchAction]=React.useState<{batchId:string;operation:'pause'|'resume'}>();
+  const [tab,setTab]=React.useState<TaskTab>('current');
+  const [expanded,setExpanded]=React.useState<string>();
+  const [focusBatch,setFocusBatch]=React.useState<string>();
+  const workbench=React.useRef<HTMLDivElement>(null);
+  const panelId=React.useId();
+  function moveToCurrent(batchId:string){
+    setTab('current');
+    setFocusBatch(batchId);
+  }
+  function changeBatch(batchId:string,operation:'pause'|'resume'){
+    setBatchAction({batchId,operation});
+    void props.actQueue(()=>props.api(operation,{batchId})).then(view=>{
+      if(view?.activeBatchId===batchId)moveToCurrent(batchId);
+      else if(view&&operation==='pause'){setExpanded(batchId);setFocusBatch(batchId);}
+    }).finally(()=>setBatchAction(undefined));
+  }
+  const [now,setNow]=React.useState(Date.now),{activeBatchId,batches:allBatches}=props.data.queue;
+  const superseded=new Set(allBatches.flatMap(batch=>batch.supersedesBatchId?[batch.supersedesBatchId]:[]));
+  const batches=allBatches.filter(batch=>batch.batchId===activeBatchId||!superseded.has(batch.batchId));
+  React.useLayoutEffect(()=>{
+    if(!focusBatch)return;
+    const node=workbench.current?.querySelector<HTMLElement>(`[data-task-focus="${CSS.escape(focusBatch)}"]`);
+    if(node){node.focus();setFocusBatch(undefined);}
+  },[activeBatchId,focusBatch,tab]);
   React.useEffect(()=>{setNow(Date.now());if(!activeBatchId)return;const timer=setInterval(()=>{if(document.visibilityState==='visible')setNow(Date.now());},1000);return()=>clearInterval(timer);},[activeBatchId]);
   if(!batches.length){
     const needsSetup=!props.data.status.prepared&&!props.data.protocols.some(({descriptor})=>descriptor.allowNewRuns&&isCurrentGeneralRelease(descriptor.refs));
@@ -13,32 +67,197 @@ export function Progress(props:PageProps){const [changing,setChanging]=React.use
     </Empty>;
   }
   const activeBatch=batches.find(batch=>batch.batchId===activeBatchId);
-  const resumeUnavailable=!props.data.status.writable?'数据目录为只读，请在设置中切换到可写目录。':
-    activityUnavailable(props.data.status,activeBatchId)??(props.busy?'正在处理当前操作，请稍候。':undefined);
-  const newestFirst=[...batches].reverse();
-  const displayedBatches=activeBatch?[activeBatch,...newestFirst.filter(batch=>batch!==activeBatch)]:newestFirst;
-  return <>
-  {!activeBatchId&&<div className="me-task-list-bar">
-    <div className="me-count-heading">
-      <h2>评测批次</h2>
-      <CountBadge count={batches.length} description={`${batches.length} 个批次`}/>
+  const activity=props.data.status.activeActivity;
+  const mutationUnavailable=!props.data.status.writable?t.runControl.readonly:props.busy?t.runControl.busy:undefined;
+  const resumeUnavailable=mutationUnavailable??activityUnavailable(props.data.status,activeBatchId);
+  const records=batches.filter(batch=>batch!==activeBatch).sort((a,b)=>b.createdAt.localeCompare(a.createdAt));
+  const selectedTab=activeBatch?tab:'records';
+  const unfinished=records.filter(batch=>batch.status!=='completed');
+  const finished=records.filter(batch=>batch.status==='completed');
+  const runsById=new Map(props.data.runs.map(run=>[run.runId,run]));
+  const runsFor=(batch:BatchView)=>batch.runIds.flatMap(id=>runsById.get(id)??[]);
+
+  function renderBatch(batch:BatchView,runs:RunSummary[]){
+    const active=activeBatchId===batch.batchId;
+    const pendingBatchAction=batchAction?.batchId===batch.batchId?batchAction.operation:undefined;
+    const {graded,required}=readBatchProgress(runs);
+    const controls=Object.values(batch.runControls??{});
+    const held=controls.filter(control=>control.state==='held').length;
+    const removed=controls.filter(control=>control.state==='removed').length;
+    const complete=runs.filter(runIsComplete).length;
+    const hasExcluded=held+removed>0;
+    const incompleteRunnable=runs.filter(run=>!batch.runControls?.[run.runId]&&!runIsComplete(run));
+    const remaining=incompleteRunnable.flatMap(run=>Object.values(run.tracks))
+      .reduce((count,track)=>count+Math.max(0,track.required-track.graded),0);
+    const canResume=incompleteRunnable.length>0&&incompleteRunnable.every(run=>run.resumeAllowed&&run.details==='available');
+    const canChangeJudge=incompleteRunnable.some(run=>run.tracks.writing&&run.tracks.writing.status!=='completed');
+    const judgePending=batch.pendingItems?.filter(item=>item.error.code===JUDGE_ITEM_PENDING).length??0;
+    const localPending=batch.pendingItems?.filter(item=>!batch.runControls?.[item.runId]&&item.error.code==='CONTEST_WALL_LIMIT').length??0;
+    const slowLocal=active&&runs.some(run=>usesContestWallSafety(generalSchemaFor(run.protocols))&&run.performance?.activeStages.some(
+      stage=>stage.phase==='local-grade'&&stage.datasetId==='code-contests-selected'&&now-Date.parse(stage.startedAt)>=60000
+    ));
+    const metrics=summarizeBatchMetrics(runs.map(run=>run.metrics),active,now);
+    const originalMetrics=runs.flatMap(run=>run.reuse?.writingReplacement?[run.reuse.writingReplacement.sourceMetrics]:[]);
+    const originalTokens=originalMetrics.length?summarizeBatchMetrics(originalMetrics,false,now).tokens:undefined;
+    const estimate=props.data.queue.estimates?.[batch.batchId]??batch.estimate;
+    const roughWork=active&&props.data.queue.roughWork?.batchId===batch.batchId?props.data.queue.roughWork:undefined;
+    const hasCalibratedRemaining=estimate?.state==='available'&&estimateDisplay(estimate).kind==='full'&&!hasExcluded&&!roughWork?.excludesDeferredWork&&!roughWork?.sampling;
+    const status=batchStatus(batch,active);
+    const controlUnavailable=active&&(!activity||activity.kind==='evaluation'&&activity.state==='running')
+      ? mutationUnavailable
+      : resumeUnavailable;
+    return <section className={'me-task-detail'+(active?' me-card me-live-task':'')}>
+      <div className="me-task-detail-head">
+        {active&&<div>
+          <div className="me-title-row"><h2 tabIndex={-1} data-task-focus={batch.batchId}>{t.batch} {batch.batchId.slice(0,8)}</h2><Badge status={status}/></div>
+          <div className="me-record-meta">
+            <MetaTime value={batch.createdAt}/>
+            <DataValue value={runs.length} unit={t.configCount}/>
+          </div>
+        </div>}
+        <div className="me-actions">
+          {active
+            ? <Button icon="pause" onClick={()=>changeBatch(batch.batchId,'pause')} disabled={props.busy}>{pendingBatchAction==='pause'?'正在保存进度…':t.pause}</Button>
+            : batch.status!=='completed'&&canResume&&<>
+              <ActionButton kind="primary" icon="play" hintSide="below" unavailableReason={pendingBatchAction==='resume'?'正在核对题集和已保存的进度。':resumeUnavailable}
+                onClick={()=>changeBatch(batch.batchId,'resume')}>{pendingBatchAction==='resume'?'正在恢复…':t.resume}</ActionButton>
+              {localPending>0&&<ActionButton hintSide="below" unavailableReason={resumeUnavailable}
+                onClick={()=>void props.actQueue(()=>props.api('rejudge',{batchId:batch.batchId,operationId:crypto.randomUUID()})).then(view=>{
+                  if(view?.activeBatchId===batch.batchId)moveToCurrent(batch.batchId);
+                })}>仅补判</ActionButton>}
+              {canChangeJudge&&<ActionButton hintSide="below" unavailableReason={resumeUnavailable}
+                onClick={()=>{setChanging(batch.batchId);setJudge(emptyDraft());void props.loadModels();}}>{t.changeJudge}</ActionButton>}
+            </>}
+        </div>
+      </div>
+      <div className="me-task-progress">
+        {active&&<><div className="me-task-progress-readout">
+          <span>{t.graded}</span>
+          <strong><DataValue value={required?graded:'—'} unit={required?`/ ${required.toLocaleString('zh-CN')} 题`:undefined}/></strong>
+        </div>
+        {required>0&&<progress max={required} value={graded} aria-label={t.graded} aria-valuetext={`已判分 ${graded} 题，共 ${required} 题`}/>}</>}
+        {hasExcluded&&<p className="me-help me-task-progress-note">
+          {complete} 个完成{held>0&&` · ${held} 个待处理`}{removed>0&&` · ${removed} 个已移出`}
+          {remaining>0&&` · 队列待评 ${remaining.toLocaleString('zh-CN')} 题`}
+        </p>}
+        {slowLocal&&<p role="status" className="me-help">本地判分仍在进行</p>}
+        {localPending>0&&<p className="me-help">{localPending} 题已保存答卷，待补判</p>}
+        {judgePending>0&&<p className="me-help">{judgePending} 道写作题待补判，答卷已保存</p>}
+        {runs.some(run=>run.reuse)&&<p className="me-help">复用 {runs.reduce((count,run)=>count+(run.reuse?.reusedItems??0),0)} 题</p>}
+        {batch.supersedesBatchId&&<p className="me-help">换题补测 · 原批次 {batch.supersedesBatchId.slice(0,8)} 保留在历史{originalTokens===undefined?'':` · 原批次累计 ${originalTokens.toLocaleString('zh-CN')} Token`}</p>}
+        <div className="me-task-readouts">
+          {active&&(roughWork&&!hasCalibratedRemaining
+            ? <RoughEstimate estimate={roughWork.estimate} sampling={roughWork.sampling}/>
+            : !hasExcluded&&<Estimate {...(estimate?{snapshot:estimate}:{})} elapsedMs={metrics.elapsedMs} compact/>)}
+          <BatchMetrics newWork={runs.some(run=>!!run.reuse)} metrics={metrics}/>
+        </div>
+        {!active&&estimate&&batch.status!=='completed'&&!hasExcluded&&
+          <Disclosure kind="help" title="估时记录" className="me-task-estimate-history">
+            <Estimate snapshot={estimate} elapsedMs={metrics.elapsedMs} compact/>
+          </Disclosure>}
+      </div>
+      {batch.lastError&&batch.lastError.code!=='CONTEST_WALL_LIMIT'&&batch.lastError.code!==JUDGE_ITEM_PENDING&&<div className="me-inline-warning">
+        <strong>{t.callError}</strong>
+        <p>中断环节：{t.errorPhases[batch.lastError.phase]}</p>
+        <p>{taskFailureText(batch.lastError)}</p>
+        <code>{batch.lastError.code}</code>
+      </div>}
+      {!active&&canResume&&batch.status!=='completed'&&<Disclosure kind="help" title="续测说明" className="me-task-resume-help">
+        <p>{t.resumeHelp}</p>
+        {canChangeJudge&&<p>{t.judgeChoiceHelp}</p>}
+      </Disclosure>}
+      {batch.status==='paused'&&hasExcluded&&<p className="me-help me-run-paused-note">{t.runControl.paused}</p>}
+      <BatchRuns batch={batch} runs={runs} report={props.report} unavailableReason={controlUnavailable}
+        pending={pending?.batchId===batch.batchId?pending:undefined}
+        control={(runId,operation)=>{
+          setPending({batchId:batch.batchId,runId,operation});
+          void props.actQueue(()=>props.api('controlRun',{batchId:batch.batchId,runId,operation})).then(view=>{
+            if(!active&&view?.activeBatchId===batch.batchId)moveToCurrent(batch.batchId);
+          }).finally(()=>setPending(undefined));
+        }}/>
+    </section>;
+  }
+
+  function renderGroup(title:string,entries:BatchView[]){
+    if(!entries.length)return null;
+    return <section className="me-task-record-group">
+      <div className="me-count-heading">
+        <h2>{title}</h2>
+        <CountBadge count={entries.length} description={`${entries.length} 个批次`}/>
+      </div>
+      <ul className="me-card me-task-records">
+        {entries.map(batch=>{
+          const runs=runsFor(batch);
+          const {graded,required}=readBatchProgress(runs);
+          const models=[...new Set(runs.map(run=>run.target.modelId))];
+          const id=batch.batchId;
+          const open=expanded===id;
+          const detailId=panelId+'-'+id;
+          return <li key={id}>
+            <button type="button" className="me-task-record" data-task-focus={id} aria-expanded={open} aria-controls={detailId}
+              onClick={()=>setExpanded(open?undefined:id)}>
+              <span className="me-task-record-identity">
+                <strong>{t.batch} {id.slice(0,8)}</strong>
+                {models.length>0&&<small title={models.join(' · ')}>{models.slice(0,2).join(' · ')}{models.length>2?' …':''}</small>}
+              </span>
+              <MetaTime value={batch.createdAt}/>
+              <Badge status={batchStatus(batch)}/>
+              <span className="me-task-record-count"><DataValue value={runs.length} unit={t.configCount}/></span>
+              <span className="me-task-record-progress">
+                <span className="dsh-sr-only">已判分</span>
+                <DataValue value={required?graded:'—'} unit={required?`/ ${required.toLocaleString('zh-CN')} 题`:undefined}/>
+              </span>
+              <span className="me-task-record-chevron"><Icon name="chevron"/></span>
+            </button>
+            <div id={detailId} hidden={!open}>{open&&renderBatch(batch,runs)}</div>
+          </li>;
+        })}
+      </ul>
+    </section>;
+  }
+
+  return <div className="me-task-workbench" ref={workbench}>
+    <div className="me-task-list-bar">
+      {activeBatch?<SelectionBar<TaskTab> label="评测任务视图" value={selectedTab} panelId={panelId} tabs={taskTabs} onChange={setTab}/>:
+        <h2>批次记录</h2>}
+      <div className="me-inline-actions">
+        <Button kind="text" className="me-local-refresh" icon="refresh" aria-label="刷新评测任务" title="刷新评测任务" onClick={()=>void props.refresh()} disabled={props.busy}/>
+        <ActionButton hintSide="below" kind="primary" icon="plus" onClick={props.newRun} unavailableReason={props.newRunUnavailable}>{t.newRun}</ActionButton>
+      </div>
     </div>
-    <div className="me-inline-actions">
-      <Button kind="text" className="me-local-refresh" icon="refresh" aria-label="刷新评测任务" title="刷新评测任务" onClick={()=>void props.refresh()} disabled={props.busy}/>
-      <ActionButton hintSide="below" kind={batches.every(batch=>batch.status==='completed')?'primary':''} icon="plus" onClick={props.newRun} unavailableReason={props.newRunUnavailable}>{t.newRun}</ActionButton>
+    <div id={panelId} role={activeBatch?'tabpanel':undefined} aria-labelledby={activeBatch?`${panelId}-${selectedTab}`:undefined} tabIndex={activeBatch?0:undefined}>
+      {selectedTab==='current'&&activeBatch?renderBatch(activeBatch,runsFor(activeBatch)):
+        <div className="me-task-record-groups">
+          {renderGroup('未完成',unfinished)}
+          {renderGroup('已结束',finished)}
+          {!records.length&&<div className="me-card me-task-no-records">暂无其他批次</div>}
+        </div>}
     </div>
-  </div>}
-  <div className="me-batch-list">{displayedBatches.map(batch=>{const estimate=props.data.queue.estimates?.[batch.batchId]??batch.estimate,runs=props.data.runs.filter(x=>batch.runIds.includes(x.runId)),tracks=runs.flatMap(x=>Object.values(x.tracks)),graded=tracks.reduce((n,x)=>n+x.graded,0),required=tracks.reduce((n,x)=>n+x.required,0),active=props.data.queue.activeBatchId===batch.batchId,localPending=batch.pendingItems?.filter(x=>x.error.code==='CONTEST_WALL_LIMIT').length??0,
-  slowLocal=active&&runs.some(r=>usesContestWallSafety(generalSchemaFor(r.protocols))&&r.performance?.activeStages.some(stage=>stage.phase==='local-grade'&&stage.datasetId==='code-contests-selected'&&now-Date.parse(stage.startedAt)>=60000)),canResume=runs.every(x=>x.resumeAllowed&&x.details==='available');return <section className="me-card" key={batch.batchId}><div className="me-card-heading"><div><div className="me-title-row"><h2>{t.batch} {batch.batchId.slice(0,8)}</h2><Badge status={active?'running':batch.status}/></div><div className="me-record-meta">
-    <MetaTime value={batch.createdAt}/>
-    <DataValue value={runs.length} unit={t.configCount}/>
-  </div></div><div className="me-actions">{active?<Button icon="pause" onClick={()=>void props.act(()=>props.api('pause',{batchId:batch.batchId}))} disabled={props.busy}>{t.pause}</Button>:batch.status!=='completed'&&canResume&&<><ActionButton kind="primary" icon="play" hintSide="below" unavailableReason={resumeUnavailable} onClick={()=>void props.act(()=>props.api('resume',{batchId:batch.batchId}))}>{t.resume}</ActionButton>{localPending>0&&<ActionButton hintSide="below" unavailableReason={resumeUnavailable} onClick={()=>void props.act(()=>props.api('rejudge',{batchId:batch.batchId,operationId:crypto.randomUUID()}))}>仅补判</ActionButton>}{runs.some(x=>x.tracks.writing?.status!=='completed'&&x.tracks.writing)&&<ActionButton hintSide="below" unavailableReason={resumeUnavailable} onClick={()=>{setChanging(batch.batchId);setJudge(emptyDraft());}}>{t.changeJudge}</ActionButton>}</>}</div></div>
-  <div className="me-batch-progress"><div>
-    <span>{t.graded}</span>
-    <strong><DataValue value={required ? graded : '—'} unit={required ? `/ ${required.toLocaleString('zh-CN')} 题` : undefined}/></strong>
-  </div>
-  {required>0&&<progress max={required} value={graded} aria-label={t.graded} aria-valuetext={`已判分 ${graded} 题，共 ${required} 题`}/>}
-  {slowLocal&&<p role="status" className="me-help">本地判分仍在进行</p>}{localPending>0&&<p className="me-help">{localPending} 题已保存答卷，待补判</p>}{runs.some(r=>r.reuse)&&<p className="me-help">复用 {runs.reduce((n,r)=>n+(r.reuse?.reusedItems??0),0)} 题</p>}<BatchMetrics newWork={runs.some(r=>!!r.reuse)} metrics={summarizeBatchMetrics(runs.map(x=>x.metrics),active,now)}/><Estimate {...(estimate?{snapshot:estimate}:{})} elapsedMs={summarizeBatchMetrics(runs.map(x=>x.metrics),active,now).elapsedMs}/></div>{batch.lastError&&batch.lastError.code!=='CONTEST_WALL_LIMIT'&&<div className="me-inline-warning"><strong>{t.callError}</strong><p>中断环节：{t.errorPhases[batch.lastError.phase]}</p><p>{batch.lastError.code==='ABORTED'?t.abortedHelp:batch.lastError.message}</p><code>{batch.lastError.code}</code></div>}{!active&&canResume&&batch.status!=='completed'&&<div className="me-resume-help"><p>{t.resumeHelp}</p>{runs.some(r=>r.tracks.writing?.status!=='completed'&&r.tracks.writing)&&<p>{t.judgeChoiceHelp}</p>}</div>}<BatchRuns batch={batch} runs={runs} report={props.report}/></section>;})}</div>
-  {changing&&<Modal title={t.resumeJudge} onClose={()=>setChanging(undefined)} locked={props.busy}><div className="me-dialog-body"><ConfigEditor draft={judge} models={props.data.models} api={props.api} change={setJudge} reportError={setError} label={t.judge}/><p className="me-help">{t.resumeJudgeHelp}</p>{error&&<p role="alert">{error}</p>}</div><footer className="me-dialog-foot"><Button onClick={()=>setChanging(undefined)}>{t.cancel}</Button><ActionButton kind="primary" disabled={props.busy} unavailableReason={!judge.snapshot?'请先选择写作裁判。':resumeUnavailable} onClick={()=>void props.act(async()=>{const judgeHandle=await resolveDraft(props.api,judge);await props.api('resume',{batchId:changing,judgeHandle});setChanging(undefined);})}>{t.resume}</ActionButton></footer></Modal>}</>;
+  {changing&&<Modal title={t.resumeJudge} onClose={()=>setChanging(undefined)} locked={props.busy}><div className="me-dialog-body"><ConfigEditor draft={judge} models={props.data.models} modelsLoading={!!props.data.modelsLoading} api={props.api} change={setJudge} reportError={setError} label={t.judge}/><p className="me-help">{t.resumeJudgeHelp}</p>{error&&<p role="alert">{error}</p>}</div><footer className="me-dialog-foot"><Button onClick={()=>setChanging(undefined)}>{t.cancel}</Button><ActionButton kind="primary" disabled={props.busy} unavailableReason={!judge.snapshot?'请先选择写作裁判。':resumeUnavailable} onClick={()=>void props.act(async()=>{const judgeHandle=await resolveDraft(props.api,judge);await props.api('resume',{batchId:changing,judgeHandle});moveToCurrent(changing);setChanging(undefined);})}>{t.resume}</ActionButton></footer></Modal>}</div>;
 }
-function BatchMetrics({metrics:m,newWork=false}:{metrics:ReturnType<typeof summarizeBatchMetrics>;newWork?:boolean}){const tokens=(n:number|undefined)=>n===undefined?'—':n.toLocaleString();return <dl className="me-batch-stats"><div title={t.batchUsageHint}><dt><span>{newWork?'本次新增 Token':t.batchTokens}</span>{m.partialUsage&&<span className="me-metric-note">{t.partialUsage}</span>}</dt><dd><strong data-testid="batch-tokens">{tokens(m.tokens)}</strong><small>{t.input} {tokens(m.inputTokens)} · {t.output} {tokens(m.outputTokens)}</small>{(m.cacheReadTokens!==undefined||m.cacheWriteTokens!==undefined)&&<small data-testid="batch-cache" className="me-cache-breakdown">{m.cacheReadTokens!==undefined&&<span>缓存读取 {tokens(m.cacheReadTokens)}</span>}{m.cacheReadTokens!==undefined&&m.cacheWriteTokens!==undefined&&' '}{m.cacheWriteTokens!==undefined&&<span>缓存写入 {tokens(m.cacheWriteTokens)}</span>}</small>}</dd></div><div title={t.batchElapsedHint}><dt><span>{newWork?'本次新增耗时':t.batchElapsed}</span>{m.incompleteTiming&&<span className="me-metric-note">{t.incompleteTiming}</span>}</dt><dd><strong data-testid="batch-elapsed">{formatElapsed(m.elapsedMs)}</strong><small>{t.batchElapsedHint}</small></dd></div></dl>;}
+
+function BatchMetrics({metrics:m,newWork=false}:{metrics:ReturnType<typeof summarizeBatchMetrics>;newWork?:boolean}){
+  const tokens=(n:number|undefined)=>n===undefined?'—':n.toLocaleString('zh-CN');
+  return <dl className="me-task-stats">
+    <div>
+      <dt>{newWork?'本次新增耗时':t.batchElapsed}</dt>
+      <dd><strong data-testid="batch-elapsed">{formatElapsed(m.elapsedMs)}</strong></dd>
+      <dd className="me-task-stat-note">{m.incompleteTiming?t.incompleteTiming:'不含暂停'}</dd>
+    </div>
+    <div>
+      <dt>{newWork?'本次新增 Token':t.batchTokens}</dt>
+      <dd><strong data-testid="batch-tokens">{tokens(m.tokens)}</strong></dd>
+      {(m.tokens!==undefined||m.partialUsage)&&<dd>
+        <Disclosure kind="help" title={m.partialUsage?'部分用量':'用量明细'} className="me-task-usage">
+          <p>{t.input} {tokens(m.inputTokens)} · {t.output} {tokens(m.outputTokens)}</p>
+          {(m.cacheReadTokens!==undefined||m.cacheWriteTokens!==undefined)&&<p data-testid="batch-cache">
+            {m.cacheReadTokens!==undefined&&<span>缓存读取 {tokens(m.cacheReadTokens)}</span>}
+            {m.cacheReadTokens!==undefined&&m.cacheWriteTokens!==undefined&&' · '}
+            {m.cacheWriteTokens!==undefined&&<span>缓存写入 {tokens(m.cacheWriteTokens)}</span>}
+          </p>}
+          <p>{t.batchUsageHint}</p>
+        </Disclosure>
+      </dd>}
+    </div>
+  </dl>;
+}

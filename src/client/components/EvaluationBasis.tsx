@@ -1,6 +1,6 @@
 import {Disclosure} from './Disclosure.tsx';
 import {isFiveCapabilitySchema} from '../../evaluation/five-schema.ts';
-import {CURRENT_WRITING_ID,LEGACY_WRITING_ID,writingEditionFor} from '../../evaluation/writing-edition.ts';
+import {CURRENT_WRITING_ID,LEGACY_WRITING_ID,writingEditionFor,writingV2Edition} from '../../evaluation/writing-edition.ts';
 import * as React from 'react';import type {GeneralDefinition} from '../../contracts.ts';import {zh as t} from '../locales.ts';
 const basisTitle='评测依据与计分方式';
 
@@ -11,7 +11,7 @@ export function WritingEvaluationBasis({writingId=CURRENT_WRITING_ID,questionCou
  const content=<div className="me-evaluation-basis me-evaluation-basis--writing">
    <dl>
     {total!==undefined&&<div><dt>题量</dt><dd>{total} 题</dd></div>}
-    {writingId==='work-writing-12-v2'&&<div><dt>题目来源</dt><dd>从 <a href="https://huggingface.co/datasets/IDEA-CCNL/Ziya-Writing-Eval-Chinese" target="_blank" rel="noreferrer">Ziya 中文写作评估集</a>精选 10 题，另有 2 道项目原创题。</dd></div>}
+    {(writingId===CURRENT_WRITING_ID||writingId===writingV2Edition.id)&&<div><dt>题目来源</dt><dd>从 <a href="https://huggingface.co/datasets/IDEA-CCNL/Ziya-Writing-Eval-Chinese" target="_blank" rel="noreferrer">Ziya 中文写作评估集</a>精选 {writingId===CURRENT_WRITING_ID?9:10} 题，另有 {writingId===CURRENT_WRITING_ID?3:2} 道项目原创题。</dd></div>}
     {writingId===LEGACY_WRITING_ID&&<div><dt>题目来源</dt><dd>Ziya 中文写作评估集和 WritingBench 精选题。</dd></div>}
     <div><dt>评分维度</dt><dd>所选裁判按{Object.values(t.dimensions).join('、')}逐项评分，每项 0–4 分。</dd></div>
     <div><dt>写作分</dt><dd>五维等权，单题换算为 0–100 分。全部题目有效判分后取平均，写作分单独展示。</dd></div>

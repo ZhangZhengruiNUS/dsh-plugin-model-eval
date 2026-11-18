@@ -7,7 +7,7 @@ import type {GeneralDefinition,ProtocolCatalogItem,RunSummary,TargetSnapshot,Tra
 import type {ComparisonExecution,ComparisonMetadata} from '../../comparison/contracts.ts';
 import {targetKey,protocolComparisonKey,generalTierLabel,generalComparisonKey,writingComparisonKey} from '../store.ts';
 import {admittedWallReplay,type ContestWallReplay} from './wall-replay.ts';
-import {admittedNativeReference,admittedNativeWritingReference,type NativeReferenceCapture} from './native-reference.ts';
+import {admittedNativeReference,admittedNativeWritingReference,nativePresetModelName,type NativeReferenceCapture} from './native-reference.ts';
 export const generalNames=['知识与推理','数学推理','指令遵循','编程解题'];
 export const fiveNames=['知识与推理','资料理解','指令遵循','代码能力','工具使用'];
 export const dimensionNames=(run:RunSummary|undefined,track:Track)=>track==='writing'?writingNames:isFiveCapabilitySchema(run?.generalDefinition?.schema)?fiveNames:generalNames;
@@ -36,7 +36,7 @@ export interface ComparisonRow {
   protocolKnown:boolean;configKey:string;runId:string;target:TargetSnapshot;completedAt:string|null;score:number|null;dimensions:(number|null)[];
   latencyMs:number|null;latencyP95Ms:number|null;ttftMs:number|null;latencySamples:number|null;ttftSamples:number|null;
   taskMeanMs?:number|null;taskTiming?:PhaseMetrics['taskTiming'];
-  taskTimingSource?:'original-answer';
+  taskTimingSource?:'original-answer'|'writing-replacement'|'original-general';
   usage:{inputTokens:number|null;outputTokens:number|null;totalTokens:number|null;completeness:'partial'|'unknown'};
   execution:ComparisonExecution;judgeKey:string|null;judgeLabel:string;track:Track;source:RunSummary;
   reference?:string;
@@ -44,6 +44,10 @@ export interface ComparisonRow {
   referenceEdition?:import('../../comparison/reference-evidence.ts').ReferenceItemEvidence['edition'];
   wallReplay?:ContestWallReplay;
 }
+export function restoredTaskTiming(row:ComparisonRow):boolean {
+  return row.taskTimingSource==='writing-replacement'||row.taskTimingSource==='original-general';
+}
+
 export interface ComparisonGroup {
   key:string;label:string;known:boolean;rows:ComparisonRow[];
   definition?:GeneralDefinition;questionCount?:number;
@@ -120,16 +124,19 @@ export function buildComparison(metadata:ComparisonMetadata,track:Track,referenc
         ...(track==='general'&&r.generalDefinition?{definition:r.generalDefinition}:{})};
       groups.set(key,group);
     }
-    const metric=r.metrics.tracks[track]?.answer,keys=track==='writing'?['faithfulness','logic','coverage','concision','naturalness']:isFiveCapabilitySchema(r.generalDefinition?.schema)?['knowledge','reading','instructions','coding','tools']:r.generalDefinition&&r.generalDefinition.tier!=='legacy'?['knowledge','math','instructions','coding']:['tiny-mmlu','tiny-gsm8k','ifeval','humaneval-plus'];
+    const replacement=r.reuse?.mixedPeriod?r.reuse.writingReplacement:undefined;
+    const originalGeneral=track==='general'?replacement?.sourceMetrics.tracks.general?.answer:undefined;
+    const metric=originalGeneral??r.metrics.tracks[track]?.answer,keys=track==='writing'?['faithfulness','logic','coverage','concision','naturalness']:isFiveCapabilitySchema(r.generalDefinition?.schema)?['knowledge','reading','instructions','coding','tools']:r.generalDefinition&&r.generalDefinition.tier!=='legacy'?['knowledge','math','instructions','coding']:['tiny-mmlu','tiny-gsm8k','ifeval','humaneval-plus'];
     const condition=metadata.runs.find(x=>x.runId===r.runId&&x.revision===r.revision),judges=r.judges.filter(j=>j.itemIds.length>0),inherited=track==='general'?linkedRegradeTaskTiming(r):undefined,timing=inherited??metric?.taskTiming;
     const timingAllowed=!!inherited||!r.regradeOrigin&&!reference?.edition;
-    const taskMeanMs=timingAllowed&&!r.reuse?.mixedPeriod&&timing?.schema==='task-duration-v1'&&timing.complete===true&&Number.isInteger(timing.required)&&timing.required>0&&timing.measured===timing.required?finite(timing.meanMs):null;
-    const judgeLabel=track==='writing'&&reference?.nativeRun?'GPT-6 Astra Max（同模型评分）':judges.length
+    const restored=originalGeneral?'original-general':track==='writing'&&replacement?'writing-replacement':undefined;
+    const taskMeanMs=timingAllowed&&(!r.reuse?.mixedPeriod||restored)&&timing?.schema==='task-duration-v1'&&timing.complete===true&&Number.isInteger(timing.required)&&timing.required>0&&timing.measured===timing.required&&(!restored||timing.required===r.tracks[track]?.required)?finite(timing.meanMs):null;
+    const judgeLabel=track==='writing'&&reference?.nativeRun?`${nativePresetModelName(r.target.modelId)??r.target.modelId} Max（同模型评分）`:judges.length
       ?judges.map(j=>`${j.snapshot.target.providerId} / ${j.snapshot.target.modelId} · ${j.itemIds.length}题`).join('；')
       :'裁判条件未记录';
     group.rows.push({protocolKnown:known,configKey:reference?'reference:'+r.runId:targetKey(r.target),runId:r.runId,target:r.target,completedAt:r.tracks[track]?.completedAt??null,score:finite(r.tracks[track]?.score,100),dimensions:keys.map(k=>known?finite(r.tracks[track]?.measures[k]?.score,track==='writing'?4:100):null),
       latencyMs:finite(metric?.latencyMedianMs),latencyP95Ms:finite(metric?.latencyP95Ms),ttftMs:finite(metric?.ttftMedianMs),latencySamples:finite(metric?.latencySamples),ttftSamples:finite(metric?.ttftSamples),
-      taskMeanMs,...(timingAllowed&&timing?.schema==='task-duration-v1'?{taskTiming:timing}:{}),...(inherited?{taskTimingSource:'original-answer' as const}:{}),...(reference?.edition?{referenceEdition:reference.edition}:{}),...(reference?.wallReplay?{wallReplay:reference.wallReplay}:{}),
+      taskMeanMs,...(timingAllowed&&timing?.schema==='task-duration-v1'?{taskTiming:timing}:{}),...(inherited?{taskTimingSource:'original-answer' as const}:restored&&taskMeanMs!==null?{taskTimingSource:restored}:{}),...(reference?.edition?{referenceEdition:reference.edition}:{}),...(reference?.wallReplay?{wallReplay:reference.wallReplay}:{}),
       usage:{inputTokens:finite(metric?.inputTokens),outputTokens:finite(metric?.outputTokens),totalTokens:finite(metric?.totalTokens),completeness:metric&&metric.usageCoverage<1?'partial':'unknown'},execution:reference?.execution??condition?.execution??{state:'unknown'},judgeKey:judgeIdentity(r),judgeLabel,track,source:r,...(reference?{reference:displayReferenceChannel(reference.channel),...(reference.batchActiveMs===undefined?{}:{referenceBatchActiveMs:reference.batchActiveMs})}:{})});
   }
   for(const g of groups.values())g.rows.sort((a,b)=>(b.score??-1)-(a.score??-1)||a.configKey.localeCompare(b.configKey));
@@ -137,8 +144,8 @@ export function buildComparison(metadata:ComparisonMetadata,track:Track,referenc
 }
 export function selectHistory(runs:readonly RunSummary[],target:TargetSnapshot,scopeKey:string,track:Track):RunSummary[]{return runs.filter(r=>!r.regradeOrigin&&!r.reuse?.mixedPeriod&&targetKey(r.target)===targetKey(target)&&scopeKeyFor(r,track)===scopeKey&&r.tracks[track]?.status==='completed').sort((a,b)=>(a.tracks[track]?.completedAt??'').localeCompare(b.tracks[track]?.completedAt??'')||a.runId.localeCompare(b.runId));}
 export function modelDisplayName({reference,target}: ComparisonRow): string {
-  if (reference && target.providerId === 'OpenAI' && target.modelId === 'gpt-6-astra') {
-    return 'GPT-6 Astra';
+  if (reference && target.providerId === 'OpenAI') {
+    return nativePresetModelName(target.modelId)??target.modelId;
   }
   return target.modelId;
 }

@@ -28,6 +28,8 @@ export async function readResourceManifest(root: string): Promise<ResourceManife
 export async function loadProtocolSet(resourceRoot: string): Promise<ProtocolSet> {
   const root = resolve(resourceRoot), manifest = await readResourceManifest(root);
   const seen = new Set<string>();
+  const datasetPaths = new Set(manifest.datasets.map(dataset=>dataset.path));
+  const datasetBytes = new Map<string,Buffer>();
   for (const file of manifest.files.filter(x => x.kind !== 'runtime')) {
     if (isAbsolute(file.path) || file.path.includes('\\') || file.path.split('/').some(x => !x || x === '..' || x === '.') || seen.has(file.path)) throw new Error('INVALID_RESOURCE_PATH');
     seen.add(file.path);
@@ -35,10 +37,13 @@ export async function loadProtocolSet(resourceRoot: string): Promise<ProtocolSet
     if (!(await lstat(path)).isFile() || await realpath(path) !== path) throw new Error('RESOURCE_LINK_REJECTED');
     const bytes = await readFile(path);
     if (bytes.length !== file.size || hash(bytes) !== file.sha256) throw new Error('RESOURCE_HASH_MISMATCH');
+    if(datasetPaths.has(file.path))datasetBytes.set(file.path,bytes);
   }
   const items: Question[] = [];
   for (const dataset of manifest.datasets) {
-    const text = await readFile(join(root, dataset.path), 'utf8');
+    const verified=datasetBytes.get(dataset.path);
+    if(!verified)throw Error('RESOURCE_HASH_MISMATCH');
+    const text=verified.toString('utf8');
     const rows = dataset.id === 'ifeval' ? text.trim().split('\n').map(x => JSON.parse(x))
       : dataset.id === 'humaneval-plus' ? JSON.parse(text).tasks : JSON.parse(text);
     if (rows.length !== dataset.count) throw new Error('RESOURCE_COUNT_MISMATCH');

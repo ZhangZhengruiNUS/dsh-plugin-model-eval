@@ -18,10 +18,24 @@
     "category": "报告"
   },
   {
-    "sourceId": "ziya:13",
-    "query": "针对如何加强基层治理，加大小微腐败的惩治力度写一篇报告，汇报对象是市领导",
-    "querySha256": "b00305a6971935f8c8ec0fd74d9b7664877df1f2936ada2949da6b3c13eb9242",
-    "category": "报告"
+    "sourceId": "dsh-original:community-fund-report-01",
+    "query": "某市在社区公共资金使用检查中发现补助重复申领、采购记录不全、群众投诉超期未办结。请给市领导写一篇整改建议报告，说明主要问题，提出可执行的整改措施，并说明如何跟踪落实。材料未提供的数据请勿编造。",
+    "querySha256": "22fd0437a158c42ff0539e90fb79100e6038a584d90325737195359a577ae8ba",
+    "category": "报告",
+    "checklist": [
+      {
+        "name": "主要问题",
+        "criteria_description": "准确交代补助重复申领、采购记录不全、群众投诉超期未办结三项发现。"
+      },
+      {
+        "name": "整改措施",
+        "criteria_description": "针对三项发现分别给出可执行的整改措施。"
+      },
+      {
+        "name": "跟踪落实",
+        "criteria_description": "说明如何登记、跟踪进度和核验整改，不将建议写成已经完成的工作，不编造未提供的数据。"
+      }
+    ]
   },
   {
     "sourceId": "ziya:31",

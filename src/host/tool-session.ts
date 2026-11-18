@@ -4,6 +4,7 @@ import type {ToolDispatcher} from '../runtime/tool-dispatcher.ts';
 import {identityHash} from '../evaluation/protocol-identity.ts';import {fingerprintTarget} from '../model/identity.ts';
 import {runAttempt,type RetryClock} from '../jobs/attempts.ts';
 import {createCallWatchdog} from '../jobs/call-watchdog.ts';
+import {captureUpstreamDiagnostic} from './upstream-error.ts';
 import {timeoutFailure,assertFailurePolicy,hasObservedOutput,isFatalCallError} from '../jobs/timeout-policy.ts';import {isTimeoutFailure} from '../estimation/observations.ts';
 export interface ToolSessionInput {onLocalGradingTime?:(ms:number)=>void;target:TargetSnapshot;scenarioId:string;checkpoint?:ToolSessionCheckpoint;signal:AbortSignal;automaticRetry?:false;dispatchAllowed?:()=>boolean;dispatchReady?:()=>boolean;commit:(checkpoint:ToolSessionCheckpoint)=>Promise<void>;onAttempt:(observation:AttemptObservation,error?:import('../contracts.ts').TechnicalError)=>Promise<void>}
 /** An assistant turn and its pending calls commit before any pure simulator action. */
@@ -53,9 +54,9 @@ export function createToolSessionRunner(adapter:HostToolAdapter,question:Questio
      let timedOut=false;const watchdog=createCallWatchdog(options.callTimeoutMs??300000,options.failurePolicy,()=>{timedOut=true;child.abort();});
      let result:Awaited<ReturnType<HostToolAdapter['generateTurn']>>;
      try{if(child.signal.aborted||input.dispatchReady&&!input.dispatchReady())result={kind:'technical-missing',error:{code:'ABORTED',phase:'answer',retryable:false,message:'工具模型调用已中断。'},observation:{...context,startedAt,endedAt:new Date().toISOString(),usage:{available:false}}};else result=await adapter.generateTurn({target:input.target,messages:state.messages,tools:dispatcher.tools,signal:child.signal,onActivity:watchdog.activity,context});}
-     catch{result={kind:'technical-missing',error:{code:'CALL_FAILED',phase:'answer',retryable:true,message:'工具模型调用未完成。'},observation:{...context,startedAt,endedAt:new Date().toISOString(),usage:{available:false}}};}
+     catch(thrown){const upstream=captureUpstreamDiagnostic(thrown);result={kind:'technical-missing',error:{code:'CALL_FAILED',phase:'answer',retryable:true,message:'工具模型调用未完成。',...(upstream?{upstream}:{})},observation:{...context,startedAt,endedAt:new Date().toISOString(),usage:{available:false}}};}
      finally{watchdog.dispose();input.signal.removeEventListener('abort',cancel);}
-     if(input.signal.aborted||!(options.failurePolicy&&result.kind==='technical-missing'&&isFatalCallError(result.error))&&(timedOut||options.failurePolicy&&result.kind==='technical-missing'&&isTimeoutFailure(result.error)&&hasObservedOutput(result.observation)))result={kind:'technical-missing',error:timeoutFailure({policy:options.failurePolicy,phase:'answer',observation:result.observation,parentAborted:input.signal.aborted,...(result.kind==='completed'?{text:result.assistant.content.filter(b=>b.type==='text').map(b=>b.text).join('')}:{})}),observation:result.observation};
+     if(input.signal.aborted||!(options.failurePolicy&&result.kind==='technical-missing'&&isFatalCallError(result.error))&&(timedOut||options.failurePolicy&&result.kind==='technical-missing'&&isTimeoutFailure(result.error)&&hasObservedOutput(result.observation)))result={kind:'technical-missing',error:timeoutFailure({policy:options.failurePolicy,phase:'answer',observation:result.observation,parentAborted:input.signal.aborted,upstream:result.kind==='technical-missing'?result.error.upstream:undefined,...(result.kind==='completed'?{text:result.assistant.content.filter(b=>b.type==='text').map(b=>b.text).join('')}:{})}),observation:result.observation};
      await report(result.observation,result.kind==='technical-missing'?result.error:undefined);
      return result.kind==='completed'?{ok:true as const,value:result}:{ok:false as const,error:result.error};
     };

@@ -15,8 +15,9 @@ test('current general editions show 1.0 and existing timed references keep their
     const short = light ? '轻量 1.0' : '深入 1.0';
     assert.equal(generalReleaseName(summary.protocols), short);
     assert.equal(generalReleaseName(summary.protocols,true), '通用能力评测 · '+short);
+    assert.equal(summary.runId,light?'openai-gpt-6.2-astra-max-light-v1-1':'openai-gpt-6.2-astra-max-deep-v1-2');
     assert(admittedNativeReference(summary,execution,nativeRun));
-    assert(!admittedNativeReference({...summary,runId:light?'openai-gpt-6-astra-max-light-v1-0':'openai-gpt-6-astra-max-deep-v1-0'},execution,nativeRun));
+    assert(!admittedNativeReference({...summary,runId:light?'openai-gpt-6.2-astra-max-light-v1-0':'openai-gpt-6.2-astra-max-deep-v1-0'},execution,nativeRun));
   }
   assert.notEqual(scopeKeyFor(refs[0]!.summary,'general'),scopeKeyFor(refs[1]!.summary,'general'));
 });

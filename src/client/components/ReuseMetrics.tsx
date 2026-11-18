@@ -2,5 +2,13 @@ import {Disclosure} from './Disclosure.tsx';
 import * as React from 'react';import type {RunSummary} from '../../contracts.ts';import {Button} from '../ui.tsx';import {formatElapsed,summarizeBatchMetrics} from '../batch-metrics.ts';
 export function ReuseMetrics({summary,onSource}:{summary:RunSummary;onSource(id:string):void}){
   const reuse=summary.reuse;if(!reuse)return null;const activity=reuse.sourceActivity,sourceRun=activity.scope==='source-run',elapsed=sourceRun?summarizeBatchMetrics([{tracks:{},activeIntervals:activity.activeIntervals,incompleteTiming:activity.incompleteTiming}],false,Date.now()).elapsedMs:undefined,metrics=reuse.sourceAnswerMetrics;
+  if(reuse.writingReplacement){
+    const source=summarizeBatchMetrics([reuse.writingReplacement.sourceMetrics],false,Date.now());
+    return <section className="me-condition-card me-reuse-metrics">
+      <div className="me-upgrade-preview-head"><h3>换题补测</h3><Button kind="text" onClick={()=>onSource(reuse.sourceRunId)}>查看原批次报告</Button></div>
+      <p>沿用 {reuse.reusedItems} 题的答卷和评分 · 新题 1 道</p>
+      <dl><div><dt>原批次本配置 Token</dt><dd>{source.tokens?.toLocaleString('zh-CN')??'—'}</dd></div></dl>
+    </section>;
+  }
   return <section className="me-condition-card me-reuse-metrics"><div className="me-upgrade-preview-head"><h3>{reuse.mixedPeriod?'分阶段结果':'复用部分（此前已发生）'}</h3><Button kind="text" onClick={()=>onSource(reuse.sourceRunId)}>查看来源报告</Button></div>{reuse.mixedPeriod&&<p>{`复用 ${reuse.reusedItems} 题 ＋ 本次新测 ${Math.max(0,(summary.tracks.general?.required??0)-reuse.reusedItems)} 题`}</p>}<dl><div><dt>已复用题目</dt><dd>{reuse.reusedItems}</dd></div><div><dt>来源接口 Token</dt><dd>{metrics.totalTokens?.toLocaleString()??'—'}{metrics.usageCoverage<1?' · 部分用量':''}</dd></div><div><dt>{sourceRun?'来源轮次活动耗时':'来源计时'}</dt><dd>{sourceRun?<>{formatElapsed(elapsed!)}{activity.incompleteTiming?' · 计时不完整':''}</>:'不合并旧轮次'}</dd></div></dl>{!reuse.mixedPeriod&&<p className="me-help">覆盖{activity.tracks.map(t=>t==='general'?'通用能力':'中文写作').join('、')}</p>}<Disclosure kind="help" title="分阶段条件"><p className="me-help">此前回答与本次补测在不同时间完成。已核对可观察配置，无法识别服务端未公开的默认值或静默部署变化。{sourceRun?'来源轮次耗时不等于复用题目的精确耗时。':'下方用量和运行时间只计本次新增部分；此结果不进入单次实测的耗时图和趋势。'}</p></Disclosure></section>;
 }

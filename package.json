@@ -1,6 +1,6 @@
 {
   "name": "dsh-model-coordinates",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "评测你可用的模型，对比能力与耗时，选择适合当前任务的配置。",
   "type": "module",
   "license": "MIT",
@@ -14,7 +14,7 @@
     "model-evaluation"
   ],
   "engines": {
-    "dsh": "0.2.2-rc.1"
+    "dsh": "0.2.2-rc.1 || 0.2.2-rc.3 || 0.2.2-rc.4"
   },
   "scripts": {
     "test": "node scripts/test.mjs all",

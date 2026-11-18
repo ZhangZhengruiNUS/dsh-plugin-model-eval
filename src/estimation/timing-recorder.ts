@@ -1,3 +1,4 @@
+import {resolveProtocolForRead} from '../evaluation/protocol-resolution.ts';
 import {createTimingTraceHistory} from '../history/timing-traces.ts';
 import type {HistoryStore} from '../history/store.ts';
 import type {ProtocolRegistry} from '../contracts.ts';
@@ -13,7 +14,7 @@ export function createTimingRecorder(store:HistoryStore,registry:ProtocolRegistr
   function serial<T>(fn:()=>Promise<T>):Promise<T>{const next=tail.then(fn);tail=next.catch(()=>{});return next;}
   async function initial(runId:string):Promise<TimingTraceV1>{
     const old=await history.read(identity.traceId??runId);if(old)return old;
-    const {manifest,summary}=await store.getRun(runId),protocol=await registry.resolve(manifest.protocols);
+    const {manifest,summary}=await store.getRun(runId),protocol=await resolveProtocolForRead(registry,manifest.protocols);
     const workload=buildWorkloadPlan(protocol,Object.keys(summary.tracks) as ('general'|'writing')[],undefined,manifest.executionOrder);
     const execution=manifest.execution;if(!execution)throw Error('TRACE_EXECUTION_UNKNOWN');
     return {version:1,traceId:identity.traceId??runId,runId,rootId:store.rootId,revision:0,

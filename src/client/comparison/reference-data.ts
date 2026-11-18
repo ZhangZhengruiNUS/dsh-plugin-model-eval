@@ -2,167 +2,13 @@ import type {BuiltInReference} from './model.ts';
 export const builtInReferences: readonly BuiltInReference[] = [
   {
     "summary": {
-      "runId": "openai-gpt-6-astra-max-writing-v1-0",
+      "runId": "openai-gpt-6.2-astra-max-light-v1-1",
       "batchId": "built-in-reference",
       "revision": 1,
       "target": {
         "scopeId": "built-in-reference",
         "providerId": "OpenAI",
-        "modelId": "gpt-6-astra",
-        "routeTarget": {
-          "state": "unknown"
-        },
-        "controls": {
-          "reasoningEffort": {
-            "state": "known",
-            "value": "max",
-            "source": "override"
-          }
-        }
-      },
-      "protocols": {
-        "generalId": "general-task-five-v3-r3-light",
-        "writingId": "work-writing-12-v2",
-        "resourceVersion": "task-five-v3-r3"
-      },
-      "details": "cleared",
-      "resumeAllowed": false,
-      "tracks": {
-        "writing": {
-          "status": "completed",
-          "required": 12,
-          "answered": 12,
-          "graded": 12,
-          "measures": {
-            "faithfulness": {
-              "required": 12,
-              "graded": 12,
-              "score": 4
-            },
-            "logic": {
-              "required": 12,
-              "graded": 12,
-              "score": 4
-            },
-            "coverage": {
-              "required": 12,
-              "graded": 12,
-              "score": 4
-            },
-            "concision": {
-              "required": 12,
-              "graded": 12,
-              "score": 3.75
-            },
-            "naturalness": {
-              "required": 12,
-              "graded": 12,
-              "score": 3.9166666666666665
-            }
-          },
-          "score": 98.33333333333333,
-          "completedAt": "2026-11-12T17:37:32.022Z"
-        }
-      },
-      "judges": [
-        {
-          "snapshot": {
-            "target": {
-              "scopeId": "built-in-reference",
-              "providerId": "OpenAI",
-              "modelId": "gpt-6-astra",
-              "routeTarget": {
-                "state": "unknown"
-              },
-              "controls": {
-                "reasoningEffort": {
-                  "state": "known",
-                  "value": "max",
-                  "source": "override"
-                }
-              }
-            },
-            "rubricId": "work-writing-five-dimensions-v1",
-            "promptId": "writing-judge-json-v1"
-          },
-          "itemIds": [
-            "writing/ziya:3",
-            "writing/ziya:4",
-            "writing/ziya:5",
-            "writing/ziya:13",
-            "writing/ziya:31",
-            "writing/ziya:40",
-            "writing/ziya:50",
-            "writing/ziya:94",
-            "writing/ziya:115",
-            "writing/ziya:129",
-            "writing/dsh-original:news-materials-01",
-            "writing/dsh-original:meeting-actions-01"
-          ]
-        }
-      ],
-      "metrics": {
-        "tracks": {
-          "writing": {
-            "answer": {
-              "calls": 12,
-              "failures": 0,
-              "usageCoverage": 1,
-              "inputTokens": 2839,
-              "outputTokens": 45117,
-              "totalTokens": 47956,
-              "reasoningTokens": 26611,
-              "cacheReadTokens": 0,
-              "taskTiming": {
-                "schema": "task-duration-v1",
-                "required": 12,
-                "measured": 12,
-                "complete": true,
-                "meanMs": 133681.796075
-              }
-            },
-            "judge": {
-              "calls": 12,
-              "failures": 0,
-              "usageCoverage": 1,
-              "inputTokens": 32019,
-              "outputTokens": 34124,
-              "totalTokens": 66143,
-              "reasoningTokens": 24545,
-              "cacheReadTokens": 0
-            },
-            "gradingMs": 0
-          }
-        },
-        "activeIntervals": [],
-        "incompleteTiming": true
-      },
-      "createdAt": "2026-11-12T17:24:31.873Z",
-      "completedAt": "2026-11-12T17:37:32.022Z"
-    },
-    "execution": {
-      "state": "known",
-      "concurrency": 4,
-      "callTimeoutMs": 300000,
-      "failurePolicy": "output-idle-v1"
-    },
-    "channel": "ChatGPT 订阅",
-    "nativeRun": {
-      "schema": "native-run-reference-v1",
-      "summarySha256": "d0d7c7f624c16edbc19954740662b93bff6c8820860dd343ef625ca6eed378ea",
-      "itemsSha256": "ad18500740ebb93cc56656513a7abc2e18a9520b297dbf9b593ba1484152a7f1",
-      "requiredSha256": "ccc41d29109d7a87503c78322de648ba997aab254564147f8dd733fc696f177a"
-    }
-  },
-  {
-    "summary": {
-      "runId": "openai-gpt-6-astra-max-light-v1-1",
-      "batchId": "built-in-reference",
-      "revision": 1,
-      "target": {
-        "scopeId": "built-in-reference",
-        "providerId": "OpenAI",
-        "modelId": "gpt-6-astra",
+        "modelId": "gpt-6.2-astra",
         "routeTarget": {
           "state": "unknown"
         },
@@ -315,13 +161,13 @@ export const builtInReferences: readonly BuiltInReference[] = [
             "tools": {
               "required": 7,
               "graded": 7,
-              "passed": 6,
-              "score": 85.71428571428571
+              "passed": 5,
+              "score": 71.42857142857143
             }
           },
-          "score": 90.14285714285714,
+          "score": 87.28571428571429,
           "answered": 62,
-          "completedAt": "2026-11-13T14:14:08.771Z"
+          "completedAt": "2026-11-18T07:02:11.090Z"
         }
       },
       "judges": [],
@@ -329,9 +175,9 @@ export const builtInReferences: readonly BuiltInReference[] = [
         "tracks": {
           "general": {
             "answer": {
-              "calls": 141,
-              "failures": 4,
-              "usageCoverage": 0.9716312056737588,
+              "calls": 143,
+              "failures": 9,
+              "usageCoverage": 0.9370629370629371,
               "taskTiming": {
                 "schema": "task-duration-v1",
                 "required": 62,
@@ -343,38 +189,38 @@ export const builtInReferences: readonly BuiltInReference[] = [
                     "weight": 0.2,
                     "required": 19,
                     "measured": 19,
-                    "meanMs": 19218.81108421053
+                    "meanMs": 18346.85753157895
                   },
                   {
                     "id": "reading",
                     "weight": 0.2,
                     "required": 8,
                     "measured": 8,
-                    "meanMs": 12443.964549999997
+                    "meanMs": 22337.8557
                   },
                   {
                     "id": "instructions",
                     "weight": 0.2,
                     "required": 20,
                     "measured": 20,
-                    "meanMs": 61006.23798000002
+                    "meanMs": 71986.81419499998
                   },
                   {
                     "id": "coding",
                     "weight": 0.2,
                     "required": 8,
                     "measured": 8,
-                    "meanMs": 66653.1233875
+                    "meanMs": 36309.39065
                   },
                   {
                     "id": "tools",
                     "weight": 0.2,
                     "required": 7,
                     "measured": 7,
-                    "meanMs": 102868.4434571429
+                    "meanMs": 145896.44791428573
                   }
                 ],
-                "meanMs": 52438.1160917707
+                "meanMs": 58975.47319817294
               }
             },
             "judge": {
@@ -388,8 +234,8 @@ export const builtInReferences: readonly BuiltInReference[] = [
         "activeIntervals": [],
         "incompleteTiming": true
       },
-      "createdAt": "2026-11-13T11:46:59.930Z",
-      "completedAt": "2026-11-13T14:14:08.771Z"
+      "createdAt": "2026-11-18T06:36:47.649Z",
+      "completedAt": "2026-11-18T07:02:11.090Z"
     },
     "execution": {
       "state": "known",
@@ -399,22 +245,22 @@ export const builtInReferences: readonly BuiltInReference[] = [
     },
     "nativeRun": {
       "schema": "native-run-reference-v1",
-      "summarySha256": "115a8b88cec7f71b8f44fbfc2538318a1a6a686c7697309016bf4e1ae1b0f143",
-      "itemsSha256": "1db529499714899a3bd390b5b1471a3400e8bc21321250b37f95aaaef742dd06",
+      "summarySha256": "43516f4513d56ebcece035a1c79813fec32e2b6380245e75bfe3031ce1fc459c",
+      "itemsSha256": "9c9c046edbdc8bc820933ad1b87e54cc4010528e4de4257b2abddf5ff8791c8f",
       "requiredSha256": "406619888fbf14d042522f905f090852969be11519475d3a17fb478449f02175"
     },
     "channel": "ChatGPT 订阅",
-    "batchActiveMs": 779411
+    "batchActiveMs": 917143
   },
   {
     "summary": {
-      "runId": "openai-gpt-6-astra-max-deep-v1-2",
+      "runId": "openai-gpt-6.2-astra-max-deep-v1-2",
       "batchId": "built-in-reference",
       "revision": 1,
       "target": {
         "scopeId": "built-in-reference",
         "providerId": "OpenAI",
-        "modelId": "gpt-6-astra",
+        "modelId": "gpt-6.2-astra",
         "routeTarget": {
           "state": "unknown"
         },
@@ -836,8 +682,8 @@ export const builtInReferences: readonly BuiltInReference[] = [
             "reading": {
               "required": 50,
               "graded": 50,
-              "passed": 43,
-              "score": 86
+              "passed": 42,
+              "score": 84
             },
             "instructions": {
               "required": 100,
@@ -854,13 +700,13 @@ export const builtInReferences: readonly BuiltInReference[] = [
             "tools": {
               "required": 29,
               "graded": 29,
-              "passed": 20,
-              "score": 68.96551724137932
+              "passed": 21,
+              "score": 72.41379310344827
             }
           },
-          "score": 88.98704284221526,
+          "score": 89.27669801462905,
           "answered": 348,
-          "completedAt": "2026-11-14T05:49:26.144Z"
+          "completedAt": "2026-11-18T09:57:06.681Z"
         }
       },
       "judges": [],
@@ -868,9 +714,9 @@ export const builtInReferences: readonly BuiltInReference[] = [
         "tracks": {
           "general": {
             "answer": {
-              "calls": 647,
-              "failures": 18,
-              "usageCoverage": 0.9721792890262752,
+              "calls": 633,
+              "failures": 10,
+              "usageCoverage": 0.9842022116903634,
               "taskTiming": {
                 "schema": "task-duration-v1",
                 "required": 348,
@@ -882,38 +728,38 @@ export const builtInReferences: readonly BuiltInReference[] = [
                     "weight": 0.2,
                     "required": 99,
                     "measured": 99,
-                    "meanMs": 21307.335065656556
+                    "meanMs": 27765.076595959585
                   },
                   {
                     "id": "reading",
                     "weight": 0.2,
                     "required": 50,
                     "measured": 50,
-                    "meanMs": 12671.374916
+                    "meanMs": 27232.933303999995
                   },
                   {
                     "id": "instructions",
                     "weight": 0.2,
                     "required": 100,
                     "measured": 100,
-                    "meanMs": 62538.43405200002
+                    "meanMs": 89533.70454600007
                   },
                   {
                     "id": "coding",
                     "weight": 0.2,
                     "required": 70,
                     "measured": 70,
-                    "meanMs": 258492.94940999997
+                    "meanMs": 166225.15771285712
                   },
                   {
                     "id": "tools",
                     "weight": 0.2,
                     "required": 29,
                     "measured": 29,
-                    "meanMs": 86971.16072068966
+                    "meanMs": 185138.50712413783
                   }
                 ],
-                "meanMs": 88396.25083286925
+                "meanMs": 99179.07585659092
               }
             },
             "judge": {
@@ -927,8 +773,8 @@ export const builtInReferences: readonly BuiltInReference[] = [
         "activeIntervals": [],
         "incompleteTiming": true
       },
-      "createdAt": "2026-11-13T16:18:49.029Z",
-      "completedAt": "2026-11-14T05:49:26.144Z"
+      "createdAt": "2026-11-18T07:09:52.523Z",
+      "completedAt": "2026-11-18T09:57:06.681Z"
     },
     "execution": {
       "state": "known",
@@ -938,11 +784,309 @@ export const builtInReferences: readonly BuiltInReference[] = [
     },
     "nativeRun": {
       "schema": "native-run-reference-v1",
-      "summarySha256": "78b2d99ba1c54fcb2ed52a9652f2db6d0e8993a64172c24c50427603a6e2d581",
-      "itemsSha256": "cbb0844f3bce680cb2b6e92c6cabb6b153bdffa831a4b09e83fff9c535832548",
+      "summarySha256": "a07d2b5376a241e963233916a0029ed22b04e49f8b85da7339217d68d8707868",
+      "itemsSha256": "ccebc2bf26c185eee86c3dcac6cf4d8f7a3adb18cc5f8211f8a92052636fa5ed",
       "requiredSha256": "93ea0f7e6168bcb5bd2a85693b700c4f967b2c142bd4b070113b2c354adbcf2e"
     },
     "channel": "ChatGPT 订阅",
-    "batchActiveMs": 8981581
+    "batchActiveMs": 8912184
+  },
+  {
+    "summary": {
+      "runId": "openai-gpt-6.2-astra-max-writing-v1-1",
+      "batchId": "built-in-reference",
+      "revision": 1,
+      "target": {
+        "scopeId": "built-in-reference",
+        "providerId": "OpenAI",
+        "modelId": "gpt-6.2-astra",
+        "routeTarget": {
+          "state": "unknown"
+        },
+        "controls": {
+          "reasoningEffort": {
+            "state": "known",
+            "value": "max",
+            "source": "override"
+          }
+        }
+      },
+      "protocols": {
+        "generalId": "general-task-five-original-v1-light",
+        "writingId": "work-writing-12-v3",
+        "resourceVersion": "task-five-original-v1"
+      },
+      "details": "cleared",
+      "resumeAllowed": false,
+      "tracks": {
+        "writing": {
+          "status": "completed",
+          "required": 12,
+          "answered": 12,
+          "graded": 12,
+          "measures": {
+            "faithfulness": {
+              "required": 12,
+              "graded": 12,
+              "score": 4
+            },
+            "logic": {
+              "required": 12,
+              "graded": 12,
+              "score": 4
+            },
+            "coverage": {
+              "required": 12,
+              "graded": 12,
+              "score": 4
+            },
+            "concision": {
+              "required": 12,
+              "graded": 12,
+              "score": 3.9166666666666665
+            },
+            "naturalness": {
+              "required": 12,
+              "graded": 12,
+              "score": 4
+            }
+          },
+          "score": 99.58333333333333,
+          "completedAt": "2026-11-18T08:47:18.210Z"
+        }
+      },
+      "judges": [
+        {
+          "snapshot": {
+            "target": {
+              "scopeId": "built-in-reference",
+              "providerId": "OpenAI",
+              "modelId": "gpt-6.2-astra",
+              "routeTarget": {
+                "state": "unknown"
+              },
+              "controls": {
+                "reasoningEffort": {
+                  "state": "known",
+                  "value": "max",
+                  "source": "override"
+                }
+              }
+            },
+            "rubricId": "work-writing-five-dimensions-v1",
+            "promptId": "writing-judge-json-v1"
+          },
+          "itemIds": [
+            "writing/ziya:3",
+            "writing/ziya:4",
+            "writing/ziya:5",
+            "writing/dsh-original:community-fund-report-01",
+            "writing/ziya:31",
+            "writing/ziya:40",
+            "writing/ziya:50",
+            "writing/ziya:94",
+            "writing/ziya:115",
+            "writing/ziya:129",
+            "writing/dsh-original:news-materials-01",
+            "writing/dsh-original:meeting-actions-01"
+          ]
+        }
+      ],
+      "metrics": {
+        "tracks": {
+          "writing": {
+            "answer": {
+              "calls": 16,
+              "failures": 4,
+              "usageCoverage": 0.75,
+              "taskTiming": {
+                "schema": "task-duration-v1",
+                "required": 12,
+                "measured": 12,
+                "complete": true,
+                "meanMs": 95543.02819166666
+              }
+            },
+            "judge": {
+              "calls": 13,
+              "failures": 1,
+              "usageCoverage": 0.9230769230769231
+            },
+            "gradingMs": 0
+          }
+        },
+        "activeIntervals": [],
+        "incompleteTiming": true
+      },
+      "createdAt": "2026-11-18T07:02:56.391Z",
+      "completedAt": "2026-11-18T08:47:18.210Z"
+    },
+    "execution": {
+      "state": "known",
+      "concurrency": 4,
+      "callTimeoutMs": 300000,
+      "failurePolicy": "output-idle-v1"
+    },
+    "channel": "ChatGPT 订阅",
+    "nativeRun": {
+      "schema": "native-run-reference-v1",
+      "summarySha256": "8f137af14f2b2ca46277804954a67223eaf9caa335b9903fb04a5efb51c03bd1",
+      "itemsSha256": "6b1673aae46977f3a8c21864e0767544bdd147553d60e4ca18f4d4cb6ab117eb",
+      "requiredSha256": "b9c31d7a22d64da25d1a157cd7d4ebe175fe232e3f2b7e8c592336a8e28fdb54"
+    }
+  },
+  {
+    "summary": {
+      "runId": "openai-gpt-6-astra-max-writing-v1-0",
+      "batchId": "built-in-reference",
+      "revision": 1,
+      "target": {
+        "scopeId": "built-in-reference",
+        "providerId": "OpenAI",
+        "modelId": "gpt-6-astra",
+        "routeTarget": {
+          "state": "unknown"
+        },
+        "controls": {
+          "reasoningEffort": {
+            "state": "known",
+            "value": "max",
+            "source": "override"
+          }
+        }
+      },
+      "protocols": {
+        "generalId": "general-task-five-v3-r3-light",
+        "writingId": "work-writing-12-v2",
+        "resourceVersion": "task-five-v3-r3"
+      },
+      "details": "cleared",
+      "resumeAllowed": false,
+      "tracks": {
+        "writing": {
+          "status": "completed",
+          "required": 12,
+          "answered": 12,
+          "graded": 12,
+          "measures": {
+            "faithfulness": {
+              "required": 12,
+              "graded": 12,
+              "score": 4
+            },
+            "logic": {
+              "required": 12,
+              "graded": 12,
+              "score": 4
+            },
+            "coverage": {
+              "required": 12,
+              "graded": 12,
+              "score": 4
+            },
+            "concision": {
+              "required": 12,
+              "graded": 12,
+              "score": 3.75
+            },
+            "naturalness": {
+              "required": 12,
+              "graded": 12,
+              "score": 3.9166666666666665
+            }
+          },
+          "score": 98.33333333333333,
+          "completedAt": "2026-11-12T17:37:32.022Z"
+        }
+      },
+      "judges": [
+        {
+          "snapshot": {
+            "target": {
+              "scopeId": "built-in-reference",
+              "providerId": "OpenAI",
+              "modelId": "gpt-6-astra",
+              "routeTarget": {
+                "state": "unknown"
+              },
+              "controls": {
+                "reasoningEffort": {
+                  "state": "known",
+                  "value": "max",
+                  "source": "override"
+                }
+              }
+            },
+            "rubricId": "work-writing-five-dimensions-v1",
+            "promptId": "writing-judge-json-v1"
+          },
+          "itemIds": [
+            "writing/ziya:3",
+            "writing/ziya:4",
+            "writing/ziya:5",
+            "writing/ziya:13",
+            "writing/ziya:31",
+            "writing/ziya:40",
+            "writing/ziya:50",
+            "writing/ziya:94",
+            "writing/ziya:115",
+            "writing/ziya:129",
+            "writing/dsh-original:news-materials-01",
+            "writing/dsh-original:meeting-actions-01"
+          ]
+        }
+      ],
+      "metrics": {
+        "tracks": {
+          "writing": {
+            "answer": {
+              "calls": 12,
+              "failures": 0,
+              "usageCoverage": 1,
+              "inputTokens": 2839,
+              "outputTokens": 45117,
+              "totalTokens": 47956,
+              "reasoningTokens": 26611,
+              "cacheReadTokens": 0,
+              "taskTiming": {
+                "schema": "task-duration-v1",
+                "required": 12,
+                "measured": 12,
+                "complete": true,
+                "meanMs": 133681.796075
+              }
+            },
+            "judge": {
+              "calls": 12,
+              "failures": 0,
+              "usageCoverage": 1,
+              "inputTokens": 32019,
+              "outputTokens": 34124,
+              "totalTokens": 66143,
+              "reasoningTokens": 24545,
+              "cacheReadTokens": 0
+            },
+            "gradingMs": 0
+          }
+        },
+        "activeIntervals": [],
+        "incompleteTiming": true
+      },
+      "createdAt": "2026-11-12T17:24:31.873Z",
+      "completedAt": "2026-11-12T17:37:32.022Z"
+    },
+    "execution": {
+      "state": "known",
+      "concurrency": 4,
+      "callTimeoutMs": 300000,
+      "failurePolicy": "output-idle-v1"
+    },
+    "channel": "ChatGPT 订阅",
+    "nativeRun": {
+      "schema": "native-run-reference-v1",
+      "summarySha256": "d0d7c7f624c16edbc19954740662b93bff6c8820860dd343ef625ca6eed378ea",
+      "itemsSha256": "ad18500740ebb93cc56656513a7abc2e18a9520b297dbf9b593ba1484152a7f1",
+      "requiredSha256": "ccc41d29109d7a87503c78322de648ba997aab254564147f8dd733fc696f177a"
+    }
   }
 ];

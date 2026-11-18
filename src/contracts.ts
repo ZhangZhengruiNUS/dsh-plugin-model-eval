@@ -46,6 +46,7 @@ export interface TrackSummary {
   measures: Record<string, { required: number; graded: number; passed?: number; score?: number }>;
 }
 export interface ProtocolRefs { generalId: string; writingId: string; resourceVersion: string }
+export const JUDGE_ITEM_PENDING='JUDGE_ITEM_PENDING';
 export interface JudgeSnapshot { target: TargetSnapshot; rubricId: string; promptId: string }
 export interface JudgeUsage { snapshot: JudgeSnapshot; itemIds: string[]; attemptedItemIds?:string[];calls?:number;failedCalls?:number }
 export interface RegradeOrigin {schema:'offline-regrade-v1';sourceReferenceId?:string;sourceRunId:string;sourceProtocols:ProtocolRefs;sourceScore:number;sourceEvidenceHash:string;sourceCompletedAt:string;rulesHash:string;createdAt:string;excludedItems:string[];gradedItems:number;gradingMs:number;modelCalls:0;
@@ -62,9 +63,16 @@ export interface RunSummary {
   generalDefinition?:GeneralDefinition;reuse?:ReuseSummary;
 }
 export interface WritingDimensions { faithfulness: number; logic: number; coverage: number; concision: number; naturalness: number }
+export type StreamFinishReason = 'stop' | 'max-tokens' | 'tool-calls' | 'error' | 'aborted';
+export type ProviderFinishReason = 'content_filter' | 'network_error';
+export interface UpstreamDiagnostic {
+  codes?: readonly string[]; httpStatus?: number; statusFromMessage?: true; requestId?: string;
+  parameter?: string; detail?: string; detailFiltered?: true; finishReason?: ProviderFinishReason;
+}
+export type UpstreamFailureCause = 'overload' | 'transport' | 'unknown';
 export interface TechnicalError {
   code: string; retryable: boolean; phase: 'answer' | 'judge' | 'grader' | 'resource' | 'config' | 'storage'; message: string;
-  status?: number; retryAfterMs?: number;
+  status?: number; retryAfterMs?: number; upstream?: UpstreamDiagnostic; upstreamCause?: UpstreamFailureCause;
 }
 export type GradeResult =
   | { kind: 'scored'; track: 'general'; itemId: string; passed: boolean; evidence: JsonValue }
@@ -81,6 +89,10 @@ export interface AttemptObservation {
   attemptId: string; itemId: string; track: Track; phase: 'answer' | 'judge';
   startedAt: string; endedAt: string; firstContentAt?: string;
   timing?:GenerationTiming;
+  /** Terminal kind observed from DSH, independent of the final attempt result. */
+  streamFinishReason?: StreamFinishReason;
+  /** Text blocks only. Older attempts may not have recorded this. */
+  textReceived?: boolean;
   usage: { available: boolean; inputTokens?: number; outputTokens?: number; reasoningTokens?: number;
     cacheReadTokens?: number; cacheWriteTokens?: number; totalTokens?: number };
 }

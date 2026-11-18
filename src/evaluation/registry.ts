@@ -9,7 +9,7 @@ import {CONTEST_WALL_SAFETY_ID,CONTEST_WALL_SAFETY_LIMITS} from './contest-budge
 import {CONTEST_DIAGNOSTIC_SHA256} from '../runtime/contest-diagnostic-pin.ts';
 import {RUNTIME_PINS} from '../runtime/pins.ts';
 import {validateGeneralDefinition} from './definitions.ts';
-import {CURRENT_WRITING_ID,generalWritingRef,LEGACY_WRITING_ID,writingEditionFor} from './writing-edition.ts';
+import {CURRENT_WRITING_ID,generalWritingRef,LEGACY_WRITING_ID,writingEditionFor,writingV2Edition} from './writing-edition.ts';
 export async function createProtocolRegistry(packageRoot:string,previousWriting?:()=>Promise<readonly Question[]|undefined>,localRoot?:()=>string|undefined):Promise<ProtocolRegistry> {
   packageRoot=resolve(packageRoot);
   const catalog=await readProtocolCatalog(packageRoot);
@@ -40,10 +40,14 @@ export async function createProtocolRegistry(packageRoot:string,previousWriting?
     const readOnly=usage==='advisor'&&entry.bundleId!=='legacy';
     const legacy=readOnly?undefined:await loadProtocolSet(resources);
     if(legacy&&legacy.writingId!==CURRENT_WRITING_ID)throw Error('WRITING_EDITION_MISMATCH');
-    const currentWriting=legacy?legacy.items.filter(q=>q.track==='writing'):await packagedWriting(CURRENT_WRITING_ID);
-    const writing=refs.writingId===CURRENT_WRITING_ID?currentWriting:
-      refs.writingId===LEGACY_WRITING_ID?(await previousWriting?.())??currentWriting.filter(q=>q.sourceId.startsWith('ziya:')):
-      await packagedWriting(refs.writingId);
+    let writing:readonly Question[];
+    if(refs.writingId===CURRENT_WRITING_ID){
+      writing=legacy?legacy.items.filter(question=>question.track==='writing'):await packagedWriting(CURRENT_WRITING_ID);
+    }else if(refs.writingId===LEGACY_WRITING_ID){
+      writing=(await previousWriting?.())??(await packagedWriting(writingV2Edition.id)).filter(question=>question.sourceId.startsWith('ziya:'));
+    }else{
+      writing=await packagedWriting(refs.writingId);
+    }
     let items:readonly Question[],grading:JsonValue,runtime:JsonValue;
     if(entry.bundleId==='legacy'){
       if(!legacy||protocolKey(baseRefs)!==protocolKey(catalog.legacyRefs))throw Error('UNKNOWN_PROTOCOL');
@@ -66,7 +70,7 @@ export async function createProtocolRegistry(packageRoot:string,previousWriting?
         }
         throw error;
       }
-      if(readOnly||localOnly){
+      {
         const question=bundle.files.find(f=>f.path===bundle.questionPath)!;
         if(bytes.length!==question.size||bytesHash(bytes)!==question.sha256){
           if(localOnly)throw Object.assign(new Error('ARCHIVED_GENERAL_CORRUPT'),{code:'ARCHIVED_GENERAL_CORRUPT'});
@@ -97,6 +101,7 @@ export async function createProtocolRegistry(packageRoot:string,previousWriting?
   }
   return {list:()=>catalog.entries.map(descriptor),
     resolve:refs=>resolveProtocol(refs,'run'),
+    resolveForRead:refs=>resolveProtocol(refs,'advisor'),
     async forNewRun(id,tracks){return resolveProtocol(newRunRefs(id,tracks),'run');},
     async forTimeAdvisor(id,tracks){return resolveProtocol(newRunRefs(id,tracks),'advisor');},
   };
