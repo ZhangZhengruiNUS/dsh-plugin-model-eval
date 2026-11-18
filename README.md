@@ -8,6 +8,8 @@ Evaluate your available models, compare capability and task time, and choose a c
 
 **当前版本 0.2.0。** 兼容环境为 Windows x64、DSH 0.2.2-rc.1、rc.3 或 rc.4。安装包自带 Windows 判分资源；选择测评、裁判或测速模型时，实际请求由 DSH 发送到相应的供应商。资源准备和历史读取不需要模型请求。
 
+[更新日志](https://github.com/ZhangZhengruiNUS/dsh-plugin-model-eval/blob/codex/model-eval-mvp/CHANGELOG.md)
+
 **当前提供通用能力评测轻量 1.0、深入 1.0 和中文写作 1.1。三个系列独立升版。首次准备复制当前通用档位的离线资源，单独写作按需准备。**
 
 首装显示各系列的当前版本。升级后，如当前数据目录已有旧通用评测记录，可在设置中恢复其显示。具体见[评测版本与归档](docs/design/protocol-releases.md)。
@@ -102,6 +104,8 @@ GitHub 发行版默认使用独立目录 `~/.dsh-model-coordinates/`，不会自
 只累计接口提供的用量，未知不填零，推理/缓存不重复相加，可得失败用量保留。正常完整调用报告中位/P95与可观察首正文耗时；活动时间排除排队、暂停和离线间隔，异常尾部标不完整。无价格不推算金额。
 
 ## 开发与证据
+
+维护更新日志和分发安装包的步骤见[发布流程](https://github.com/ZhangZhengruiNUS/dsh-plugin-model-eval/blob/codex/model-eval-mvp/docs/releasing.md)。
 
 开发环境：Windows x64、Node24.21.0。ESM Host 与宿主 React ModuleLoader Client，零运行时 npm dependencies，无安装脚本。
 
