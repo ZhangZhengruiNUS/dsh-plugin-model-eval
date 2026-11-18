@@ -4,6 +4,20 @@
 
 ## [Unreleased]
 
+## [0.2.2] - 2026-11-18
+
+### Added
+
+- 新建评测支持搜索并批量添加模型。每个配置可设置 1–4 路题目并发。多配置默认最多同时运行两个，也可选择顺序运行或全部同时运行。
+- 评测任务支持单个、所选或全部模型的暂停与继续。继续时沿用原批次和已保存的答卷、成绩及用量。
+- 运行中可调整单个配置的题目并发。调高会补派待评题，调低会让在途题自然完成，之后按新上限派发。报告记录初始并发和变更。
+
+### Changed
+
+- 「评测任务」集中显示当前评测和待处理批次。「历史」集中展示完整记录，仍可继续的批次可从历史跳回任务。
+- 评测、测速、估时三类历史记录统一为紧凑的折叠列表。展开后查看详情，勾选独立用于清理操作。
+- 批次剩余时间估算仍适用于顺序运行且使用统一默认并发的配置。并行批次显示实际已用时间和累计用量。
+
 ## [0.2.1] - 2026-11-18
 
 ### Fixed
@@ -58,7 +72,8 @@
 - 三档提供 GPT‑6 Astra Max 的实测预置。轻量 90.1 分，深入 89.0 分，写作 98.3 分。首装即可查看参考，首次新建评测在后台准备所需的离线资源。
 - 安装包支持已验证的 Windows x64、DSH 0.2.2-rc.1。
 
-[Unreleased]: https://github.com/ZhangZhengruiNUS/dsh-plugin-model-eval/compare/v0.2.1...HEAD
+[Unreleased]: https://github.com/ZhangZhengruiNUS/dsh-plugin-model-eval/compare/v0.2.2...HEAD
+[0.2.2]: https://github.com/ZhangZhengruiNUS/dsh-plugin-model-eval/compare/v0.2.1...v0.2.2
 [0.2.1]: https://github.com/ZhangZhengruiNUS/dsh-plugin-model-eval/compare/v0.2.0...v0.2.1
 [0.2.0]: https://github.com/ZhangZhengruiNUS/dsh-plugin-model-eval/compare/v0.1.1...v0.2.0
 [0.1.1]: https://github.com/ZhangZhengruiNUS/dsh-plugin-model-eval/compare/v0.1.0...v0.1.1
