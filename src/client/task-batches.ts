@@ -10,6 +10,27 @@ export function canResumeRun(run:RunSummary){
   return run.resumeAllowed&&run.details==='available';
 }
 
+export function batchStatus(batch:BatchView,active=false){
+  if(active)return 'running';
+  const states=Object.values(batch.runControls??{});
+  if(batch.status==='completed'&&states.some(control=>control.state==='removed'))return 'ended';
+  if(batch.status==='pending'&&states.some(control=>control.state==='held'))return 'attention';
+  return batch.status;
+}
+
+export function batchRunStatus(batch:BatchView,run:RunSummary){
+  const control=batch.runControls?.[run.runId];
+  if(batch.settlingRunId===run.runId)return 'stopping';
+  if(control?.state==='held')return control.error?'attention':'held';
+  if(control?.state==='removed')return 'removed';
+  if(runIsComplete(run))return 'completed';
+  if(batch.activeRunId===run.runId)return 'running';
+  if(batch.status==='paused')return 'paused';
+  if(batch.status==='running')return 'queued';
+  if(Object.values(run.tracks).some(track=>track.status==='pending'))return 'pending';
+  return 'queued';
+}
+
 export function taskBatches(queue:QueueView,runs:readonly RunSummary[]){
   const byId=new Map(runs.map(run=>[run.runId,run]));
   const superseded=new Set(queue.batches.flatMap(batch=>batch.supersedesBatchId?[batch.supersedesBatchId]:[]));

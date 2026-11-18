@@ -1,4 +1,4 @@
-import {canResumeRun,runIsComplete} from './task-batches.ts';
+import {batchRunStatus,canResumeRun,runIsComplete} from './task-batches.ts';
 import {Button as PrimitiveButton} from './primitives/primitives.tsx';
 import {createPortal} from 'react-dom';
 import * as React from 'react';import type {ModelChoice,RunSummary,TargetSnapshot,TechnicalError,Track} from '../contracts.ts';import {generalReleaseName} from './protocol-editions.ts';import {writingEditionName} from '../evaluation/writing-edition.ts';import type {BatchView,QueueView,RunOperation} from '../jobs/queue.ts';import type {ClientApi} from './api.ts';import {zh as t} from './locales.ts';import {formatScore,time,generalTierLabel} from './store.ts';
@@ -214,6 +214,42 @@ export function Modal({title,children,onClose,wide=false,locked=false,variant,re
 export const trackNames:Record<Track,string>={general:t.general,writing:t.writing};
 const compactRunActions:Record<RunOperation,string>={hold:'挂起',resume:'继续',remove:'移出',rejoin:'重新加入'};
 
+export function BatchRunRow({run,index,bothTracks,report,status,controlled=false,showParams=false,children}:{
+  run:RunSummary;
+  index:number;
+  bothTracks:boolean;
+  report(runId:string):void;
+  status?:React.ReactNode;
+  controlled?:boolean;
+  showParams?:boolean;
+  children?:React.ReactNode;
+}){
+  return <div className={'me-run-row me-compact-run'+(controlled?' me-controlled-run':'')} role="listitem"
+    aria-label={`${t.model} ${index+1} ${run.target.modelId}`}>
+    <div className="me-run-model">
+      <ModelLabel target={run.target} showParams={showParams} compact nameAction={{
+        label:t.report+' '+run.target.modelId,onClick:()=>report(run.runId),
+      }}/>
+    </div>
+    {status&&<div className="me-run-status">{status}</div>}
+    <div className={'me-track-results'+(bothTracks?' both-tracks':'')}>
+      {(['general','writing'] as const).map(track=>{
+        const value=run.tracks[track];
+        if(!value)return null;
+        const name=track==='general'
+          ? generalReleaseName(run.protocols,true)??(trackNames.general+' · '+(run.generalDefinition?generalTierLabel(run):'旧版基线'))
+          : writingEditionName(run.protocols.writingId)??trackNames.writing;
+        const label=name.replace(/^通用能力(?:评测)?(?= · )/,'通用').replace(/^中文写作(?= )/,'写作');
+        return <div key={track} data-track={track}>
+          <span title={name}>{label}</span>
+          {value.status==='completed'?<Score value={value.score}/>:<span className="me-mono">{value.graded} / {value.required}</span>}
+        </div>;
+      })}
+    </div>
+    {children}
+  </div>;
+}
+
 export function BatchRuns({batch,runs,report,control,unavailableReason,pending}:{
   batch:BatchView;
   runs:RunSummary[];
@@ -247,17 +283,6 @@ export function BatchRuns({batch,runs,report,control,unavailableReason,pending}:
       const controlState=batch.runControls?.[id];
       const complete=runIsComplete(run);
       const settling=batch.settlingRunId===id;
-      const running=batch.activeRunId===id;
-      let status:string;
-      if(settling)status='stopping';
-      else if(controlState?.state==='held')status=controlState.error?'attention':'held';
-      else if(controlState?.state==='removed')status='removed';
-      else if(complete)status='completed';
-      else if(running)status='running';
-      else if(batch.status==='paused')status='paused';
-      else if(batch.status==='running')status='queued';
-      else if(Object.values(run.tracks).some(track=>track.status==='pending'))status='pending';
-      else status='queued';
       let operations:RunOperation[]=[];
       if(!complete){
         if(controlState?.state==='removed')operations=['rejoin'];
@@ -265,28 +290,8 @@ export function BatchRuns({batch,runs,report,control,unavailableReason,pending}:
         else operations=['hold','remove'];
       }
       const error=controlState?.state==='held'?controlState.error:undefined;
-      return <div className="me-run-row me-controlled-run" role="listitem" key={id}
-        aria-label={`${t.model} ${index+1} ${run.target.modelId}`}>
-        <div className="me-run-model">
-          <ModelLabel target={run.target} showParams compact nameAction={{
-            label:t.report+' '+run.target.modelId,onClick:()=>report(id),
-          }}/>
-        </div>
-        <div className="me-run-status"><Badge status={status}/></div>
-        <div className={'me-track-results'+(bothTracks?' both-tracks':'')}>
-          {(['general','writing'] as const).map(track=>{
-            const value=run.tracks[track];
-            if(!value)return null;
-            const name=track==='general'
-              ? generalReleaseName(run.protocols,true)??(trackNames.general+(run.generalDefinition?' · '+generalTierLabel(run):''))
-              : writingEditionName(run.protocols.writingId)??trackNames.writing;
-            const label=name.replace(/^通用能力(?:评测)?(?= · )/,'通用').replace(/^中文写作(?= )/,'写作');
-            return <div key={track} data-track={track}>
-              <span title={name}>{label}</span>
-              {value.status==='completed'?<Score value={value.score}/>:<span className="me-mono">{value.graded} / {value.required}</span>}
-            </div>;
-          })}
-        </div>
+      return <BatchRunRow key={id} run={run} index={index} bothTracks={bothTracks} report={report}
+        controlled showParams status={<Badge status={batchRunStatus(batch,run)}/>}>
         {operations.length>0&&<div className="me-run-actions">
           {operations.map(operation=>{
             const needsDetails=operation==='resume'||operation==='rejoin';
@@ -319,7 +324,7 @@ export function BatchRuns({batch,runs,report,control,unavailableReason,pending}:
           <code>{error.code}</code>
         </div>}
         {controlState?.state==='removed'&&!settling&&<p className="me-help me-run-preserved">{t.runControl.saved}</p>}
-      </div>;
+      </BatchRunRow>;
     })}
   </div>
   {removal&&removalRun&&<Modal title={t.runControl.remove} onClose={()=>setRemoval(undefined)} returnFocusTo={removal.trigger}>

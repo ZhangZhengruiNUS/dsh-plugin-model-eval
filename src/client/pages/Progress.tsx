@@ -7,13 +7,14 @@ import {generalSchemaFor,isCurrentGeneralRelease} from '../../evaluation/current
 import {usesContestWallSafety} from '../../evaluation/five-schema.ts';
 import * as React from 'react';
 import {zh as t} from '../locales.ts';
-import {ActionButton,activityUnavailable,Button,Empty,Badge,BatchRuns,Icon,MetaTime,Modal,taskFailureText,type PageProps} from '../ui.tsx';
+import {ActionButton,activityUnavailable,Button,Empty,Badge,BatchRuns,MetaTime,Modal,taskFailureText,type PageProps} from '../ui.tsx';
 import {SelectionBar} from '../components/SelectionBar.tsx';
 import {Disclosure} from '../components/Disclosure.tsx';
 import {ConfigEditor,emptyDraft,resolveDraft} from './NewRun.tsx';
 import {summarizeBatchMetrics} from '../batch-metrics.ts';
 import {BatchMetrics} from '../components/BatchMetrics.tsx';
-import {canResumeRun,runIsComplete,taskBatches} from '../task-batches.ts';
+import {BatchRecord} from '../components/BatchRecord.tsx';
+import {batchStatus,canResumeRun,runIsComplete,taskBatches} from '../task-batches.ts';
 
 const taskTabs=[{id:'current',label:'当前评测'},{id:'pending',label:'待处理'}] as const;
 type TaskTab=(typeof taskTabs)[number]['id'];
@@ -24,14 +25,6 @@ function readBatchProgress(runs:RunSummary[]){
     graded:tracks.reduce((count,track)=>count+track.graded,0),
     required:tracks.reduce((count,track)=>count+track.required,0),
   };
-}
-
-function batchStatus(batch:BatchView,active=false){
-  if(active)return 'running';
-  const states=Object.values(batch.runControls??{});
-  if(batch.status==='completed'&&states.some(control=>control.state==='removed'))return 'ended';
-  if(batch.status==='pending'&&states.some(control=>control.state==='held'))return 'attention';
-  return batch.status;
 }
 
 export function Progress(props:PageProps&{targetBatchId?:string|undefined}){const [changing,setChanging]=React.useState<string>(),[judge,setJudge]=React.useState(emptyDraft),[error,setError]=React.useState('');
@@ -62,7 +55,7 @@ export function Progress(props:PageProps&{targetBatchId?:string|undefined}){cons
   const historyLink=<Button kind="text" icon="arrow" onClick={()=>props.navigate('history')}>查看评测历史</Button>;
   React.useLayoutEffect(()=>{
     if(!focusBatch)return;
-    const node=workbench.current?.querySelector<HTMLElement>(`[data-task-focus="${CSS.escape(focusBatch)}"]`);
+    const node=workbench.current?.querySelector<HTMLElement>(`[data-batch-focus="${CSS.escape(focusBatch)}"]`);
     if(node){node.focus();setFocusBatch(undefined);}
   },[activeBatchId,focusBatch,tab]);
   React.useEffect(()=>{setNow(Date.now());if(!activeBatchId)return;const timer=setInterval(()=>{if(document.visibilityState==='visible')setNow(Date.now());},1000);return()=>clearInterval(timer);},[activeBatchId]);
@@ -112,7 +105,7 @@ export function Progress(props:PageProps&{targetBatchId?:string|undefined}){cons
     return <section className={'me-task-detail'+(active?' me-card me-live-task':'')}>
       <div className="me-task-detail-head">
         {active&&<div>
-          <div className="me-title-row"><h2 tabIndex={-1} data-task-focus={batch.batchId}>{t.batch} {batch.batchId.slice(0,8)}</h2><Badge status={status}/></div>
+          <div className="me-title-row"><h2 tabIndex={-1} data-batch-focus={batch.batchId}>{t.batch} {batch.batchId.slice(0,8)}</h2><Badge status={status}/></div>
           <div className="me-record-meta">
             <MetaTime value={batch.createdAt}/>
             <DataValue value={runs.length} unit={t.configCount}/>
@@ -182,34 +175,22 @@ export function Progress(props:PageProps&{targetBatchId?:string|undefined}){cons
   }
 
   function renderPending(){
-    return <ul className="me-card me-task-records">
-        {pendingBatches.map(batch=>{
-          const runs=runsFor(batch);
-          const {graded,required}=readBatchProgress(runs);
-          const models=[...new Set(runs.map(run=>run.target.modelId))];
-          const id=batch.batchId;
-          const open=expanded===id;
-          const detailId=panelId+'-'+id;
-          return <li key={id}>
-            <button type="button" className="me-task-record" data-task-focus={id} aria-expanded={open} aria-controls={detailId}
-              onClick={()=>setExpanded(open?undefined:id)}>
-              <span className="me-task-record-identity">
-                <strong>{t.batch} {id.slice(0,8)}</strong>
-                {models.length>0&&<small title={models.join(' · ')}>{models.slice(0,2).join(' · ')}{models.length>2?' …':''}</small>}
-              </span>
-              <MetaTime value={batch.createdAt}/>
-              <Badge status={batchStatus(batch)}/>
-              <span className="me-task-record-count"><DataValue value={runs.length} unit={t.configCount}/></span>
-              <span className="me-task-record-progress">
-                <span className="dsh-sr-only">已判分</span>
-                <DataValue value={required?graded:'—'} unit={required?`/ ${required.toLocaleString('zh-CN')} 题`:undefined}/>
-              </span>
-              <span className="me-task-record-chevron"><Icon name="chevron"/></span>
-            </button>
-            <div id={detailId} hidden={!open}>{open&&renderBatch(batch,runs)}</div>
-          </li>;
-        })}
-      </ul>;
+    return <ul className="me-card me-batch-records" aria-label="待处理批次">
+      {pendingBatches.map(batch=>{
+        const runs=runsFor(batch);
+        const {graded,required}=readBatchProgress(runs);
+        const id=batch.batchId;
+        const open=expanded===id;
+        const progress=<>
+          <span className="dsh-sr-only">已判分</span>
+          <DataValue value={required?graded:'—'} unit={required?`/ ${required.toLocaleString('zh-CN')} 题`:undefined}/>
+        </>;
+        return <BatchRecord key={id} batchId={id} runs={runs} createdAt={batch.createdAt} status={batchStatus(batch)}
+          readout={progress} open={open} toggle={()=>setExpanded(open?undefined:id)}>
+          {open&&renderBatch(batch,runs)}
+        </BatchRecord>;
+      })}
+    </ul>;
   }
 
   return <div className="me-task-workbench" ref={workbench}>

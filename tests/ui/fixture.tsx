@@ -96,6 +96,34 @@ let diagnosticEnabled=false,diagnosticRecord:import('../../src/diagnostics/contr
 const previewRuns=(window as Window&{timingPreviewRuns?:RunSummary[]}).timingPreviewRuns;
 if(previewRuns){runs=previewRuns;protocols.writingId='work-writing-12-v3';}
 let batches:BatchView[]=runs.map(x=>({batchId:x.batchId,runIds:[x.runId],status:'completed',createdAt:x.createdAt!,execution:{concurrency:4,callTimeoutMs:300000}})),active:string|undefined,prepared=!params.has('empty')&&!params.has('environmentUnprepared'),tierPreparationDone=false,root='C:\\Users\\demo\\.dsh-model-coordinates';
+if(params.has('batchRecords')){
+  const finished=Array.from({length:8},(_,index)=>{
+    const name=index===0?models[1]!.modelId:index===1?models[0]!.modelId:'Model-'+(index+1);
+    const row=run(name,[82,79,76,85],81+index);
+    row.batchId='f0000001-0000-4000-8000-000000000001';
+    row.createdAt='2026-11-18T03:04:00Z';
+    return row;
+  });
+  const paused=run('Paused-model',[75,80,85,80],78);
+  paused.batchId='f0000002-0000-4000-8000-000000000002';
+  paused.createdAt='2026-11-17T03:04:00Z';
+  delete paused.completedAt;
+  const writing=paused.tracks.writing!;
+  writing.status='pending';
+  writing.graded=7;
+  delete writing.score;
+  delete writing.completedAt;
+  const cleared=run('Legacy-cleared-model',[65,70,75,80],86);
+  cleared.batchId='f0000003-0000-4000-8000-000000000003';
+  cleared.createdAt='2026-11-16T03:04:00Z';
+  cleared.details='cleared';
+  cleared.resumeAllowed=false;
+  runs=[cleared,paused,...finished];
+  batches=[
+    {batchId:paused.batchId,runIds:[paused.runId],status:'paused',createdAt:paused.createdAt,execution:{concurrency:1,callTimeoutMs:300000}},
+    {batchId:finished[0]!.batchId,runIds:finished.map(row=>row.runId),status:'completed',createdAt:finished[0]!.createdAt!,execution:{concurrency:1,callTimeoutMs:300000}},
+  ];
+}
 if(params.has('running')){const r=runs[0]!;runs=[r];r.createdAt=new Date(Date.now()-305000).toISOString();delete r.completedAt;r.metrics.activeIntervals=[{startedAt:r.createdAt}];r.metrics.tracks.general!.answer.usageCoverage=.9;for(const t of Object.values(r.tracks)){t.status='running';t.graded=Math.floor(t.required/2);delete t.score;}batches=[{batchId:r.batchId,runIds:[r.runId],status:'running',createdAt:r.createdAt,execution:{concurrency:4,callTimeoutMs:300000}}];active=r.batchId;}
 if(params.has('cacheTotals')){const r=runs[0]!;delete r.tracks.writing;r.metrics.tracks={general:{answer:{calls:1,failures:0,usageCoverage:1,inputTokens:10,outputTokens:20,totalTokens:120,cacheReadTokens:90,recordedTokens:120,recordedUsageCoverage:1},judge:{calls:0,failures:0,usageCoverage:0},gradingMs:0}};}
 if(params.has('cacheBoth')){const p=runs[0]!.metrics.tracks.general!.answer;p.cacheReadTokens=432768;p.cacheWriteTokens=123456;p.totalTokens=p.recordedTokens=1234567;}
@@ -225,6 +253,7 @@ async function operation(action:string,p:any):Promise<any>{
     case 'resume':{const b=batches.find(x=>x.batchId===p.batchId)!;if(params.has('eta')){b.status='running';active=b.batchId;b.estimate={...b.estimate!,state:'calibrating'};for(const r of runs)r.metrics.activeIntervals.push({startedAt:new Date().toISOString()});return {batches};}b.status='completed';active=undefined;for(const id of b.runIds){const r=runs.find(x=>x.runId===id)!;for(const value of Object.values(r.tracks)){value.status='completed';value.graded=value.required;value.answered=value.required;value.score=75;value.completedAt=new Date().toISOString();}r.revision++;}return {batches};}
     case 'report':{const summary=runs.find(x=>x.runId===p.runId)!;return {rootId:root,rootEpoch:fixtureRootEpoch,summary,...(!params.has('unrecordedExecution')?{execution:{...batches.find(b=>b.batchId===summary.batchId)?.execution,...(params.has('newTimeoutPolicy')?{failurePolicy:'skip-observed-timeout-v1'}:{})}}:{}),...(p.includeQuestions===false?{}:{questions:params.has('attemptLog')?[{id:'writing/fixture-log',datasetId:'writing',track:'writing',answered:true,grade:null}]:params.has('longReport')?Array.from({length:80},(_,i)=>({id:'fixture/q'+i,datasetId:'tiny-mmlu',track:'general',answered:true,grade:{kind:'scored',track:'general',passed:false,evidence:{metric:'accuracy'}}})):[{id:params.has('codingDiagnostics')?'coding/fixture/1':'tiny-mmlu/tiny-mmlu:0',datasetId:params.has('codingDiagnostics')?'code-contests-selected':'tiny-mmlu',track:'general',answered:true,grade:{kind:'scored',track:'general',itemId:'tiny-mmlu/tiny-mmlu:0',passed:false,evidence:{metric:'accuracy'}}}]} )};}
     case 'item':if(params.has('longReport'))await new Promise(r=>setTimeout(r,150));return {rootId:params.has('wrongItemRoot')?'other-root':root,rootEpoch:fixtureRootEpoch,question:{id:p.itemId,track:params.has('attemptLog')?'writing':'general',datasetId:params.has('attemptLog')?'writing':params.has('codingDiagnostics')?'code-contests-selected':'tiny-mmlu',sourceId:'fixture',sourceHash:'fixture',prompt:[{role:'user',content:'这是界面测试题目。'}],grading:null},item:{itemId:p.itemId,answer:{text:params.has('attemptLog')?'这是已保存的测试答卷。':params.has('diagnosticLong')?'# 长代码与材料说明，用于界面换行检查。\n'.repeat(500):params.has('wrongItemRoot')?'MISMATCH_ROOT_ANSWER':'<img src=x onerror="window.fixtureInjected=true">',complete:true,truncated:false},grade:{kind:'scored',track:'general',itemId:p.itemId,passed:false,evidence:{metric:'accuracy'}},attempts:params.has('attemptLog')?attemptLogFixtures:[]}};
+    case 'formalHistoryUsage':return {runs:usage().runs};
     case 'previewCleanup':{const token=crypto.randomUUID(),selected=runs.filter(r=>p.batchIds.includes(r.batchId)),preview={token,rootId:'fixture',batchIds:[...new Set(p.batchIds)],runs:selected.map(r=>({runId:r.runId,revision:r.revision,losesResume:Object.values(r.tracks).some(x=>x.status!=='completed')})),bytes:selected.reduce((n,r)=>n+detailBytes(r),0),expiresAt:new Date(Date.now()+600000).toISOString()};previews.set(token,preview);return preview;}
     case 'cleanupStatus':return operations.get(p.token)??null;
     case 'commitCleanup':{const preview=previews.get(p.token),partial=params.has('partial')&&!attempted.has(p.token),op={operationId:p.token,status:partial?'partial':'completed',plannedBytes:preview.bytes,deletedBytes:partial?preview.bytes/2:preview.bytes,unconfirmedBytes:0,remainingBytes:partial?preview.bytes/2:0,failedFiles:partial?1:0};operations.set(p.token,{...op,status:'running'});await new Promise(r=>setTimeout(r,650));attempted.add(p.token);for(const selected of preview.runs){const r=runs.find(x=>x.runId===selected.runId)!;r.details=partial?'partial':'cleared';r.resumeAllowed=false;r.revision++;}operations.set(p.token,op);return op;}

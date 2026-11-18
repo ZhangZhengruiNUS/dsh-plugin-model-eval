@@ -1,38 +1,9 @@
 .me-task-workbench {--me-task-inset:18px;min-width:0}
 .model-eval .me-task-workbench .me-task-list-bar {min-height:38px;margin-block-end:14px}
 .me-task-empty-actions {justify-content:center}
-.model-eval .me-card.me-task-records,.model-eval .me-card.me-live-task {overflow:visible}
-.me-task-records {padding:0;margin:0;list-style:none}
-.me-task-records>li+li {border-block-start:1px solid var(--me-border)}
-.me-task-record {
-  display:grid;grid-template-columns:minmax(7rem,1fr) minmax(8rem,1fr) 5rem 5.5rem 7rem 18px;
-  grid-template-areas:"identity date state count progress arrow";
-  align-items:center;gap:8px 16px;width:100%;min-height:48px;
-  padding:8px var(--me-task-inset);border:0;border-radius:0;
-  background:none;color:var(--me-text);font:inherit;text-align:start;cursor:pointer;
-}
-.me-task-records>li:first-child>.me-task-record {
-  border-start-start-radius:calc(var(--ui-radius-card,12px) - 1px);
-  border-start-end-radius:calc(var(--ui-radius-card,12px) - 1px);
-}
-.me-task-records>li:last-child>.me-task-record[aria-expanded=false] {
-  border-end-start-radius:calc(var(--ui-radius-card,12px) - 1px);
-  border-end-end-radius:calc(var(--ui-radius-card,12px) - 1px);
-}
-.me-task-record:hover,.me-task-record[aria-expanded=true] {background:var(--me-hover)}
-.model-eval .me-task-record:focus-visible {outline:2px solid var(--ui-focus,var(--me-accent));outline-offset:-2px}
-.me-task-record-identity {grid-area:identity;display:grid;min-width:0;line-height:1.35}
-.me-task-record-identity>strong {font-size:13px;font-weight:600}
-.me-task-record-identity>small {color:var(--me-muted);font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.me-task-record>time {grid-area:date;color:var(--me-muted);font-size:12px}
-.me-task-record>.me-badge {grid-area:state;justify-self:start}
-.me-task-record-count {grid-area:count;color:var(--me-muted);font-size:12px}
-.me-task-record-progress {grid-area:progress;justify-self:end;font-size:13px;font-variant-numeric:tabular-nums}
-.me-task-record-chevron {grid-area:arrow;color:var(--me-muted);display:grid;place-items:center}
-.me-task-record[aria-expanded=true]>.me-task-record-chevron {transform:rotate(180deg)}
+.model-eval .me-card.me-live-task {overflow:visible}
 .me-task-no-records {display:flex;align-items:center;flex-wrap:wrap;gap:4px 12px;padding:12px var(--me-task-inset);color:var(--me-muted);font-size:13px}
 
-.me-task-records .me-task-detail {border-block-start:1px solid var(--me-border)}
 .me-task-detail-head {
   display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;
   gap:8px 16px;padding:12px var(--me-task-inset);
@@ -40,7 +11,7 @@
 .me-task-detail-head h2 {margin:0;font-size:16px;line-height:1.35}
 .me-task-detail-head .me-record-meta {margin-block-start:3px}
 .me-task-detail-head .me-actions {margin-inline-start:auto}
-.me-task-records .me-task-detail-head:has(>.me-actions:empty) {display:none}
+.me-batch-record-panel .me-task-detail-head:has(>.me-actions:empty) {display:none}
 .me-task-progress {display:grid;gap:6px;padding:10px var(--me-task-inset)}
 .me-task-progress-readout {display:flex;justify-content:space-between;align-items:baseline;gap:8px;color:var(--me-muted);font-size:12px}
 .me-task-progress-readout strong {font-size:15px;font-weight:600;font-variant-numeric:tabular-nums;color:var(--me-text)}
@@ -65,22 +36,24 @@
 .me-task-resume-help {margin-inline:var(--me-task-inset);margin-block-end:6px}
 .model-eval .me-task-detail>.me-inline-warning {margin:0 var(--me-task-inset) 8px}
 
-.model-eval .me-task-detail .me-controlled-run {
-  display:grid;grid-template-columns:minmax(11rem,1fr) 5rem minmax(10rem,.8fr) 13rem;
-  grid-template-areas:"model state results actions";
-  min-height:56px;padding:6px var(--me-task-inset);gap:4px 12px;
+.model-eval .me-compact-run {
+  display:grid;min-height:56px;padding:6px var(--me-batch-inset,var(--me-task-inset));gap:4px 12px;
 }
-.model-eval .me-task-detail .me-run-model {grid-area:model;min-width:0}
-.me-task-detail .me-run-status {grid-area:state}
-.me-task-detail .me-model-meta {display:flex;align-items:baseline;flex-wrap:wrap;gap:2px 6px;color:var(--me-muted);font-size:11px}
-.me-task-detail .me-model-meta .me-params {margin:0}
-.model-eval .me-task-detail .me-model-meta .me-params>span {padding:0 4px;line-height:1.45}
-.model-eval .me-task-detail .me-track-results {grid-area:results;display:grid;gap:4px 8px;margin:0}
-.me-task-detail .me-track-results.both-tracks {grid-template-columns:repeat(2,minmax(0,1fr))}
-.me-task-detail .me-track-results.both-tracks [data-track="writing"] {grid-column:2}
-.me-task-detail .me-track-results>div {min-width:0;gap:0}
-.me-task-detail .me-track-results>div>span:first-child {font-size:11px;line-height:1.4}
-.me-task-detail .me-track-results :is(.me-score,.me-mono) {font-size:14px;font-weight:600}
+.model-eval .me-task-detail .me-controlled-run {
+  grid-template-columns:minmax(11rem,1fr) 5rem minmax(10rem,.8fr) 13rem;
+  grid-template-areas:"model state results actions";
+}
+.model-eval .me-compact-run .me-run-model {grid-area:model;min-width:0}
+.me-compact-run .me-run-status {grid-area:state}
+.me-compact-run .me-model-meta {display:flex;align-items:baseline;flex-wrap:wrap;gap:2px 6px;color:var(--me-muted);font-size:11px}
+.me-compact-run .me-model-meta .me-params {margin:0}
+.model-eval .me-compact-run .me-model-meta .me-params>span {padding:0 4px;line-height:1.45}
+.model-eval .me-compact-run .me-track-results {grid-area:results;display:grid;gap:4px 8px;margin:0}
+.me-compact-run .me-track-results.both-tracks {grid-template-columns:repeat(2,minmax(0,1fr))}
+.me-compact-run .me-track-results.both-tracks [data-track="writing"] {grid-column:2}
+.me-compact-run .me-track-results>div {min-width:0;gap:0}
+.me-compact-run .me-track-results>div>span:first-child {font-size:11px;line-height:1.4}
+.me-compact-run .me-track-results :is(.me-score,.me-mono) {font-size:14px;font-weight:600}
 .model-eval .me-task-detail .me-run-actions {grid-area:actions;margin:0;justify-content:flex-end}
 .me-task-detail .me-run-action-short {display:none}
 .model-eval .me-task-detail :is(.me-run-warning,.me-run-preserved) {grid-column:1/-1;margin:0}
@@ -90,9 +63,6 @@
 
 @container me-workbench (max-width:760px) {
   .me-task-workbench {--me-task-inset:14px}
-  .me-task-record {gap:4px 8px;grid-template-columns:minmax(7rem,1fr) 5rem 6rem 18px;
-    grid-template-areas:"identity state progress arrow" "date count progress arrow"}
-  .me-task-record>time {font-size:11px}
   .me-task-readouts:has(>.me-estimate) {grid-template-columns:minmax(0,1fr) minmax(0,1.1fr)}
   .model-eval .me-task-detail .me-controlled-run {
     grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"model state" "results actions";
@@ -102,9 +72,6 @@
 }
 @container me-workbench (max-width:490px) {
   .me-task-workbench {--me-task-inset:12px}
-  .me-task-record {grid-template-columns:minmax(0,1fr) auto auto 16px;
-    grid-template-areas:"identity identity state arrow" "date count progress arrow"}
-  .me-task-record-progress {font-size:12px}
   .me-task-readouts:has(>.me-estimate) {grid-template-columns:minmax(0,1fr);gap:10px}
   .me-task-readouts .me-estimate-main {grid-template-columns:auto minmax(0,1fr);align-items:baseline;column-gap:8px}
   .me-task-readouts .me-estimate-main>small {grid-column:1/-1}

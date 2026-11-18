@@ -11,6 +11,7 @@ import disclosure from './disclosure.css';
 import workbench from './workbench.css';
 import dataReadouts from './data-readout.css';
 import taskWorkbench from './task-workbench.css';
+import batchRecords from './batch-records.css';
 import glass from './glass.css';import surfaces from './surfaces.css';import dialogs from './dialogs.css';
 import * as React from 'react';import {createClientApi,type ClientApi} from './api.ts';import {zh as t} from './locales.ts';import {activityUnavailable,Button,Icon,type ViewData,type PageProps,type LocalPreparation,Empty,ModalHostContext} from './ui.tsx';import {Compare} from './pages/Compare.tsx';import {NewRun,type BackgroundSpeedDraft} from './pages/NewRun.tsx';import {Progress} from './pages/Progress.tsx';import {History} from './pages/History.tsx';import {Settings} from './pages/Settings.tsx';import {Report} from './pages/Report.tsx';import styles from './styles.css';
 import type {ComparisonMetadata} from '../comparison/contracts.ts';
@@ -229,7 +230,7 @@ export function App({api:provided,references}:{api?:ClientApi;references?:readon
     },
     newRun:()=>{if(savedRun||canCreateRun){setNewRun(scope);void loadModels();if(!savedRun)void prepareCurrent();}},navigate,
   }:undefined;
-  return <ModalHostContext.Provider value={uiRoot}><div ref={uiRoot} className="model-eval" data-dsh-ui="" data-material="glass" data-palette="moss" data-appearance={appearance}><style>{comparisonStyle+'\n'+styles+'\n'+evaluationBasis+'\n'+glass+'\n'+surfaces+'\n'+dialogs+'\n'+uiTokens+'\n'+uiControls+'\n'+uiAdapter+'\n'+uiMaterials+'\n'+materialLayout+'\n'+disclosure+'\n'+workbench+'\n'+dataReadouts+'\n'+taskWorkbench}</style><div className="me-shell">
+  return <ModalHostContext.Provider value={uiRoot}><div ref={uiRoot} className="model-eval" data-dsh-ui="" data-material="glass" data-palette="moss" data-appearance={appearance}><style>{comparisonStyle+'\n'+styles+'\n'+evaluationBasis+'\n'+glass+'\n'+surfaces+'\n'+dialogs+'\n'+uiTokens+'\n'+uiControls+'\n'+uiAdapter+'\n'+uiMaterials+'\n'+materialLayout+'\n'+disclosure+'\n'+workbench+'\n'+dataReadouts+'\n'+taskWorkbench+'\n'+batchRecords}</style><div className="me-shell">
     <WorkbenchNav view={view} hasActiveJob={Boolean(data?.queue.activeBatchId)} onNavigate={navigate}/>
     <main ref={pageScroll} className="me-main" aria-labelledby={pageHeadingId}><header className="me-page-head"><h1 id={pageHeadingId}>{t[view]}</h1></header>{data&&!data.status.writable&&<div className="me-inline-warning">{t.readonly}</div>}{data?.status.preparing&&<div className="me-active-banner" role="status"><span className="me-pulse"/><span>{t.environmentCheckingHelp}</span></div>}{data?.queue.activeBatchId&&view!=='jobs'&&<div className="me-active-banner"><span className="me-pulse"/><strong>{t.active}</strong><span>{data.queue.batches.find(x=>x.batchId===data.queue.activeBatchId)?.batchId.slice(0,8)}</span><Button kind="text" onClick={()=>navigate('jobs')} icon="arrow">{t.viewProgress}</Button></div>}
   {(speedActivity||speedInBackground)&&<div className="me-active-banner">
