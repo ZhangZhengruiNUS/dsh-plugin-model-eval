@@ -17,7 +17,7 @@ export function History(props:PageProps){
   return <div className="me-history-view">
     <SelectionBar<(typeof historyTabs)[number]["id"]> label="历史类型" value={tab} panelId={panelId} tabs={historyTabs} onChange={setTab}/>
     <div className="me-history-content" id={panelId} role="tabpanel" aria-labelledby={`${panelId}-${tab}`} tabIndex={0}>
-      {tab==='formal'?<FormalHistory {...props} key={props.data.status.rootId}/>:tab==='timing'?<TimingHistory {...props} key={props.data.status.rootId}/>:<SpeedHistory key={props.data.status.rootId} api={props.api} writable={props.data.status.writable} {...(props.data.status.activeActivity?{activeActivity:props.data.status.activeActivity}:{})} onRefresh={()=>void props.act(async()=>true)}/>}
+      {tab==='formal'?<FormalHistory {...props} key={props.data.status.rootId}/>:tab==='timing'?<TimingHistory {...props} key={props.data.status.rootId}/>:<SpeedHistory {...props} key={props.data.status.rootId}/>}
     </div>
   </div>;
 }

@@ -83,3 +83,8 @@
 @media (forced-colors:active) {
   .model-eval .me-batch-record-toggle:focus-visible {outline-color:Highlight}
 }
+
+.me-record-details {display:grid;gap:8px;padding:12px var(--me-batch-inset)}
+.me-record-details p {margin-block:0}
+.me-record-details .me-condition-card {margin-block-start:8px}
+.me-record-details pre {max-block-size:160px;overflow:auto}

@@ -179,6 +179,15 @@ const speedRows=new Map<string,SpeedSession>(),speedPolls=new Map<string,number>
 const upgradeRows=new Map<string,any>();
 const detailBytes=(r:RunSummary)=>r.details==='cleared'?0:r.details==='partial'?5*1024**2:10*1024**2;
 const usage=()=>({historyBytes:runs.reduce((n,r)=>n+detailBytes(r)+4096,2000),resourceBytes:157878838,sharedBytes:2000,measurement:'file-bytes',runs:runs.map(r=>({runId:r.runId,batchId:r.batchId,detailBytes:detailBytes(r),summaryBytes:4096,totalBytes:detailBytes(r)+4096}))});
+if(params.has('historyTabs')){
+  for(const [index,state] of ['completed','failed','interrupted'].entries()){
+    const id=crypto.randomUUID(),createdAt=new Date(Date.UTC(2026,10,18-index)).toISOString();
+    const estimate:EstimateSnapshot={algorithm:'estimate-v3',asOf:createdAt,state:'calibrating',
+      coverage:{known:0,required:1},sources:[],reasons:index===0?['NO_APPLICABLE_BASELINE']:[]};
+    speedRows.set(id,{version:1,previewId:id,rootId:'fixture',revision:1,createdAt,updatedAt:createdAt,
+      status:state as SpeedSession['status'],configs:[],budgetMinutes:1,estimate});
+  }
+}
 const timingA=crypto.randomUUID(),timingB=crypto.randomUUID(),timingShared=crypto.randomUUID();let timingFiles=params.has('timing')?[{traceId:timingA,bytes:1024},{traceId:timingB,bytes:1024},{traceId:timingShared,bytes:4096}]:[],timingRows:TimingGroup[]=params.has('timing')?[{id:runs[0]!.runId,kind:'run',createdAt:new Date().toISOString(),active:false,traceIds:[timingA,timingShared]},{id:runs[1]!.runId,kind:'run',createdAt:new Date().toISOString(),active:false,traceIds:[timingB,timingShared]}]:[];
 let timingFinishing=params.has('timingFinish'),timingFinishScheduled=false;
 if(timingFinishing)timingRows.forEach(g=>g.active=true);
@@ -223,6 +232,7 @@ async function operation(action:string,p:any):Promise<any>{
     case 'timingHistory':if(timingFinishing&&!timingFinishScheduled){timingFinishScheduled=true;setTimeout(()=>{timingFinishing=false;timingRows=timingRows.map(g=>({...g,active:false}));timingFiles[0]!.bytes+=1024;},300);}return {groups:[...timingRows],traces:[...timingFiles],totalBytes:timingFiles.reduce((n,f)=>n+f.bytes,0)};
     case 'previewTimingCleanup':{const traceIds=timingCleanupIds(timingRows,p.groupIds),token=crypto.randomUUID(),bytes=timingFiles.filter(f=>traceIds.includes(f.traceId)).reduce((n,f)=>n+f.bytes,0),preview={token,traceIds,bytes,expiresAt:new Date(Date.now()+600000).toISOString()};previews.set(token,{...preview,groupIds:p.groupIds});return preview;}
     case 'commitTimingCleanup':{const preview=previews.get(p.token);await new Promise(r=>setTimeout(r,250));timingRows=timingRows.filter(g=>!preview.groupIds.includes(g.id));timingFiles=timingFiles.filter(f=>!preview.traceIds.includes(f.traceId));return {token:p.token,status:'completed',deletedBytes:preview.bytes,remainingBytes:0,unconfirmedBytes:0};}
+    case 'speedHistoryUsage':return {previews:[...speedRows.keys()].map(previewId=>({previewId,totalBytes:8192}))};
     case 'speedHistory':return [...speedRows.values()];
     case 'previewSpeedCleanup':{const token=crypto.randomUUID(),preview={token,rootId:'fixture',previewIds:p.previewIds,bytes:p.previewIds.length*8192,expiresAt:new Date(Date.now()+600000).toISOString()};previews.set(token,preview);return preview;}
     case 'speedCleanupStatus':return operations.get(p.token)??null;
