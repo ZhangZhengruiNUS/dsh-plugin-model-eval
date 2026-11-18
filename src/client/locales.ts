@@ -16,9 +16,9 @@ export const zh={
   general:'通用能力',writing:'中文写作',generalNote:'固定题集完整评测 · 按同协议比较',writingNote:'独立写作成绩 · 记录每题裁判条件，允许跨裁判比较',
   domains:{knowledge:'知识与推理',math:'数学推理',reading:'资料理解',instructions:'指令遵循',coding:'编程解题',tools:'工具使用','tiny-mmlu':'知识与推理','tiny-gsm8k':'数学推理',ifeval:'指令遵循','humaneval-plus':'编程解题'},
   dimensions:{faithfulness:'忠实与准确',logic:'逻辑与结构',coverage:'任务覆盖',concision:'简洁与具体',naturalness:'自然与得体'},
-  statuses:{stopping:'正在收尾',stopped:'已停止',interrupted:'已中断',failed:'失败',queued:'排队中',checking:'检查中',running:'进行中',paused:'已暂停',pending:'待补测',completed:'已完成',attention:'待处理',held:'已挂起',removed:'已移出',ended:'已结束'},
+  statuses:{stopping:'正在收尾',stopped:'已停止',interrupted:'已中断',failed:'失败',queued:'排队中',checking:'检查中',running:'进行中',paused:'已暂停',pending:'待补测',completed:'已完成',attention:'待处理',held:'已暂停',removed:'已移出',ended:'已结束'},
   runControl:{
-    hold:'挂起此配置',resume:'继续此配置',remove:'移出本批次',rejoin:'重新加入',
+    hold:'暂停此配置',resume:'继续此配置',remove:'移出本批次',rejoin:'重新加入',
     busy:'正在处理当前操作，请稍候。',readonly:'数据目录为只读，请在设置中切换到可写目录。',
     settling:'正在保存此配置的进度，请稍候。',unavailable:'逐题明细不可用，无法补测。',
     removeBody:'移出后停止此配置的后续评测。已有成绩、答卷和用量保留，之后可以重新加入。',

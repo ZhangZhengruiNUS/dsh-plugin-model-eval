@@ -1,4 +1,5 @@
-import {ExecutionSettings} from '../components/ExecutionSettings.tsx';
+import {ExecutionSettings,concurrencyOptions} from '../components/ExecutionSettings.tsx';
+import {Select} from '../primitives/Select.tsx';
 import {Checkbox,Field,Radio,TextInput} from '../primitives/primitives.tsx';
 import {isFiveCapabilitySchema,isLongTasksFirstSchema} from '../../evaluation/five-schema.ts';
 import {generalEditionLabel,generalEditionOrder,generalReleaseName} from '../protocol-editions.ts';
@@ -11,8 +12,8 @@ import {SpeedPreview,type SpeedPayload,type SpeedPreviewSession} from '../compon
 import {ModelSelect} from '../components/ModelSelect.tsx';
 import {LocalPreparationNotice,PreparationNotice} from '../components/PreparationNotice.tsx';
 import {DEFAULT_SPEED_SECONDS} from '../../speed/budget.ts';
-import * as React from 'react';import type {ModelChoice,ParamValue,TargetSnapshot,Track} from '../../contracts.ts';import type {ClientApi} from '../api.ts';import {zh as t} from '../locales.ts';import {ActionButton,activityUnavailable,Button,Modal,type LocalPreparation,type PageProps} from '../ui.tsx';
-export interface Draft {id:string;model:string;deployment:string;fields:Record<string,string>;snapshot?:{handle:string;target:TargetSnapshot}}
+import * as React from 'react';import type {ModelChoice,ParamValue,RunConcurrency,TargetSnapshot,Track} from '../../contracts.ts';import type {ClientApi} from '../api.ts';import {zh as t} from '../locales.ts';import {ActionButton,activityUnavailable,Button,Modal,type LocalPreparation,type PageProps} from '../ui.tsx';
+export interface Draft {id:string;concurrency?:RunConcurrency;model:string;deployment:string;fields:Record<string,string>;snapshot?:{handle:string;target:TargetSnapshot}}
 export interface BackgroundSpeedDraft {
   session:SpeedPreviewSession;
   drafts:Draft[];
@@ -22,6 +23,7 @@ export interface BackgroundSpeedDraft {
   judge:Draft;
   concurrency:number;
   timeout:number;
+  parallelLimit?:string|undefined;
   speedBudget:string;
   scrollTop:number;
 }
@@ -29,7 +31,7 @@ export const emptyDraft=():Draft=>({id:crypto.randomUUID(),model:'',deployment:'
 const fields=['temperature','maxTokens','reasoningEffort','stop'] as const;
 export function ConfigEditor({draft,models,modelsLoading=false,api,change,reportError,label,defaultModelLabel}:{draft:Draft;models:ModelChoice[];modelsLoading?:boolean;api:ClientApi;change(draft:Draft):void;reportError(message:string):void;label:string;defaultModelLabel?:string|undefined}){
   const [loading,setLoading]=React.useState(false);const generation=React.useRef(0);
-  async function select(model:string){if(model===draft.model&&draft.snapshot)return;reportError('');const id=++generation.current;change({...emptyDraft(),id:draft.id,model});if(!model)return;setLoading(true);try{const [providerId,modelId]=JSON.parse(model);const snapshot=await api<{handle:string;target:TargetSnapshot}>('snapshot',{providerId,modelId});if(id===generation.current)change({id:draft.id,model,deployment:'',fields:{},snapshot});}catch(error){reportError((error as Error).message);}finally{if(id===generation.current)setLoading(false);}}
+  async function select(model:string){if(model===draft.model&&draft.snapshot)return;reportError('');const id=++generation.current;const {snapshot:_previous,...base}=draft;change({...base,model,deployment:'',fields:{}});if(!model)return;setLoading(true);try{const [providerId,modelId]=JSON.parse(model);const snapshot=await api<{handle:string;target:TargetSnapshot}>('snapshot',{providerId,modelId});if(id===generation.current)change({...draft,model,deployment:'',fields:{},snapshot});}catch(error){reportError((error as Error).message);}finally{if(id===generation.current)setLoading(false);}}
   const edited=Object.keys(draft.fields).length;
   return <div className="me-config-editor"><ModelSelect label={label} value={draft.model} models={models} onChange={model=>void select(model)} disabled={loading||modelsLoading} placeholder={modelsLoading?'正在读取模型…':loading?t.loading:'请选择'} {...(defaultModelLabel?{defaultLabel:defaultModelLabel}:{})}/>{!modelsLoading&&!models.length&&<p className="me-help">{t.noModels}</p>}
   {draft.snapshot&&<><Field label={t.configNoteOptional} hint={t.configNoteHint}><TextInput maxLength={100} value={draft.deployment} onChange={e=>change({...draft,deployment:e.target.value})} placeholder={t.configNotePlaceholder}/></Field><Disclosure kind="settings" title={t.params} value={edited?"已调整 "+edited+" 项":"沿用宿主设置"}><p className="me-help">{t.defaults}</p><div className="me-fields">{fields.map(key=>{const p=draft.snapshot!.target.controls[key],value=draft.fields[key]??(p?.state==='known'?typeof p.value==='string'?p.value:JSON.stringify(p.value):'');return <label key={key}>{t[key]}<TextInput type={key==='temperature'||key==='maxTokens'?'number':'text'} step={key==='temperature'?'0.1':'1'} min={key==='temperature'?0:key==='maxTokens'?1:undefined} value={value} onChange={e=>change({...draft,fields:{...draft.fields,[key]:e.target.value}})} placeholder={t.inherit} aria-label={t[key]} aria-describedby={draft.id+'-'+key+'-help'}/><small id={draft.id+'-'+key+'-help'} className="me-param-help">{t.parameterHelp[key]}</small></label>;})}</div></Disclosure></>}
@@ -103,6 +105,14 @@ export function NewRun({onClose,onBackground,saved,preparation,onRetryPreparatio
  const [error,setError]=React.useState(''),[preview,setPreview]=React.useState<{key:string;id:string}>();
  const [probing,setProbing]=React.useState(!!saved),[probeStarting,setProbeStarting]=React.useState(false),[closing,setClosing]=React.useState(false);
  const [copyOpen,setCopyOpen]=React.useState(false);
+ const [pickerOpen,setPickerOpen]=React.useState(false);
+ const pickerOpener=React.useRef<HTMLButtonElement|null>(null);
+ const [parallelLimit,setParallelLimit]=React.useState(saved?.parallelLimit);
+ const modelCount=drafts.length;
+ const limitChoice=modelCount===1?'1':parallelLimit==='all'||Number(parallelLimit??2)>=modelCount?'all':parallelLimit??'2';
+ const parallelModels=limitChoice==='all'?modelCount:Number(limitChoice);
+ const allocations=drafts.map(draft=>modelCount===1?concurrency:draft.concurrency??concurrency);
+ const customScheduling=parallelModels>1||allocations.some(value=>value!==concurrency);
  const [advisorOpen,setAdvisorOpen]=React.useState(!!saved);
  const formBody=React.useRef<HTMLDivElement>(null);
  const advisorTrigger=React.useRef<HTMLDivElement>(null);
@@ -148,8 +158,8 @@ export function NewRun({onClose,onBackground,saved,preparation,onRetryPreparatio
    general&&!selectedTier?'当前没有可用的通用评测协议。':
    writing&&!judgeReady?(judge.model?'裁判配置尚未就绪，请检查所选裁判。':'请先选择写作裁判。'):
    !Number.isInteger(timeout)||timeout<1||timeout>1800?'请将无输出等待上限设为 1–1800 秒。':undefined;
- const advisorReady=!advisorPrerequisite;
- const advisorUnavailable=probing?undefined:advisorPrerequisite;
+ const advisorReady=!advisorPrerequisite&&!customScheduling;
+ const advisorUnavailable=probing?undefined:advisorPrerequisite??(customScheduling?'用时参考适用于顺序运行且题目并发数相同的配置。':undefined);
  const scope=[general&&selectedTier?(generalReleaseName(selectedTier.descriptor.refs,true)??generalTitle+' · '+tierName(selectedTier)):'',
    writing?writingTitle:''].filter(Boolean).join('　/　');
  const advisorNames=drafts.map((draft,i)=>{
@@ -182,15 +192,28 @@ export function NewRun({onClose,onBackground,saved,preparation,onRetryPreparatio
    if(startUnavailable||closing||startingEvaluation)return;
    setError('');setStartingEvaluation(true);
    try{
-     const result=await props.act(async()=>props.api('createBatch',{...await request(),...(preview?.key===draftKey?{previewId:preview.id}:{})}));
+     const result=await props.act(async()=>props.api('createBatch',{...await request(),modelConcurrency:allocations,...(parallelModels>1?{parallelModels}:{}),...(!customScheduling&&preview?.key===draftKey?{previewId:preview.id}:{})}));
      if(result){onClose();props.navigate('jobs');}
    }finally{setStartingEvaluation(false);}
  }
  const dialogLocked=props.busy||probeStarting||closing;
- return <><Modal title={t.newRun} onClose={()=>void close()} wide variant="new-run" inactive={advisorOpen} locked={dialogLocked}>
+ async function addModels(choices:ModelChoice[]){
+   const selected=await Promise.all(choices.map(async choice=>{
+     const draft=emptyDraft();
+     const snapshot=await props.api<NonNullable<Draft['snapshot']>>('snapshot',{providerId:choice.providerId,modelId:choice.modelId});
+     return {...draft,model:JSON.stringify([choice.providerId,choice.modelId]),snapshot};
+   }));
+   setDrafts(current=>[...current.filter(draft=>draft.model),...selected].slice(0,maxConfigs));
+   setPickerOpen(false);
+ }
+ return <><Modal title={t.newRun} onClose={()=>void close()} wide variant="new-run" inactive={advisorOpen||pickerOpen} locked={dialogLocked}>
  <div ref={formBody} className="me-dialog-body me-run-form">{preparationNotice&&<LocalPreparationNotice state={preparationNotice} retry={onRetryPreparation} settings={()=>{onClose();props.navigate('settings');}} disabled={retryDisabled}/>}<fieldset className="me-run-fields" disabled={probing||props.busy||closing}>
  <section className="me-form-section me-model-config-section">
-   <h3 className="me-form-title">{t.model}</h3>
+   <div className="me-model-config-heading">
+     <h3 className="me-form-title">{t.model}</h3>
+     <Button icon="plus" aria-haspopup="dialog" onClick={event=>{pickerOpener.current=event.currentTarget;setPickerOpen(true);}}
+         disabled={props.data.modelsLoading||!props.data.models.length||drafts.filter(draft=>draft.model).length>=maxConfigs}>批量选模型</Button>
+   </div>
    <div className="me-config-list">
      {drafts.map((draft,index)=><section className="me-config-card" key={draft.id}>
        <header className="me-config-head">
@@ -202,6 +225,14 @@ export function NewRun({onClose,onBackground,saved,preparation,onRetryPreparatio
        <ConfigEditor draft={draft} models={props.data.models} modelsLoading={!!props.data.modelsLoading} api={props.api}
          change={value=>setDrafts(old=>old.map(x=>x.id===value.id?value:x))}
          reportError={setError} label={t.chooseModel}/>
+       {modelCount>1&&<Select className="me-config-concurrency" label="题目并发数"
+         value={draft.concurrency===undefined?'default':String(draft.concurrency)}
+         options={[{value:'default',label:'沿用默认（'+concurrency+'）'},...concurrencyOptions]}
+         onChange={value=>setDrafts(current=>current.map(item=>{
+           if(item.id!==draft.id)return item;
+           const {concurrency:_previous,...rest}=item;
+           return value==='default'?rest:{...rest,concurrency:Number(value) as RunConcurrency};
+         }))}/>}
      </section>)}
    </div>
    <div onKeyDown={event=>{
@@ -211,7 +242,7 @@ export function NewRun({onClose,onBackground,saved,preparation,onRetryPreparatio
      }
    }}>
      <div className="me-config-actions">
-       <Button icon="plus" onClick={()=>appendConfig()} disabled={drafts.length>=maxConfigs}>{t.addConfig}</Button>
+       <Button onClick={()=>appendConfig()} disabled={drafts.length>=maxConfigs}>{t.addConfig}</Button>
        <Button icon="copy" onClick={chooseCopySource} disabled={drafts.length>=maxConfigs}
          aria-expanded={drafts.length>1?copyOpen:undefined}
          aria-controls={copyOpen?copyChoicesId:undefined}>{t.duplicate}</Button>
@@ -275,7 +306,7 @@ export function NewRun({onClose,onBackground,saved,preparation,onRetryPreparatio
      </div>
    </div>
  </section>
- <ExecutionSettings concurrency={concurrency} timeout={timeout} configurationCount={drafts.length}
+ <ExecutionSettings concurrency={concurrency} timeout={timeout} configurationCount={modelCount} parallelModels={limitChoice} peakCalls={[...allocations].sort((a,b)=>b-a).slice(0,parallelModels).reduce((total,value)=>total+value,0)} onParallelModelsChange={setParallelLimit}
    onConcurrencyChange={setConcurrency} onTimeoutChange={setTimeoutValue}/>
  </fieldset>
  {error&&<p role="alert" className="me-inline-error">{error}</p>}</div>
@@ -287,13 +318,62 @@ export function NewRun({onClose,onBackground,saved,preparation,onRetryPreparatio
    <div className="me-new-run-submit"><Button onClick={()=>void close()} disabled={props.busy||probeStarting||closing}>{t.cancel}</Button>
      <ActionButton kind="primary" icon="play" disabled={closing} unavailableReason={startUnavailable} onClick={()=>void start()}>{startingEvaluation?'正在启动评测…':t.start}</ActionButton></div>
  </footer></Modal>
+ {pickerOpen&&<ModelPicker models={props.data.models} drafts={drafts} maximum={maxConfigs}
+   returnFocusTo={pickerOpener.current} close={()=>setPickerOpen(false)} add={addModels}/>}
  <SpeedPreview id={advisorId} open={advisorOpen} scope={scope} names={advisorNames} locked={dialogLocked} returnFocusTo={advisorOpener.current} onClose={()=>setAdvisorOpen(false)}
    ready={advisorReady} prepared={general?tierReady:writingReady} canProbe={valid&&!props.busy&&!active&&!closing} hostSupportsAdvisor={props.data.status.timeAdvisorVersion===1}
    concurrency={concurrency} {...(currentSelected&&!writing&&(generalId==='general-task-five-v3-r3-light'||generalId==='general-task-five-v3-r3-deep')?{planningTier:generalId.endsWith('-deep')?'deep' as const:'light' as const}:{})}
    budget={speedBudget} onBudgetChange={setSpeedBudget}
    draftKey={draftKey} request={request} api={props.api} {...(props.data.status.activeActivity?{activity:props.data.status.activeActivity}:{})}
    {...(saved?{initialSession:saved.session}:{})}
-   onBackground={session=>onBackground({session,drafts,generalId,general,writing,judge,concurrency,timeout,speedBudget,scrollTop:formBody.current?.scrollTop??0})}
+   onBackground={session=>onBackground({session,drafts,generalId,general,writing,judge,concurrency,timeout,parallelLimit,speedBudget,scrollTop:formBody.current?.scrollTop??0})}
    onAdopt={adoptPreview} onRunningChange={runningChange}
    registerCancel={registerCancel} onRefresh={refresh}/></>;
+}
+
+function ModelPicker({models,drafts,maximum,returnFocusTo,close,add}:{
+  models:ModelChoice[];drafts:Draft[];maximum:number;returnFocusTo:HTMLElement|null;
+  close():void;add(models:ModelChoice[]):Promise<void>;
+}){
+  const [query,setQuery]=React.useState('');
+  const [selected,setSelected]=React.useState<Set<string>>(()=>new Set());
+  const [busy,setBusy]=React.useState(false);
+  const [error,setError]=React.useState('');
+  const key=(model:ModelChoice)=>JSON.stringify([model.providerId,model.modelId]);
+  const existing=new Set(drafts.map(draft=>draft.model).filter(Boolean));
+  const available=models.filter(model=>!existing.has(key(model)));
+  const capacity=maximum-drafts.filter(draft=>draft.model).length;
+  const filter=query.trim().toLowerCase();
+  const shown=available.filter(model=>[model.displayName,model.modelId,model.providerId].some(value=>value.toLowerCase().includes(filter)));
+  async function submit(){
+    if(!selected.size||busy)return;
+    setBusy(true);setError('');
+    try{await add(available.filter(model=>selected.has(key(model))));}
+    catch(error){setError((error as Error).message);}
+    finally{setBusy(false);}
+  }
+  return <Modal title="批量选模型" returnFocusTo={returnFocusTo} onClose={close} locked={busy}>
+    <div className="me-dialog-body me-model-picker">
+      <Field label="搜索模型或供应商"><TextInput type="search" value={query} onChange={event=>setQuery(event.target.value)}/></Field>
+      <div className="me-model-picker-list" role="group" aria-label="可添加的模型">
+        {shown.map(model=>{
+          const id=key(model),checked=selected.has(id);
+          return <label key={id}>
+            <Checkbox checked={checked} disabled={busy||!checked&&selected.size>=capacity}
+              onChange={event=>{const next=new Set(selected);if(event.target.checked)next.add(id);else next.delete(id);setSelected(next);}}/>
+            <span><strong>{model.displayName}</strong><small>{model.providerId}{model.displayName!==model.modelId?' · '+model.modelId:''}</small></span>
+          </label>;
+        })}
+        {!shown.length&&<p className="me-help">{filter?'没有匹配的模型。':'没有可添加的新模型。'}</p>}
+      </div>
+      {selected.size>=capacity&&<p className="me-help">每批最多 {maximum} 个配置。</p>}
+      {error&&<p className="me-inline-error" role="alert">{error}</p>}
+    </div>
+    <footer className="me-dialog-foot">
+      <Button onClick={close} disabled={busy}>{t.cancel}</Button>
+      <Button kind="primary" onClick={()=>void submit()} disabled={!selected.size||busy}>
+        {busy?'正在读取配置…':selected.size?'添加 '+selected.size+' 个模型':'添加模型'}
+      </Button>
+    </footer>
+  </Modal>;
 }

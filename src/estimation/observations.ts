@@ -11,6 +11,7 @@ export function performanceConditionKey(target:TargetSnapshot,protocols:Protocol
   assertFailurePolicy(execution.failurePolicy);
   const identity:unknown[]=[fingerprintTarget(target),protocols.generalId,protocols.writingId,protocols.resourceVersion,execution.concurrency,execution.callTimeoutMs,judge?[fingerprintTarget(judge.target),judge.rubricId,judge.promptId]:null];
   if(execution.failurePolicy)identity.push(execution.failurePolicy);
+  if((execution.parallelModels??1)>1)identity.push({parallelModels:execution.parallelModels});
   return createHash('sha256').update(JSON.stringify(identity)).digest('hex');
 }
 export function normalizeObservation(input:PerformanceSample):PerformanceSample {

@@ -81,3 +81,26 @@
   .me-task-detail .me-run-action-long {display:none}
   .me-task-detail .me-run-action-short {display:inline}
 }
+
+.me-model-bulk {display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:5px 12px;padding:8px var(--me-task-inset);border-top:1px solid var(--me-border)}
+.model-eval .me-model-bulk label {display:flex;flex-direction:row;align-items:center;gap:8px;min-height:32px;font-size:12px;cursor:pointer}
+.me-model-bulk .me-inline-actions {margin-inline-start:auto;flex-wrap:wrap}
+.me-task-detail .me-run-model {display:flex;align-items:center;gap:8px}
+.me-task-detail .me-run-model>.me-model {min-width:0}
+.me-run-select {width:20px;flex:none;display:grid;place-items:center}
+.model-eval .me-task-detail .me-run-concurrency {width:75px;flex:none;min-width:0}
+.model-eval .me-run-concurrency .dsh-select-trigger {min-height:32px;gap:4px}
+.model-eval .me-run-concurrency .dsh-select-value {white-space:nowrap;font-variant-numeric:tabular-nums}
+@container me-workbench (min-width:761px) {
+  .model-eval .me-task-detail .me-controlled-run:has(.me-run-concurrency) {
+    grid-template-columns:minmax(9rem,1fr) 5rem minmax(9rem,.8fr) 18rem;
+  }
+}
+@container me-workbench (max-width:490px) {
+  .model-eval .me-task-detail .me-controlled-run:has(.me-run-actions) {
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto;
+    grid-template-areas:"model model state" "results actions actions";
+  }
+  .model-eval .me-task-detail .me-run-actions {flex-wrap:wrap}
+  .model-eval .me-task-detail .me-run-concurrency {width:66px}
+}

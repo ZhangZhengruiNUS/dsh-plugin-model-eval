@@ -2,7 +2,7 @@ import {traceIdValid} from '../estimation/calibration-contracts.ts';
 import {validSpeedBudget} from '../speed/budget.ts';
 import type {JsonValue} from '../contracts.ts';
 export interface ApiEnvelope {schemaVersion:1;requestId:string;action:Action;payload:Record<string,JsonValue>}
-const fields={status:[],setCodingDiagnostics:['enabled'],startCodingDiagnostic:['runId','itemId'],codingDiagnostic:['runId','itemId'],cancelCodingDiagnostic:['diagnosticId'],protocolCatalog:[],previewUpgrade:['sourceRunId','deepGeneralId','handle','execution'],commitUpgrade:['token'],previewEditionUpgrade:['sourceRunId','destinationGeneralId','handle','execution'],commitEditionUpgrade:['token','confirmSameDeployment'],catalog:[],settings:[],prepare:['generalId','expectedRootId','expectedRootEpoch'],setRoot:['path'],snapshot:['providerId','modelId','overrides','deployment'],createBatch:['generalId','handles','tracks','judgeHandle','execution','previewId'],checkTimeAdvisor:['generalId','handles','tracks','judgeHandle','execution','budgetMinutes'],startSpeedPreview:['generalId','handles','tracks','judgeHandle','execution','budgetMinutes','offerId','intent'],speedPreviewStatus:['previewId'],cancelSpeedPreview:['previewId'],speedHistory:[],speedHistoryUsage:[],previewSpeedCleanup:['previewIds'],commitSpeedCleanup:['token'],speedCleanupStatus:['token'],timingHistory:[],previewTimingCleanup:['groupIds'],commitTimingCleanup:['token'],queue:[],pause:['batchId'],resume:['batchId','judgeHandle'],rejudge:['batchId','operationId'],controlRun:['batchId','runId','operation'],history:[],comparisonMetadata:[],comparisonCommon:['runIds','referenceIds'],report:['runId','includeQuestions'],item:['runId','itemId'],usage:[],formalHistoryUsage:[],previewCleanup:['batchIds'],commitCleanup:['token'],cleanupStatus:['token']} as const;
+const fields={status:[],setCodingDiagnostics:['enabled'],startCodingDiagnostic:['runId','itemId'],codingDiagnostic:['runId','itemId'],cancelCodingDiagnostic:['diagnosticId'],protocolCatalog:[],previewUpgrade:['sourceRunId','deepGeneralId','handle','execution'],commitUpgrade:['token'],previewEditionUpgrade:['sourceRunId','destinationGeneralId','handle','execution'],commitEditionUpgrade:['token','confirmSameDeployment'],catalog:[],settings:[],prepare:['generalId','expectedRootId','expectedRootEpoch'],setRoot:['path'],snapshot:['providerId','modelId','overrides','deployment'],createBatch:['generalId','handles','tracks','judgeHandle','execution','previewId','modelConcurrency','parallelModels'],checkTimeAdvisor:['generalId','handles','tracks','judgeHandle','execution','budgetMinutes'],startSpeedPreview:['generalId','handles','tracks','judgeHandle','execution','budgetMinutes','offerId','intent'],speedPreviewStatus:['previewId'],cancelSpeedPreview:['previewId'],speedHistory:[],speedHistoryUsage:[],previewSpeedCleanup:['previewIds'],commitSpeedCleanup:['token'],speedCleanupStatus:['token'],timingHistory:[],previewTimingCleanup:['groupIds'],commitTimingCleanup:['token'],queue:[],pause:['batchId'],resume:['batchId','judgeHandle'],rejudge:['batchId','operationId'],controlRun:['batchId','runId','operation'],controlRuns:['batchId','runIds','operation'],setRunConcurrency:['batchId','runId','concurrency'],history:[],comparisonMetadata:[],comparisonCommon:['runIds','referenceIds'],report:['runId','includeQuestions'],item:['runId','itemId'],usage:[],formalHistoryUsage:[],previewCleanup:['batchIds'],commitCleanup:['token'],cleanupStatus:['token']} as const;
 export type Action=keyof typeof fields;
 const reject=():never=>{throw Object.assign(new Error('INVALID_REQUEST'),{code:'INVALID_REQUEST'});};
 function json(value:unknown,depth=0):void {
@@ -20,6 +20,14 @@ export function validateEnvelope(value:unknown):ApiEnvelope {
   for(const key of ['runId','sourceRunId','handle','batchId','token','judgeHandle','previewId','diagnosticId','operationId'])if(key in body.payload&&(typeof body.payload[key]!=='string'||!/^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/.test(body.payload[key] as string)))return reject();
   if(body.action==='controlRun'&&(!body.payload.batchId||!body.payload.runId||
     !['hold','resume','remove','rejoin'].some(operation=>operation===body.payload.operation)))return reject();
+  if(body.action==='controlRuns'){
+    const {batchId,runIds,operation}=body.payload;
+    if(!batchId||!Array.isArray(runIds)||!runIds.length||runIds.length>20||new Set(runIds).size!==runIds.length||
+      runIds.some(id=>typeof id!=='string'||!/^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/.test(id))||
+      operation!=='hold'&&operation!=='resume')return reject();
+  }
+  if(body.action==='setRunConcurrency'&&(!body.payload.batchId||!body.payload.runId||
+    ![1,2,3,4].some(value=>value===body.payload.concurrency)))return reject();
   if(body.action==='report'&&'includeQuestions' in body.payload&&typeof body.payload.includeQuestions!=='boolean')return reject();
   if(body.action==='rejudge'&&(!body.payload.batchId||!body.payload.operationId))return reject();
   if(body.action==='setCodingDiagnostics'&&typeof body.payload.enabled!=='boolean')return reject();
@@ -50,6 +58,13 @@ export function validateEnvelope(value:unknown):ApiEnvelope {
   if(['createBatch','checkTimeAdvisor','startSpeedPreview'].includes(body.action)){
     const execution=body.payload.execution as Record<string,JsonValue>;if(Object.keys(execution).sort().join(',')!=='callTimeoutMs,concurrency'||typeof execution.callTimeoutMs!=='number'||typeof execution.concurrency!=='number')return reject();
     if((body.payload.tracks as JsonValue[]).some(x=>x!=='general'&&x!=='writing'))return reject();
+  }
+  if(body.action==='createBatch'){
+    const {parallelModels,modelConcurrency,handles}=body.payload;
+    const count=(handles as JsonValue[]).length;
+    if(parallelModels!==undefined&&(typeof parallelModels!=='number'||!Number.isInteger(parallelModels)||parallelModels<1||parallelModels>count))return reject();
+    if(modelConcurrency!==undefined&&(!Array.isArray(modelConcurrency)||modelConcurrency.length!==count||
+      modelConcurrency.some(concurrency=>![1,2,3,4].some(value=>value===concurrency))))return reject();
   }
   for(const key of ['generalId','deepGeneralId','destinationGeneralId'])if(key in body.payload&&(typeof body.payload[key]!=='string'||!/^[a-zA-Z0-9._-]{1,128}$/.test(body.payload[key] as string)))return reject();
   if(body.action==='previewUpgrade'||body.action==='previewEditionUpgrade'){const p=body.payload,e=p.execution as Record<string,JsonValue>;if(!p.sourceRunId||!(body.action==='previewUpgrade'?p.deepGeneralId:p.destinationGeneralId)||!p.handle||!e||typeof e!=='object'||Array.isArray(e)||Object.keys(e).sort().join(',')!=='callTimeoutMs,concurrency'||![1,2,3,4].includes(Number(e.concurrency))||typeof e.concurrency!=='number'||!Number.isInteger(e.callTimeoutMs)||Number(e.callTimeoutMs)<1000||Number(e.callTimeoutMs)>1800000)return reject();}

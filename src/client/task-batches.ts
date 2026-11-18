@@ -18,13 +18,19 @@ export function batchStatus(batch:BatchView,active=false){
   return batch.status;
 }
 
+export function runIsSettling(batch:BatchView,id:string){
+  return batch.settlingRunIds?.includes(id)??batch.settlingRunId===id;
+}
+export function runIsActive(batch:BatchView,id:string){
+  return batch.activeRunIds?.includes(id)??batch.activeRunId===id;
+}
 export function batchRunStatus(batch:BatchView,run:RunSummary){
   const control=batch.runControls?.[run.runId];
-  if(batch.settlingRunId===run.runId)return 'stopping';
+  if(runIsSettling(batch,run.runId))return 'stopping';
   if(control?.state==='held')return control.error?'attention':'held';
   if(control?.state==='removed')return 'removed';
   if(runIsComplete(run))return 'completed';
-  if(batch.activeRunId===run.runId)return 'running';
+  if(runIsActive(batch,run.runId))return 'running';
   if(batch.status==='paused')return 'paused';
   if(batch.status==='running')return 'queued';
   if(Object.values(run.tracks).some(track=>track.status==='pending'))return 'pending';

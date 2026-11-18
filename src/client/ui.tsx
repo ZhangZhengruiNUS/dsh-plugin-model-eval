@@ -1,7 +1,10 @@
-import {batchRunStatus,canResumeRun,runIsComplete} from './task-batches.ts';
+import {Select} from './primitives/Select.tsx';
+import {Checkbox} from './primitives/primitives.tsx';
+import {concurrencyOptions} from './components/ExecutionSettings.tsx';
+import {batchRunStatus,runIsSettling,canResumeRun,runIsComplete} from './task-batches.ts';
 import {Button as PrimitiveButton} from './primitives/primitives.tsx';
 import {createPortal} from 'react-dom';
-import * as React from 'react';import type {ModelChoice,RunSummary,TargetSnapshot,TechnicalError,Track} from '../contracts.ts';import {generalReleaseName} from './protocol-editions.ts';import {writingEditionName} from '../evaluation/writing-edition.ts';import type {BatchView,QueueView,RunOperation} from '../jobs/queue.ts';import type {ClientApi} from './api.ts';import {zh as t} from './locales.ts';import {formatScore,time,generalTierLabel} from './store.ts';
+import * as React from 'react';import type {ModelChoice,RunConcurrency,RunSummary,TargetSnapshot,TechnicalError,Track} from '../contracts.ts';import {generalReleaseName} from './protocol-editions.ts';import {writingEditionName} from '../evaluation/writing-edition.ts';import type {BatchView,QueueView,RunOperation} from '../jobs/queue.ts';import type {ClientApi} from './api.ts';import {zh as t} from './locales.ts';import {formatScore,time,generalTierLabel} from './store.ts';
 export function taskFailureText(error:TechnicalError):string {
   if(error.code==='ABORTED')return t.abortedHelp;
   const cause=error.upstreamCause??(error.code==='UPSTREAM_ERROR'?'unknown':undefined);
@@ -212,9 +215,9 @@ export function Modal({title,children,onClose,wide=false,locked=false,variant,re
   return host?createPortal(overlay,host):overlay;
 }
 export const trackNames:Record<Track,string>={general:t.general,writing:t.writing};
-const compactRunActions:Record<RunOperation,string>={hold:'挂起',resume:'继续',remove:'移出',rejoin:'重新加入'};
+const compactRunActions:Record<RunOperation,string>={hold:'暂停',resume:'继续',remove:'移出',rejoin:'重新加入'};
 
-export function BatchRunRow({run,index,bothTracks,report,status,controlled=false,showParams=false,children}:{
+export function BatchRunRow({run,index,bothTracks,report,status,controlled=false,showParams=false,selection,children}:{
   run:RunSummary;
   index:number;
   bothTracks:boolean;
@@ -222,11 +225,13 @@ export function BatchRunRow({run,index,bothTracks,report,status,controlled=false
   status?:React.ReactNode;
   controlled?:boolean;
   showParams?:boolean;
+  selection?:React.ReactNode;
   children?:React.ReactNode;
 }){
   return <div className={'me-run-row me-compact-run'+(controlled?' me-controlled-run':'')} role="listitem"
     aria-label={`${t.model} ${index+1} ${run.target.modelId}`}>
     <div className="me-run-model">
+      {selection}
       <ModelLabel target={run.target} showParams={showParams} compact nameAction={{
         label:t.report+' '+run.target.modelId,onClick:()=>report(run.runId),
       }}/>
@@ -250,19 +255,21 @@ export function BatchRunRow({run,index,bothTracks,report,status,controlled=false
   </div>;
 }
 
-export function BatchRuns({batch,runs,report,control,unavailableReason,pending}:{
+export function BatchRuns({batch,runs,report,control,unavailableReason,pending,selection,setConcurrency}:{
   batch:BatchView;
   runs:RunSummary[];
   report(runId:string):void;
   control(runId:string,operation:RunOperation):void;
   unavailableReason?:string|undefined;
   pending?:{runId:string;operation:RunOperation}|undefined;
+  selection?:{eligible:ReadonlySet<string>;selected:ReadonlySet<string>;toggle(id:string):void};
+  setConcurrency(runId:string,value:RunConcurrency):void;
 }){
   const lastAction=React.useRef<{trigger:HTMLButtonElement;row:HTMLElement}>();
   const [removal,setRemoval]=React.useState<{runId:string;trigger:HTMLButtonElement;row:HTMLElement}>();
   const removalRun=removal&&runs.find(run=>run.runId===removal.runId);
   const removalUnavailable=unavailableReason??
-    (removal&&batch.settlingRunId===removal.runId?t.runControl.settling:undefined)??
+    (removal&&runIsSettling(batch,removal.runId)?t.runControl.settling:undefined)??
     (removalRun&&(runIsComplete(removalRun)||batch.runControls?.[removalRun.runId]?.state==='removed')?t.runControl.changed:undefined);
   React.useLayoutEffect(()=>{
     const previous=lastAction.current;
@@ -282,17 +289,26 @@ export function BatchRuns({batch,runs,report,control,unavailableReason,pending}:
       if(!run)return null;
       const controlState=batch.runControls?.[id];
       const complete=runIsComplete(run);
-      const settling=batch.settlingRunId===id;
+      const settling=runIsSettling(batch,id);
       let operations:RunOperation[]=[];
       if(!complete){
         if(controlState?.state==='removed')operations=['rejoin'];
         else if(controlState?.state==='held')operations=['resume','remove'];
-        else operations=['hold','remove'];
+        else operations=batch.status==='running'?['hold','remove']:['resume','remove'];
       }
       const error=controlState?.state==='held'?controlState.error:undefined;
+      const editable=!complete&&controlState?.state!=='removed'&&canResumeRun(run);
       return <BatchRunRow key={id} run={run} index={index} bothTracks={bothTracks} report={report}
-        controlled showParams status={<Badge status={batchRunStatus(batch,run)}/>}>
-        {operations.length>0&&<div className="me-run-actions">
+        controlled showParams selection={selection&&<span className="me-run-select">
+          {selection.eligible.has(id)&&<Checkbox checked={selection.selected.has(id)}
+            aria-label={'选择 '+run.target.modelId+(run.target.deployment?' · '+run.target.deployment.value:'')}
+            onChange={()=>selection.toggle(id)}/>}
+        </span>} status={<Badge status={batchRunStatus(batch,run)}/>}>
+        {(operations.length>0||editable)&&<div className="me-run-actions">
+          {editable&&<Select className="me-run-concurrency" label={'题目并发数 · '+run.target.modelId} showLabel={false}
+            value={String(batch.runConcurrency?.[id]??batch.execution.concurrency)}
+            options={concurrencyOptions.map(option=>({...option,label:option.value+' 路'}))}
+            disabled={settling||!!unavailableReason} onChange={value=>setConcurrency(id,Number(value) as RunConcurrency)}/>}
           {operations.map(operation=>{
             const needsDetails=operation==='resume'||operation==='rejoin';
             const processing=pending?.runId===id&&pending.operation===operation;

@@ -9,12 +9,13 @@ import * as React from 'react';
 import {zh as t} from '../locales.ts';
 import {ActionButton,activityUnavailable,Button,Empty,Badge,BatchRuns,MetaTime,Modal,taskFailureText,type PageProps} from '../ui.tsx';
 import {SelectionBar} from '../components/SelectionBar.tsx';
+import {Checkbox} from '../primitives/primitives.tsx';
 import {Disclosure} from '../components/Disclosure.tsx';
 import {ConfigEditor,emptyDraft,resolveDraft} from './NewRun.tsx';
 import {summarizeBatchMetrics} from '../batch-metrics.ts';
 import {BatchMetrics} from '../components/BatchMetrics.tsx';
 import {BatchRecord} from '../components/BatchRecord.tsx';
-import {batchStatus,canResumeRun,runIsComplete,taskBatches} from '../task-batches.ts';
+import {batchStatus,canResumeRun,runIsComplete,runIsSettling,taskBatches} from '../task-batches.ts';
 
 const taskTabs=[{id:'current',label:'当前评测'},{id:'pending',label:'待处理'}] as const;
 type TaskTab=(typeof taskTabs)[number]['id'];
@@ -30,6 +31,7 @@ function readBatchProgress(runs:RunSummary[]){
 export function Progress(props:PageProps&{targetBatchId?:string|undefined}){const [changing,setChanging]=React.useState<string>(),[judge,setJudge]=React.useState(emptyDraft),[error,setError]=React.useState('');
   const [pending,setPending]=React.useState<{batchId:string;runId:string;operation:RunOperation}>();
   const [batchAction,setBatchAction]=React.useState<{batchId:string;operation:'pause'|'resume'}>();
+  const [selection,setSelection]=React.useState<{batchId:string;ids:Set<string>}>();
   const targetBatchId=props.targetBatchId;
   const [tab,setTab]=React.useState<TaskTab>(
     targetBatchId&&targetBatchId!==props.data.queue.activeBatchId?'pending':'current',
@@ -48,6 +50,13 @@ export function Progress(props:PageProps&{targetBatchId?:string|undefined}){cons
       if(view?.activeBatchId===batchId)moveToCurrent(batchId);
       else if(view&&operation==='pause'){setExpanded(batchId);setFocusBatch(batchId);}
     }).finally(()=>setBatchAction(undefined));
+  }
+  function controlModels(batch:BatchView,ids:string[],operation:'hold'|'resume',runId?:string){
+    if(runId)setPending({batchId:batch.batchId,runId,operation});
+    void props.actQueue(()=>props.api('controlRuns',{batchId:batch.batchId,runIds:ids,operation})).then(view=>{
+      if(view?.activeBatchId===batch.batchId&&batch.status!=='running')moveToCurrent(batch.batchId);
+      if(view&&!view.activeBatchId){setExpanded(batch.batchId);setFocusBatch(batch.batchId);}
+    }).finally(()=>setPending(undefined));
   }
   const [now,setNow]=React.useState(Date.now),{activeBatchId}=props.data.queue;
   const {active:activeBatch,pending:pendingBatches,runsFor}=taskBatches(props.data.queue,props.data.runs);
@@ -78,14 +87,24 @@ export function Progress(props:PageProps&{targetBatchId?:string|undefined}){cons
     const pendingBatchAction=batchAction?.batchId===batch.batchId?batchAction.operation:undefined;
     const {graded,required}=readBatchProgress(runs);
     const controls=Object.values(batch.runControls??{});
-    const held=controls.filter(control=>control.state==='held').length;
+    const held=controls.filter(control=>control.state==='held'&&!control.error).length;
+    const needsAttention=controls.filter(control=>control.state==='held'&&control.error).length;
     const removed=controls.filter(control=>control.state==='removed').length;
     const complete=runs.filter(runIsComplete).length;
-    const hasExcluded=held+removed>0;
+    const hasExcluded=held+needsAttention+removed>0;
     const incompleteRunnable=runs.filter(run=>!batch.runControls?.[run.runId]&&!runIsComplete(run));
     const remaining=incompleteRunnable.flatMap(run=>Object.values(run.tracks))
       .reduce((count,track)=>count+Math.max(0,track.required-track.graded),0);
-    const canResume=incompleteRunnable.length>0&&incompleteRunnable.every(canResumeRun);
+    const eligible=runs.filter(run=>!runIsComplete(run)&&canResumeRun(run)&&
+      batch.runControls?.[run.runId]?.state!=='removed'&&!runIsSettling(batch,run.runId));
+    const ids=eligible.map(run=>run.runId);
+    const selected=selection?.batchId===batch.batchId?ids.filter(id=>selection.ids.has(id)):[];
+    const selectedIds=new Set(selected);
+    const scope=selected.length?selected:ids;
+    const toPause=scope.filter(id=>!batch.runControls?.[id]);
+    const toResume=scope.filter(id=>!active||batch.runControls?.[id]?.state==='held');
+    const canResume=toResume.length>0;
+    const customScheduling=(batch.execution.parallelModels??1)>1||Object.keys(batch.runConcurrency??{}).length>0;
     const canChangeJudge=incompleteRunnable.some(run=>run.tracks.writing&&run.tracks.writing.status!=='completed');
     const judgePending=batch.pendingItems?.filter(item=>item.error.code===JUDGE_ITEM_PENDING).length??0;
     const localPending=batch.pendingItems?.filter(item=>!batch.runControls?.[item.runId]&&item.error.code==='CONTEST_WALL_LIMIT').length??0;
@@ -112,11 +131,11 @@ export function Progress(props:PageProps&{targetBatchId?:string|undefined}){cons
           </div>
         </div>}
         <div className="me-actions">
-          {active
+          {active&&runs.length===1
             ? <Button icon="pause" onClick={()=>changeBatch(batch.batchId,'pause')} disabled={props.busy}>{pendingBatchAction==='pause'?'正在保存进度…':t.pause}</Button>
-            : batch.status!=='completed'&&canResume&&<>
-              <ActionButton kind="primary" icon="play" hintSide="below" unavailableReason={pendingBatchAction==='resume'?'正在核对题集和已保存的进度。':resumeUnavailable}
-                onClick={()=>changeBatch(batch.batchId,'resume')}>{pendingBatchAction==='resume'?'正在恢复…':t.resume}</ActionButton>
+            : !active&&batch.status!=='completed'&&canResume&&<>
+              {runs.length===1&&<ActionButton kind="primary" icon="play" hintSide="below" unavailableReason={pendingBatchAction==='resume'?'正在核对题集和已保存的进度。':resumeUnavailable}
+                onClick={()=>changeBatch(batch.batchId,'resume')}>{pendingBatchAction==='resume'?'正在恢复…':t.resume}</ActionButton>}
               {localPending>0&&<ActionButton hintSide="below" unavailableReason={resumeUnavailable}
                 onClick={()=>void props.actQueue(()=>props.api('rejudge',{batchId:batch.batchId,operationId:crypto.randomUUID()})).then(view=>{
                   if(view?.activeBatchId===batch.batchId)moveToCurrent(batch.batchId);
@@ -133,7 +152,7 @@ export function Progress(props:PageProps&{targetBatchId?:string|undefined}){cons
         </div>
         {required>0&&<progress max={required} value={graded} aria-label={t.graded} aria-valuetext={`已判分 ${graded} 题，共 ${required} 题`}/>}</>}
         {hasExcluded&&<p className="me-help me-task-progress-note">
-          {complete} 个完成{held>0&&` · ${held} 个待处理`}{removed>0&&` · ${removed} 个已移出`}
+          {complete} 个完成{held>0&&` · ${held} 个已暂停`}{needsAttention>0&&` · ${needsAttention} 个待处理`}{removed>0&&` · ${removed} 个已移出`}
           {remaining>0&&` · 队列待评 ${remaining.toLocaleString('zh-CN')} 题`}
         </p>}
         {slowLocal&&<p role="status" className="me-help">本地判分仍在进行</p>}
@@ -142,12 +161,12 @@ export function Progress(props:PageProps&{targetBatchId?:string|undefined}){cons
         {runs.some(run=>run.reuse)&&<p className="me-help">复用 {runs.reduce((count,run)=>count+(run.reuse?.reusedItems??0),0)} 题</p>}
         {batch.supersedesBatchId&&<p className="me-help">换题补测 · 原批次 {batch.supersedesBatchId.slice(0,8)} 保留在历史{originalTokens===undefined?'':` · 原批次累计 ${originalTokens.toLocaleString('zh-CN')} Token`}</p>}
         <div className="me-task-readouts">
-          {active&&(roughWork&&!hasCalibratedRemaining
+          {active&&!customScheduling&&(roughWork&&!hasCalibratedRemaining
             ? <RoughEstimate estimate={roughWork.estimate} sampling={roughWork.sampling}/>
             : !hasExcluded&&<Estimate {...(estimate?{snapshot:estimate}:{})} elapsedMs={metrics.elapsedMs} compact/>)}
           <BatchMetrics newWork={runs.some(run=>!!run.reuse)} metrics={metrics}/>
         </div>
-        {!active&&estimate&&batch.status!=='completed'&&!hasExcluded&&
+        {!active&&!customScheduling&&estimate&&batch.status!=='completed'&&!hasExcluded&&
           <Disclosure kind="help" title="估时记录" className="me-task-estimate-history">
             <Estimate snapshot={estimate} elapsedMs={metrics.elapsedMs} compact/>
           </Disclosure>}
@@ -162,10 +181,29 @@ export function Progress(props:PageProps&{targetBatchId?:string|undefined}){cons
         <p>{t.resumeHelp}</p>
         {canChangeJudge&&<p>{t.judgeChoiceHelp}</p>}
       </Disclosure>}
-      {batch.status==='paused'&&hasExcluded&&<p className="me-help me-run-paused-note">{t.runControl.paused}</p>}
+      {runs.length>1&&ids.length>0&&<div className="me-model-bulk">
+        <label><Checkbox checked={selected.length===ids.length} ref={node=>{if(node)node.indeterminate=selected.length>0&&selected.length<ids.length;}}
+          onChange={event=>setSelection({batchId:batch.batchId,ids:new Set(event.target.checked?ids:[])})}/>
+          <span>全选模型</span>{selected.length>0&&<span className="me-muted">已选 {selected.length}</span>}
+        </label>
+        <div className="me-inline-actions">
+          {canResume&&<ActionButton kind={active?'':'primary'} icon="play" hintSide="below" unavailableReason={controlUnavailable}
+            onClick={()=>controlModels(batch,toResume,'resume')}>{selected.length?'继续所选':'继续全部'}</ActionButton>}
+          {active&&toPause.length>0&&<ActionButton icon="pause" hintSide="below" unavailableReason={controlUnavailable}
+            onClick={()=>selected.length?controlModels(batch,toPause,'hold'):changeBatch(batch.batchId,'pause')}>
+            {pendingBatchAction==='pause'?'正在保存进度…':selected.length?'暂停所选':'暂停全部'}
+          </ActionButton>}
+        </div>
+      </div>}
       <BatchRuns batch={batch} runs={runs} report={props.report} unavailableReason={controlUnavailable}
         pending={pending?.batchId===batch.batchId?pending:undefined}
+        {...(runs.length>1?{selection:{eligible:new Set(ids),selected:selectedIds,toggle:(id:string)=>{
+          const next=new Set(selectedIds);if(next.has(id))next.delete(id);else next.add(id);
+          setSelection({batchId:batch.batchId,ids:next});
+        }}}:{})}
+        setConcurrency={(runId,concurrency)=>void props.actQueue(()=>props.api('setRunConcurrency',{batchId:batch.batchId,runId,concurrency}))}
         control={(runId,operation)=>{
+          if(operation==='resume'||operation==='hold'){controlModels(batch,[runId],operation,runId);return;}
           setPending({batchId:batch.batchId,runId,operation});
           void props.actQueue(()=>props.api('controlRun',{batchId:batch.batchId,runId,operation})).then(view=>{
             if(!active&&view?.activeBatchId===batch.batchId)moveToCurrent(batch.batchId);

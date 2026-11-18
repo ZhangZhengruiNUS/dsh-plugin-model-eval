@@ -12,6 +12,7 @@ import {createQueue, type EvaluationQueue, type GradeServices} from '../../src/j
 import {switchRoot} from '../../src/resources/prepare.ts';
 import {legacyFixtureRegistry} from '../support/fixture-registry.ts';
 import {withTempRoot} from '../support/temp.ts';
+import {performanceConditionKey} from '../../src/estimation/observations.ts';
 import {validateEnvelope} from '../../src/host/api.ts';
 
 const target=(modelId:string):TargetSnapshot=>({providerId:'fixture',modelId,scopeId:'fixture',routeTarget:{state:'unknown'},controls:{}});
@@ -391,3 +392,128 @@ test('existing held rows recover only the matching terminal cause and do not rew
     assert.equal(view(queue).runControls?.[batch.runIds[1]!],undefined);
   }finally{await queue.dispose();await store.close();}
 }));
+
+test('parallel models honor per-model worker counts, live edits, and selected pause and resume', {timeout:20000}, async()=>withTempRoot(async directory=>{
+  const {path}=await switchRoot(join(directory,'data'),{writing:false});
+  let store=await openHistory(path);
+  const calls:string[]=[],inFlight=new Map<string,()=>void>();
+  let block=true;
+  const host=adapter(async input=>{
+    const id=input.target.modelId+':'+input.context.itemId;
+    calls.push(id);
+    if(block&&!input.signal.aborted)await new Promise<void>(resolve=>{
+      const release=()=>{input.signal.removeEventListener('abort',release);inFlight.delete(id);resolve();};
+      inFlight.set(id,release);input.signal.addEventListener('abort',release,{once:true});
+    });
+    return response(input);
+  });
+  async function until(check:()=>boolean|Promise<boolean>){
+    const deadline=Date.now()+5000;
+    while(!await check()){
+      if(Date.now()>deadline)assert.fail('Timed out waiting for controlled dispatch');
+      await new Promise(resolve=>setTimeout(resolve,12));
+    }
+  }
+  let queue=createQueue(store,host,registry,{general:grade},{sampleMultiConfigEta:true});
+  try{
+    const batch=await queue.enqueue({...request,targets:[...request.targets,target('third')],
+      execution:{...request.execution,parallelModels:2},modelConcurrency:[1,2,1]});
+    const [first,second,third]=batch.runIds as [string,string,string];
+    await until(()=>inFlight.size===3);
+    assert.deepEqual([...inFlight.keys()].sort(),['first:q0','second:q0','second:q1']);
+    assert.deepEqual(view(queue).activeRunIds,[first,second]);
+    assert.equal(view(queue).etaSamples,undefined);
+
+    await assert.rejects(queue.controlRuns(batch.batchId,[first,first],'hold'),{code:'BATCH_RUN_NOT_FOUND'});
+    assert.equal(view(queue).runControls,undefined);
+    await queue.setRunConcurrency(batch.batchId,first,3);
+    await until(()=>inFlight.size===5);
+    assert.deepEqual([...inFlight.keys()].filter(id=>id.startsWith('first:')).sort(),['first:q0','first:q1','first:q2']);
+    await queue.setRunConcurrency(batch.batchId,first,1);
+    inFlight.get('first:q0')!();
+    await until(async()=>!!(await store.getItem(first,'q0'))?.grade);
+    assert.ok(!calls.includes('first:q3'));
+    const saved=await store.getItem(first,'q0');
+    const {manifest,summary}=await store.getRun(first);
+    assert.deepEqual(summary.executionChanges?.map(change=>[change.before.concurrency,change.after.concurrency]),[[1,3],[3,1]]);
+    assert.equal(saved?.attempts[0]?.performanceKey?.conditionKey,performanceConditionKey(manifest.target,manifest.protocols,manifest.execution!));
+    assert.equal((await store.getItem(first,'q1'))?.attempts[0]?.performanceKey?.conditionKey,
+      performanceConditionKey(manifest.target,manifest.protocols,{...manifest.execution!,concurrency:3}));
+
+    await queue.controlRuns(batch.batchId,[first],'hold');
+    await until(()=>inFlight.has('third:q0'));
+    assert.equal((await store.getItem(first,'q1'))?.attempts[0]?.status,'interrupted');
+    assert.ok(inFlight.has('second:q0')&&inFlight.has('second:q1'));
+    await queue.controlRuns(batch.batchId,[second,third],'hold');
+    await queue.idle();
+    assert.equal(view(queue).status,'pending');
+    assert.equal(inFlight.size,0);
+
+    await queue.dispose();await store.close();
+    store=await openHistory(path);await store.recover();
+    queue=createQueue(store,host,registry,{general:grade});
+    const priorCalls=calls.length;
+    await queue.idle();
+    assert.equal(calls.length,priorCalls);
+    block=false;
+    await queue.controlRuns(batch.batchId,[first],'resume');
+    await queue.idle();
+    assert.deepEqual(calls.slice(priorCalls),['first:q1','first:q2','first:q3']);
+    assert.deepEqual(await store.getItem(first,'q0'),saved);
+    assert.deepEqual(Object.keys(view(queue).runControls!).sort(),[second,third].sort());
+    await queue.controlRuns(batch.batchId,[second,third],'resume');
+    await queue.idle();
+    assert.equal(view(queue).status,'completed');
+    assert.equal((await store.getRun(second)).manifest.execution?.concurrency,2);
+    assert.deepEqual((await store.getRun(first)).summary.executionChanges,summary.executionChanges);
+  }finally{
+    for(const release of inFlight.values())release();
+    await queue.dispose();await store.close();
+  }
+}));
+
+test('selected resume of a legacy paused batch is durable and leaves other models stopped', {timeout:15000},async()=>withTempRoot(async dir=>{
+  const {path}=await switchRoot(join(dir,'data'),{writing:false});
+  const store=await openHistory(path);
+  const firstCall=deferred(),calls:string[]=[];
+  let blocking=true;
+  const queue=createQueue(store,adapter(async input=>{
+    calls.push(input.target.modelId);
+    if(blocking){
+      firstCall.resolve();
+      if(!input.signal.aborted)await new Promise<void>(resolve=>input.signal.addEventListener('abort',()=>resolve(),{once:true}));
+    }
+    return response(input);
+  }),registry,{general:grade});
+  try{
+    const batch=await queue.enqueue({...request,execution:{concurrency:1,callTimeoutMs:10000}});
+    const [first,second]=batch.runIds as [string,string];
+    await firstCall.promise;
+    await queue.pause(batch.batchId);
+    await queue.setRunConcurrency(batch.batchId,first,2);
+    blocking=false;
+    await queue.controlRuns(batch.batchId,[second],'resume',undefined,'output-idle-v1');
+    await queue.idle();
+    assert.equal(calls.filter(id=>id==='first').length,1);
+    assert.equal(calls.filter(id=>id==='second').length,4);
+    assert.deepEqual(view(queue).runControls?.[first],{state:'held'});
+    assert.deepEqual((await store.getRun(first)).summary.executionChanges?.map(change=>change.reason),
+      ['run-concurrency-v1','output-idle-upgrade-v1']);
+    await assert.rejects(queue.controlRuns(batch.batchId,[first,second],'resume'),{code:'RUN_CONTROL_STALE'});
+    assert.equal(calls.length,5);
+    await queue.controlRuns(batch.batchId,[first],'resume');
+    await queue.idle();
+    assert.equal(view(queue).status,'completed');
+  }finally{await queue.dispose();await store.close();}
+}));
+
+test('the API rejects ambiguous model selections and invalid concurrency without dispatching',()=>{
+  const batchId='a0000000-0000-4000-8000-000000000000',runId='b0000000-0000-4000-8000-000000000000';
+  const envelope=(action:string,payload:Record<string,unknown>)=>({schemaVersion:1,requestId:'test',action,payload});
+  const create={handles:[batchId,runId],tracks:['general'],execution:{concurrency:3,callTimeoutMs:10000},modelConcurrency:[1,3],parallelModels:2};
+  assert.doesNotThrow(()=>validateEnvelope(envelope('createBatch',create)));
+  assert.throws(()=>validateEnvelope(envelope('createBatch',{...create,modelConcurrency:[1]})),{code:'INVALID_REQUEST'});
+  assert.throws(()=>validateEnvelope(envelope('createBatch',{...create,parallelModels:3})),{code:'INVALID_REQUEST'});
+  assert.throws(()=>validateEnvelope(envelope('controlRuns',{batchId,runIds:[runId,runId],operation:'resume'})),{code:'INVALID_REQUEST'});
+  assert.throws(()=>validateEnvelope(envelope('setRunConcurrency',{batchId,runId,concurrency:1.5})),{code:'INVALID_REQUEST'});
+});

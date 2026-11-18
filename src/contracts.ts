@@ -79,12 +79,14 @@ export type GradeResult =
   | { kind: 'scored'; track: 'writing'; itemId: string; score: number; dimensions: WritingDimensions; evidence: JsonValue;
       assessment: { method: 'model'; judge: JudgeSnapshot } | { method: 'local-rule'; ruleId: 'empty-answer-v1' } }
   | { kind: 'technical-missing'; track: Track; itemId: string; error: TechnicalError; evidence: JsonValue };
+export type RunConcurrency = 1 | 2 | 3 | 4;
 export interface EvaluationRequest {
   generalId?:string;
   targets: TargetSnapshot[]; tracks: Track[]; judge?: JudgeSnapshot;initialEstimates?:Record<string,RunEstimation>;
-  execution: { concurrency: 1 | 2 | 3 | 4; callTimeoutMs: number; failurePolicy?:'skip-observed-timeout-v1'|'output-idle-v1' };
+  modelConcurrency?: RunConcurrency[];
+  execution: { concurrency: RunConcurrency; parallelModels?: number; callTimeoutMs: number; failurePolicy?:'skip-observed-timeout-v1'|'output-idle-v1' };
 }
-export interface ExecutionChange {at:string;before:EvaluationRequest['execution'];after:EvaluationRequest['execution'];reason:'output-idle-upgrade-v1'}
+export interface ExecutionChange {at:string;before:EvaluationRequest['execution'];after:EvaluationRequest['execution'];reason:'output-idle-upgrade-v1'|'run-concurrency-v1'}
 export interface AttemptObservation {
   attemptId: string; itemId: string; track: Track; phase: 'answer' | 'judge';
   startedAt: string; endedAt: string; firstContentAt?: string;

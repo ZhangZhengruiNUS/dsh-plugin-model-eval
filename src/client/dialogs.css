@@ -249,3 +249,14 @@
 .me-advisor-message p {font-size:12px;margin-top:3px;}
 .me-advisor-loading {color:var(--me-muted);font-size:13px;}
 .me-advisor-result .me-advisor-time {font-size:28px;line-height:1.3;}
+
+.model-eval .me-config-concurrency {margin:0 20px 18px;max-width:15rem}
+.model-eval .me-model-picker {display:grid;gap:12px}
+.me-model-picker-list {display:grid;gap:1px;max-height:45vh;overflow:auto;overscroll-behavior:contain}
+.model-eval .me-model-picker-list label {display:flex;flex-direction:row;align-items:center;gap:10px;min-height:44px;padding:6px 8px;border-radius:var(--ui-radius-sm,6px);cursor:pointer}
+.me-model-picker-list label:hover {background:var(--me-hover)}
+.me-model-picker-list label>span {display:grid;min-width:0;gap:1px;overflow-wrap:anywhere}
+.me-model-picker-list small {color:var(--me-muted)}
+
+.me-model-config-heading {display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px 12px;margin-bottom:10px}
+.model-eval .me-dialog-new-run .me-model-config-heading .me-form-title {margin:0}

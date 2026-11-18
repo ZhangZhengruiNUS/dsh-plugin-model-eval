@@ -20,7 +20,7 @@ import {join} from 'node:path';import {readdir,readFile} from 'node:fs/promises'
 import type {HostAdapter,JudgeSnapshot,ParamValue,TargetSnapshot,Track,EvaluationRequest,UpgradeCheck,UpgradePreview,UpgradeCommit,ProtocolDescriptor,ProtocolCatalogItem} from './contracts.ts';
 import {defaultRoot,switchRoot,prepareResources,prepareProtocolResources,type PreparedEnvironment} from './resources/prepare.ts';import {readResourceManifest,loadProtocolSet} from './evaluation/protocols.ts';
 import {readRecord,writeRecord} from './history/atomic.ts';import {openHistory,type HistoryStore} from './history/store.ts';import {createCleanup,measureRunUsage} from './history/cleanup.ts';
-import {createQueue,dispatchableRunIds,type EvaluationQueue} from './jobs/queue.ts';import {gradeGeneral} from './evaluation/grade-general.ts';import {createCodeRunner} from './runtime/runner.ts';import {createRuleGrader} from './runtime/rule-grader.ts';import {createWritingGrader,type WritingRubric} from './writing/judge.ts';
+import {createQueue,dispatchableRunIds,type BatchView,type EvaluationQueue} from './jobs/queue.ts';import {gradeGeneral} from './evaluation/grade-general.ts';import {createCodeRunner} from './runtime/runner.ts';import {createRuleGrader} from './runtime/rule-grader.ts';import {createWritingGrader,type WritingRubric} from './writing/judge.ts';
 import {validateEnvelope,type Action} from './host/api.ts';import {fingerprintTarget} from './model/identity.ts';
 import {selfcheckEnvironment,selfcheckFailure} from './resources/selfcheck.ts';
 import {readComparisonMetadata} from './comparison/project.ts';
@@ -136,6 +136,9 @@ export async function createEvaluationService(deps:ServiceDependencies) {
     const check=await store.exclusive(async tx=>{const fresh=await tx.getRun(sourceRunId),items=await readUpgradeItems(tx,sourceRunId);return checkEditionReuse({...fresh,items,protocol:sourceProtocol},destination,current,map!);});
     return {check,map:map!,sourceProtocol};
   }
+  function usesCustomScheduling(batch:BatchView):boolean{
+    return (batch.execution.parallelModels??1)>1||Object.keys(batch.runConcurrency??{}).length>0;
+  }
   async function getInputs(batchId:string,includeDeferred=false){
     const view=queue.snapshot(),batch=view.batches.find(b=>b.batchId===batchId);if(!batch)fail('BATCH_NOT_FOUND');const result:EstimationRunInput[]=[],summaries=await store.listSummaries();
     const ids=includeDeferred?batch!.runIds:dispatchableRunIds(batch!);
@@ -144,7 +147,7 @@ export async function createEvaluationService(deps:ServiceDependencies) {
       const complete=Object.values(summary.tracks).every(track=>track.status==='completed');
       const control=batch!.runControls?.[id];
       const status=complete?'completed':control||summary.details!=='available'?'pending':
-        view.activeBatchId===batchId?(batch!.activeRunId===id?'running':'queued'):batch!.status==='pending'?'pending':'paused';
+        view.activeBatchId===batchId?((batch!.activeRunIds??[batch!.activeRunId]).includes(id)?'running':'queued'):batch!.status==='pending'?'pending':'paused';
       const items=summary.details==='available'&&!complete?await store.listItems(id):[];
       const input=addHistoryPriors(runInput(runManifest,summary,items,status,clock.now(),batch!.judge),summaries.filter(run=>run.runId!==id));
       input.runId=id;
@@ -154,7 +157,7 @@ export async function createEvaluationService(deps:ServiceDependencies) {
       result.push(input);
     }
     const scope=includeDeferred?undefined:queue.activeWork(batchId);
-    if(!scope||scope.sampling&&scope.sampling.ready<scope.sampling.total)return {runs:result};
+    if(!scope||usesCustomScheduling(batch!)||scope.sampling&&scope.sampling.ready<scope.sampling.total)return {runs:result};
     const jobs=new Map(result.map(input=>[input.runId!,input.jobs]));
     const work=new Map(scope.runIds.map(id=>[id,(jobs.get(id)??[]).filter(job=>!scope.deferred.get(id)?.has(job.itemId))]));
     const byId=new Map(summaries.map(summary=>[summary.runId,summary]));
@@ -452,11 +455,13 @@ export async function createEvaluationService(deps:ServiceDependencies) {
       case 'setRoot':return mutate(async()=>{inactive();advisorRead?.controller.abort();if(typeof payload.path!=='string')return fail('INVALID_REQUEST');const selection=await switchRoot(payload.path,{writing:false});if(selection.path===store.root)return {rootPath:store.root};
         const oldRoot=store.root;await experiment?.dispose();experiment=undefined;live?.dispose();await speed.dispose();await queue.dispose();await store.close();
         try{await bind(selection.path);await writeRecord(preference,{root:store.root});}catch(error){await queue?.dispose().catch(()=>{});await store?.close().catch(()=>{});await bind(oldRoot);throw error;}return {rootPath:store.root,previousRoot:oldRoot,historyMoved:false};});
-      case 'createBatch':return mutate(async()=>{writable();const request=requestFrom(payload);const admission=createProtocolAdmission(registry),selected=await requestedProtocol(request,admission);
+      case 'createBatch':return mutate(async()=>{writable();const request=requestFrom(payload);
+        if(typeof payload.parallelModels==='number'&&payload.parallelModels>1)request.execution.parallelModels=payload.parallelModels;
+        if(Array.isArray(payload.modelConcurrency))request.modelConcurrency=payload.modelConcurrency;const admission=createProtocolAdmission(registry),selected=await requestedProtocol(request,admission);
         if (request.tracks.length===1 && request.tracks[0]==='writing' && request.judge) await ensurePrepared(selected);
         else requirePrepared(selected);
         request.generalId=selected.generalId;
-        if(payload.previewId)try{await linkPreview(String(payload.previewId),request,selected);}catch{/* Optional timing evidence cannot block a formal run. */}
+        if(payload.previewId&&!request.execution.parallelModels&&!request.modelConcurrency?.some(value=>value!==request.execution.concurrency))try{await linkPreview(String(payload.previewId),request,selected);}catch{/* Optional timing evidence cannot block a formal run. */}
         return queue.enqueue(request,admission);
       });
       case 'commitEditionUpgrade':return mutate(async()=>{
@@ -493,17 +498,41 @@ export async function createEvaluationService(deps:ServiceDependencies) {
       });
       case 'queue':{
         const view=queue.snapshot(),activeId=view.activeBatchId;
-        const scope=activeId?queue.activeWork(activeId):undefined;
+        const activeBatch=view.batches.find(batch=>batch.batchId===activeId);
+        const scope=activeId&&activeBatch&&!usesCustomScheduling(activeBatch)?queue.activeWork(activeId):undefined;
         const rough=scope&&activeId?live?.roughSnapshot(activeId):undefined;
         return {...view,...(scope?{roughWork:{batchId:activeId!,excludesDeferredWork:scope.excludesDeferredWork,estimate:rough,
           ...(scope.sampling?{sampling:{ready:scope.sampling.ready,total:scope.sampling.total}}:{})}}:{}),
-          estimates:Object.fromEntries(view.batches.flatMap(b=>{const e=live?.snapshot(b.batchId)??b.estimate;return e?[[b.batchId,e]]:[];}))};
+          estimates:Object.fromEntries(view.batches.flatMap(b=>{if(usesCustomScheduling(b))return [];const e=live?.snapshot(b.batchId)??b.estimate;return e?[[b.batchId,e]]:[];}))};
       }
       case 'pause':return mutate(async()=>{let estimate:Promise<void>|undefined;if(queue.snapshot().activeBatchId===payload.batchId){evaluationLease?.stopping();estimate=live?.invalidate(String(payload.batchId),'pause').catch(()=>{});}await queue.pause(String(payload.batchId));await estimate;await evaluationDone;return queue.snapshot();});
       case 'rejudge':return mutate(async()=>{
         writable();
         await queue.rejudge(String(payload.batchId),String(payload.operationId));
         return queue.snapshot();
+      });
+      case 'setRunConcurrency':return mutate(async()=>{
+        writable();
+        const batchId=String(payload.batchId),current=activity.snapshot();
+        if(current&&(current.kind!=='evaluation'||current.state!=='running'||current.id!==batchId))fail('ACTIVITY_BUSY');
+        await queue.setRunConcurrency(batchId,String(payload.runId),payload.concurrency as EvaluationRequest['execution']['concurrency']);
+        void live?.invalidate(batchId,'scope').catch(()=>{});
+        return queue.snapshot();
+      });
+      case 'controlRuns':return mutate(async()=>{
+        writable();
+        const batchId=String(payload.batchId),current=activity.snapshot();
+        if(current&&(current.kind!=='evaluation'||current.state!=='running'||current.id!==batchId||
+          queue.snapshot().activeBatchId!==batchId))fail('ACTIVITY_BUSY');
+        const operation=payload.operation as 'hold'|'resume';
+        const lease=!current&&operation==='resume'?activity.claim('evaluation',batchId):undefined;
+        let following=false;
+        try{
+          await queue.controlRuns(batchId,payload.runIds as string[],operation,prepareResumedRuns,OUTPUT_IDLE_POLICY);
+          if(lease){followEvaluation(batchId,lease);following=true;}
+          void live?.invalidate(batchId,lease?'resume':'scope').catch(()=>{});
+          return queue.snapshot();
+        }finally{if(!following)lease?.release();}
       });
       case 'controlRun':return mutate(async()=>{
         writable();

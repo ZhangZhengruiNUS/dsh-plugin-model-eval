@@ -21,15 +21,14 @@ export function createOrdinaryTiming(deps:{store:HistoryStore;registry:ProtocolR
    return createTimingRecorder(store,registry,{machineKey:c.machineKey,programHash:c.program.hash,...(c.probe?{previewId:c.probe.traceId,predictionProbeId:c.probe.prefixId,prediction:c.probe.prediction}:{}),...(makeup?{traceId:randomUUID(),programId:'formal-makeup-v1' as const}:{})},history);
   })();recorders.set(id,pending);return pending;
  }
- const raw:QueueTimingObserver={async onTimingStart(id,sample){await(await recorder(id))?.hooks.onTimingStart?.(id,sample);},async onTimingSample(id,sample){await(await recorder(id))?.hooks.onTimingSample?.(id,sample);},async onTimingRunEnd(id){await(await recorder(id))?.hooks.onTimingRunEnd?.(id);},async onTimingRunSettled(s){
-  if(recoveryUnavailable)return;settlements.set(s.runId,s);const c=await context(s.runId);if(!c)return;
+ const raw:QueueTimingObserver={async onTimingStart(id,sample){await(await recorder(id))?.hooks.onTimingStart?.(id,sample);},async onTimingSample(id,sample){await(await recorder(id))?.hooks.onTimingSample?.(id,sample);},async onTimingRunEnd(id){await(await(recorders.get(id)??recorder(id)))?.hooks.onTimingRunEnd?.(id);},async onTimingRunSettled(s){
+  if(recoveryUnavailable)return;settlements.set(s.runId,s);recorders.delete(s.runId);const c=await context(s.runId);if(!c)return;
   if(!finished(c.summary.estimation?.final)&&s.reason==='drained'){
    const source=await history.read(s.runId);if(source){let receipt;try{receipt=captureSettledRunFirstPassTrace(c.workload,source,{rootId:store.rootId,manifest:c.manifest,summary:c.summary,items:await store.listItems(s.runId),settlement:s},now());}catch{rejections.set(s.runId,'FIRST_PASS_NOT_COMPLETE');}
     if(receipt)await history.save(receipt,0);
    }
   }
   const estimate=await snapshot(s.runId,s.reason==='drained'?'pending':s.reason==='paused'?'paused':'pending',now());if(estimate){const fresh=await store.getRun(s.runId);await store.updateSummary(s.runId,fresh.summary.revision,next=>{next.estimation={...next.estimation,current:estimate,...(finished(estimate)&&!finished(next.estimation?.final)?{final:estimate}:{})};});}
-  recorders.delete(s.runId);
  }};
  const safe=createSafeTimingObserver(raw,(id,error)=>{const code=(error as {code?:string;message?:string})?.code??(error as Error)?.message;rejections.set(id,/^[A-Z][A-Z0-9_]{1,70}$/.test(code??'')?code!:'TIMING_UNAVAILABLE');});
  async function snapshot(id:string,status:'running'|'queued'|'paused'|'pending'|'completed',asOf=now()):Promise<EstimateSnapshot|undefined>{
