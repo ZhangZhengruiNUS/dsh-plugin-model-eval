@@ -1,9 +1,10 @@
+import {isRunConcurrency} from '../contracts.ts';
 import type {HistoryStore} from '../history/store.ts';
 import type {ComparisonExecution,ComparisonMetadata} from './contracts.ts';
 function execution(value:unknown):ComparisonExecution {
   const v=value as {concurrency?:number;callTimeoutMs?:number;failurePolicy?:import('../contracts.ts').EvaluationRequest['execution']['failurePolicy']}|undefined;
-  return v&&Number.isInteger(v.concurrency)&&v.concurrency!>=1&&v.concurrency!<=4&&Number.isInteger(v.callTimeoutMs)&&v.callTimeoutMs!>=1000&&v.callTimeoutMs!<=1800000
-    ?{state:'known',concurrency:v.concurrency!,callTimeoutMs:v.callTimeoutMs!,...(v.failurePolicy?{failurePolicy:v.failurePolicy}:{})}:{state:'unknown'};
+  return v&&isRunConcurrency(v.concurrency)&&Number.isInteger(v.callTimeoutMs)&&v.callTimeoutMs!>=1000&&v.callTimeoutMs!<=1800000
+    ?{state:'known',concurrency:v.concurrency,callTimeoutMs:v.callTimeoutMs!,...(v.failurePolicy?{failurePolicy:v.failurePolicy}:{})}:{state:'unknown'};
 }
 /** Read committed summaries and manifests only; never open item directories. */
 export async function readComparisonMetadata(store:HistoryStore,rootEpoch:number):Promise<ComparisonMetadata>{

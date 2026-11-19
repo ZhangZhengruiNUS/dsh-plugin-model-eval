@@ -88,9 +88,10 @@
 .me-task-detail .me-run-model {display:flex;align-items:center;gap:8px}
 .me-task-detail .me-run-model>.me-model {min-width:0}
 .me-run-select {width:20px;flex:none;display:grid;place-items:center}
-.model-eval .me-task-detail .me-run-concurrency {width:75px;flex:none;min-width:0}
-.model-eval .me-run-concurrency .dsh-select-trigger {min-height:32px;gap:4px}
-.model-eval .me-run-concurrency .dsh-select-value {white-space:nowrap;font-variant-numeric:tabular-nums}
+.model-eval .me-task-detail .me-run-concurrency {width:78px;flex:none;min-width:0;display:grid;gap:4px}
+.model-eval .me-run-concurrency-entry {display:flex;align-items:center;gap:4px;font-size:12px}
+.model-eval .me-run-concurrency-entry .dsh-input {flex:1;min-width:0;min-height:32px;padding-inline:6px;font-variant-numeric:tabular-nums}
+.model-eval .me-run-concurrency .dsh-button {min-height:24px;padding-block:0;justify-self:start}
 @container me-workbench (min-width:761px) {
   .model-eval .me-task-detail .me-controlled-run:has(.me-run-concurrency) {
     grid-template-columns:minmax(9rem,1fr) 5rem minmax(9rem,.8fr) 18rem;

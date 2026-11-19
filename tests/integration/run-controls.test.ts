@@ -396,6 +396,8 @@ test('existing held rows recover only the matching terminal cause and do not rew
 test('parallel models honor per-model worker counts, live edits, and selected pause and resume', {timeout:20000}, async()=>withTempRoot(async directory=>{
   const {path}=await switchRoot(join(directory,'data'),{writing:false});
   let store=await openHistory(path);
+  const expandedRegistry=legacyFixtureRegistry({generalId:'general',writingId:'writing',resourceVersion:'test',
+    items:Array.from({length:10},(_,index)=>({...questions[index%questions.length]!,id:'q'+index}))});
   const calls:string[]=[],inFlight=new Map<string,()=>void>();
   let block=true;
   const host=adapter(async input=>{
@@ -414,31 +416,31 @@ test('parallel models honor per-model worker counts, live edits, and selected pa
       await new Promise(resolve=>setTimeout(resolve,12));
     }
   }
-  let queue=createQueue(store,host,registry,{general:grade},{sampleMultiConfigEta:true});
+  let queue=createQueue(store,host,expandedRegistry,{general:grade},{sampleMultiConfigEta:true});
   try{
     const batch=await queue.enqueue({...request,targets:[...request.targets,target('third')],
-      execution:{...request.execution,parallelModels:2},modelConcurrency:[1,2,1]});
+      execution:{...request.execution,parallelModels:2},modelConcurrency:[1,5,1]});
     const [first,second,third]=batch.runIds as [string,string,string];
-    await until(()=>inFlight.size===3);
-    assert.deepEqual([...inFlight.keys()].sort(),['first:q0','second:q0','second:q1']);
+    await until(()=>inFlight.size===6);
+    assert.deepEqual([...inFlight.keys()].sort(),['first:q0',...Array.from({length:5},(_,i)=>'second:q'+i)]);
     assert.deepEqual(view(queue).activeRunIds,[first,second]);
     assert.equal(view(queue).etaSamples,undefined);
 
     await assert.rejects(queue.controlRuns(batch.batchId,[first,first],'hold'),{code:'BATCH_RUN_NOT_FOUND'});
     assert.equal(view(queue).runControls,undefined);
-    await queue.setRunConcurrency(batch.batchId,first,3);
-    await until(()=>inFlight.size===5);
-    assert.deepEqual([...inFlight.keys()].filter(id=>id.startsWith('first:')).sort(),['first:q0','first:q1','first:q2']);
+    await queue.setRunConcurrency(batch.batchId,first,8);
+    await until(()=>inFlight.size===13);
+    assert.deepEqual([...inFlight.keys()].filter(id=>id.startsWith('first:')).sort(),Array.from({length:8},(_,i)=>'first:q'+i));
     await queue.setRunConcurrency(batch.batchId,first,1);
     inFlight.get('first:q0')!();
     await until(async()=>!!(await store.getItem(first,'q0'))?.grade);
-    assert.ok(!calls.includes('first:q3'));
+    assert.ok(!calls.includes('first:q8'));
     const saved=await store.getItem(first,'q0');
     const {manifest,summary}=await store.getRun(first);
-    assert.deepEqual(summary.executionChanges?.map(change=>[change.before.concurrency,change.after.concurrency]),[[1,3],[3,1]]);
+    assert.deepEqual(summary.executionChanges?.map(change=>[change.before.concurrency,change.after.concurrency]),[[1,8],[8,1]]);
     assert.equal(saved?.attempts[0]?.performanceKey?.conditionKey,performanceConditionKey(manifest.target,manifest.protocols,manifest.execution!));
     assert.equal((await store.getItem(first,'q1'))?.attempts[0]?.performanceKey?.conditionKey,
-      performanceConditionKey(manifest.target,manifest.protocols,{...manifest.execution!,concurrency:3}));
+      performanceConditionKey(manifest.target,manifest.protocols,{...manifest.execution!,concurrency:8}));
 
     await queue.controlRuns(batch.batchId,[first],'hold');
     await until(()=>inFlight.has('third:q0'));
@@ -451,20 +453,20 @@ test('parallel models honor per-model worker counts, live edits, and selected pa
 
     await queue.dispose();await store.close();
     store=await openHistory(path);await store.recover();
-    queue=createQueue(store,host,registry,{general:grade});
+    queue=createQueue(store,host,expandedRegistry,{general:grade});
     const priorCalls=calls.length;
     await queue.idle();
     assert.equal(calls.length,priorCalls);
     block=false;
     await queue.controlRuns(batch.batchId,[first],'resume');
     await queue.idle();
-    assert.deepEqual(calls.slice(priorCalls),['first:q1','first:q2','first:q3']);
+    assert.deepEqual(calls.slice(priorCalls),Array.from({length:9},(_,i)=>'first:q'+(i+1)));
     assert.deepEqual(await store.getItem(first,'q0'),saved);
     assert.deepEqual(Object.keys(view(queue).runControls!).sort(),[second,third].sort());
     await queue.controlRuns(batch.batchId,[second,third],'resume');
     await queue.idle();
     assert.equal(view(queue).status,'completed');
-    assert.equal((await store.getRun(second)).manifest.execution?.concurrency,2);
+    assert.equal((await store.getRun(second)).manifest.execution?.concurrency,5);
     assert.deepEqual((await store.getRun(first)).summary.executionChanges,summary.executionChanges);
   }finally{
     for(const release of inFlight.values())release();
@@ -510,10 +512,15 @@ test('selected resume of a legacy paused batch is durable and leaves other model
 test('the API rejects ambiguous model selections and invalid concurrency without dispatching',()=>{
   const batchId='a0000000-0000-4000-8000-000000000000',runId='b0000000-0000-4000-8000-000000000000';
   const envelope=(action:string,payload:Record<string,unknown>)=>({schemaVersion:1,requestId:'test',action,payload});
-  const create={handles:[batchId,runId],tracks:['general'],execution:{concurrency:3,callTimeoutMs:10000},modelConcurrency:[1,3],parallelModels:2};
+  const create={handles:[batchId,runId],tracks:['general'],execution:{concurrency:8,callTimeoutMs:10000},modelConcurrency:[1,10],parallelModels:2};
   assert.doesNotThrow(()=>validateEnvelope(envelope('createBatch',create)));
   assert.throws(()=>validateEnvelope(envelope('createBatch',{...create,modelConcurrency:[1]})),{code:'INVALID_REQUEST'});
   assert.throws(()=>validateEnvelope(envelope('createBatch',{...create,parallelModels:3})),{code:'INVALID_REQUEST'});
   assert.throws(()=>validateEnvelope(envelope('controlRuns',{batchId,runIds:[runId,runId],operation:'resume'})),{code:'INVALID_REQUEST'});
-  assert.throws(()=>validateEnvelope(envelope('setRunConcurrency',{batchId,runId,concurrency:1.5})),{code:'INVALID_REQUEST'});
+  assert.doesNotThrow(()=>validateEnvelope(envelope('setRunConcurrency',{batchId,runId,concurrency:8})));
+  for(const concurrency of [0,-1,1.5,'8',Number.MAX_SAFE_INTEGER+1]){
+    assert.throws(()=>validateEnvelope(envelope('setRunConcurrency',{batchId,runId,concurrency})),{code:'INVALID_REQUEST'});
+    assert.throws(()=>validateEnvelope(envelope('createBatch',{...create,execution:{...create.execution,concurrency}})),{code:'INVALID_REQUEST'});
+    assert.throws(()=>validateEnvelope(envelope('createBatch',{...create,modelConcurrency:[1,concurrency]})),{code:'INVALID_REQUEST'});
+  }
 });

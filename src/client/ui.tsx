@@ -1,6 +1,5 @@
-import {Select} from './primitives/Select.tsx';
 import {Checkbox} from './primitives/primitives.tsx';
-import {concurrencyOptions} from './components/ExecutionSettings.tsx';
+import {RunConcurrencyInput} from './components/ConcurrencyInput.tsx';
 import {batchRunStatus,runIsSettling,canResumeRun,runIsComplete} from './task-batches.ts';
 import {Button as PrimitiveButton} from './primitives/primitives.tsx';
 import {createPortal} from 'react-dom';
@@ -263,7 +262,7 @@ export function BatchRuns({batch,runs,report,control,unavailableReason,pending,s
   unavailableReason?:string|undefined;
   pending?:{runId:string;operation:RunOperation}|undefined;
   selection?:{eligible:ReadonlySet<string>;selected:ReadonlySet<string>;toggle(id:string):void};
-  setConcurrency(runId:string,value:RunConcurrency):void;
+  setConcurrency(runId:string,value:RunConcurrency):Promise<boolean>;
 }){
   const lastAction=React.useRef<{trigger:HTMLButtonElement;row:HTMLElement}>();
   const [removal,setRemoval]=React.useState<{runId:string;trigger:HTMLButtonElement;row:HTMLElement}>();
@@ -305,10 +304,9 @@ export function BatchRuns({batch,runs,report,control,unavailableReason,pending,s
             onChange={()=>selection.toggle(id)}/>}
         </span>} status={<Badge status={batchRunStatus(batch,run)}/>}>
         {(operations.length>0||editable)&&<div className="me-run-actions">
-          {editable&&<Select className="me-run-concurrency" label={'题目并发数 · '+run.target.modelId} showLabel={false}
-            value={String(batch.runConcurrency?.[id]??batch.execution.concurrency)}
-            options={concurrencyOptions.map(option=>({...option,label:option.value+' 路'}))}
-            disabled={settling||!!unavailableReason} onChange={value=>setConcurrency(id,Number(value) as RunConcurrency)}/>}
+          {editable&&<RunConcurrencyInput label={'题目并发数 · '+run.target.modelId}
+            value={batch.runConcurrency?.[id]??batch.execution.concurrency}
+            disabled={settling||!!unavailableReason} onApply={value=>setConcurrency(id,value)}/>}
           {operations.map(operation=>{
             const needsDetails=operation==='resume'||operation==='rejoin';
             const processing=pending?.runId===id&&pending.operation===operation;

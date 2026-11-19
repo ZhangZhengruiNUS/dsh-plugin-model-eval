@@ -1,4 +1,4 @@
-import type {PromptMessage, ProtocolRefs, Track} from '../contracts.ts';
+import {isRunConcurrency,type RunConcurrency,type PromptMessage,type ProtocolRefs,type Track} from '../contracts.ts';
 import type {GenerationTiming, StagePhase} from './contracts.ts';
 import type {SpeedClock} from '../speed/clock.ts';
 
@@ -16,11 +16,11 @@ export interface PredictionV3 {algorithm:'estimate-v3';asOf:string;state:'availa
 export interface TimingTraceV1 {version:1;traceId:string;rootId:string;revision:number;conditionKey:string;protocolHash:string;workloadHash:string;
   machineKey:string;programHash:string;programId:string;algorithmId:string;startedAt:string;updatedAt:string;
   status:'running'|'completed'|'stopped'|'failed';events:TimingEventV1[];runId?:string;previewId?:string;pairedTraceId?:string;
-  concurrency?:1|2|3|4;truthMs?:number;prediction?:PredictionV3;conditionKnown?:boolean;predictionProbeId?:string;observationCutoff?:string;firstPass?:FirstPassReceipt;durationScope?:DurationScope}
+  concurrency?:RunConcurrency;truthMs?:number;prediction?:PredictionV3;conditionKnown?:boolean;predictionProbeId?:string;observationCutoff?:string;firstPass?:FirstPassReceipt;durationScope?:DurationScope}
 export interface BaselineProfileV1 {version:1;id:string;createdAt:string;algorithmId:'estimate-v3';programHash:string;protocolHash:string;workloadHash:string;
-  conditionKey:string;machineKey:string;concurrency:1|2|3|4;scope:'same-configuration';trainingTraceIds:string[];
+  conditionKey:string;machineKey:string;concurrency:RunConcurrency;scope:'same-configuration';trainingTraceIds:string[];
   formal:TimingTraceV1[];probes:TimingTraceV1[];residualRatios:number[];validated:boolean;rangeValidated?:boolean;durationScope?:DurationScope}
-export interface PredictionInputV3 {workload:WorkloadPlanV1;conditionKey:string;machineKey:string;programHash:string;concurrency:1|2|3|4;
+export interface PredictionInputV3 {workload:WorkloadPlanV1;conditionKey:string;machineKey:string;programHash:string;concurrency:RunConcurrency;
   asOf:string;profiles:readonly BaselineProfileV1[];probeEvents:readonly TimingEventV1[];durationScope?:DurationScope}
 export interface ProbeDefinitionV3 {id:string;bucket:string;datasetId:string;track:Track;phase:'answer'|'judge';kind:'text'|'tool';messages:readonly PromptMessage[];followupOf?:string}
 export type ProbeProgramId='speed-probe-v3'|'speed-probe-v4';
@@ -30,7 +30,7 @@ export interface ProbeProgramV3 {id:ProbeProgramId;hash:string;probes:readonly P
 export interface ProbeDispatchResult {outcome:TimingEventV1['outcome'];usage?:TimingUsage;timing?:GenerationTiming}
 export interface ProbeRunV3 {programHash:string;startedAt:string;endedAt:string;calls:number;events:TimingEventV1[];status:'completed'|'stopped';budgetReached?:true;first30Events:TimingEventV1[];first30At:string}
 export interface CalibrationBudget {conditionKey:string;maxDispatches:number;maxWallMs:number;maxReportedTokens?:number}
-export interface ProbeScheduleContext {clock?:SpeedClock;concurrency:1|2|3|4;budgetMs:number;mode:'preview'|'calibration';tracks:readonly Track[];signal:AbortSignal;
+export interface ProbeScheduleContext {clock?:SpeedClock;concurrency:RunConcurrency;budgetMs:number;mode:'preview'|'calibration';tracks:readonly Track[];signal:AbortSignal;
   knownBuckets?:ReadonlySet<string>;priorityWeights?:Readonly<Record<string,number>>;reserve?:()=>boolean;
   dispatch(probe:ProbeDefinitionV3,signal:AbortSignal):Promise<ProbeDispatchResult>;onEvent?:(event:TimingEventV1)=>Promise<void>;onBudget?:()=>void}
 export interface TimingCleanupPreview {token:string;traceIds:string[];bytes:number;expiresAt:string}
@@ -75,7 +75,7 @@ export function validateTimingTrace(value:unknown):asserts value is TimingTraceV
   if(t.conditionKnown!==undefined&&typeof t.conditionKnown!=='boolean')fail('TRACE_IDENTITY_INVALID');
   if(!stamp(t.startedAt)||!stamp(t.updatedAt)||Date.parse(String(t.updatedAt))<Date.parse(String(t.startedAt))||!['running','completed','stopped','failed'].includes(String(t.status))||!Array.isArray(t.events))fail('TRACE_STATE_INVALID');
   if(t.observationCutoff!==undefined&&(!stamp(t.observationCutoff)||!isProbePrefixId(t.programId)||Date.parse(String(t.observationCutoff))<Date.parse(String(t.startedAt))||Date.parse(String(t.observationCutoff))>Date.parse(String(t.updatedAt))))fail('TRACE_CUTOFF_INVALID');
-  if(t.concurrency!==undefined&&![1,2,3,4].includes(Number(t.concurrency))||t.truthMs!==undefined&&(!ms(t.truthMs)||t.status!=='completed'))fail('TRACE_TRUTH_INVALID');
+  if(t.concurrency!==undefined&&!isRunConcurrency(t.concurrency)||t.truthMs!==undefined&&(!ms(t.truthMs)||t.status!=='completed'))fail('TRACE_TRUTH_INVALID');
   let sequence=0;const ids=new Set<string>();
   for(const e of t.events as unknown[]){validateTimingEvent(e);if(e.sequence<=sequence||ids.has(e.eventId))fail('TRACE_ORDER_INVALID');
     if(Date.parse(e.startedAt)<Date.parse(String(t.startedAt))||Date.parse(e.endedAt)>Date.parse(String(t.observationCutoff??t.updatedAt)))fail('TRACE_EVENT_OUTSIDE_SPAN');

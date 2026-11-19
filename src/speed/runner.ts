@@ -1,4 +1,5 @@
 import {isFiveCapabilitySchema,isLongTasksFirstSchema} from '../evaluation/five-schema.ts';
+import {isRunConcurrency} from '../contracts.ts';
 import {validSpeedBudget} from './budget.ts';
 import {randomUUID} from 'node:crypto';
 import type {EvaluationRequest,GeneratedAnswer,HostAdapter,PromptMessage,ProtocolRegistry,ResolvedProtocolSet,Question} from '../contracts.ts';
@@ -27,7 +28,8 @@ export function createSpeedRunner(deps:{adapter:HostAdapter;registry:ProtocolReg
   for(let index=0;index<request.targets.length&&!controller.signal.aborted;index++){
    if(session!.probeMethod==='speed-probe-v4'){await executeShortConfig(index,protocols,approval?.profiles[index]);continue;}
    const config=session!.configs[index]!,abort=new AbortController(),start=clock.monotonicMs(),deadline=start+Math.round(session!.budgetMinutes*60000);let expired=false,gradingTail:Promise<unknown>=Promise.resolve(),callsUsed=0,callLimitReached=false;
-   const reserve=()=>{if(abort.signal.aborted||clock.monotonicMs()>=deadline)return false;if(callsUsed>=12){callLimitReached=true;return false;}callsUsed++;return true;};
+   const callLimit=12;
+   const reserve=()=>{if(abort.signal.aborted||clock.monotonicMs()>=deadline)return false;if(callsUsed>=callLimit){callLimitReached=true;return false;}callsUsed++;return true;};
    const stop=()=>abort.abort();controller.signal.addEventListener('abort',stop,{once:true});if(controller.signal.aborted)abort.abort();
    const cancelBudget=clock.schedule(Math.max(0,deadline-clock.monotonicMs()),()=>{expired=true;abort.abort();void update(s=>{if(s.configs[index]!.status==='running')s.configs[index]!.status='stopping';}).catch(()=>{});});
    const record=(sample:PerformanceSample)=>update(s=>{s.configs[index]!.performance=appendPerformanceSample(s.configs[index]!.performance,sample);});
@@ -35,10 +37,10 @@ export function createSpeedRunner(deps:{adapter:HostAdapter;registry:ProtocolReg
    async function generate(q:Question,phase:'answer'|'judge',messages:readonly PromptMessage[]):Promise<GeneratedAnswer|undefined>{
     if(!reserve())return;const sampleId=randomUUID(),startedAt=clock.now(),stage=key(q,phase);
     await update(s=>{s.configs[index]!.performance.activeStages.push({...stage,sampleId,itemId:q.id,startedAt});});if(abort.signal.aborted)return;
-    const child=new AbortController(),parentAbort=()=>child.abort();abort.signal.addEventListener('abort',parentAbort,{once:true});if(abort.signal.aborted)child.abort();
+    const child=new AbortController(),signal=AbortSignal.any([abort.signal,child.signal]);
     let timeout=false;const cancelTimer=clock.schedule(Math.max(0,Math.min(config.execution.callTimeoutMs,deadline-clock.monotonicMs())),()=>{timeout=true;child.abort();});const invoked=clock.monotonicMs();let answer:GeneratedAnswer;
-    try{answer=await deps.adapter.generateOnce({target:phase==='judge'?config.judge!.target:config.target,messages,signal:child.signal,context:{attemptId:sampleId,itemId:q.id,track:q.track,phase}});}catch(e){answer={text:'',complete:false,truncated:false,observations:{attemptId:sampleId,itemId:q.id,track:q.track,phase,startedAt,endedAt:clock.now(),usage:{available:false}},error:{code:code(e),phase:'config',retryable:false,message:'测速调用未完成。'}};}
-    finally{cancelTimer();abort.signal.removeEventListener('abort',parentAbort);}
+    try{answer=await deps.adapter.generateOnce({target:phase==='judge'?config.judge!.target:config.target,messages,signal,context:{attemptId:sampleId,itemId:q.id,track:q.track,phase}});}catch(e){answer={text:'',complete:false,truncated:false,observations:{attemptId:sampleId,itemId:q.id,track:q.track,phase,startedAt,endedAt:clock.now(),usage:{available:false}},error:{code:code(e),phase:'config',retryable:false,message:'测速调用未完成。'}};}
+    finally{cancelTimer();}
     const cancelled=abort.signal.aborted||child.signal.aborted;
     await record({...stage,sampleId,itemId:q.id,startedAt,endedAt:clock.now(),durationMs:answer.observations.timing?.totalMs??Math.max(0,clock.monotonicMs()-invoked),outcome:cancelled?(expired||timeout?'timeout':'cancelled'):answer.complete?'completed':isTimeoutFailure(answer.error)?'timeout':'failed',truncated:answer.truncated,...(answer.observations.timing?{timing:answer.observations.timing}:{}),usage:answer.observations.usage});
     if(!cancelled&&answer.error?.phase==='config'){await update(s=>{s.configs[index]!.errorCode=answer.error!.code;s.configs[index]!.status='failed';s.status='failed';});controller.abort();}
@@ -58,7 +60,7 @@ export function createSpeedRunner(deps:{adapter:HostAdapter;registry:ProtocolReg
    }
    try{
     await update(s=>{s.configs[index]!.status='running';s.configs[index]!.startedAt=clock.now();});const questions=selectProbeQuestions(protocols,config.tracks);let next=0;
-    const outcomes=await Promise.allSettled(Array.from({length:config.execution.concurrency},async()=>{try{while(!abort.signal.aborted&&clock.monotonicMs()<deadline){const q=questions[next++];if(!q)break;if(q.datasetId==='bfcl-v4-multi-turn-selected'){await toolPreview(q);continue;}const answer=await generate(q,'answer',buildPrompt(q));if(!answer||abort.signal.aborted)continue;
+    const outcomes=await Promise.allSettled(Array.from({length:Math.min(config.execution.concurrency,questions.length,callLimit)},async()=>{try{while(!abort.signal.aborted&&clock.monotonicMs()<deadline){const q=questions[next++];if(!q)break;if(q.datasetId==='bfcl-v4-multi-turn-selected'){await toolPreview(q);continue;}const answer=await generate(q,'answer',buildPrompt(q));if(!answer||abort.signal.aborted)continue;
      if(q.track==='writing'){if(!deps.graders.writing)speedFail('WRITING_GRADER_UNAVAILABLE');if(!deps.graders.writing!.local(q,answer))await generate(q,'judge',deps.graders.writing!.build(q,answer));}
      else{const queued=clock.monotonicMs();const work=gradingTail.then(async()=>{if(abort.signal.aborted||clock.monotonicMs()>=deadline)return;const sampleId=randomUUID(),startedAt=clock.now(),started=clock.monotonicMs(),stage=key(q,'local-grade');await update(s=>{s.configs[index]!.performance.activeStages.push({...stage,sampleId,itemId:q.id,startedAt});});if(abort.signal.aborted)return;const result=await deps.graders.general(q,answer,abort.signal,protocols);await record({...stage,sampleId,itemId:q.id,startedAt,endedAt:clock.now(),durationMs:Math.max(0,clock.monotonicMs()-started),queueWaitMs:Math.max(0,started-queued),outcome:abort.signal.aborted?(expired?'timeout':'cancelled'):result.kind==='scored'?'completed':'failed'});if(result.kind==='technical-missing'&&['resource','config','storage'].includes(result.error.phase))speedFail(result.error.code);});gradingTail=work.catch(()=>{});await work;}
     }}catch(e){controller.abort();throw e;}}));
@@ -71,7 +73,7 @@ export function createSpeedRunner(deps:{adapter:HostAdapter;registry:ProtocolReg
  return {
   async start(request:EvaluationRequest&{budgetMinutes:number},approval?:ApprovedPreview){
    if(disposed)speedFail('SERVICE_DISPOSED');if(executing)speedFail('ACTIVITY_BUSY');
-   if(!validSpeedBudget(request.budgetMinutes)||!request.targets.length||request.targets.length>20||!request.tracks.length||new Set(request.tracks).size!==request.tracks.length||request.tracks.some(t=>!['general','writing'].includes(t))||![1,2,3,4].includes(request.execution.concurrency)||!Number.isInteger(request.execution.callTimeoutMs)||request.execution.callTimeoutMs<1000||request.execution.callTimeoutMs>1800000)speedFail('INVALID_BATCH');
+   if(!validSpeedBudget(request.budgetMinutes)||!request.targets.length||request.targets.length>20||!request.tracks.length||new Set(request.tracks).size!==request.tracks.length||request.tracks.some(t=>!['general','writing'].includes(t))||!isRunConcurrency(request.execution.concurrency)||!Number.isInteger(request.execution.callTimeoutMs)||request.execution.callTimeoutMs<1000||request.execution.callTimeoutMs>1800000)speedFail('INVALID_BATCH');
    const targets=request.targets.map(fingerprintTarget);if(new Set(targets).size!==targets.length)speedFail('DUPLICATE_TARGET');if(request.tracks.includes('writing')&&!request.judge)speedFail('JUDGE_REQUIRED');if(request.judge)fingerprintTarget(request.judge.target);
    const input=structuredClone(request);executing=true;let release!:()=>void;admissionDone=new Promise<void>(r=>release=r);
    try{

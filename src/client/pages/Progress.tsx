@@ -201,7 +201,7 @@ export function Progress(props:PageProps&{targetBatchId?:string|undefined}){cons
           const next=new Set(selectedIds);if(next.has(id))next.delete(id);else next.add(id);
           setSelection({batchId:batch.batchId,ids:next});
         }}}:{})}
-        setConcurrency={(runId,concurrency)=>void props.actQueue(()=>props.api('setRunConcurrency',{batchId:batch.batchId,runId,concurrency}))}
+        setConcurrency={async(runId,concurrency)=>!!await props.actQueue(()=>props.api('setRunConcurrency',{batchId:batch.batchId,runId,concurrency}))}
         control={(runId,operation)=>{
           if(operation==='resume'||operation==='hold'){controlModels(batch,[runId],operation,runId);return;}
           setPending({batchId:batch.batchId,runId,operation});

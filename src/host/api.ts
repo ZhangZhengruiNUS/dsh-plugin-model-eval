@@ -1,6 +1,6 @@
 import {traceIdValid} from '../estimation/calibration-contracts.ts';
 import {validSpeedBudget} from '../speed/budget.ts';
-import type {JsonValue} from '../contracts.ts';
+import {isRunConcurrency,type JsonValue} from '../contracts.ts';
 export interface ApiEnvelope {schemaVersion:1;requestId:string;action:Action;payload:Record<string,JsonValue>}
 const fields={status:[],setCodingDiagnostics:['enabled'],startCodingDiagnostic:['runId','itemId'],codingDiagnostic:['runId','itemId'],cancelCodingDiagnostic:['diagnosticId'],protocolCatalog:[],previewUpgrade:['sourceRunId','deepGeneralId','handle','execution'],commitUpgrade:['token'],previewEditionUpgrade:['sourceRunId','destinationGeneralId','handle','execution'],commitEditionUpgrade:['token','confirmSameDeployment'],catalog:[],settings:[],prepare:['generalId','expectedRootId','expectedRootEpoch'],setRoot:['path'],snapshot:['providerId','modelId','overrides','deployment'],createBatch:['generalId','handles','tracks','judgeHandle','execution','previewId','modelConcurrency','parallelModels'],checkTimeAdvisor:['generalId','handles','tracks','judgeHandle','execution','budgetMinutes'],startSpeedPreview:['generalId','handles','tracks','judgeHandle','execution','budgetMinutes','offerId','intent'],speedPreviewStatus:['previewId'],cancelSpeedPreview:['previewId'],speedHistory:[],speedHistoryUsage:[],previewSpeedCleanup:['previewIds'],commitSpeedCleanup:['token'],speedCleanupStatus:['token'],timingHistory:[],previewTimingCleanup:['groupIds'],commitTimingCleanup:['token'],queue:[],pause:['batchId'],resume:['batchId','judgeHandle'],rejudge:['batchId','operationId'],controlRun:['batchId','runId','operation'],controlRuns:['batchId','runIds','operation'],setRunConcurrency:['batchId','runId','concurrency'],history:[],comparisonMetadata:[],comparisonCommon:['runIds','referenceIds'],report:['runId','includeQuestions'],item:['runId','itemId'],usage:[],formalHistoryUsage:[],previewCleanup:['batchIds'],commitCleanup:['token'],cleanupStatus:['token']} as const;
 export type Action=keyof typeof fields;
@@ -27,7 +27,7 @@ export function validateEnvelope(value:unknown):ApiEnvelope {
       operation!=='hold'&&operation!=='resume')return reject();
   }
   if(body.action==='setRunConcurrency'&&(!body.payload.batchId||!body.payload.runId||
-    ![1,2,3,4].some(value=>value===body.payload.concurrency)))return reject();
+    !isRunConcurrency(body.payload.concurrency)))return reject();
   if(body.action==='report'&&'includeQuestions' in body.payload&&typeof body.payload.includeQuestions!=='boolean')return reject();
   if(body.action==='rejudge'&&(!body.payload.batchId||!body.payload.operationId))return reject();
   if(body.action==='setCodingDiagnostics'&&typeof body.payload.enabled!=='boolean')return reject();
@@ -56,7 +56,7 @@ export function validateEnvelope(value:unknown):ApiEnvelope {
   if(body.action==='previewCleanup'&&(!Array.isArray(body.payload.batchIds)||!body.payload.batchIds.length||body.payload.batchIds.some(x=>typeof x!=='string'||x.length>100)))return reject();
   if(['createBatch','checkTimeAdvisor','startSpeedPreview'].includes(body.action)&&(!Array.isArray(body.payload.handles)||!body.payload.handles.length||body.payload.handles.length>20||body.payload.handles.some(x=>typeof x!=='string'||!/^[a-f0-9-]{36}$/.test(x))||!Array.isArray(body.payload.tracks)||!body.payload.execution||typeof body.payload.execution!=='object'||Array.isArray(body.payload.execution)))return reject();
   if(['createBatch','checkTimeAdvisor','startSpeedPreview'].includes(body.action)){
-    const execution=body.payload.execution as Record<string,JsonValue>;if(Object.keys(execution).sort().join(',')!=='callTimeoutMs,concurrency'||typeof execution.callTimeoutMs!=='number'||typeof execution.concurrency!=='number')return reject();
+    const execution=body.payload.execution as Record<string,JsonValue>;if(Object.keys(execution).sort().join(',')!=='callTimeoutMs,concurrency'||typeof execution.callTimeoutMs!=='number'||!isRunConcurrency(execution.concurrency))return reject();
     if((body.payload.tracks as JsonValue[]).some(x=>x!=='general'&&x!=='writing'))return reject();
   }
   if(body.action==='createBatch'){
@@ -64,10 +64,10 @@ export function validateEnvelope(value:unknown):ApiEnvelope {
     const count=(handles as JsonValue[]).length;
     if(parallelModels!==undefined&&(typeof parallelModels!=='number'||!Number.isInteger(parallelModels)||parallelModels<1||parallelModels>count))return reject();
     if(modelConcurrency!==undefined&&(!Array.isArray(modelConcurrency)||modelConcurrency.length!==count||
-      modelConcurrency.some(concurrency=>![1,2,3,4].some(value=>value===concurrency))))return reject();
+      modelConcurrency.some(concurrency=>!isRunConcurrency(concurrency))))return reject();
   }
   for(const key of ['generalId','deepGeneralId','destinationGeneralId'])if(key in body.payload&&(typeof body.payload[key]!=='string'||!/^[a-zA-Z0-9._-]{1,128}$/.test(body.payload[key] as string)))return reject();
-  if(body.action==='previewUpgrade'||body.action==='previewEditionUpgrade'){const p=body.payload,e=p.execution as Record<string,JsonValue>;if(!p.sourceRunId||!(body.action==='previewUpgrade'?p.deepGeneralId:p.destinationGeneralId)||!p.handle||!e||typeof e!=='object'||Array.isArray(e)||Object.keys(e).sort().join(',')!=='callTimeoutMs,concurrency'||![1,2,3,4].includes(Number(e.concurrency))||typeof e.concurrency!=='number'||!Number.isInteger(e.callTimeoutMs)||Number(e.callTimeoutMs)<1000||Number(e.callTimeoutMs)>1800000)return reject();}
+  if(body.action==='previewUpgrade'||body.action==='previewEditionUpgrade'){const p=body.payload,e=p.execution as Record<string,JsonValue>;if(!p.sourceRunId||!(body.action==='previewUpgrade'?p.deepGeneralId:p.destinationGeneralId)||!p.handle||!e||typeof e!=='object'||Array.isArray(e)||Object.keys(e).sort().join(',')!=='callTimeoutMs,concurrency'||!isRunConcurrency(e.concurrency)||!Number.isInteger(e.callTimeoutMs)||Number(e.callTimeoutMs)<1000||Number(e.callTimeoutMs)>1800000)return reject();}
   return body;
 }
 export function safeApiError(error:unknown):{code:string;message:string;retryable:boolean} {

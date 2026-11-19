@@ -3,12 +3,12 @@ import {randomUUID} from 'node:crypto';
 import {ESTIMATION_METHOD_ID,probeProgramHash} from './program-identity.ts';
 import {speedClock} from './clock.ts';
 import type {ProbeProgramV3,ProbeScheduleContext,ProbeRunV3,ProbeDefinitionV3,TimingEventV1} from '../estimation/calibration-contracts.ts';
-import type {Track} from '../contracts.ts';
+import {isRunConcurrency,type Track} from '../contracts.ts';
 
 export const probeCallLimit=(tracks:readonly Track[])=>tracks.includes('general')?12:4;
 export async function scheduleProbes(program:ProbeProgramV3,ctx:ProbeScheduleContext):Promise<ProbeRunV3> {
   if(!isProbeProgramId(program.id)||program.methodId!==undefined&&(program.id!=='speed-probe-v4'||program.methodId!==ESTIMATION_METHOD_ID)||program.hash!==probeProgramHash(program)||new Set(program.probes.map(p=>p.id)).size!==program.probes.length)throw Error('PROBE_IDENTITY_CHANGED');
-  if(![1,2,3,4].includes(ctx.concurrency)||!Number.isSafeInteger(ctx.budgetMs)||ctx.budgetMs<1000||ctx.budgetMs>(ctx.mode==='calibration'?120000:300000)||!ctx.tracks.length||new Set(ctx.tracks).size!==ctx.tracks.length||ctx.tracks.some(t=>!['general','writing'].includes(t)))throw Error('PROBE_CONTEXT_INVALID');
+  if(!isRunConcurrency(ctx.concurrency)||!Number.isSafeInteger(ctx.budgetMs)||ctx.budgetMs<1000||ctx.budgetMs>(ctx.mode==='calibration'?120000:300000)||!ctx.tracks.length||new Set(ctx.tracks).size!==ctx.tracks.length||ctx.tracks.some(t=>!['general','writing'].includes(t)))throw Error('PROBE_CONTEXT_INVALID');
   const clock=ctx.clock??speedClock,start=clock.monotonicMs(),controller=new AbortController(),startedAt=clock.now(),deadline=start+ctx.budgetMs;
   const pool=program.probes.map((p,index)=>({p,index})).filter(x=>ctx.tracks.includes(x.p.track));
   const used=new Set<string>(),seen=new Set<string>(),finished=new Map<string,TimingEventV1['outcome']>(),events:TimingEventV1[]=[];
@@ -28,7 +28,7 @@ export async function scheduleProbes(program:ProbeProgramV3,ctx:ProbeScheduleCon
     used.add(next.id);seen.add(next.bucket);calls++;if(next.kind==='tool')tools++;return next;
   }
   try {
-    const settled=await Promise.allSettled(Array.from({length:ctx.concurrency},async()=>{
+    const settled=await Promise.allSettled(Array.from({length:Math.min(ctx.concurrency,pool.length,limit)},async()=>{
       for(;;){const p=select();if(!p)return;
         const a={p,id:randomUUID(),startedAt:clock.now(),start:clock.monotonicMs(),dispatchSequence:calls};active.set(a.id,a);
         let result:Awaited<ReturnType<ProbeScheduleContext['dispatch']>>;

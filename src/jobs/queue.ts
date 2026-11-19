@@ -1,10 +1,11 @@
+import {setMaxListeners} from 'node:events';
 import {createProtocolAdmission,type ProtocolAdmission} from '../evaluation/protocol-resolution.ts';
 import {generalSchemaFor} from '../evaluation/current-edition.ts';
 import {usesContestWallSafety} from '../evaluation/five-schema.ts';
 import {performanceConditionKey,normalizeObservation,isTimeoutFailure} from '../estimation/observations.ts';
 import type {PerformanceSample,EstimateSnapshot} from '../estimation/contracts.ts';
 import {randomUUID} from 'node:crypto';
-import {JUDGE_ITEM_PENDING,type ExecutionChange,type UpstreamFailureCause} from '../contracts.ts';
+import {JUDGE_ITEM_PENDING,isRunConcurrency,type ExecutionChange,type UpstreamFailureCause} from '../contracts.ts';
 import {hasRepeatedItemJudgeFailure} from './judge-item-policy.ts';
 import {readdir} from 'node:fs/promises';
 import {join} from 'node:path';
@@ -199,7 +200,7 @@ export function createQueue(store:HistoryStore,adapter:HostAdapter,registry:Prot
       for(const change of changes){
         const expected=change.reason==='output-idle-upgrade-v1'
           ? {...previous,failurePolicy:'output-idle-v1'}
-          : change.reason==='run-concurrency-v1'&&[1,2,3,4].includes(change.after.concurrency)
+          : change.reason==='run-concurrency-v1'&&isRunConcurrency(change.after.concurrency)
             ? {...previous,concurrency:change.after.concurrency}
             : undefined;
         if(!expected||!Number.isFinite(Date.parse(change.at))||identityHash(change.before)!==identityHash(previous)||
@@ -252,14 +253,14 @@ export function createQueue(store:HistoryStore,adapter:HostAdapter,registry:Prot
       const {grading:excluded,...question}=q;
       const state:ItemInput={itemId:q.id,question:item?.question??question,attempts:[...(item?.attempts??[]),attempt],...(item?.answer?{answer:item.answer}:{}),...(item?.grade?{grade:item.grade}:{})};
       await store.saveItem(runId,item?.revision??0,state);await refresh(runId);await options.onTimingStart?.(runId,attempt.attemptId);
-      const child=new AbortController(),abort=()=>child.abort();signal.addEventListener('abort',abort,{once:true});if(signal.aborted)abort();
+      const child=new AbortController(),attemptSignal=AbortSignal.any([signal,child.signal]);
       let timedOut=false;const watchdog=createCallWatchdog(execution.callTimeoutMs,execution.failurePolicy,()=>{timedOut=true;child.abort();});
       const generatedStart=performance.now();let answer:GeneratedAnswer;
-      try{if(child.signal.aborted||options.calibration?.canDispatch&&!options.calibration.canDispatch())throw Object.assign(Error('CALIBRATION_BUDGET_REACHED'),{code:'CALIBRATION_BUDGET_REACHED'});answer=await adapter.generateOnce({target,messages,signal:child.signal,onActivity:watchdog.activity,context:{attemptId:attempt.attemptId,itemId:q.id,track:q.track,phase}});}
+      try{if(attemptSignal.aborted||options.calibration?.canDispatch&&!options.calibration.canDispatch())throw Object.assign(Error('CALIBRATION_BUDGET_REACHED'),{code:'CALIBRATION_BUDGET_REACHED'});answer=await adapter.generateOnce({target,messages,signal:attemptSignal,onActivity:watchdog.activity,context:{attemptId:attempt.attemptId,itemId:q.id,track:q.track,phase}});}
       catch(thrown){const code=typeof (thrown as {code?:unknown})?.code==='string'?(thrown as {code:string}).code:'CALL_FAILED';const configuration=/AUTH|CONFIG|TARGET|UNSUPPORTED|REASONING|PARAMETER/.test(code);
         const upstream=captureUpstreamDiagnostic(thrown);
         answer={text:'',complete:false,truncated:false,observations:{attemptId:attempt.attemptId,itemId:q.id,track:q.track,phase,startedAt:attempt.startedAt,endedAt:new Date().toISOString(),usage:{available:false}},error:{...failure(configuration&&preparationErrorCodes.has(code)?code:'CALL_FAILED',configuration?'config':phase,!configuration),...(upstream?{upstream}:{})}};
-      }finally{watchdog.dispose();signal.removeEventListener('abort',abort);}
+      }finally{watchdog.dispose();}
       if(signal.aborted||!(execution.failurePolicy&&isFatalCallError(answer.error))&&(timedOut||execution.failurePolicy&&isTimeoutFailure(answer.error)&&hasObservedOutput(answer.observations,answer.text))){answer.complete=false;answer.error=timeoutFailure({policy:execution.failurePolicy,phase,observation:answer.observations,text:answer.text,parentAborted:signal.aborted,upstream:answer.error?.upstream});}
       attempt.status=answer.complete?'completed':signal.aborted?'interrupted':'failed';attempt.endedAt=answer.observations.endedAt;attempt.observations=answer.observations;if(answer.error)attempt.error=answer.error;
       options.calibration?.recordUsage(answer.observations.usage);attempt.performance=normalizeObservation({...attempt.performanceKey!,sampleId:attempt.attemptId,itemId:q.id,startedAt:answer.observations.startedAt,endedAt:answer.observations.endedAt,durationMs:answer.observations.timing?.totalMs??(performance.now()-generatedStart),outcome:answer.complete?'completed':timedOut||isTimeoutFailure(answer.error)?'timeout':signal.aborted?'cancelled':'failed',truncated:answer.truncated,automaticRetry:!answer.complete&&!!answer.error?.retryable&&retryIndex+1<maxAttempts&&!signal.aborted,...(answer.observations.timing?{timing:answer.observations.timing}:{}),usage:answer.observations.usage});
@@ -550,6 +551,8 @@ export function createQueue(store:HistoryStore,adapter:HostAdapter,registry:Prot
             if(!sampleRunId)dispatched.add(runId);
             const runController=new AbortController(),wakeup=createWakeup();
             const signal=AbortSignal.any([batchSignal,runController.signal]);
+            // Queued local graders each listen until their turn or cancellation.
+            setMaxListeners(0,signal);
             const done=executeRun(batch,runId,signal,wakeup,!!sampleRunId,local,admission,previouslyDeferred)
               .catch(error=>{rememberFailure(batch,error);controller?.abort();})
               .finally(()=>{currentRuns.delete(runId);dispatchWakeup.notify();});
@@ -623,7 +626,7 @@ export function createQueue(store:HistoryStore,adapter:HostAdapter,registry:Prot
       await ready;
       if(disposed)fail('QUEUE_DISPOSED');
       if(!store.writable)fail('HISTORY_READ_ONLY');
-      if(![1,2,3,4].includes(concurrency))fail('INVALID_EXECUTION');
+      if(!isRunConcurrency(concurrency))fail('INVALID_EXECUTION');
       const batch=batches.get(id);
       if(!batch?.runIds.includes(runId))return fail('BATCH_RUN_NOT_FOUND');
       await store.exclusive(async tx=>{
@@ -830,10 +833,10 @@ export function createQueue(store:HistoryStore,adapter:HostAdapter,registry:Prot
     async enqueue(request,admission=createProtocolAdmission(registry)){await ready;if(disposed)fail('QUEUE_DISPOSED');if(active||admitting)fail('QUEUE_BUSY');if(!store.writable)fail('HISTORY_READ_ONLY');
       assertFailurePolicy(request.execution.failurePolicy);
       if(!request.targets.length||!request.tracks.length||new Set(request.tracks).size!==request.tracks.length||request.tracks.some(x=>!['general','writing'].includes(x)))fail('INVALID_BATCH');
-      if(![1,2,3,4].includes(request.execution.concurrency)||!Number.isInteger(request.execution.callTimeoutMs)||request.execution.callTimeoutMs<1000||request.execution.callTimeoutMs>1800000)fail('INVALID_EXECUTION');
+      if(!isRunConcurrency(request.execution.concurrency)||!Number.isInteger(request.execution.callTimeoutMs)||request.execution.callTimeoutMs<1000||request.execution.callTimeoutMs>1800000)fail('INVALID_EXECUTION');
       const limit=request.execution.parallelModels??1;
       if(!Number.isInteger(limit)||limit<1||limit>request.targets.length||
-        request.modelConcurrency&&(request.modelConcurrency.length!==request.targets.length||request.modelConcurrency.some(value=>![1,2,3,4].includes(value))))fail('INVALID_EXECUTION');
+        request.modelConcurrency&&(request.modelConcurrency.length!==request.targets.length||request.modelConcurrency.some(value=>!isRunConcurrency(value))))fail('INVALID_EXECUTION');
       const ids=request.targets.map(fingerprintTarget);if(new Set(ids).size!==ids.length)fail('DUPLICATE_TARGET');if(request.tracks.includes('writing')&&!request.judge)fail('JUDGE_REQUIRED');if(request.judge)fingerprintTarget(request.judge.target);
       const release=reserveAdmission();try{
         const generalId=request.generalId??registry.list().find(d=>d.general.tier==='legacy')?.refs.generalId;if(!generalId)fail('PROTOCOL_UNAVAILABLE');

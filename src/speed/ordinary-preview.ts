@@ -23,7 +23,7 @@ export async function runOrdinaryProbePreview(input:Input):Promise<OrdinaryProbe
  const failed=(error:{code?:string;phase?:string}|undefined)=>{errorCode??=/^[A-Z][A-Z0-9_]{1,70}$/.test(error?.code??'')?error!.code:'PROBE_FAILED';if(error?.phase==='config'){fatalConfig=true;controller.abort();}};
  try{
   const run=await scheduleProbes(program,{clock,concurrency:execution.concurrency,budgetMs:input.budgetMs,mode:'preview',tracks:input.tracks,signal:controller.signal,...(input.onBudget?{onBudget:input.onBudget}:{}),
-   async dispatch(p,parentSignal){const child=new AbortController(),abort=()=>child.abort();let timedOut=false;parentSignal.addEventListener('abort',abort,{once:true});if(parentSignal.aborted)child.abort();const cancelCall=clock.schedule(execution.callTimeoutMs,()=>{timedOut=true;child.abort();}),signal=child.signal;
+   async dispatch(p,parentSignal){const child=new AbortController(),signal=AbortSignal.any([parentSignal,child.signal]);let timedOut=false;const cancelCall=clock.schedule(execution.callTimeoutMs,()=>{timedOut=true;child.abort();});
     try{const result=await(async()=>{const context={attemptId:randomUUID(),itemId:p.id,track:p.track,phase:p.phase};
     if(p.kind==='text'){const answer=await adapter.generateOnce({target:p.phase==='judge'?input.judge!.target:target,messages:p.messages,signal,context});if(!answer.complete&&(!signal.aborted||answer.error?.phase==='config'))failed(answer.error);return {outcome:answer.complete?'completed' as const:'failed' as const,usage:answer.observations.usage,...(answer.observations.timing?{timing:answer.observations.timing}:{})};}
     if(!p.followupOf)messages.push({id:randomUUID(),role:'user',content:[{type:'text',text:p.messages.map(m=>m.content).join('\n')}],source:{kind:'user'}});
@@ -38,7 +38,7 @@ export async function runOrdinaryProbePreview(input:Input):Promise<OrdinaryProbe
     }
     if(outcome==='failed'&&!signal.aborted)failed(undefined);return {outcome,usage:result.observation.usage,...(result.observation.timing?{timing:result.observation.timing}:{})};})();
      return timedOut&&!fatalConfig?{...result,outcome:'timeout' as const}:result;
-    }finally{cancelCall();parentSignal.removeEventListener('abort',abort);}
+    }finally{cancelCall();}
    },
    async onEvent(event){trace.events.push(event);trace.updatedAt=clock.now();trace=await history.save(trace,trace.revision);await input.onEvent?.(event);},
   });

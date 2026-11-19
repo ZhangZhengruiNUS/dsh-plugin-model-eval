@@ -1,11 +1,11 @@
-import type {Track} from '../contracts.ts';import type {EstimateSnapshot,EstimationRunInput,PerformanceSample,StagePhase,StageKey} from './contracts.ts';import {performanceConditionKey,stageId} from './observations.ts';import {aggregateFirstPassSnapshots} from './first-pass-snapshots.ts';
+import {isRunConcurrency,type RunConcurrency,type Track} from '../contracts.ts';import type {EstimateSnapshot,EstimationRunInput,PerformanceSample,StagePhase,StageKey} from './contracts.ts';import {performanceConditionKey,stageId} from './observations.ts';import {aggregateFirstPassSnapshots} from './first-pass-snapshots.ts';
 interface SimulationJob {track:Track;stages:{phase:StagePhase;durationMs:number}[]}
-export function simulateSchedule(jobs:readonly SimulationJob[],concurrency:1|2|3|4):number {
- if(![1,2,3,4].includes(concurrency))throw Error('INVALID_CONCURRENCY');let total=0;
- for(const track of ['general','writing'] as const){const work=jobs.filter(j=>j.track===track&&j.stages.length);let cursor=0,now=0,graderBusy=false;const workers:Array<{job:SimulationJob;index:number}|undefined>=Array(concurrency),events:{at:number;worker:number;grading:boolean;sequence:number}[]=[],waiting:number[]=[];let sequence=0;
+export function simulateSchedule(jobs:readonly SimulationJob[],concurrency:RunConcurrency):number {
+ if(!isRunConcurrency(concurrency))throw Error('INVALID_CONCURRENCY');let total=0;
+ for(const track of ['general','writing'] as const){const work=jobs.filter(j=>j.track===track&&j.stages.length),workerCount=Math.min(concurrency,work.length);let cursor=0,now=0,graderBusy=false;const workers:Array<{job:SimulationJob;index:number}|undefined>=Array(workerCount),events:{at:number;worker:number;grading:boolean;sequence:number}[]=[],waiting:number[]=[];let sequence=0;
   function stage(w:number){const state=workers[w];if(!state)return;const part=state.job.stages[state.index]!;if(!Number.isFinite(part.durationMs)||part.durationMs<0)throw Error('INVALID_SERVICE_TIME');const grading=part.phase==='local-grade';if(grading&&graderBusy){waiting.push(w);return;}if(grading)graderBusy=true;events.push({at:now+part.durationMs,worker:w,grading,sequence:sequence++});}
   function assign(w:number){const job=work[cursor++];workers[w]=job?{job,index:0}:undefined;if(job)stage(w);}
-  for(let w=0;w<concurrency;w++)assign(w);
+  for(let w=0;w<workerCount;w++)assign(w);
   while(events.length){events.sort((a,b)=>a.at-b.at||a.sequence-b.sequence);const event=events.shift()!;now=event.at;const state=workers[event.worker]!;if(event.grading){graderBusy=false;const next=waiting.shift();if(next!==undefined)stage(next);}state.index++;if(state.index<state.job.stages.length)stage(event.worker);else assign(event.worker);}
   total+=now;
  }return total;

@@ -10,7 +10,7 @@ import {createCalibrationExperiment} from './speed/calibration-experiment.ts';
 import {speedClock,type SpeedClock} from './speed/clock.ts';
 import {createLiveEstimator} from './estimation/live.ts';
 import {estimateRoughRemaining} from './estimation/rough-remaining.ts';
-import {JUDGE_ITEM_PENDING} from './contracts.ts';
+import {JUDGE_ITEM_PENDING,isRunConcurrency} from './contracts.ts';
 import {previewEstimate,previewInputs,matchingPreviewConfig,runInput,addHistoryPriors} from './estimation/inputs.ts';
 import {estimateBatch} from './estimation/engine.ts';
 import type {EstimateSnapshot,EstimationRunInput,SpeedSession,RunEstimation,TimeAdvisorResult} from './estimation/contracts.ts';
@@ -233,7 +233,7 @@ export async function createEvaluationService(deps:ServiceDependencies) {
   async function resolveAdvisorDraft(payload:Record<string,unknown>,usage:'read'|'start',signal?:AbortSignal){
     const request=requestFrom(payload);
     if(!request.tracks.length||new Set(request.tracks).size!==request.tracks.length||request.tracks.includes('writing')!==!!request.judge||
-      ![1,2,3,4].includes(request.execution.concurrency)||!Number.isInteger(request.execution.callTimeoutMs)||
+      !isRunConcurrency(request.execution.concurrency)||!Number.isInteger(request.execution.callTimeoutMs)||
       request.execution.callTimeoutMs<1000||request.execution.callTimeoutMs>1800000||
       new Set(request.targets.map(fingerprintTarget)).size!==request.targets.length)return fail('INVALID_BATCH');
     const protocol=usage==='read'&&registry.forTimeAdvisor

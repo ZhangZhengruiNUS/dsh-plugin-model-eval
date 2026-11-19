@@ -79,7 +79,10 @@ export type GradeResult =
   | { kind: 'scored'; track: 'writing'; itemId: string; score: number; dimensions: WritingDimensions; evidence: JsonValue;
       assessment: { method: 'model'; judge: JudgeSnapshot } | { method: 'local-rule'; ruleId: 'empty-answer-v1' } }
   | { kind: 'technical-missing'; track: Track; itemId: string; error: TechnicalError; evidence: JsonValue };
-export type RunConcurrency = 1 | 2 | 3 | 4;
+export type RunConcurrency = number;
+export function isRunConcurrency(value: unknown): value is RunConcurrency {
+  return typeof value === 'number' && Number.isSafeInteger(value) && value > 0;
+}
 export interface EvaluationRequest {
   generalId?:string;
   targets: TargetSnapshot[]; tracks: Track[]; judge?: JudgeSnapshot;initialEstimates?:Record<string,RunEstimation>;

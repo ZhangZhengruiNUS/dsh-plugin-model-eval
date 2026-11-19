@@ -1,3 +1,4 @@
+import {simulateSchedule} from '../../src/estimation/engine.ts';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import type {JudgeSnapshot, RunSummary, TargetSnapshot} from '../../src/contracts.ts';
@@ -99,4 +100,12 @@ test('completed sample durations cover unreported output usage and use the teste
   assert.equal(estimate.borrowedConfigurations,0);
   assert.equal(estimate.borrowedJudgeRate,true);
   assert.equal(estimate.remainingMs,90_000+30_000*(33_098/12)/(270_000/62));
+});
+
+test('large positive concurrency allocates only as many workers as questions', () => {
+  assert.equal(simulateSchedule([
+    {track:'general',stages:[{phase:'answer',durationMs:10}]},
+    {track:'general',stages:[{phase:'answer',durationMs:20}]},
+    {track:'writing',stages:[{phase:'answer',durationMs:5}]},
+  ],Number.MAX_SAFE_INTEGER),25);
 });

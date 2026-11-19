@@ -1,3 +1,4 @@
+import {isRunConcurrency} from '../contracts.ts';
 import type {StagePhase} from './contracts.ts';
 import {simulateSchedule} from './engine.ts';
 import {predictFullRunWithCandidates,projectReferenceStage} from './profile-predictor.ts';
@@ -35,7 +36,7 @@ export function predictRemainingRun(input:DynamicPredictionInput):DynamicPredict
  const unavailable=(...reasons:string[]):DynamicPrediction=>({algorithm:'estimate-v3',durationScope:'first-pass',asOf:input.asOf,state:'unavailable',baselineIds:[],reasons});
  try {
   assertWorkloadPlan(input.workload);const cutoff=Date.parse(input.asOf);
-  if(input.durationScope!=='first-pass'||!Number.isFinite(cutoff)||!Number.isFinite(input.activeElapsedMs)||input.activeElapsedMs<0||![1,2,3,4].includes(input.concurrency)||!['running','queued','paused','pending','first-pass-completed'].includes(input.status))return unavailable('INVALID_DYNAMIC_INPUT');
+  if(input.durationScope!=='first-pass'||!Number.isFinite(cutoff)||!Number.isFinite(input.activeElapsedMs)||input.activeElapsedMs<0||!isRunConcurrency(input.concurrency)||!['running','queued','paused','pending','first-pass-completed'].includes(input.status))return unavailable('INVALID_DYNAMIC_INPUT');
   const jobs=new Map(input.workload.jobs.map(j=>[j.itemId,j])),eventIds=new Set<string>();let sequence=0;
   for(const event of input.currentEvents){validateTimingEvent(event);const job=jobs.get(event.itemId);
    if(!job||eventIds.has(event.eventId)||event.sequence<=sequence||Date.parse(event.endedAt)>cutoff)return unavailable('INVALID_CURRENT_OBSERVATION');

@@ -1,5 +1,5 @@
-import {ExecutionSettings,concurrencyOptions} from '../components/ExecutionSettings.tsx';
-import {Select} from '../primitives/Select.tsx';
+import {ExecutionSettings} from '../components/ExecutionSettings.tsx';
+import {ConcurrencyField,concurrencyError,parseConcurrency} from '../components/ConcurrencyInput.tsx';
 import {Checkbox,Field,Radio,TextInput} from '../primitives/primitives.tsx';
 import {isFiveCapabilitySchema,isLongTasksFirstSchema} from '../../evaluation/five-schema.ts';
 import {generalEditionLabel,generalEditionOrder,generalReleaseName} from '../protocol-editions.ts';
@@ -12,8 +12,8 @@ import {SpeedPreview,type SpeedPayload,type SpeedPreviewSession} from '../compon
 import {ModelSelect} from '../components/ModelSelect.tsx';
 import {LocalPreparationNotice,PreparationNotice} from '../components/PreparationNotice.tsx';
 import {DEFAULT_SPEED_SECONDS} from '../../speed/budget.ts';
-import * as React from 'react';import type {ModelChoice,ParamValue,RunConcurrency,TargetSnapshot,Track} from '../../contracts.ts';import type {ClientApi} from '../api.ts';import {zh as t} from '../locales.ts';import {ActionButton,activityUnavailable,Button,Modal,type LocalPreparation,type PageProps} from '../ui.tsx';
-export interface Draft {id:string;concurrency?:RunConcurrency;model:string;deployment:string;fields:Record<string,string>;snapshot?:{handle:string;target:TargetSnapshot}}
+import * as React from 'react';import type {ModelChoice,ParamValue,TargetSnapshot,Track} from '../../contracts.ts';import type {ClientApi} from '../api.ts';import {zh as t} from '../locales.ts';import {ActionButton,activityUnavailable,Button,Modal,type LocalPreparation,type PageProps} from '../ui.tsx';
+export interface Draft {id:string;concurrency?:string|undefined;model:string;deployment:string;fields:Record<string,string>;snapshot?:{handle:string;target:TargetSnapshot}}
 export interface BackgroundSpeedDraft {
   session:SpeedPreviewSession;
   drafts:Draft[];
@@ -21,7 +21,7 @@ export interface BackgroundSpeedDraft {
   general:boolean;
   writing:boolean;
   judge:Draft;
-  concurrency:number;
+  concurrency:string;
   timeout:number;
   parallelLimit?:string|undefined;
   speedBudget:string;
@@ -100,7 +100,8 @@ export function NewRun({onClose,onBackground,saved,preparation,onRetryPreparatio
  const [judge,setJudge]=React.useState(()=>saved?.judge??emptyDraft());
  const useEvaluationConfigAsJudge=drafts.length===1&&!judge.model;
  const judgeReady=useEvaluationConfigAsJudge?!!drafts[0]?.snapshot:!!judge.snapshot;
- const [concurrency,setConcurrency]=React.useState(saved?.concurrency??4),[timeout,setTimeoutValue]=React.useState(saved?.timeout??300);
+ const [concurrencyInput,setConcurrency]=React.useState(saved?.concurrency??'4'),[timeout,setTimeoutValue]=React.useState(saved?.timeout??300);
+ const concurrency=parseConcurrency(concurrencyInput);
  const [speedBudget,setSpeedBudget]=React.useState(saved?.speedBudget??String(DEFAULT_SPEED_SECONDS));
  const [error,setError]=React.useState(''),[preview,setPreview]=React.useState<{key:string;id:string}>();
  const [probing,setProbing]=React.useState(!!saved),[probeStarting,setProbeStarting]=React.useState(false),[closing,setClosing]=React.useState(false);
@@ -111,7 +112,10 @@ export function NewRun({onClose,onBackground,saved,preparation,onRetryPreparatio
  const modelCount=drafts.length;
  const limitChoice=modelCount===1?'1':parallelLimit==='all'||Number(parallelLimit??2)>=modelCount?'all':parallelLimit??'2';
  const parallelModels=limitChoice==='all'?modelCount:Number(limitChoice);
- const allocations=drafts.map(draft=>modelCount===1?concurrency:draft.concurrency??concurrency);
+ const allocations=drafts.map(draft=>modelCount>1&&draft.concurrency?parseConcurrency(draft.concurrency):concurrency);
+ const peakCalls=allocations.every(value=>value!==undefined)
+   ?String([...allocations].sort((a,b)=>b-a).slice(0,parallelModels).reduce((total,value)=>total+BigInt(value),0n))
+   :undefined;
  const customScheduling=parallelModels>1||allocations.some(value=>value!==concurrency);
  const [advisorOpen,setAdvisorOpen]=React.useState(!!saved);
  const formBody=React.useRef<HTMLDivElement>(null);
@@ -157,6 +161,7 @@ export function NewRun({onClose,onBackground,saved,preparation,onRetryPreparatio
    !general&&!writing?'请至少选择一项评测内容。':
    general&&!selectedTier?'当前没有可用的通用评测协议。':
    writing&&!judgeReady?(judge.model?'裁判配置尚未就绪，请检查所选裁判。':'请先选择写作裁判。'):
+   (concurrency===undefined||allocations.some(value=>value===undefined))?concurrencyError:
    !Number.isInteger(timeout)||timeout<1||timeout>1800?'请将无输出等待上限设为 1–1800 秒。':undefined;
  const advisorReady=!advisorPrerequisite&&!customScheduling;
  const advisorUnavailable=probing?undefined:advisorPrerequisite??(customScheduling?'用时参考适用于顺序运行且题目并发数相同的配置。':undefined);
@@ -179,6 +184,7 @@ export function NewRun({onClose,onBackground,saved,preparation,onRetryPreparatio
  const retryDisabled=props.busy||!props.data.status.writable||!!props.data.queue.activeBatchId||
    (!!props.data.status.activeActivity&&props.data.status.activeActivity.kind!=='prepare')||hostPreparing&&!(preparation?.phase==='failed'&&preparation.verifyOnly);
  async function request(signal?:AbortSignal):Promise<SpeedPayload>{
+   if(concurrency===undefined)throw Error(concurrencyError);
    const handles=[];
    for(const draft of drafts)handles.push(await resolveDraft(props.api,draft,signal));
    const tracks=[...(general?['general']:[]),...(writing?['writing']:[])];
@@ -189,7 +195,7 @@ export function NewRun({onClose,onBackground,saved,preparation,onRetryPreparatio
  async function close(){if(closing)return;setClosing(true);if(await cancelPreview.current())onClose();else setClosing(false);}
  const [startingEvaluation,setStartingEvaluation]=React.useState(false);
  async function start(){
-   if(startUnavailable||closing||startingEvaluation)return;
+   if(startUnavailable||closing||startingEvaluation||!allocations.every(value=>value!==undefined))return;
    setError('');setStartingEvaluation(true);
    try{
      const result=await props.act(async()=>props.api('createBatch',{...await request(),modelConcurrency:allocations,...(parallelModels>1?{parallelModels}:{}),...(!customScheduling&&preview?.key===draftKey?{previewId:preview.id}:{})}));
@@ -223,16 +229,12 @@ export function NewRun({onClose,onBackground,saved,preparation,onRetryPreparatio
          </div>
        </header>
        <ConfigEditor draft={draft} models={props.data.models} modelsLoading={!!props.data.modelsLoading} api={props.api}
-         change={value=>setDrafts(old=>old.map(x=>x.id===value.id?value:x))}
+         change={value=>setDrafts(old=>old.map(x=>x.id===value.id?{...value,concurrency:x.concurrency}:x))}
          reportError={setError} label={t.chooseModel}/>
-       {modelCount>1&&<Select className="me-config-concurrency" label="题目并发数"
-         value={draft.concurrency===undefined?'default':String(draft.concurrency)}
-         options={[{value:'default',label:'沿用默认（'+concurrency+'）'},...concurrencyOptions]}
-         onChange={value=>setDrafts(current=>current.map(item=>{
-           if(item.id!==draft.id)return item;
-           const {concurrency:_previous,...rest}=item;
-           return value==='default'?rest:{...rest,concurrency:Number(value) as RunConcurrency};
-         }))}/>}
+       {modelCount>1&&<ConcurrencyField className="me-config-concurrency" label="题目并发数"
+         value={draft.concurrency??''}
+         placeholder={concurrency===undefined?'沿用默认':'沿用默认（'+concurrency+'）'}
+         onChange={value=>setDrafts(current=>current.map(item=>item.id===draft.id?{...item,concurrency:value}:item))}/>}
      </section>)}
    </div>
    <div onKeyDown={event=>{
@@ -306,7 +308,7 @@ export function NewRun({onClose,onBackground,saved,preparation,onRetryPreparatio
      </div>
    </div>
  </section>
- <ExecutionSettings concurrency={concurrency} timeout={timeout} configurationCount={modelCount} parallelModels={limitChoice} peakCalls={[...allocations].sort((a,b)=>b-a).slice(0,parallelModels).reduce((total,value)=>total+value,0)} onParallelModelsChange={setParallelLimit}
+ <ExecutionSettings concurrency={concurrencyInput} timeout={timeout} configurationCount={modelCount} parallelModels={limitChoice} peakCalls={peakCalls} onParallelModelsChange={setParallelLimit}
    onConcurrencyChange={setConcurrency} onTimeoutChange={setTimeoutValue}/>
  </fieldset>
  {error&&<p role="alert" className="me-inline-error">{error}</p>}</div>
@@ -326,7 +328,7 @@ export function NewRun({onClose,onBackground,saved,preparation,onRetryPreparatio
    budget={speedBudget} onBudgetChange={setSpeedBudget}
    draftKey={draftKey} request={request} api={props.api} {...(props.data.status.activeActivity?{activity:props.data.status.activeActivity}:{})}
    {...(saved?{initialSession:saved.session}:{})}
-   onBackground={session=>onBackground({session,drafts,generalId,general,writing,judge,concurrency,timeout,parallelLimit,speedBudget,scrollTop:formBody.current?.scrollTop??0})}
+   onBackground={session=>onBackground({session,drafts,generalId,general,writing,judge,concurrency:concurrencyInput,timeout,parallelLimit,speedBudget,scrollTop:formBody.current?.scrollTop??0})}
    onAdopt={adoptPreview} onRunningChange={runningChange}
    registerCancel={registerCancel} onRefresh={refresh}/></>;
 }

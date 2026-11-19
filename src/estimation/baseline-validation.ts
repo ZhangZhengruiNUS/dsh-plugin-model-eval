@@ -1,3 +1,4 @@
+import {isRunConcurrency} from '../contracts.ts';
 import {identityHash} from '../evaluation/protocol-identity.ts';
 import {calibrationHash,validateTimingTrace,traceIdValid,isProbeProgramId,type WorkloadPlanV1,type BaselineProfileV1,type TimingTraceV1} from './calibration-contracts.ts';
 export function assertWorkloadPlan(p:WorkloadPlanV1){
@@ -21,7 +22,7 @@ export function assertCompleteFormalTrace(plan:WorkloadPlanV1,t:TimingTraceV1){
  for(const j of plan.jobs)for(const phase of j.stages)if(!t.events.some(e=>e.itemId===j.itemId&&e.datasetId===j.datasetId&&e.phase===phase&&e.outcome==='completed'))throw Error('INCOMPLETE_FORMAL_TRACE');
 }
 export function assertBaselineProfile(p:BaselineProfileV1):void {
- if(!p||p.version!==1||p.scope!=='same-configuration'||p.algorithmId!=='estimate-v3'||!Number.isFinite(Date.parse(p.createdAt))||![1,2,3,4].includes(p.concurrency)||typeof p.validated!=='boolean'||
+ if(!p||p.version!==1||p.scope!=='same-configuration'||p.algorithmId!=='estimate-v3'||!Number.isFinite(Date.parse(p.createdAt))||!isRunConcurrency(p.concurrency)||typeof p.validated!=='boolean'||
    p.durationScope!==undefined&&!['all-scored','first-pass'].includes(p.durationScope)||Object.keys(p).some(k=>!['version','id','createdAt','algorithmId','programHash','protocolHash','workloadHash','conditionKey','machineKey','concurrency','scope','trainingTraceIds','formal','probes','residualRatios','validated','rangeValidated','durationScope'].includes(k)))throw Error('BASELINE_INVALID');
  for(const k of ['id','programHash','protocolHash','workloadHash','conditionKey','machineKey'] as const)if(!calibrationHash(p[k]))throw Error('BASELINE_IDENTITY_INVALID');
  const {id,...body}=p;if(id!==identityHash(body))throw Error('BASELINE_IDENTITY_CHANGED');

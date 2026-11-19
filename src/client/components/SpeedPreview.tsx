@@ -21,7 +21,7 @@ type ReadIssue={key:string;kind:'draft'|'host-version'|'read'|'timeout'};
 export type SpeedPreviewSession={id:string;key:string;intent:Offer['intent']};
 interface Props {
   id:string; open:boolean; locked:boolean; returnFocusTo:HTMLElement|null; onClose:()=>void; scope:string; names:string[]; ready:boolean; prepared:boolean; canProbe:boolean;
-  planningTier?:PlanningTier; concurrency:number;
+  planningTier?:PlanningTier; concurrency:number|undefined;
   budget:string; onBudgetChange:(value:string)=>void;
   hostSupportsAdvisor:boolean; draftKey:string; request:(signal?:AbortSignal)=>Promise<SpeedPayload>; api:ClientApi; activity?:ActivityView;
   onAdopt:(key:string,id:string|undefined)=>void;
@@ -185,7 +185,7 @@ export function SpeedPreview(p:Props){
   const observations=current?.result.configs??[];
   const hasObserved=observations.some(c=>c.observation);
   const planningTier=p.ready?p.planningTier:undefined;
-  const forecast=planningTier?tierTimeReference(planningTier,p.concurrency,p.names.length,
+  const forecast=planningTier&&p.concurrency!==undefined?tierTimeReference(planningTier,p.concurrency,p.names.length,
     result&&!stale&&!stoppedResult?result:undefined):undefined;
   const formatRate=(rate:number)=>'约 '+(rate<1?rate.toPrecision(1):Math.round(rate).toLocaleString('zh-CN'))+' Token/秒';
   const unavailable=current?.result.unavailable;
@@ -213,7 +213,7 @@ export function SpeedPreview(p:Props){
         <dd data-testid="speed-estimate" className={forecast?undefined:'pending'}>{forecast?formatPlanningTime(forecast.durationMs):'待测速'}</dd></div>
       <div><dt>{t.evaluationTier}</dt><dd>{p.scope}</dd></div>
       {p.names.length>1&&<div><dt>配置数</dt><dd>{p.names.length}</dd></div>}
-      <div><dt>并发数</dt><dd>{p.concurrency}{p.names.length>1?'（每个配置）':''}</dd></div>
+      <div><dt>并发数</dt><dd>{p.concurrency??'—'}{p.names.length>1?'（每个配置）':''}</dd></div>
       <div><dt>档位参考输出量</dt><dd>约 {tierOutputTokens[planningTier]/10_000} 万 Token{p.names.length>1?'（每个配置）':''}</dd></div>
       {forecast?.rates.length===1&&<div><dt>本次实测输出吞吐</dt><dd>{formatRate(forecast.rates[0]!)}</dd></div>}
       {forecast&&<div><dt>估算依据</dt><dd>档位参考输出量 ÷ 本次实测吞吐</dd></div>}

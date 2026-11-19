@@ -3,26 +3,25 @@ import {Select} from '../primitives/Select.tsx';
 import {Field,TextInput} from '../primitives/primitives.tsx';
 import {zh as t} from '../locales.ts';
 import {Disclosure} from './Disclosure.tsx';
+import {ConcurrencyField} from './ConcurrencyInput.tsx';
 
 interface Props {
-  concurrency:number;
+  concurrency:string;
   timeout:number;
   configurationCount?:number;
   parallelModels?:string;
-  peakCalls?:number;
+  peakCalls?:string|undefined;
   onParallelModelsChange?(value:string):void;
-  onConcurrencyChange(value:number):void;
+  onConcurrencyChange(value:string):void;
   onTimeoutChange(value:number):void;
 }
-
-export const concurrencyOptions=[1,2,3,4].map(n=>({value:String(n),label:String(n)}));
 
 export function ExecutionSettings({concurrency,timeout,configurationCount=1,parallelModels,peakCalls,onParallelModelsChange,onConcurrencyChange,onTimeoutChange}:Props) {
   return <section className="me-form-section">
     <h3 className="me-form-title">{t.execution}</h3>
     <div className="me-fields">
-      <Select label={configurationCount>1?'默认题目并发数':t.concurrency} value={String(concurrency)} options={concurrencyOptions}
-        onChange={value=>onConcurrencyChange(Number(value))}/>
+      <ConcurrencyField label={configurationCount>1?'默认题目并发数':'题目并发数'} value={concurrency}
+        onChange={onConcurrencyChange}/>
       <Field label={t.timeout}>
         <TextInput type="number" value={timeout} min={1} max={1800} onChange={e=>onTimeoutChange(Number(e.target.value))}/>
       </Field>

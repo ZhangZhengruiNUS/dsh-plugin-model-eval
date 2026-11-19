@@ -1,5 +1,6 @@
 import {Checkbox} from '../primitives/primitives.tsx';
 import {ExecutionSettings} from './ExecutionSettings.tsx';
+import {concurrencyError,parseConcurrency} from './ConcurrencyInput.tsx';
 import * as React from 'react';
 import type {ParamValue,TargetSnapshot,UpgradePreview as DeepPreview,UpgradeCommit} from '../../contracts.ts';
 import {ActionButton,activityUnavailable,Button,Modal,ModelLabel,type PageProps} from '../ui.tsx';
@@ -14,7 +15,8 @@ const fields=['temperature','maxTokens','reasoningEffort','stop'];
 function sourceParameters(target:TargetSnapshot){const values:Record<string,string>={},overrides:Record<string,ParamValue>={};for(const key of fields){const p=target.controls[key];if(p?.state==='known'){values[key]=typeof p.value==='string'?p.value:JSON.stringify(p.value);overrides[key]={state:'known',value:p.value,source:'override'};}else if(p?.state==='unset'){values[key]='';overrides[key]={state:'unset'};}}return {values,overrides};}
 export function UpgradePreview({sourceRunId,onClose,onStarted,onIndependent,editionGeneralId,...props}:PageProps&{sourceRunId:string;editionGeneralId?:string;onClose():void;onStarted():void;onIndependent():void}){
   const source=props.data.runs.find(r=>r.runId===sourceRunId),edition=!!editionGeneralId,deep=props.data.protocols.find(p=>edition?p.descriptor.refs.generalId===editionGeneralId:p.descriptor.allowNewRuns&&p.descriptor.general.tier==='deep'&&p.descriptor.general.parentGeneralId===source?.protocols.generalId),ready=!!deep?.prepared&&deep.descriptor.allowNewRuns;
-  const [draft,setDraft]=React.useState<Draft>(emptyDraft),[preview,setPreview]=React.useState<Preview>(),[concurrency,setConcurrency]=React.useState(4),[timeout,setTimeoutValue]=React.useState(300),[working,setWorking]=React.useState(''),[error,setError]=React.useState(''),[loading,setLoading]=React.useState(true),[now,setNow]=React.useState(Date.now);
+  const [draft,setDraft]=React.useState<Draft>(emptyDraft),[preview,setPreview]=React.useState<Preview>(),[concurrencyInput,setConcurrency]=React.useState('4'),[timeout,setTimeoutValue]=React.useState(300),[working,setWorking]=React.useState(''),[error,setError]=React.useState(''),[loading,setLoading]=React.useState(true),[now,setNow]=React.useState(Date.now);
+  const concurrency=parseConcurrency(concurrencyInput);
   const [confirmed,setConfirmed]=React.useState(false);
   const usageNoticeId=React.useId();
   const alive=React.useRef(true),key=JSON.stringify({model:draft.model,fields:draft.fields,deployment:draft.deployment,concurrency,timeout,deep:deep?.descriptor.refs.generalId});
@@ -26,7 +28,7 @@ export function UpgradePreview({sourceRunId,onClose,onStarted,onIndependent,edit
   },[sourceRunId,props.data.status.rootId,props.data.status.rootEpoch,props.api]);
   React.useEffect(()=>setPreview(undefined),[key]);
   React.useEffect(()=>{if(!preview)return;const timer=setInterval(()=>setNow(Date.now()),1000);return()=>clearInterval(timer);},[preview?.token]);
-  async function inspect(){if(!source||!deep)return;setWorking('preview');setError('');try{const handle=await resolveDraft(props.api,draft),result=await props.api<Preview>(edition?'previewEditionUpgrade':'previewUpgrade',{sourceRunId,...(edition?{destinationGeneralId:deep.descriptor.refs.generalId}:{deepGeneralId:deep.descriptor.refs.generalId}),handle,execution:{concurrency,callTimeoutMs:timeout*1000}});if(alive.current){setNow(Date.now());setPreview(result);}}catch(e){if(alive.current)setError((e as Error).message);}finally{if(alive.current)setWorking('');}}
+  async function inspect(){if(!source||!deep||concurrency===undefined)return;setWorking('preview');setError('');try{const handle=await resolveDraft(props.api,draft),result=await props.api<Preview>(edition?'previewEditionUpgrade':'previewUpgrade',{sourceRunId,...(edition?{destinationGeneralId:deep.descriptor.refs.generalId}:{deepGeneralId:deep.descriptor.refs.generalId}),handle,execution:{concurrency,callTimeoutMs:timeout*1000}});if(alive.current){setNow(Date.now());setPreview(result);}}catch(e){if(alive.current)setError((e as Error).message);}finally{if(alive.current)setWorking('');}}
   async function commit(){if(!preview?.check.eligible||working||edition&&!confirmed)return;setWorking('commit');setError('');try{const result=await props.api<UpgradeCommit>(edition?'commitEditionUpgrade':'commitUpgrade',{token:preview.token,...(edition?{confirmSameDeployment:true}:{})});if(alive.current){await props.act(async()=>result);if(alive.current)onStarted();}}catch(e){if(alive.current){setError((e as Error).message);setPreview(undefined);}}finally{if(alive.current)setWorking('');}}
   const expired=!!preview&&Date.parse(preview.expiresAt)<=now,locked=!!working||props.busy,reason=preview&&!preview.check.eligible?(reasons[(preview.check.reasonCode??'').replace(/^EDITION_/, 'UPGRADE_')]??'当前条件不能复用，请核对来源记录与模型配置。'):undefined;
   const previewUnavailable=loading?'正在读取来源配置，请稍候。':
@@ -36,6 +38,7 @@ export function UpgradePreview({sourceRunId,onClose,onStarted,onIndependent,edit
     !props.data.status.writable?'数据目录为只读，请在设置中切换到可写目录。':
     activityUnavailable(props.data.status,props.data.queue.activeBatchId)??
     (!ready?'请先准备补测环境。':props.busy?'正在处理当前操作，请稍候。':
+     concurrency===undefined?concurrencyError:
      !Number.isInteger(timeout)||timeout<1||timeout>1800?'请将无输出等待上限设为 1–1800 秒。':undefined);
   const commitUnavailable=previewUnavailable??(expired?'预览已过期，请重新预览。':
     reason??(!preview?'请先预览补测范围。':edition&&!confirmed?'请先确认使用同一部署且模型参数未变。':undefined));
@@ -48,7 +51,7 @@ export function UpgradePreview({sourceRunId,onClose,onStarted,onIndependent,edit
           <ConfigEditor draft={draft} models={props.data.models} api={props.api} change={setDraft} reportError={setError} label={t.chooseModel}/>
         </div>
       </section>
-      <ExecutionSettings concurrency={concurrency} timeout={timeout}
+      <ExecutionSettings concurrency={concurrencyInput} timeout={timeout}
         onConcurrencyChange={setConcurrency} onTimeoutChange={setTimeoutValue}/>
     </fieldset>
     {!deep?<div className="me-inline-warning">{edition?'当前没有可补测的新版本。':'当前版本没有与此轻量记录对应的深入协议。'}</div>:!ready&&<PreparationNotice generalId={deep.descriptor.refs.generalId} api={props.api} act={props.act} disabled={locked||!!props.data.status.activeActivity} externalPreparing={props.data.status.preparing} message={edition?'新版环境尚未准备。':'深入档环境尚未准备。'}/>}
