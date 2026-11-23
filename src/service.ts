@@ -455,15 +455,20 @@ export async function createEvaluationService(deps:ServiceDependencies) {
       case 'setRoot':return mutate(async()=>{inactive();advisorRead?.controller.abort();if(typeof payload.path!=='string')return fail('INVALID_REQUEST');const selection=await switchRoot(payload.path,{writing:false});if(selection.path===store.root)return {rootPath:store.root};
         const oldRoot=store.root;await experiment?.dispose();experiment=undefined;live?.dispose();await speed.dispose();await queue.dispose();await store.close();
         try{await bind(selection.path);await writeRecord(preference,{root:store.root});}catch(error){await queue?.dispose().catch(()=>{});await store?.close().catch(()=>{});await bind(oldRoot);throw error;}return {rootPath:store.root,previousRoot:oldRoot,historyMoved:false};});
-      case 'createBatch':return mutate(async()=>{writable();const request=requestFrom(payload);
+      case 'createBatch':{
+        const startedMs=performance.now(),receivedAt=clock.now();
+        return mutate(async()=>{writable();const request=requestFrom(payload);
         if(typeof payload.parallelModels==='number'&&payload.parallelModels>1)request.execution.parallelModels=payload.parallelModels;
-        if(Array.isArray(payload.modelConcurrency))request.modelConcurrency=payload.modelConcurrency;const admission=createProtocolAdmission(registry),selected=await requestedProtocol(request,admission);
+        if(Array.isArray(payload.modelConcurrency))request.modelConcurrency=payload.modelConcurrency;
+        const checkStarted=performance.now(),admission=createProtocolAdmission(registry),selected=await requestedProtocol(request,admission);
         if (request.tracks.length===1 && request.tracks[0]==='writing' && request.judge) await ensurePrepared(selected);
         else requirePrepared(selected);
+        const verificationMs=Math.round(performance.now()-checkStarted);
         request.generalId=selected.generalId;
         if(payload.previewId&&!request.execution.parallelModels&&!request.modelConcurrency?.some(value=>value!==request.execution.concurrency))try{await linkPreview(String(payload.previewId),request,selected);}catch{/* Optional timing evidence cannot block a formal run. */}
-        return queue.enqueue(request,admission);
-      });
+        const batch=await queue.enqueue(request,admission,{startedMs,receivedAt,verificationMs});
+        return {...batch,rootId:store.rootId,rootEpoch};
+      });}
       case 'commitEditionUpgrade':return mutate(async()=>{
         writable();inactive();const token=String(payload.token),entry=editionTokens.get(token);if(!entry||entry.rootId!==store.rootId||entry.rootEpoch!==rootEpoch)fail('EDITION_TOKEN_INVALID');
         if(entry!.expiresMonotonic<=clock.monotonicMs())fail('EDITION_PREVIEW_EXPIRED');if(!entry!.check.eligible)fail(entry!.check.reasonCode??'EDITION_SOURCE_INCOMPLETE');

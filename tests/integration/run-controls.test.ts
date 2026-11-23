@@ -419,9 +419,17 @@ test('parallel models honor per-model worker counts, live edits, and selected pa
   let queue=createQueue(store,host,expandedRegistry,{general:grade},{sampleMultiConfigEta:true});
   try{
     const batch=await queue.enqueue({...request,targets:[...request.targets,target('third')],
-      execution:{...request.execution,parallelModels:2},modelConcurrency:[1,5,1]});
+      execution:{...request.execution,parallelModels:2},modelConcurrency:[1,5,1]},undefined,
+      {startedMs:performance.now()-10,verificationMs:10,receivedAt:new Date().toISOString()});
+    assert.equal(batch.activeBatchId,batch.batchId);
+    assert.deepEqual(batch.runs.map(run=>run.runId),batch.runIds);
+    assert(batch.runs.every(run=>run.tracks.general?.status==='queued'&&run.tracks.general.graded===0));
+    assert.equal(batch.startup?.firstDispatchMs,undefined);
+    assert((batch.startup?.acceptedMs??0)>=10);
     const [first,second,third]=batch.runIds as [string,string,string];
     await until(()=>inFlight.size===6);
+    const firstDispatchMs=view(queue).startup?.firstDispatchMs;
+    assert(firstDispatchMs!==undefined&&firstDispatchMs>=batch.startup!.acceptedMs);
     assert.deepEqual([...inFlight.keys()].sort(),['first:q0',...Array.from({length:5},(_,i)=>'second:q'+i)]);
     assert.deepEqual(view(queue).activeRunIds,[first,second]);
     assert.equal(view(queue).etaSamples,undefined);
@@ -466,6 +474,7 @@ test('parallel models honor per-model worker counts, live edits, and selected pa
     await queue.controlRuns(batch.batchId,[second,third],'resume');
     await queue.idle();
     assert.equal(view(queue).status,'completed');
+    assert.equal(view(queue).startup?.firstDispatchMs,firstDispatchMs);
     assert.equal((await store.getRun(second)).manifest.execution?.concurrency,5);
     assert.deepEqual((await store.getRun(first)).summary.executionChanges,summary.executionChanges);
   }finally{

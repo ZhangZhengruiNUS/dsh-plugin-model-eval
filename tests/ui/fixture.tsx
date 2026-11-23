@@ -195,9 +195,13 @@ let fixtureRootEpoch=1,comparisonGate:Promise<void>|undefined;
 (window as any).fixtureRoot=(value:string,epoch:number)=>{root=value;fixtureRootEpoch=epoch;};
 (window as any).holdComparison=()=>{comparisonGate=new Promise<void>(done=>(window as any).releaseComparison=done);};
 let initialCatalogGate:Promise<void>|undefined=params.has('holdInitialCatalog')?new Promise<void>((done,fail)=>(window as any).finishInitialCatalog=(error?:string)=>error?fail(new Error(error)):done()):undefined;
+let createRefreshGate:Promise<void>|undefined;
 let startupChecking=params.has('startupChecking');(window as any).finishStartupCheck=()=>{startupChecking=false;};
 async function operation(action:string,p:any):Promise<any>{
   (window as any).fixtureActions.push(action);(window as any).fixtureRequests.push({action,payload:structuredClone(p)});
+  if(createRefreshGate&&(action==='history'||action==='protocolCatalog'))await createRefreshGate;
+  if(params.has('createRefreshGate')&&action==='createBatch')
+    await new Promise<void>(resolve=>(window as any).releaseCreateSubmit=resolve);
   if(params.has('latencyAudit')){
     if(action==='controlRun')await new Promise(resolve=>setTimeout(resolve,350));
     if(action==='history'&&(window as any).fixtureActions.includes('controlRun'))
@@ -245,7 +249,30 @@ async function operation(action:string,p:any):Promise<any>{
     case 'createBatch':{const batchId=crypto.randomUUID(),batch:BatchView={batchId,createdAt:new Date().toISOString(),status:'running',runIds:[],execution:{...p.execution,...(p.parallelModels?{parallelModels:p.parallelModels}:{})}};for(const handle of p.handles){const current=run(handles.get(handle)!.modelId,[50,50,50,50],50);current.batchId=batchId;if(p.previewId){current.estimation={current:speedRows.get(p.previewId)!.estimate!,originPreview:structuredClone(speedRows.get(p.previewId)!)};batch.estimate=speedRows.get(p.previewId)!.estimate!;}current.target=structuredClone(handles.get(handle)!);if(p.generalId===lightId||p.generalId===deepId)applyTier(current,p.generalId===lightId?'light':'deep');if(p.generalId===fiveLight||p.generalId===fiveDeep)applyFive(current,p.generalId===fiveLight?'light':'deep');current.createdAt=new Date().toISOString();delete current.completedAt;current.metrics.activeIntervals=[{startedAt:current.createdAt}];for(const track of ['general','writing'] as Track[]){if(!p.tracks.includes(track)){delete current.tracks[track];delete current.metrics.tracks[track];continue;}const value=current.tracks[track]!;value.status='running';value.graded=3;value.answered=4;delete value.score;delete value.completedAt;value.measures={};}runs.push(current);batch.runIds.push(current.runId);
       const concurrency=p.modelConcurrency?.[batch.runIds.length-1];
       if(concurrency&&concurrency!==p.execution.concurrency)(batch.runConcurrency??={})[current.runId]=concurrency;
-    }batch.activeRunIds=batch.runIds.slice(0,p.parallelModels??1);batches.push(batch);active=batchId;return batch;}
+    }batch.activeRunIds=batch.runIds.slice(0,p.parallelModels??1);batches.push(batch);active=batchId;
+      if(params.has('createRefreshGate')){
+        const dispatched=batch.activeRunIds!;
+        delete batch.activeRunIds;
+        for(const row of runs.filter(run=>run.batchId===batchId)){
+          row.metrics={tracks:{},activeIntervals:[],incompleteTiming:false};
+          for(const track of Object.values(row.tracks)){track.status='queued';track.graded=0;track.answered=0;}
+        }
+        batch.startup={receivedAt:batch.createdAt,verificationMs:640,acceptedMs:692};
+        createRefreshGate=new Promise<void>(resolve=>{
+          (window as any).releaseCreateRefresh=()=>{
+            batch.startup!.firstDispatchMs=765;
+            batch.activeRunIds=dispatched;
+            for(const row of runs.filter(run=>dispatched.includes(run.runId))){
+              row.metrics.activeIntervals=[{startedAt:new Date().toISOString()}];
+              for(const track of Object.values(row.tracks))track.status='running';
+            }
+            createRefreshGate=undefined;
+            resolve();
+          };
+        });
+      }
+      return {...structuredClone(batch),activeBatchId:active,rootId:root,rootEpoch:fixtureRootEpoch,
+        runs:structuredClone(runs.filter(run=>run.batchId===batchId))};}
     case 'setRunConcurrency':{
       const batch=batches.find(value=>value.batchId===p.batchId)!;
       (batch.runConcurrency??={})[p.runId]=p.concurrency;

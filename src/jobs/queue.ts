@@ -35,8 +35,12 @@ export interface RunControl {
   error?: TechnicalError;
   itemId?: string;
 }
-export interface BatchView {batchId:string;supersedesBatchId?:string;runIds:string[];status:'queued'|'running'|'paused'|'pending'|'completed';createdAt:string;estimate?:EstimateSnapshot;lastError?:TechnicalError;pendingItems?:{runId:string;itemId:string;error:TechnicalError}[];judge?:JudgeSnapshot;execution:EvaluationRequest['execution'];executionChanges?:ExecutionChange[];runControls?:Record<string,RunControl>;activeRunId?:string;settlingRunId?:string;activeRunIds?:string[];settlingRunIds?:string[];runConcurrency?:Record<string,RunConcurrency>;runExecutionChanges?:Record<string,ExecutionChange[]>;etaSamples?:Record<string,number>}
+export interface BatchStartupTiming {receivedAt:string;verificationMs:number;acceptedMs:number;firstDispatchMs?:number}
+export interface BatchView {batchId:string;startup?:BatchStartupTiming;supersedesBatchId?:string;runIds:string[];status:'queued'|'running'|'paused'|'pending'|'completed';createdAt:string;estimate?:EstimateSnapshot;lastError?:TechnicalError;pendingItems?:{runId:string;itemId:string;error:TechnicalError}[];judge?:JudgeSnapshot;execution:EvaluationRequest['execution'];executionChanges?:ExecutionChange[];runControls?:Record<string,RunControl>;activeRunId?:string;settlingRunId?:string;activeRunIds?:string[];settlingRunIds?:string[];runConcurrency?:Record<string,RunConcurrency>;runExecutionChanges?:Record<string,ExecutionChange[]>;etaSamples?:Record<string,number>}
 export interface QueueView {activeBatchId?:string;batches:BatchView[];recoveryIssues?:{runId:string;code:string}[]}
+export interface CreatedBatch extends BatchView {runs:RunSummary[];activeBatchId?:string}
+export interface CreateBatchResult extends CreatedBatch {rootId:string;rootEpoch:number}
+interface StartupMeasurement {receivedAt:string;startedMs:number;verificationMs:number}
 interface ActiveWork {
   runIds: readonly string[];
   deferred: ReadonlyMap<string, ReadonlySet<string>>;
@@ -50,7 +54,7 @@ export interface GradeServices {
 }
 type LocalRegrade={operationId:string;batchId:string;items:{runId:string;itemId:string;revision:number}[];startedAt:string;finishedAt?:string};
 const isLocalDeadline=(error:TechnicalError)=>error.phase==='grader'&&error.code==='CONTEST_WALL_LIMIT';
-export interface EvaluationQueue {controlRuns(batchId:string,runIds:readonly string[],operation:'hold'|'resume',prepare?: (runIds:readonly string[],admission:ProtocolAdmission)=>Promise<void>,policy?:'output-idle-v1'):Promise<void>;setRunConcurrency(batchId:string,runId:string,concurrency:RunConcurrency):Promise<void>;controlRun(batchId:string,runId:string,operation:RunOperation,startIfIdle:boolean,prepare?: (runIds:readonly string[],admission:ProtocolAdmission)=>Promise<void>,policy?:'output-idle-v1'):Promise<void>;rejudge(batchId:string,operationId:string):Promise<void>;attachImported(batch:BatchView,runId:string,operationId:string):Promise<void>;saveEstimate(batchId:string,estimate:EstimateSnapshot):Promise<void>;enqueue(request:EvaluationRequest,admission?:ProtocolAdmission):Promise<BatchView>;pause(batchId:string):Promise<void>;resume(batchId:string,judge?:JudgeSnapshot,policy?:'output-idle-v1',admission?:ProtocolAdmission):Promise<void>;snapshot():QueueView;activeWork(batchId:string):ActiveWork|undefined;idle():Promise<void>;dispose():Promise<void>}
+export interface EvaluationQueue {controlRuns(batchId:string,runIds:readonly string[],operation:'hold'|'resume',prepare?: (runIds:readonly string[],admission:ProtocolAdmission)=>Promise<void>,policy?:'output-idle-v1'):Promise<void>;setRunConcurrency(batchId:string,runId:string,concurrency:RunConcurrency):Promise<void>;controlRun(batchId:string,runId:string,operation:RunOperation,startIfIdle:boolean,prepare?: (runIds:readonly string[],admission:ProtocolAdmission)=>Promise<void>,policy?:'output-idle-v1'):Promise<void>;rejudge(batchId:string,operationId:string):Promise<void>;attachImported(batch:BatchView,runId:string,operationId:string):Promise<void>;saveEstimate(batchId:string,estimate:EstimateSnapshot):Promise<void>;enqueue(request:EvaluationRequest,admission?:ProtocolAdmission,startup?:StartupMeasurement):Promise<CreatedBatch>;pause(batchId:string):Promise<void>;resume(batchId:string,judge?:JudgeSnapshot,policy?:'output-idle-v1',admission?:ProtocolAdmission):Promise<void>;snapshot():QueueView;activeWork(batchId:string):ActiveWork|undefined;idle():Promise<void>;dispose():Promise<void>}
 const preparationErrorCodes=new Set([
   'TARGET_CHANGED','MODEL_NOT_CONFIGURED','UNSUPPORTED_PARAMETER','UNKNOWN_PARAMETER_OVERRIDE','INVALID_PARAMETER',
   'UNSUPPORTED_PROMPT_ROLE','AUTH','AUTHENTICATION_ERROR','AUTHENTICATION_FAILED','INVALID_CONFIG',
@@ -184,6 +188,13 @@ export function createQueue(store:HistoryStore,adapter:HostAdapter,registry:Prot
     }
   }
   async function persist(batch:BatchView):Promise<void>{await store.exclusive(async tx=>{await writeRecord(join(tx.maintenanceDirectory,`batch-${batch.batchId}.json`),batch);});}
+  const startupClocks=new WeakMap<BatchView,number>();
+  function recordFirstDispatch(batch:BatchView):void {
+    const started=startupClocks.get(batch);
+    if(started===undefined||!batch.startup)return;
+    batch.startup.firstDispatchMs=Math.round(performance.now()-started);
+    startupClocks.delete(batch);
+  }
   function executionJournal(batch:BatchView,runId:string,initial:EvaluationRequest['execution']):ExecutionChange[] {
     return batch.runExecutionChanges?.[runId]??(batch.executionChanges??[]).map(change=>({
       ...change,before:{...change.before,concurrency:initial.concurrency},
@@ -256,7 +267,7 @@ export function createQueue(store:HistoryStore,adapter:HostAdapter,registry:Prot
       const child=new AbortController(),attemptSignal=AbortSignal.any([signal,child.signal]);
       let timedOut=false;const watchdog=createCallWatchdog(execution.callTimeoutMs,execution.failurePolicy,()=>{timedOut=true;child.abort();});
       const generatedStart=performance.now();let answer:GeneratedAnswer;
-      try{if(attemptSignal.aborted||options.calibration?.canDispatch&&!options.calibration.canDispatch())throw Object.assign(Error('CALIBRATION_BUDGET_REACHED'),{code:'CALIBRATION_BUDGET_REACHED'});answer=await adapter.generateOnce({target,messages,signal:attemptSignal,onActivity:watchdog.activity,context:{attemptId:attempt.attemptId,itemId:q.id,track:q.track,phase}});}
+      try{if(attemptSignal.aborted||options.calibration?.canDispatch&&!options.calibration.canDispatch())throw Object.assign(Error('CALIBRATION_BUDGET_REACHED'),{code:'CALIBRATION_BUDGET_REACHED'});recordFirstDispatch(batch);answer=await adapter.generateOnce({target,messages,signal:attemptSignal,onActivity:watchdog.activity,context:{attemptId:attempt.attemptId,itemId:q.id,track:q.track,phase}});}
       catch(thrown){const code=typeof (thrown as {code?:unknown})?.code==='string'?(thrown as {code:string}).code:'CALL_FAILED';const configuration=/AUTH|CONFIG|TARGET|UNSUPPORTED|REASONING|PARAMETER/.test(code);
         const upstream=captureUpstreamDiagnostic(thrown);
         answer={text:'',complete:false,truncated:false,observations:{attemptId:attempt.attemptId,itemId:q.id,track:q.track,phase,startedAt:attempt.startedAt,endedAt:new Date().toISOString(),usage:{available:false}},error:{...failure(configuration&&preparationErrorCodes.has(code)?code:'CALL_FAILED',configuration?'config':phase,!configuration),...(upstream?{upstream}:{})}};
@@ -333,7 +344,8 @@ export function createQueue(store:HistoryStore,adapter:HostAdapter,registry:Prot
       let localGradingMs=0;const toolTimingKnown=!item?.toolActiveMs||item.toolTaskTimingVersion===1;const toolStarted=performance.now(),toolStage={conditionKey:performanceConditionKey(manifest.target,manifest.protocols,execution),datasetId:q.datasetId,phase:'tool-scenario' as const,sampleId:randomUUID(),itemId:q.id,startedAt:new Date().toISOString()};
       await store.saveItem(runId,item?.revision??0,{...item,itemId:q.id,question:item?.question??publicQuestion,attempts:item?.attempts??[],toolActiveStage:toolStage});await options.onTimingStart?.(runId,toolStage.sampleId);
       let grade=await graders.tools(q,{onLocalGradingTime:ms=>{localGradingMs+=ms;},target:manifest.target,scenarioId:q.sourceId,signal,...(item?.toolCheckpoint?{checkpoint:item.toolCheckpoint}:{}),
-        ...(options.calibration?{dispatchAllowed:options.calibration.reserve,...(options.calibration.canDispatch?{dispatchReady:options.calibration.canDispatch}:{})}:{}),
+        ...(options.calibration?{dispatchAllowed:options.calibration.reserve}:{}),
+        dispatchReady(){if(options.calibration?.canDispatch?.()===false)return false;recordFirstDispatch(batch);return true;},
         async commit(checkpoint){try{const current=await store.getItem(runId,q.id);await store.saveItem(runId,current?.revision??0,{...current,itemId:q.id,question:current?.question??publicQuestion,attempts:current?.attempts??[],toolCheckpoint:checkpoint});await refresh(runId);}catch(error){rememberFailure(batch,error);throw error;}},
         async onAttempt(observation,error){try{const current=await store.getItem(runId,q.id),previous=current?.attempts.find(a=>a.attemptId===observation.attemptId),key={conditionKey:performanceConditionKey(manifest.target,manifest.protocols,execution),datasetId:q.datasetId+':turn',phase:'answer' as const};
           const attempt:AttemptRecord=previous?structuredClone(previous):{attemptId:observation.attemptId,itemId:q.id,track:'general',phase:'answer',status:'started',startedAt:observation.startedAt,performanceKey:key};
@@ -830,7 +842,7 @@ export function createQueue(store:HistoryStore,adapter:HostAdapter,registry:Prot
       const release=reserveAdmission();try{await store.exclusive(async tx=>{await validate(tx);const admitted:BatchView={batchId:batch.batchId,runIds:[runId],createdAt:batch.createdAt,execution:structuredClone(batch.execution),status:'queued'};await writeRecord(join(tx.maintenanceDirectory,`batch-${admitted.batchId}.json`),admitted);batches.set(admitted.batchId,admitted);start(admitted);});}finally{release();}
       })().finally(()=>attaching.delete(operationId));attaching.set(operationId,{identity,promise});return promise;
     },
-    async enqueue(request,admission=createProtocolAdmission(registry)){await ready;if(disposed)fail('QUEUE_DISPOSED');if(active||admitting)fail('QUEUE_BUSY');if(!store.writable)fail('HISTORY_READ_ONLY');
+    async enqueue(request,admission=createProtocolAdmission(registry),measurement){await ready;if(disposed)fail('QUEUE_DISPOSED');if(active||admitting)fail('QUEUE_BUSY');if(!store.writable)fail('HISTORY_READ_ONLY');
       assertFailurePolicy(request.execution.failurePolicy);
       if(!request.targets.length||!request.tracks.length||new Set(request.tracks).size!==request.tracks.length||request.tracks.some(x=>!['general','writing'].includes(x)))fail('INVALID_BATCH');
       if(!isRunConcurrency(request.execution.concurrency)||!Number.isInteger(request.execution.callTimeoutMs)||request.execution.callTimeoutMs<1000||request.execution.callTimeoutMs>1800000)fail('INVALID_EXECUTION');
@@ -844,13 +856,21 @@ export function createQueue(store:HistoryStore,adapter:HostAdapter,registry:Prot
         if(disposed)fail('QUEUE_DISPOSED');
         const batch:BatchView={batchId:randomUUID(),runIds:[],createdAt:new Date().toISOString(),status:'queued',execution:structuredClone(request.execution),...(request.judge?{judge:structuredClone(request.judge)}:{})};
         if(options.sampleMultiConfigEta&&request.targets.length>1&&limit===1&&!request.modelConcurrency?.some(value=>value!==request.execution.concurrency))batch.etaSamples={};
-        const executionOrder=buildExecutionOrder(protocols,request.tracks);
+        const executionOrder=buildExecutionOrder(protocols,request.tracks),runs:RunSummary[]=[];
         for(const [index,target] of request.targets.entries()){
           const concurrency=request.modelConcurrency?.[index]??request.execution.concurrency;
-          const run=await store.createRun({...(executionOrder?{executionOrder}:{}),batchId:batch.batchId,target,protocols:{generalId:protocols.generalId,writingId:protocols.writingId,resourceVersion:protocols.resourceVersion},requiredItems:protocols.items.filter(x=>request.tracks.includes(x.track)).map(x=>({id:x.id,track:x.track,datasetId:x.datasetId})),...(request.tracks.includes('general')?{generalDefinition:protocols.descriptor.general}:{}),execution:{...request.execution,concurrency},...(request.initialEstimates?.[fingerprintTarget(target)]?{initialEstimation:request.initialEstimates[fingerprintTarget(target)]!}:{}),...(request.judge?{judge:request.judge}:{})});batch.runIds.push(run.runId);
+          const run=await store.createRun({...(executionOrder?{executionOrder}:{}),batchId:batch.batchId,target,protocols:{generalId:protocols.generalId,writingId:protocols.writingId,resourceVersion:protocols.resourceVersion},requiredItems:protocols.items.filter(x=>request.tracks.includes(x.track)).map(x=>({id:x.id,track:x.track,datasetId:x.datasetId})),...(request.tracks.includes('general')?{generalDefinition:protocols.descriptor.general}:{}),execution:{...request.execution,concurrency},...(request.initialEstimates?.[fingerprintTarget(target)]?{initialEstimation:request.initialEstimates[fingerprintTarget(target)]!}:{}),...(request.judge?{judge:request.judge}:{})});batch.runIds.push(run.runId);runs.push(run);
           if(concurrency!==request.execution.concurrency)(batch.runConcurrency??={})[run.runId]=concurrency;
         }
-        batches.set(batch.batchId,batch);await persist(batch);await store.exclusive(async()=>{start(batch,undefined,admission);});return structuredClone(batch);
+        await persist(batch);
+        if(measurement){
+          const {startedMs,receivedAt,verificationMs}=measurement;
+          batch.startup={receivedAt,verificationMs,acceptedMs:Math.round(performance.now()-startedMs)};
+          startupClocks.set(batch,startedMs);
+        }
+        batches.set(batch.batchId,batch);
+        await store.exclusive(async()=>{start(batch,undefined,admission);});
+        return {...structuredClone(batch),runs,...(active===batch.batchId?{activeBatchId:active}:{})};
       }finally{release();}
     },
     async pause(id){await ready;if(active!==id)fail('BATCH_NOT_ACTIVE');controller?.abort();await running;},

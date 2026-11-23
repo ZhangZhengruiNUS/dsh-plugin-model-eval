@@ -11,7 +11,10 @@ export function canResumeRun(run:RunSummary){
 }
 
 export function batchStatus(batch:BatchView,active=false){
-  if(active)return 'running';
+  if(active){
+    const starting=batch.startup&&batch.startup.firstDispatchMs===undefined&&!batch.activeRunIds?.length&&!batch.activeRunId;
+    return starting?'queued':'running';
+  }
   const states=Object.values(batch.runControls??{});
   if(batch.status==='completed'&&states.some(control=>control.state==='removed'))return 'ended';
   if(batch.status==='pending'&&states.some(control=>control.state==='held'))return 'attention';

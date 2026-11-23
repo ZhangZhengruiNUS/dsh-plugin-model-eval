@@ -1,3 +1,4 @@
+import type {CreateBatchResult} from '../../jobs/queue.ts';
 import {ExecutionSettings} from '../components/ExecutionSettings.tsx';
 import {ConcurrencyField,concurrencyError,parseConcurrency} from '../components/ConcurrencyInput.tsx';
 import {Checkbox,Field,Radio,TextInput} from '../primitives/primitives.tsx';
@@ -197,9 +198,13 @@ export function NewRun({onClose,onBackground,saved,preparation,onRetryPreparatio
  async function start(){
    if(startUnavailable||closing||startingEvaluation||!allocations.every(value=>value!==undefined))return;
    setError('');setStartingEvaluation(true);
+   const submittedAt=performance.now();
    try{
-     const result=await props.act(async()=>props.api('createBatch',{...await request(),modelConcurrency:allocations,...(parallelModels>1?{parallelModels}:{}),...(!customScheduling&&preview?.key===draftKey?{previewId:preview.id}:{})}));
-     if(result){onClose();props.navigate('jobs');}
+     const result=await props.actCreateBatch(async()=>props.api<CreateBatchResult>('createBatch',{...await request(),modelConcurrency:allocations,...(parallelModels>1?{parallelModels}:{}),...(!customScheduling&&preview?.key===draftKey?{previewId:preview.id}:{})}));
+     if(result){
+       performance.measure('model-coordinates:create-batch',{start:submittedAt,end:performance.now()});
+       onClose();props.navigate('jobs',result.batchId);
+     }
    }finally{setStartingEvaluation(false);}
  }
  const dialogLocked=props.busy||probeStarting||closing;
@@ -318,7 +323,7 @@ export function NewRun({onClose,onBackground,saved,preparation,onRetryPreparatio
        onClick={openAdvisor}>{probing?'查看测速进度':'查看用时参考'}</ActionButton>
    </div>
    <div className="me-new-run-submit"><Button onClick={()=>void close()} disabled={props.busy||probeStarting||closing}>{t.cancel}</Button>
-     <ActionButton kind="primary" icon="play" disabled={closing} unavailableReason={startUnavailable} onClick={()=>void start()}>{startingEvaluation?'正在启动评测…':t.start}</ActionButton></div>
+     <ActionButton kind="primary" icon="play" disabled={closing||startingEvaluation} unavailableReason={startingEvaluation?undefined:startUnavailable} onClick={()=>void start()}>{startingEvaluation?'正在校验并创建批次…':t.start}</ActionButton></div>
  </footer></Modal>
  {pickerOpen&&<ModelPicker models={props.data.models} drafts={drafts} maximum={maxConfigs}
    returnFocusTo={pickerOpener.current} close={()=>setPickerOpen(false)} add={addModels}/>}

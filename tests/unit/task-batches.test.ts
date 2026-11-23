@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import type {RunSummary} from '../../src/contracts.ts';
 import type {BatchView} from '../../src/jobs/queue.ts';
-import {taskBatches} from '../../src/client/task-batches.ts';
+import {batchStatus,taskBatches} from '../../src/client/task-batches.ts';
 
 function makeRun(runId:string,status:'completed'|'pending',details:RunSummary['details']='available'){
   return {
@@ -37,4 +37,11 @@ test('tasks keep only running batches and actionable unfinished configurations',
   assert.equal(work.active,active);
   assert.deepEqual(work.pending,[paused,held,removed,replacement]);
   assert.equal(work.runsFor(removed)[0]?.runId,'removed');
+});
+
+test('an admitted batch shows queued until its first work starts',()=>{
+  const batch=makeBatch('new','running',{startup:{receivedAt:'2026-11-23T01:00:00Z',verificationMs:640,acceptedMs:692}});
+  assert.equal(batchStatus(batch,true),'queued');
+  assert.equal(batchStatus({...batch,activeRunIds:['new']},true),'running');
+  assert.equal(batchStatus({...batch,status:'paused'},false),'paused');
 });

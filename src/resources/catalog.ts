@@ -52,10 +52,21 @@ export async function verifyBundle(packageRoot:string,bundle:ProtocolBundle):Pro
   await verifyBundleFiles(join(resolve(packageRoot),'resources'),bundle);
 }
 export async function verifyBundleFiles(root:string,bundle:ProtocolBundle):Promise<void> {
-  for(const file of bundle.files){
-    const bytes=await readCatalogFile(root,file.path);
-    if(bytes.length!==file.size||bytesHash(bytes)!==file.sha256)throw Error('RESOURCE_HASH_MISMATCH');
+  let next=0,failed=false;
+  async function verifyFiles(){
+    while(!failed){
+      const file=bundle.files[next++];
+      if(!file)return;
+      try {
+        const bytes=await readCatalogFile(root,file.path);
+        if(bytes.length!==file.size||bytesHash(bytes)!==file.sha256)throw Error('RESOURCE_HASH_MISMATCH');
+      } catch(error) {failed=true;throw error;}
+    }
   }
+  // Drain readers before callers clean up a failed staging directory.
+  const settled=await Promise.allSettled(Array.from({length:Math.min(4,bundle.files.length)},verifyFiles));
+  const rejection=settled.find(result=>result.status==='rejected');
+  if(rejection)throw rejection.reason;
 }
 export function bundleCachePath(root:string,bundle:ProtocolBundle):string {
   return join(resolve(root),'resources',bundle.id+'-'+identityHash(bundle).slice(0,12));

@@ -20,7 +20,7 @@ import {isCurrentGeneralRelease} from '../evaluation/current-edition.ts';
 import {WorkbenchNav,type WorkbenchView} from './components/WorkbenchNav.tsx';
 const currentTiers=(data:ViewData|undefined)=>data?.protocols.filter(({descriptor})=>descriptor.allowNewRuns
   && isCurrentGeneralRelease(descriptor.refs))??[];
-const rootScope=(status:ViewData['status'])=>JSON.stringify([status.rootId,status.rootEpoch]);
+const rootScope=(status:Pick<ViewData['status'],'rootId'|'rootEpoch'>)=>JSON.stringify([status.rootId,status.rootEpoch]);
 type BackgroundRun={scope:string;draft:BackgroundSpeedDraft};
 // The host can unmount its main panel when switching to a conversation.
 let parkedRun:BackgroundRun|undefined;
@@ -136,17 +136,19 @@ export function App({api:provided,references}:{api?:ClientApi;references?:readon
     document.addEventListener('visibilitychange',update);window.addEventListener('online',update);
     return()=>{clearInterval(timer);document.removeEventListener('visibilitychange',update);window.removeEventListener('online',update);};
   },[readView,data?.queue.activeBatchId,data?.status.activeActivity?.id,data?.status.preparing]);
-  async function act<T,>(fn:()=>Promise<T>,applyQueue?: (result:T)=>ViewData['queue']):Promise<T|undefined>{
+  async function act<T,>(fn:()=>Promise<T>,apply?: (result:T,previous:ViewData)=>ViewData,
+    responseScope?: (result:T)=>string|undefined):Promise<T|undefined>{
     if(mutating.current)return;
     mutating.current=true;
     setBusy(true);
     setError('');
     try{
       const result=await fn();
-      if(applyQueue){
+      const resultScope=responseScope?.(result);
+      if(apply&&(!responseScope||resultScope!==undefined)){
+        if(!alive.current||selectedScope.current!==loadedScope||resultScope!==undefined&&resultScope!==loadedScope)return;
         sequence.current++;
-        const queue=applyQueue(result);
-        setData(previous=>previous&&rootScope(previous.status)===loadedScope?{...previous,queue}:previous);
+        setData(previous=>previous&&rootScope(previous.status)===loadedScope?apply(result,previous):previous);
         void readView(false);
       }else await refresh();
       return result;
@@ -216,7 +218,18 @@ export function App({api:provided,references}:{api?:ClientApi;references?:readon
   const props:PageProps|undefined=data?{
     data:view==='jobs'||view==='history'?archiveEvaluationLists(data,protocolArchive):
       localPending?{...data,status:{...data.status,preparing:true}}:data,
-    api,busy,act,actQueue:fn=>act(fn,result=>result),loadModels,refresh,canCreateRun,protocolArchive,
+    api,busy,act,actQueue:fn=>act(fn,(queue,previous)=>({...previous,queue})),
+    actCreateBatch:fn=>act(fn,(result,previous)=>{
+      const {runs,activeBatchId,rootId:_rootId,rootEpoch:_rootEpoch,...batch}=result;
+      const {activeBatchId:_oldActive,...queue}=previous.queue;
+      const summaries=new Map(previous.runs.map(run=>[run.runId,run]));
+      for(const run of runs)if((summaries.get(run.runId)?.revision??-1)<run.revision)summaries.set(run.runId,run);
+      return {...previous,runs:[...summaries.values()],queue:{
+        ...queue,batches:[...queue.batches.filter(row=>row.batchId!==batch.batchId),batch],
+        ...(activeBatchId?{activeBatchId}:{}),
+      }};
+    },result=>Array.isArray(result.runs)&&typeof result.rootId==='string'&&Number.isInteger(result.rootEpoch)?rootScope(result):undefined),
+    loadModels,refresh,canCreateRun,protocolArchive,
     newRunUnavailable:canCreateRun?undefined:!data.status.writable?'数据目录为只读，请在设置中切换到可写目录。':
       activityUnavailable(data.status,data.queue.activeBatchId)??(busy?'正在处理当前操作，请稍候。':'请先到设置中准备评测环境。'),
     ...(hasArchivedRuns&&{setProtocolArchive:(value:ProtocolArchive)=>{

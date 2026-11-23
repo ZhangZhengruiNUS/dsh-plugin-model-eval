@@ -20,6 +20,7 @@ import {batchStatus,canResumeRun,runIsComplete,runIsSettling,taskBatches} from '
 const taskTabs=[{id:'current',label:'当前评测'},{id:'pending',label:'待处理'}] as const;
 type TaskTab=(typeof taskTabs)[number]['id'];
 
+const startupSeconds=(ms:number)=>(ms/1000).toFixed(2)+' 秒';
 function readBatchProgress(runs:RunSummary[]){
   const tracks=runs.flatMap(run=>Object.values(run.tracks));
   return {
@@ -146,6 +147,11 @@ export function Progress(props:PageProps&{targetBatchId?:string|undefined}){cons
         </div>
       </div>
       <div className="me-task-progress">
+        {batch.startup&&<Disclosure kind="help" title="启动耗时">
+          <p>资源校验 {startupSeconds(batch.startup.verificationMs)}</p>
+          <p>收到请求到批次落盘 {startupSeconds(batch.startup.acceptedMs)}</p>
+          {batch.startup.firstDispatchMs!==undefined&&<p>收到请求到首个宿主调用 {startupSeconds(batch.startup.firstDispatchMs)}</p>}
+        </Disclosure>}
         {active&&<><div className="me-task-progress-readout">
           <span>{t.graded}</span>
           <strong><DataValue value={required?graded:'—'} unit={required?`/ ${required.toLocaleString('zh-CN')} 题`:undefined}/></strong>
