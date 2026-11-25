@@ -105,6 +105,7 @@ export function createQueue(store:HistoryStore,adapter:HostAdapter,registry:Prot
     return manifest.reuseOrigin?.edition?verifyReadyEditionReuse(tx,store.rootId,operationId,runId,await resolver.resolve(manifest.protocols)):verifyReadyReuse(tx,store.rootId,operationId,runId);
   }
   const legacyFailureCauses=new Map<string,{itemId:string;cause:UpstreamFailureCause}>();
+  const legacyDiagnostics=new Map<string,{itemId:string;error:TechnicalError}>();
   let admissionDone:Promise<void>=Promise.resolve();
   function reserveAdmission():()=>void{
     if(disposed)fail('QUEUE_DISPOSED');if(active||admitting)fail('QUEUE_BUSY');
@@ -136,9 +137,10 @@ export function createQueue(store:HistoryStore,adapter:HostAdapter,registry:Prot
       }
     }catch{for(const runId of batch.runIds)recoveryIssues.push({runId,code:'LOCAL_REGRADE_RECOVERY_FAILED'});}
     for(const batch of batches.values()) {
+      const hadRunControls=!!batch.runControls;
       try { await attributePreviousError(batch); }
       catch { /* Old records without intact evidence keep their batch-level error. */ }
-      await loadLegacyFailureCauses(batch);
+      await loadLegacyFailureCauses(batch,hadRunControls);
     }
     // A crash after the import commit but before attach leaves a recoverable paused batch, never an automatic call.
     if(store.writable)for(const file of await readdir(metadata))if(/^(?:reuse|edition-reuse)-[a-f0-9-]{36}\.json$/.test(file)){
@@ -174,16 +176,25 @@ export function createQueue(store:HistoryStore,adapter:HostAdapter,registry:Prot
     batch.runControls={[match.runId]:{state:'held',error,itemId:match.itemId}};
     delete batch.lastError;
   }
-  async function loadLegacyFailureCauses(batch:BatchView):Promise<void>{
+  function sameTaskError(a:TechnicalError,b:TechnicalError):boolean{
+    return a.code===b.code&&a.phase===b.phase&&a.status===b.status&&a.retryable===b.retryable;
+  }
+  async function loadLegacyFailureCauses(batch:BatchView,readDiagnostics:boolean):Promise<void>{
     for(const [runId,control] of Object.entries(batch.runControls??{})){
       const {error,itemId}=control;
-      if(control.state!=='held'||!itemId||error?.code!=='UPSTREAM_ERROR'||error.phase!=='answer'||error.upstreamCause)continue;
+      if(control.state!=='held'||!itemId||!error||!batch.runIds.includes(runId))continue;
+      const readCause=error.code==='UPSTREAM_ERROR'&&error.phase==='answer'&&!error.upstreamCause;
+      if(!readCause&&(!readDiagnostics||error.upstream))continue;
       try{
+        const {manifest}=await store.getRun(runId);
+        if(manifest.batchId!==batch.batchId)continue;
         const item=await store.getItem(runId,itemId),attempt=item?.attempts.at(-1),failure=attempt?.error;
-        if(item?.answer?.complete||item?.grade?.kind==='scored'||attempt?.status!=='failed'||attempt.phase!=='answer'||
-          failure?.code!==error.code||failure.phase!==error.phase||failure.status!==error.status||failure.retryable!==error.retryable)continue;
-        const cause=upstreamFailureCause(failure.code,failure.upstream?.codes?.[0],failure.status,failure.upstream);
-        if(cause)legacyFailureCauses.set(runId,{itemId,cause});
+        if(item?.answer?.complete||item?.grade?.kind==='scored'||attempt?.status!=='failed'||!failure||!sameTaskError(failure,error))continue;
+        if(readDiagnostics&&!error.upstream&&attempt.itemId===itemId&&failure.upstream)legacyDiagnostics.set(runId,{itemId,error:failure});
+        if(readCause&&attempt.phase==='answer'){
+          const cause=upstreamFailureCause(failure.code,failure.upstream?.codes?.[0],failure.status,failure.upstream);
+          if(cause)legacyFailureCauses.set(runId,{itemId,cause});
+        }
       }catch{/* A missing or unreadable detail must not impede recovery. */}
     }
   }
@@ -299,19 +310,22 @@ export function createQueue(store:HistoryStore,adapter:HostAdapter,registry:Prot
   }
   async function deferOrStop(batch:BatchView,runId:string,itemId:string,error:TechnicalError,signal:AbortSignal,origin:'answer'|'judge'='answer'):Promise<void>{
     if(signal.aborted)return;
-    const {upstream:_upstream,...summaryError}=error;
     if(isDeferredTimeout(batch.execution.failurePolicy,error)||isLocalDeadline(error)){
+      const {upstream:_upstream,...summaryError}=error;
       await deferItem(batch,runId,itemId,summaryError);return;
     }
+    // The adapter has already projected upstream fields to the same safe form
+    // used by the attempt journal. Keep that projection with task errors.
     if(origin==='answer'&&!options.calibration&&!localRegrading&&mayIsolate(error)&&currentRuns.has(runId)){
       if(!batch.runControls?.[runId]){
-        (batch.runControls??={})[runId]={state:'held',error:summaryError,itemId};
+        legacyDiagnostics.delete(runId);
+        (batch.runControls??={})[runId]={state:'held',error,itemId};
         currentRuns.get(runId)?.controller.abort();
         await persist(batch);
       }
       return;
     }
-    batch.lastError??=summaryError;
+    batch.lastError??=error;
     controller?.abort();
   }
   async function deferItem(batch:BatchView,runId:string,itemId:string,error:TechnicalError):Promise<void>{
@@ -620,6 +634,9 @@ export function createQueue(store:HistoryStore,adapter:HostAdapter,registry:Prot
     snapshot(){
       const batchViews=structuredClone([...batches.values()]);
       for(const view of batchViews)for(const [runId,control] of Object.entries(view.runControls??{})){
+        const diagnostic=legacyDiagnostics.get(runId);
+        if(diagnostic&&control.state==='held'&&control.itemId===diagnostic.itemId&&control.error&&!control.error.upstream&&
+          sameTaskError(control.error,diagnostic.error)&&diagnostic.error.upstream)control.error.upstream=structuredClone(diagnostic.error.upstream);
         const legacy=legacyFailureCauses.get(runId);
         if(legacy&&control.state==='held'&&control.itemId===legacy.itemId&&control.error?.code==='UPSTREAM_ERROR'&&
           control.error.phase==='answer'&&!control.error.upstreamCause)control.error.upstreamCause=legacy.cause;
@@ -732,13 +749,17 @@ export function createQueue(store:HistoryStore,adapter:HostAdapter,registry:Prot
             if(active===id){rememberFailure(batch,error);controller?.abort();}
             throw error;
           }
-          if(starting){batches.set(id,next);start(next,undefined,admission);}
+          if(starting){
+            for(const runId of runIds)legacyDiagnostics.delete(runId);
+            batches.set(id,next);start(next,undefined,admission);
+          }
           else{
             if(operation==='resume')for(const runId of runIds){
               // An already running model keeps its workers and their progress.
               if(!batch.runControls?.[runId])continue;
               delete batch.runControls[runId];
               legacyFailureCauses.delete(runId);
+              legacyDiagnostics.delete(runId);
               dispatched.delete(runId);
               deferredThisExecution.delete(runId);
             }
@@ -807,7 +828,7 @@ export function createQueue(store:HistoryStore,adapter:HostAdapter,registry:Prot
             if(active){rememberFailure(batch,error);controller?.abort();}
             throw error;
           }
-          if(lift)legacyFailureCauses.delete(runId);
+          if(lift){legacyFailureCauses.delete(runId);legacyDiagnostics.delete(runId);}
           if(active){
             if(lift){
               if(batch.runControls)delete batch.runControls[runId];

@@ -1,14 +1,10 @@
 import {Checkbox} from './primitives/primitives.tsx';
 import {RunConcurrencyInput} from './components/ConcurrencyInput.tsx';
+import {TaskFailure} from './components/TaskFailure.tsx';
 import {batchRunStatus,runIsSettling,canResumeRun,runIsComplete} from './task-batches.ts';
 import {Button as PrimitiveButton} from './primitives/primitives.tsx';
 import {createPortal} from 'react-dom';
-import * as React from 'react';import type {ModelChoice,RunConcurrency,RunSummary,TargetSnapshot,TechnicalError,Track} from '../contracts.ts';import {generalReleaseName} from './protocol-editions.ts';import {writingEditionName} from '../evaluation/writing-edition.ts';import type {BatchView,CreateBatchResult,QueueView,RunOperation} from '../jobs/queue.ts';import type {ClientApi} from './api.ts';import {zh as t} from './locales.ts';import {formatScore,time,generalTierLabel} from './store.ts';
-export function taskFailureText(error:TechnicalError):string {
-  if(error.code==='ABORTED')return t.abortedHelp;
-  const cause=error.upstreamCause??(error.code==='UPSTREAM_ERROR'?'unknown':undefined);
-  return cause&&Object.hasOwn(t.upstreamCauses,cause)?t.upstreamCauses[cause]:error.message;
-}
+import * as React from 'react';import type {ModelChoice,RunConcurrency,RunSummary,TargetSnapshot,Track} from '../contracts.ts';import {generalReleaseName} from './protocol-editions.ts';import {writingEditionName} from '../evaluation/writing-edition.ts';import type {BatchView,CreateBatchResult,QueueView,RunOperation} from '../jobs/queue.ts';import type {ClientApi} from './api.ts';import {zh as t} from './locales.ts';import {formatScore,time,generalTierLabel} from './store.ts';
 export interface Status {timeAdvisorVersion?:number;codingDiagnostics?:import('../diagnostics/contracts.ts').CodingDiagnosticSettings;rootId:string;rootEpoch:number;ready:boolean;prepared:boolean;preparing:boolean;writable:boolean;rootPath:string;resourceVersion:string;generalId:string;writingId:string;packageBytes:number;activeActivity?:import('../jobs/activity.ts').ActivityView}
 export interface ViewData {status:Status;models:ModelChoice[];modelsLoading?:boolean;runs:RunSummary[];protocols:import('../contracts.ts').ProtocolCatalogItem[];comparison?:import('../comparison/contracts.ts').ComparisonMetadata;comparisonError?:string|undefined;queue:QueueView&{estimates?:Record<string,import('../estimation/contracts.ts').EstimateSnapshot>;roughWork?:{batchId:string;excludesDeferredWork:boolean;estimate?:import('../estimation/rough-remaining.ts').RoughRemaining|undefined;sampling?:{ready:number;total:number}}}}
 export type LocalPreparation={phase:'pending'}|{phase:'failed';code?:string|undefined;reason?:string;verifyOnly?:boolean};
@@ -333,10 +329,7 @@ export function BatchRuns({batch,runs,report,control,unavailableReason,pending,s
             </ActionButton>;
           })}
         </div>}
-        {error&&<div className="me-inline-warning me-run-warning">
-          <p>{t.errorPhases[error.phase]} · {taskFailureText(error)}</p>
-          <code>{error.code}</code>
-        </div>}
+        {error&&<TaskFailure error={error} className="me-run-warning"/>}
         {controlState?.state==='removed'&&!settling&&<p className="me-help me-run-preserved">{t.runControl.saved}</p>}
       </BatchRunRow>;
     })}

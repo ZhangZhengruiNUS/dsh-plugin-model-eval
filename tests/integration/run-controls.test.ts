@@ -8,7 +8,8 @@ import {captureUpstreamDiagnostic} from '../../src/host/upstream-error.ts';
 import {createHostAdapter} from '../../src/host/adapter.ts';
 import type {GeneratedAnswer, HostAdapter, Question, TargetSnapshot} from '../../src/contracts.ts';
 import {openHistory} from '../../src/history/store.ts';
-import {createQueue, type EvaluationQueue, type GradeServices} from '../../src/jobs/queue.ts';
+import {readRecord,writeRecord} from '../../src/history/atomic.ts';
+import {createQueue, type BatchView, type EvaluationQueue, type GradeServices} from '../../src/jobs/queue.ts';
 import {switchRoot} from '../../src/resources/prepare.ts';
 import {legacyFixtureRegistry} from '../support/fixture-registry.ts';
 import {withTempRoot} from '../support/temp.ts';
@@ -141,7 +142,9 @@ test('one rejected configuration is held, later models finish, and rejoin never 
     const diagnostic=firstAttempt.error?.upstream;
     assert.deepEqual(diagnostic,{codes:['INVALID_REQUEST','InvalidParameter.InvalidValue'],httpStatus:400,statusFromMessage:true,
       requestId:'req_fixture_example_123',detail:'max_tokens cannot exceed 12288',detailFiltered:true});
-    assert.equal(view(q).runControls?.[first]?.error?.upstream,undefined);
+    assert.deepEqual(view(q).runControls?.[first]?.error?.upstream,diagnostic);
+    const task=await readFile(join(path,'history','maintenance','batch-'+batch.batchId+'.json'),'utf8');
+    assert.doesNotMatch(task,/Authorization|fixture-secret-do-not-store|sensitive fixture text/);
     const key=(id:string)=>createHash('sha256').update(id).digest('hex')+'.json';
     for(const file of [join('attempts',key(firstAttempt.attemptId)),join('items',key('q1'))]){
       const saved=await readFile(join(path,'history','runs',first,'details',file),'utf8');
@@ -354,7 +357,7 @@ test(cause+' retries individual calls and holds only the configuration that exha
   }finally{await queue.dispose();await store.close();}
 }));
 
-test('existing held rows recover only the matching terminal cause and do not rewrite prior records',async()=>withTempRoot(async directory=>{
+test('existing held rows recover matching terminal diagnostics without rewriting prior records',async()=>withTempRoot(async directory=>{
   const {path}=await switchRoot(join(directory,'data'),{writing:false});
   let store=await openHistory(path);
   let queue:EvaluationQueue;
@@ -379,6 +382,9 @@ test('existing held rows recover only the matching terminal cause and do not rew
       startedAt:new Date().toISOString(),endedAt:new Date().toISOString(),
     }]});
     const file=join(path,'history','maintenance','batch-'+batch.batchId+'.json');
+    const legacy=await readRecord<BatchView>(file);
+    for(const control of Object.values(legacy.runControls??{}))if(control.error)delete control.error.upstream;
+    await writeRecord(file,legacy);
     const persisted=await readFile(file);
     await queue.dispose();await store.close();
     store=await openHistory(path);
@@ -386,6 +392,8 @@ test('existing held rows recover only the matching terminal cause and do not rew
     await queue.idle();
     assert.deepEqual(batch.runIds.map(runId=>view(queue).runControls?.[runId]?.error?.upstreamCause),
       ['overload','transport','unknown',undefined]);
+    assert.deepEqual(batch.runIds.map(runId=>view(queue).runControls?.[runId]?.error?.upstream),
+      [oldFailures.overloaded,oldFailures.transport,oldFailures.unknown,undefined]);
     assert.deepEqual(await readFile(file),persisted);
     assert.equal((await store.getItem(batch.runIds[2]!,'q0'))?.answer?.text,'partial answer');
     await queue.controlRun(batch.batchId,batch.runIds[1]!,'resume',false);

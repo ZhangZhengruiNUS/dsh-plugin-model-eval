@@ -167,6 +167,19 @@ if(params.has('upstreamCases')&&params.has('runControls')){
       upstreamCause:causes[index]!}}];
   }));
 }
+if(params.has('rateLimitTask')&&params.has('runControls')){
+  const batch=batches[0]!;
+  const error={code:'RATE_LIMIT',phase:'answer',retryable:true,message:'模型接口未完成本次回答。',
+    upstream:{codes:['RATE_LIMIT','1302'],httpStatus:429,statusFromMessage:true,detailFiltered:true}} as const;
+  batch.runControls![runs[0]!.runId]={state:'held',error};
+  if(params.has('batchError')){
+    active=undefined;
+    batch.status='pending';
+    delete batch.activeRunId;
+    delete batch.runControls;
+    batch.lastError=error;
+  }
+}
 if(params.has('eta')&&batches[0]){batches[0].estimate={algorithm:'estimate-v1',asOf:new Date().toISOString(),state:'available',remainingMs:{low:600000,high:1200000},totalMs:{low:905000,high:1505000},coverage:{known:6,required:6},sources:['current'],reasons:[]};runs[0]!.estimation={current:batches[0].estimate};}
 function firstPassSnapshot(done=false):EstimateSnapshot{return {algorithm:'estimate-v3',asOf:new Date().toISOString(),state:done?'completed':'available',referenceRemainingMs:done?0:1440000,referenceTotalMs:1440000,coverage:{known:done?100:0,required:100},sources:['local-history:synthetic'],reasons:['RANGE_NOT_CALIBRATED'],basis:{durationScope:'first-pass',phase:done?'first-pass':'preview',programHash:'a'.repeat(64),baselineIds:['synthetic'],probeTraceIds:['synthetic'],deferredItems:done?2:0}};}
 if(params.has('firstPass')){const r=runs[0]!;runs=[r];applyFive(r,'light');delete r.tracks.writing;delete r.metrics.tracks.writing;delete r.tracks.general!.score;r.tracks.general!.status='pending';r.tracks.general!.graded=98;const estimate=firstPassSnapshot(true);r.estimation={current:estimate,final:estimate};batches=[{batchId:r.batchId,runIds:[r.runId],status:'pending',createdAt:r.createdAt!,execution:{concurrency:4,callTimeoutMs:300000},estimate}];active=undefined;}

@@ -4,6 +4,17 @@
 
 ## [Unreleased]
 
+## [0.2.3] - 2026-11-25
+
+### Changed
+
+- 新建评测、运行中的模型配置与补测支持输入大于 0 的整数作为题目并发数，默认 4。运行中调低并发时，已发出的请求继续完成。
+- 创建批次落盘后立即进入评测任务页，历史与目录在后台刷新。「启动耗时」可查看资源校验、批次落盘和首次宿主调用。
+
+### Fixed
+
+- 评测任务的单模型和批次错误直接显示失败类型、调用环节及已记录的 HTTP 状态。在「接口诊断」展开底层错误码、请求 ID 和可安全展示的接口详情。
+
 ## [0.2.2] - 2026-11-18
 
 ### Added
@@ -72,7 +83,8 @@
 - 三档提供 GPT‑6 Astra Max 的实测预置。轻量 90.1 分，深入 89.0 分，写作 98.3 分。首装即可查看参考，首次新建评测在后台准备所需的离线资源。
 - 安装包支持已验证的 Windows x64、DSH 0.2.2-rc.1。
 
-[Unreleased]: https://github.com/ZhangZhengruiNUS/dsh-plugin-model-eval/compare/v0.2.2...HEAD
+[Unreleased]: https://github.com/ZhangZhengruiNUS/dsh-plugin-model-eval/compare/v0.2.3...HEAD
+[0.2.3]: https://github.com/ZhangZhengruiNUS/dsh-plugin-model-eval/compare/v0.2.2...v0.2.3
 [0.2.2]: https://github.com/ZhangZhengruiNUS/dsh-plugin-model-eval/compare/v0.2.1...v0.2.2
 [0.2.1]: https://github.com/ZhangZhengruiNUS/dsh-plugin-model-eval/compare/v0.2.0...v0.2.1
 [0.2.0]: https://github.com/ZhangZhengruiNUS/dsh-plugin-model-eval/compare/v0.1.1...v0.2.0

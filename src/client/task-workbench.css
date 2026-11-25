@@ -57,8 +57,14 @@
 .model-eval .me-task-detail .me-run-actions {grid-area:actions;margin:0;justify-content:flex-end}
 .me-task-detail .me-run-action-short {display:none}
 .model-eval .me-task-detail :is(.me-run-warning,.me-run-preserved) {grid-column:1/-1;margin:0}
-.model-eval .me-task-detail .me-run-warning {display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:4px 10px;padding:6px 10px}
-.me-task-detail .me-run-warning p {margin:0}
+.model-eval .me-task-failure {display:block;padding:8px 12px}
+.me-task-failure-summary {display:flex;align-items:baseline;flex-wrap:wrap;gap:3px 10px}
+.me-task-failure-summary strong {font-weight:650}
+.me-task-failure-status {font-variant-numeric:tabular-nums;font-weight:650}
+.me-task-failure-details dl {display:grid;gap:4px;margin:0}
+.me-task-failure-details dl>div {display:grid;grid-template-columns:minmax(72px,max-content) minmax(0,1fr);gap:8px}
+.me-task-failure-details dd,.me-task-failure-details dd code {margin:0;overflow-wrap:anywhere}
+.me-task-failure-hint {margin:0}
 .me-task-detail .me-run-paused-note {padding-inline:var(--me-task-inset);padding-block-end:6px}
 
 @container me-workbench (max-width:760px) {

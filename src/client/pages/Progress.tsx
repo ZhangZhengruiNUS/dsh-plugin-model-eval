@@ -7,7 +7,8 @@ import {generalSchemaFor,isCurrentGeneralRelease} from '../../evaluation/current
 import {usesContestWallSafety} from '../../evaluation/five-schema.ts';
 import * as React from 'react';
 import {zh as t} from '../locales.ts';
-import {ActionButton,activityUnavailable,Button,Empty,Badge,BatchRuns,MetaTime,Modal,taskFailureText,type PageProps} from '../ui.tsx';
+import {ActionButton,activityUnavailable,Button,Empty,Badge,BatchRuns,MetaTime,Modal,type PageProps} from '../ui.tsx';
+import {TaskFailure} from '../components/TaskFailure.tsx';
 import {SelectionBar} from '../components/SelectionBar.tsx';
 import {Checkbox} from '../primitives/primitives.tsx';
 import {Disclosure} from '../components/Disclosure.tsx';
@@ -177,12 +178,7 @@ export function Progress(props:PageProps&{targetBatchId?:string|undefined}){cons
             <Estimate snapshot={estimate} elapsedMs={metrics.elapsedMs} compact/>
           </Disclosure>}
       </div>
-      {batch.lastError&&batch.lastError.code!=='CONTEST_WALL_LIMIT'&&batch.lastError.code!==JUDGE_ITEM_PENDING&&<div className="me-inline-warning">
-        <strong>{t.callError}</strong>
-        <p>中断环节：{t.errorPhases[batch.lastError.phase]}</p>
-        <p>{taskFailureText(batch.lastError)}</p>
-        <code>{batch.lastError.code}</code>
-      </div>}
+      {batch.lastError&&batch.lastError.code!=='CONTEST_WALL_LIMIT'&&batch.lastError.code!==JUDGE_ITEM_PENDING&&<TaskFailure error={batch.lastError}/>}
       {!active&&canResume&&batch.status!=='completed'&&<Disclosure kind="help" title="续测说明" className="me-task-resume-help">
         <p>{t.resumeHelp}</p>
         {canChangeJudge&&<p>{t.judgeChoiceHelp}</p>}

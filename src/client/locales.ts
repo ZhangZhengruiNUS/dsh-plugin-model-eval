@@ -2,11 +2,6 @@ export const zh={
   evaluationTier:'评测档位',
   evaluationVersion:'评测版本',
   wholeRunHint:'整轮完成表示该轮所选轨道均已完成；单个轨道完成后即可在下方查看成绩。',
-  upstreamCauses:{
-    overload:'服务过载，调用中断。',
-    transport:'传输异常，调用中断。',
-    unknown:'调用中断，原因未明。',
-  },
   errorPhases:{answer:'待测模型作答',judge:'写作裁判调用',grader:'本地判分',resource:'评分环境',config:'模型配置',storage:'本地保存'},
   abortedHelp:'模型调用已中断，具体原因未记录。',resumeHelp:'继续评测仅补齐未完成项；已完成成绩保留，已保存的完整回答优先复用。补做调用仍会产生用量。',judgeChoiceHelp:'仅在需要调整写作裁判时选择“更换裁判后继续”；已保存评分保留，新评分会记录裁判条件。',
   parameterHelp:{temperature:'数值越高通常越随机，有效范围以接口为准。',maxTokens:'限制输出长度，不等同于输入上下文长度。',reasoningEffort:'填写接口支持的值，如 low、medium、high；不支持时保留宿主值。',stop:'JSON 示例：["END"]。仅填写接口支持的停止词。'},
@@ -32,6 +27,6 @@ export const zh={
   needsPrepare:'环境尚未准备',ready:'环境已就绪',readonly:'仅可查看：此数据目录正在其他实例中使用。',active:'当前任务',viewProgress:'查看进度',allProtocols:'所有协议',method:'评测方法',methodTitle:'成绩如何计算',methodBody:'通用分为知识、数学、指令遵循、编程四项0—100分的平均值，每项25%。所选档位全部题目有效判分后出分。中文写作独立计分。',adaptation:'各协议使用固定公开题目，保留来源及评分适配。轻量、深入和旧版基线分别比较；本工具成绩与 AA 总分不同尺度。',judgeLimit:'写作由所选模型按五维0—4评分，换裁判可能改变尺度。保留条件和证据供复核，未验证裁判质量；当前题集不覆盖完整操作说明书。',
   configItem:'配置',addConfig:'添加配置',duplicate:'复制配置',remove:'移除',chooseModel:'选择模型',noModels:'尚未读取到可用模型，请检查 DSH 模型设置。',provider:'供应商',configNote:'备注',configNoteOptional:'备注（可选）',configNoteHint:'用于区分评测记录。',configNotePlaceholder:'如实验组 A、提示词版本 2',params:'生成参数',inherit:'使用宿主默认值',defaults:'默认值来自宿主，仅修改本轮评测。',temperature:'温度',maxTokens:'最大输出 Token',reasoningEffort:'推理强度',stop:'停止词（JSON 数组）',tracks:'评测内容',generalCount:'通用能力 · 905题',judge:'裁判模型',judgeHelp:'统一裁判便于比较；也可在后续补评时更换，条件会保留。',execution:'执行设置',concurrency:'每个配置的同时调用数',timeout:'无输出等待上限（秒）',start:'开始评测',selectRequired:'请至少添加一个有效模型配置。',invalidStop:'停止词应为 JSON 字符串数组。',invalidNumber:'请填写有效的数值。',
   batchTokens:'累计 Token',batchElapsed:'已用时间',partialUsage:'部分用量',batchUsageHint:'优先使用接口返回的总量；缺少总量时按输入＋输出统计。缓存明细单列，可能已包含在输入中，不重复累加。',batchElapsedHint:'累计运行时间，不含暂停',
-  noJobs:'还没有评测任务',noJobsBody:'选择模型和本轮参数，开始第一次评测。',pause:'暂停',resume:'继续评测',changeJudge:'更换裁判后继续',resumeJudge:'补评使用的裁判',resumeJudgeHelp:'仅评价未有效判分的题，已保存评分保持不变。',graded:'已判分',answered:'已作答',callError:'本轮需要补测',answerPhase:'待测模型',judgePhase:'裁判',elapsed:'活动耗时',incompleteTiming:'计时不完整',cleared:'明细已清理',partial:'部分明细已清理',unavailable:'明细不可用',
+  noJobs:'还没有评测任务',noJobsBody:'选择模型和本轮参数，开始第一次评测。',pause:'暂停',resume:'继续评测',changeJudge:'更换裁判后继续',resumeJudge:'补评使用的裁判',resumeJudgeHelp:'仅评价未有效判分的题，已保存评分保持不变。',graded:'已判分',answered:'已作答',answerPhase:'待测模型',judgePhase:'裁判',elapsed:'活动耗时',incompleteTiming:'计时不完整',cleared:'明细已清理',partial:'部分明细已清理',unavailable:'明细不可用',
   root:'数据目录',changeRoot:'切换目录',rootHint:'仅接受空目录或本插件的数据目录。切换后不会迁移文件，原目录和历史保留。',resources:'离线资源',resourceHint:'首次准备通用能力评测的当前档位。单独写作按需准备，资源均来自本地安装包。',resourceHintLegacy:'首次准备通用能力评测的当前档位。旧协议和单独写作按需准备，资源均来自本地安装包。',platform:'首版运行环境：Windows x64',storage:'存储占用',historyBytes:'历史记录',resourceBytes:'离线资源',sharedBytes:'历史共享记录',fileBytes:'容量按文件字节统计，共用的离线资源只计一次。',cleanSelected:'清理所选明细',selected:'已选',estimated:'预计可清理',clearSelection:'取消选择',keepSummary:'清理后保留成绩、模型参数、速度用量和裁判条件。',cleanTitle:'确认清理逐题明细',cleanBody:'模型回答、逐题判分和调用明细将无法再查看。保留的成绩摘要仍可参与比较。',loseResume:'所选批次包含未完成评测，清理后将失去续测能力。',cleanConfirm:'清理明细',cleaning:'正在清理…',cleanDone:'清理完成',cleanPartial:'部分文件未清理',actuallyDeleted:'已清理',remaining:'尚待清理',uncertain:'中断后归属待确认',cleanRetry:'重试剩余清理',noHistory:'尚无本地历史',noHistoryBody:'评测记录将保存在所选数据目录。',batch:'批次',run:'轮',summary:'成绩摘要',details:'逐题明细',conditions:'评测条件',question:'题目',answer:'模型回答',evidence:'判分与证据',attempts:'调用尝试',noAnswer:'尚未保存完整回答',pass:'通过',fail:'未通过',technical:'待补判分',allItems:'全部题目',incorrect:'未通过或待补判分',query:'搜索题目 ID',mixedJudge:'混合裁判',selfJudge:'包含自评',judgeConditions:'裁判条件',noJudge:'未调用裁判',dimensionsScale:'五维均分 · 0—4',truncated:'达到输出长度限制',duration:'正常完整调用的中位耗时 / P95',usagePartial:'仅统计接口提供的用量，不将推理或缓存重复相加。',allHistory:'全部历史',configCount:'个配置',roundCount:'轮评测',
 } as const;
