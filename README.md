@@ -26,9 +26,19 @@ Compare DSH models and configurations on the same tasks using scores, task time,
 
 **费用和数据：** 评测、模型裁判和主动测速都会由 DSH 向所选供应商发送请求，可能产生用量或费用。查看历史和估时参考不会发请求；短测速须手动点「开始测速」。答卷和报告保存在本机，插件不另存 API 密钥。
 
+## 界面预览
+
+**评测任务**：查看已判分题数、耗时和 Token 用量，也可单独暂停某套配置。
+
+![评测任务：批次进度、已用时间、Token 用量和各配置的运行状态](docs/screenshots/evaluation-progress.webp)
+
+**维度对比与成绩矩阵**：用雷达图看各项能力，再按分数或耗时排序。图中为轻量档实测示例，成绩仅供参考。
+
+![维度对比与成绩矩阵：五项能力雷达图及各配置的分数和耗时](docs/screenshots/dimensions-and-scores.webp)
+
 ## 进阶阅读
 
-- [评测使用与结果说明](docs/user-guide.md)：附评测进度、能力雷达图和成绩矩阵截图，也说明判分、补测、用量与历史记录。
+- [评测使用与结果说明](docs/user-guide.md)：了解判分规则、补测条件、用量与历史记录。
 - [评测版本与归档](docs/design/protocol-releases.md)：为什么不同协议的成绩不混排，以及如何继续使用旧记录。
 - GitHub 发行版默认使用独立目录 `~/.dsh-model-coordinates/`；切换数据目录不会迁移或删除原记录。
 
