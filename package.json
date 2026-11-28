@@ -49,6 +49,8 @@
     "assets/icon.svg",
     "resources/**",
     "docs/design/protocol-releases.md",
+    "docs/user-guide.md",
+    "docs/screenshots/*.webp",
     "THIRD-PARTY-NOTICES.md",
     "LICENSE",
     "README.md"
